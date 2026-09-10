@@ -16,7 +16,15 @@ import {
   Layers,
   CheckCircle2,
   ExternalLink,
-  ChevronDown
+  ChevronDown,
+  RotateCw,
+  Trash2,
+  FileCheck2,
+  ArrowUpDown,
+  EyeOff,
+  ShieldCheck,
+  Crop,
+  Maximize2
 } from 'lucide-react'
 import { Dropzone } from '../components/ui/Dropzone'
 import { Card, CardTitle, CardDescription } from '../components/ui/Card'
@@ -54,26 +62,41 @@ const HOME_FAQS = [
 ]
 
 const TOOLS_CATALOG: ToolItem[] = [
-  // PDF
+  // PDF Core Suite
   { id: 'pdf-merge', name: 'Merge PDF', desc: 'Combine multiple PDF files into one clean document in your chosen order.', category: 'PDF', icon: Layers, color: 'text-rose-500 bg-rose-500/10', badge: 'Popular' },
   { id: 'pdf-split', name: 'Split PDF', desc: 'Separate pages or extract specific page ranges with instant download.', category: 'PDF', icon: FileText, color: 'text-amber-500 bg-amber-500/10' },
   { id: 'pdf-compress', name: 'Compress PDF', desc: 'Reduce PDF file size drastically while preserving vector text and image clarity.', category: 'PDF', icon: Sparkles, color: 'text-emerald-500 bg-emerald-500/10', badge: 'High Ratio' },
+  { id: 'pdf-rotate', name: 'Rotate PDF', desc: 'Rotate individual pages or entire documents 90°, 180°, or 270° permanently.', category: 'PDF', icon: RotateCw, color: 'text-blue-500 bg-blue-500/10' },
+  { id: 'pdf-delete-pages', name: 'Delete Pages', desc: 'Select and permanently strip unwanted pages from your PDF document.', category: 'PDF', icon: Trash2, color: 'text-rose-600 bg-rose-600/10' },
+  { id: 'pdf-extract-pages', name: 'Extract Pages', desc: 'Extract chosen pages into a clean, standalone new PDF file.', category: 'PDF', icon: FileCheck2, color: 'text-violet-500 bg-violet-500/10' },
+  { id: 'pdf-reorder-pages', name: 'Reorder Pages', desc: 'Rearrange and resequence pages of your PDF document into a custom order.', category: 'PDF', icon: ArrowUpDown, color: 'text-cyan-500 bg-cyan-500/10' },
   { id: 'pdf-protect', name: 'Protect PDF', desc: 'Encrypt your PDF with bank-grade AES-256 password protection and permissions.', category: 'PDF', icon: Lock, color: 'text-rose-500 bg-rose-500/10', badge: 'AES-256' },
   { id: 'pdf-unlock', name: 'Unlock PDF', desc: 'Remove password protection and restrictions from an authenticated PDF.', category: 'PDF', icon: Unlock, color: 'text-emerald-500 bg-emerald-500/10', badge: 'Instant' },
   { id: 'pdf-watermark', name: 'Watermark PDF', desc: 'Stamp custom text watermarks across all pages with customizable rotation and opacity.', category: 'PDF', icon: Stamp, color: 'text-indigo-500 bg-indigo-500/10' },
   { id: 'pdf-page-numbers', name: 'Page Numbers', desc: 'Add customizable page numbers and indicators with crisp vector typography.', category: 'PDF', icon: Hash, color: 'text-cyan-500 bg-cyan-500/10' },
+  { id: 'pdf-redact', name: 'Redact PDF', desc: 'Permanently blackout and sanitize sensitive keywords, names, and numbers.', category: 'PDF', icon: EyeOff, color: 'text-rose-600 bg-rose-600/10', badge: 'Sanitize' },
+  { id: 'pdf-flatten', name: 'Flatten PDF', desc: 'Bake form fields, digital signatures, and comments into static page content.', category: 'PDF', icon: Layers, color: 'text-amber-500 bg-amber-500/10', badge: 'Anti-Tamper' },
+  { id: 'pdf-scrub-metadata', name: 'Scrub Metadata', desc: 'Strip hidden author info, creation tools, timestamps, and XMP payloads.', category: 'PDF', icon: ShieldCheck, color: 'text-emerald-500 bg-emerald-500/10', badge: 'GDPR' },
+  { id: 'pdf-to-txt', name: 'PDF to Text', desc: 'Extract plain text content and document structure into a clean, formatted TXT file.', category: 'PDF', icon: FileText, color: 'text-blue-500 bg-blue-500/10' },
+  { id: 'pdf-grayscale', name: 'PDF to Grayscale', desc: 'Convert full-color PDF documents into black & white grayscale to optimize print costs.', category: 'PDF', icon: Layers, color: 'text-slate-400 bg-slate-500/10', badge: 'Ink Saver' },
 
-  // Office
+  // Office Suite
   { id: 'word-to-pdf', name: 'Word to PDF', desc: 'Convert DOCX to standard PDF with pixel-perfect font and table layout preservation.', category: 'Office', icon: FileText, color: 'text-blue-600 bg-blue-600/10', badge: 'LibreOffice' },
   { id: 'pdf-to-word', name: 'PDF to Word', desc: 'Extract PDF documents into editable Word DOCX files with formatting intact.', category: 'Office', icon: FileText, color: 'text-indigo-500 bg-indigo-500/10' },
   { id: 'excel-to-pdf', name: 'Excel to PDF', desc: 'Convert spreadsheet sheets into publication-ready PDF tables.', category: 'Office', icon: FileSpreadsheet, color: 'text-emerald-600 bg-emerald-600/10' },
   { id: 'ppt-to-pdf', name: 'PowerPoint to PDF', desc: 'Turn PPTX slide decks into sharable, high-resolution PDF presentations.', category: 'Office', icon: Presentation, color: 'text-orange-500 bg-orange-500/10' },
 
-  // Images
+  // Image Suite
   { id: 'jpg-to-png', name: 'JPG to PNG', desc: 'Lossless conversion with support for alpha channel transparency.', category: 'Images', icon: ImageIcon, color: 'text-cyan-500 bg-cyan-500/10' },
-  { id: 'image-to-webp', name: 'JPG / PNG to WEBP', desc: 'Next-gen web format compression for ultra-fast website loading times.', category: 'Images', icon: ImageIcon, color: 'text-teal-500 bg-teal-500/10', badge: 'Web Speed' },
+  { id: 'png-to-jpg', name: 'PNG to JPG', desc: 'Convert PNG graphics to standard JPEG with clean background matting.', category: 'Images', icon: ImageIcon, color: 'text-amber-500 bg-amber-500/10' },
+  { id: 'image-to-webp', name: 'Image to WEBP', desc: 'Next-gen web format compression for ultra-fast website loading times.', category: 'Images', icon: ImageIcon, color: 'text-teal-500 bg-teal-500/10', badge: 'Web Speed' },
+  { id: 'webp-to-image', name: 'WEBP to JPG / PNG', desc: 'Convert WebP images into universally compatible PNG or JPG format.', category: 'Images', icon: ImageIcon, color: 'text-emerald-500 bg-emerald-500/10' },
   { id: 'pdf-to-images', name: 'PDF to Images', desc: 'Export PDF pages into 300+ DPI crisp PNG or JPG graphic files.', category: 'Images', icon: ImageIcon, color: 'text-purple-500 bg-purple-500/10' },
   { id: 'images-to-pdf', name: 'Images to PDF', desc: 'Merge JPG, PNG, and WEBP photos into a single consolidated PDF book.', category: 'Images', icon: FileText, color: 'text-fuchsia-500 bg-fuchsia-500/10' },
+  { id: 'image-resize', name: 'Resize Image', desc: 'Accurate pixel dimension resizing with aspect ratio preservation.', category: 'Images', icon: Maximize2, color: 'text-blue-500 bg-blue-500/10' },
+  { id: 'image-compress', name: 'Compress Image', desc: 'Optimize JPG, PNG, and WebP images to reduce byte size with negligible quality loss.', category: 'Images', icon: Sparkles, color: 'text-emerald-500 bg-emerald-500/10' },
+  { id: 'image-crop', name: 'Crop Image', desc: 'Trim edges and isolate focal regions of images with exact coordinate cropping.', category: 'Images', icon: Crop, color: 'text-rose-500 bg-rose-500/10' },
+  { id: 'image-rotate', name: 'Rotate Image', desc: 'Rotate photos 90°, 180°, or 270° clockwise or counter-clockwise losslessly.', category: 'Images', icon: RotateCw, color: 'text-cyan-500 bg-cyan-500/10' },
 ]
 
 export function HomePage() {
