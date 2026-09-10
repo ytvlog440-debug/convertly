@@ -1,0 +1,44 @@
+{
+  "name": "Convertly V2 — Enterprise File Converter",
+  "short_name": "Convertly",
+  "description": "Enterprise-grade free file conversion platform with 30 real binary tools and zero-retention privacy.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#090d16",
+  "theme_color": "#4f46e5",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Merge PDF",
+      "short_name": "Merge",
+      "url": "/tools/pdf-merge",
+      "description": "Combine multiple PDF documents into one"
+    },
+    {
+      "name": "Compress PDF",
+      "short_name": "Compress",
+      "url": "/tools/pdf-compress",
+      "description": "Reduce PDF file size without quality loss"
+    },
+    {
+      "name": "PDF to Word",
+      "short_name": "PDF to Word",
+      "url": "/tools/pdf-to-word",
+      "description": "Convert PDF into editable Microsoft Word DOCX"
+    },
+    {
+      "name": "Grayscale PDF",
+      "short_name": "Grayscale",
+      "url": "/tools/pdf-grayscale",
+      "description": "Convert color PDF documents to black and white"
+    }
+  ],
+  "categories": ["productivity", "utilities"]
+}

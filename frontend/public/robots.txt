@@ -1,0 +1,6 @@
+# Convertly V2 Robots.txt
+User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://convertly.app/sitemap.xml

@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+  # Redis cache and task queue broker
+  redis:
+    image: redis:7-alpine
+    container_name: convertly-redis
+    restart: unless-stopped
+    command: redis-server --save 60 1 --loglevel warning
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+  # FastAPI Backend API Server
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: convertly-backend
+    restart: unless-stopped
+    environment:
+      - ENVIRONMENT=production
+      - REDIS_URL=redis://redis:6379/0
+      - STORAGE_DRIVER=local
+      - LOCAL_STORAGE_DIR=/app/storage
+      - RETENTION_POLICY_MINUTES=120
+      - CORS_ORIGINS=["http://localhost", "http://127.0.0.1", "https://convertly.app"]
+    volumes:
+      - app-storage:/app/storage
+    depends_on:
+      redis:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://127.0.0.1:8000/api/v1/health"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+
+  # Celery Asynchronous Conversion Worker
+  worker:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: convertly-worker
+    restart: unless-stopped
+    command: ["celery", "-A", "app.workers.tasks", "worker", "--loglevel=info", "--concurrency=4"]
+    environment:
+      - ENVIRONMENT=production
+      - REDIS_URL=redis://redis:6379/0
+      - STORAGE_DRIVER=local
+      - LOCAL_STORAGE_DIR=/app/storage
+    volumes:
+      - app-storage:/app/storage
+    depends_on:
+      - backend
+      - redis
+
+  # Frontend Nginx Web Server and Reverse Proxy
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: convertly-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://127.0.0.1/"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+
+volumes:
+  redis-data:
+  app-storage:

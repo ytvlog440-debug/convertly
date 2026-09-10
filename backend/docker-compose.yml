@@ -1,0 +1,67 @@
+services:
+  api:
+    build: .
+    container_name: convertly-api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - ENVIRONMENT=production
+      - DEBUG=false
+      - DATABASE_URL=postgresql+asyncpg://convertly:convertlypass@postgres:5432/convertly_db
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://redis:6379/2
+      - STORAGE_DRIVER=local
+      - LOCAL_STORAGE_PATH=/app/storage_data
+    volumes:
+      - convertly_storage:/app/storage_data
+    depends_on:
+      - postgres
+      - redis
+
+  celery_worker:
+    build: .
+    container_name: convertly-worker
+    restart: unless-stopped
+    command: celery -A app.workers.celery_app.celery_app worker --loglevel=info --concurrency=4
+    environment:
+      - ENVIRONMENT=production
+      - DATABASE_URL=postgresql+asyncpg://convertly:convertlypass@postgres:5432/convertly_db
+      - REDIS_URL=redis://redis:6379/0
+      - CELERY_BROKER_URL=redis://redis:6379/1
+      - CELERY_RESULT_BACKEND=redis://redis:6379/2
+      - STORAGE_DRIVER=local
+      - LOCAL_STORAGE_PATH=/app/storage_data
+    volumes:
+      - convertly_storage:/app/storage_data
+    depends_on:
+      - postgres
+      - redis
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: convertly-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=convertly
+      - POSTGRES_PASSWORD=convertlypass
+      - POSTGRES_DB=convertly_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7-alpine
+    container_name: convertly-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+volumes:
+  convertly_storage:
+  postgres_data:
+  redis_data:

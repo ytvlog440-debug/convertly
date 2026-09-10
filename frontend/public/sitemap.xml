@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://convertly.app/</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://convertly.app/tools</loc>
+    <lastmod>2026-09-10</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <!-- 30 Enterprise Conversion Tools -->
+  <url><loc>https://convertly.app/tools/pdf-merge</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/pdf-split</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/pdf-compress</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/pdf-rotate</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/pdf-delete-pages</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/pdf-extract-pages</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/pdf-reorder-pages</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/word-to-pdf</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/pdf-to-word</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/excel-to-pdf</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/pptx-to-pdf</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/jpg-to-png</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/png-to-jpg</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/image-to-webp</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/webp-to-image</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/pdf-to-images</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/images-to-pdf</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/image-resize</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/image-compress</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/image-crop</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/image-rotate</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/pdf-protect</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/pdf-unlock</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/pdf-watermark</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/pdf-page-numbers</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/pdf-redact</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/pdf-flatten</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/pdf-scrub-metadata</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/pdf-to-txt</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertly.app/tools/pdf-grayscale</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+</urlset>
