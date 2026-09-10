@@ -5,12 +5,14 @@ import { ThemeToggle } from './ThemeToggle'
 import { useHealth } from '../../hooks/useHealth'
 import { CommandPalette } from '../common/CommandPalette'
 import { RecentActivityDrawer } from '../common/RecentActivityDrawer'
+import { ShortcutsModal } from '../common/ShortcutsModal'
 import { getRecentConversions } from '../../lib/history'
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [isPaletteOpen, setIsPaletteOpen] = useState(false)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
+  const [isShortcutsOpen, setIsShortcutsOpen] = useState(false)
   const [historyCount, setHistoryCount] = useState(0)
   const { data: health, isLoading, isError } = useHealth()
   const location = useLocation()
@@ -22,11 +24,22 @@ export function Navbar() {
     updateCount()
 
     const handleTogglePalette = () => setIsPaletteOpen((prev) => !prev)
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      const activeTag = (document.activeElement?.tagName || '').toLowerCase()
+      if (activeTag === 'input' || activeTag === 'textarea') return
+      if (e.key === '?') {
+        e.preventDefault()
+        setIsShortcutsOpen((prev) => !prev)
+      }
+    }
+
     window.addEventListener('convertly:history_updated', updateCount)
     window.addEventListener('convertly:toggle_command_palette', handleTogglePalette)
+    window.addEventListener('keydown', handleGlobalKeyDown)
     return () => {
       window.removeEventListener('convertly:history_updated', updateCount)
       window.removeEventListener('convertly:toggle_command_palette', handleTogglePalette)
+      window.removeEventListener('keydown', handleGlobalKeyDown)
     }
   }, [])
 
@@ -174,9 +187,10 @@ export function Navbar() {
       )}
     </header>
 
-    {/* Global Command Palette & Recent Activity Drawer */}
+    {/* Global Command Palette, Recent Activity Drawer & Shortcuts Modal */}
     <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} />
     <RecentActivityDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+    <ShortcutsModal isOpen={isShortcutsOpen} onClose={() => setIsShortcutsOpen(false)} />
   </>
   )
 }
