@@ -13,10 +13,41 @@ from app.core.security import sanitize_filename, validate_file_magic
 from app.db.session import get_db
 from app.models.file_record import FileRecord
 from app.schemas.common import ApiResponse
-from app.schemas.file import FileUploadResponse
+from app.schemas.file import FileUploadResponse, FileInspectionResponse
 from app.services.storage import get_storage_service
 
 router = APIRouter()
+
+
+@router.post("/inspect", response_model=ApiResponse[FileInspectionResponse], summary="Inspect PDF Security and Metadata")
+async def inspect_pdf_file(
+    file: UploadFile = File(...)
+):
+    if not file.filename:
+        raise FileValidationError("Filename is missing.")
+
+    clean_name = sanitize_filename(file.filename)
+    extension = clean_name.split(".")[-1].lower() if "." in clean_name else ""
+    if extension != "pdf":
+        raise FileValidationError("Pre-flight privacy inspection requires a valid PDF file.")
+
+    content = await file.read()
+    if len(content) == 0:
+        raise FileValidationError("Uploaded file is empty (0 bytes).")
+
+    if not validate_file_magic(content[:32], "pdf"):
+        raise FileValidationError("File signature does not match a valid PDF document.")
+
+    from app.services.scanner import antivirus_scanner, inspect_pdf_security
+    await antivirus_scanner.scan_bytes(content, clean_name)
+
+    inspection = inspect_pdf_security(content, clean_name)
+
+    return ApiResponse(
+        success=True,
+        message="PDF security and privacy pre-flight inspection completed.",
+        data=inspection
+    )
 
 
 @router.post("/upload", response_model=ApiResponse[FileUploadResponse], summary="Upload File with Strict Validation")

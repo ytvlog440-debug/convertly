@@ -15,3 +15,24 @@ class FileUploadResponse(BaseModel):
 
 class FileMetadataResponse(FileUploadResponse):
     is_expired: bool
+
+
+class RecommendationItem(BaseModel):
+    tool_id: str
+    title: str
+    reason: str
+
+
+class FileInspectionResponse(BaseModel):
+    filename: str
+    file_size_bytes: int
+    page_count: int
+    pdf_version: str
+    is_encrypted: bool
+    has_javascript: bool
+    has_annotations: bool
+    has_forms: bool
+    metadata: dict[str, str]
+    privacy_score: int
+    risk_level: str
+    recommendations: list[RecommendationItem]

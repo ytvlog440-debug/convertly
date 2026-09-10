@@ -1,6 +1,7 @@
 import { Shield, Lock, Cpu, Server, Trash2, CheckCircle2, Terminal } from 'lucide-react'
 import { Card } from '../components/ui/Card'
 import { SeoHead } from '../components/shared/SeoHead'
+import { SecurityInspector } from '../components/common/SecurityInspector'
 
 export function SecurityPage() {
   return (
@@ -12,7 +13,7 @@ export function SecurityPage() {
 
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         {/* Header Hero */}
-        <div className="text-center max-w-2xl mx-auto mb-12">
+        <div className="text-center max-w-2xl mx-auto mb-10">
           <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3.5 py-1 text-xs font-semibold text-cyan-400 mb-4">
             <Shield className="h-3.5 w-3.5" />
             <span>Bank-Grade Architecture</span>
@@ -24,6 +25,9 @@ export function SecurityPage() {
             Convertly V2 enforces multi-layered defense-in-depth security across every network request, file ingestion pipeline, and background transformation worker.
           </p>
         </div>
+
+        {/* Live Interactive Pre-flight PDF Inspector */}
+        <SecurityInspector />
 
         {/* Technical Architecture Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
