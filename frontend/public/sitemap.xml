@@ -43,4 +43,8 @@
   <url><loc>https://convertly.app/tools/pdf-scrub-metadata</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://convertly.app/tools/pdf-to-txt</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://convertly.app/tools/pdf-grayscale</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <!-- Institutional & Trust Pages -->
+  <url><loc>https://convertly.app/privacy</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://convertly.app/terms</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
+  <url><loc>https://convertly.app/security</loc><changefreq>monthly</changefreq><priority>0.6</priority></url>
 </urlset>

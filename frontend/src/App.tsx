@@ -8,6 +8,9 @@ import { Footer } from './components/layout/Footer'
 const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })))
 const ToolsDirectoryPage = lazy(() => import('./pages/ToolsDirectoryPage').then(m => ({ default: m.ToolsDirectoryPage })))
 const ToolConverterPage = lazy(() => import('./pages/ToolConverterPage').then(m => ({ default: m.ToolConverterPage })))
+const PrivacyPage = lazy(() => import('./pages/PrivacyPage').then(m => ({ default: m.PrivacyPage })))
+const TermsPage = lazy(() => import('./pages/TermsPage').then(m => ({ default: m.TermsPage })))
+const SecurityPage = lazy(() => import('./pages/SecurityPage').then(m => ({ default: m.SecurityPage })))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(m => ({ default: m.NotFoundPage })))
 
 const queryClient = new QueryClient({
@@ -46,6 +49,9 @@ export function App() {
                 <Route path="/tools" element={<ToolsDirectoryPage />} />
                 <Route path="/tools/:toolId" element={<ToolConverterPage />} />
                 <Route path="/tool/:toolId" element={<ToolConverterPage />} />
+                <Route path="/privacy" element={<PrivacyPage />} />
+                <Route path="/terms" element={<TermsPage />} />
+                <Route path="/security" element={<SecurityPage />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </Suspense>
