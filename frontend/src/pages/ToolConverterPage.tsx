@@ -385,7 +385,8 @@ const TOOL_CONFIGS: Record<string, ToolConfig> = {
 }
 
 export function ToolConverterPage() {
-  const { toolId } = useParams<{ toolId: string }>()
+  const { toolId: rawToolId } = useParams<{ toolId: string }>()
+  const toolId = rawToolId === 'pptx-to-pdf' ? 'ppt-to-pdf' : rawToolId
   const navigate = useNavigate()
   const location = useLocation()
 
