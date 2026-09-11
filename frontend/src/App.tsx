@@ -11,6 +11,7 @@ const ToolConverterPage = lazy(() => import('./pages/ToolConverterPage').then(m 
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage').then(m => ({ default: m.PrivacyPage })))
 const TermsPage = lazy(() => import('./pages/TermsPage').then(m => ({ default: m.TermsPage })))
 const SecurityPage = lazy(() => import('./pages/SecurityPage').then(m => ({ default: m.SecurityPage })))
+const DevelopersPage = lazy(() => import('./pages/DevelopersPage').then(m => ({ default: m.DevelopersPage })))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(m => ({ default: m.NotFoundPage })))
 
 const queryClient = new QueryClient({
@@ -52,6 +53,7 @@ export function App() {
                 <Route path="/privacy" element={<PrivacyPage />} />
                 <Route path="/terms" element={<TermsPage />} />
                 <Route path="/security" element={<SecurityPage />} />
+                <Route path="/developers" element={<DevelopersPage />} />
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </Suspense>
