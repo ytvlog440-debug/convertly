@@ -35,13 +35,20 @@ app = FastAPI(
 # Custom Exception Handlers
 app.add_exception_handler(ConvertlyException, convertly_exception_handler)
 
-# CORS Middleware with strict origin control
+# CORS Middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=settings.cors_origins,
+    allow_origins=[
+        "https://convertlytools.xyz",
+        "https://www.convertlytools.xyz",
+        "https://convertly-production-285a.up.railway.app",
+        "http://localhost:3000",
+        "http://localhost:5173",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 
