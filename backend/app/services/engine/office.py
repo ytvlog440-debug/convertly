@@ -103,10 +103,12 @@ class WordToPdfConverter(BaseConverter):
         if soffice:
             out_path = run_libreoffice_conversion(src_path, output_dir, "pdf")
         else:
-            # Native Python fallback using docx + reportlab
+            # Native Python fallback using docx + reportlab + PIL
+            import io
             import docx
+            from PIL import Image as PILImage
             from reportlab.lib.pagesizes import letter
-            from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+            from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle, Image as RLImage
             from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
             from reportlab.lib import colors
 
@@ -114,15 +116,34 @@ class WordToPdfConverter(BaseConverter):
             out_filename = f"converted_{uuid.uuid4().hex[:8]}.pdf"
             out_path = os.path.join(output_dir, out_filename)
 
-            pdf_doc = SimpleDocTemplate(out_path, pagesize=letter, rightMargin=54, leftMargin=54, topMargin=54, bottomMargin=54)
+            pdf_doc = SimpleDocTemplate(out_path, pagesize=letter, rightMargin=40, leftMargin=40, topMargin=40, bottomMargin=40)
             styles = getSampleStyleSheet()
             story = []
 
-            # Process paragraphs
+            seen_rids = set()
+
+            # Process paragraphs and embedded images
             for p in doc.paragraphs:
+                # Extract any inline or anchored images inside this paragraph
+                rids = p._element.xpath('.//@r:embed')
+                for rid in rids:
+                    if rid not in seen_rids and rid in doc.part.related_parts:
+                        seen_rids.add(rid)
+                        part = doc.part.related_parts[rid]
+                        if 'image' in getattr(part, 'content_type', ''):
+                            try:
+                                pil_img = PILImage.open(io.BytesIO(part.blob))
+                                img_w, img_h = pil_img.size
+                                scale = min(480 / img_w, 620 / img_h, 1.0)
+                                target_w = max(10, img_w * scale)
+                                target_h = max(10, img_h * scale)
+                                story.append(RLImage(io.BytesIO(part.blob), width=target_w, height=target_h))
+                                story.append(Spacer(1, 10))
+                            except Exception:
+                                pass
+
                 text = p.text.strip()
                 if not text:
-                    story.append(Spacer(1, 8))
                     continue
 
                 style_name = "Normal"
