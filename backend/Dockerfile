@@ -22,9 +22,7 @@ WORKDIR /app
 
 # Install runtime system packages (LibreOffice for Office fidelity, Poppler, Fonts)
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    libreoffice-writer-nogpu \
-    libreoffice-calc-nogpu \
-    libreoffice-impress-nogpu \
+    libreoffice \
     poppler-utils \
     fonts-dejavu-core \
     fonts-liberation \
