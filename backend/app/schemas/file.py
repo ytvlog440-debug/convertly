@@ -9,6 +9,8 @@ class FileUploadResponse(BaseModel):
     file_size_bytes: int
     mime_type: str
     file_hash: Optional[str] = None
+    page_count: Optional[int] = None
+    is_blank: Optional[bool] = None
     created_at: datetime
     expires_at: datetime
 

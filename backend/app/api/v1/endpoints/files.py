@@ -97,6 +97,31 @@ async def upload_file(
     # Determine MIME type
     mime = file.content_type or mimetypes.guess_type(clean_name)[0] or "application/octet-stream"
 
+    # Pre-extract PDF page count & check if blank/empty
+    page_count = None
+    is_blank = None
+    if extension.lower() == "pdf" or mime == "application/pdf":
+        try:
+            import fitz
+            doc = fitz.open(stream=content, filetype="pdf")
+            page_count = doc.page_count
+            if page_count == 1:
+                p0 = doc[0]
+                text_len = len(p0.get_text().strip())
+                images_len = len(p0.get_images())
+                drawings_len = len(p0.get_drawings())
+                if text_len == 0 and images_len == 0 and drawings_len == 0:
+                    is_blank = True
+                else:
+                    is_blank = False
+            elif page_count == 0:
+                is_blank = True
+            else:
+                is_blank = False
+            doc.close()
+        except Exception:
+            pass
+
     # Persist database record
     record = FileRecord(
         id=file_id,
@@ -118,6 +143,8 @@ async def upload_file(
             file_size_bytes=record.file_size_bytes,
             mime_type=record.mime_type,
             file_hash=record.file_hash,
+            page_count=page_count,
+            is_blank=is_blank,
             created_at=record.created_at,
             expires_at=record.expires_at
         )

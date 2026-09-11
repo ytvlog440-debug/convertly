@@ -400,6 +400,7 @@ export function ToolConverterPage() {
   const [error, setError] = useState<string | null>(null)
   const [isQrOpen, setIsQrOpen] = useState<boolean>(false)
   const [isPreviewOpen, setIsPreviewOpen] = useState<boolean>(false)
+  const [previewCustomFile, setPreviewCustomFile] = useState<{ url: string; filename: string } | null>(null)
   const [isLinkCopied, setIsLinkCopied] = useState<boolean>(false)
 
   // Tool specific options
@@ -437,6 +438,11 @@ export function ToolConverterPage() {
   const [pageNumberStart, setPageNumberStart] = useState<number>(1)
   const [pageNumberFontSize, setPageNumberFontSize] = useState<number>(10)
   const [redactKeywordsInput, setRedactKeywordsInput] = useState<string>('CONFIDENTIAL')
+
+  // PDF Merge options & dragging state
+  const [mergeAddBookmarks, setMergeAddBookmarks] = useState<boolean>(true)
+  const [mergeDuplexMode, setMergeDuplexMode] = useState<boolean>(false)
+  const [draggedFileIndex, setDraggedFileIndex] = useState<number | null>(null)
 
   useEffect(() => {
     // Reset state on tool change
@@ -517,6 +523,94 @@ export function ToolConverterPage() {
     })
   }
 
+  const handleDragStart = (e: React.DragEvent, index: number) => {
+    setDraggedFileIndex(index)
+    e.dataTransfer.effectAllowed = 'move'
+  }
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault()
+    e.dataTransfer.dropEffect = 'move'
+  }
+
+  const handleDrop = (e: React.DragEvent, targetIndex: number) => {
+    e.preventDefault()
+    if (draggedFileIndex === null || draggedFileIndex === targetIndex) return
+    setStagedFiles((prev) => {
+      const copy = [...prev]
+      const [draggedItem] = copy.splice(draggedFileIndex, 1)
+      copy.splice(targetIndex, 0, draggedItem)
+      return copy
+    })
+    setDraggedFileIndex(null)
+  }
+
+  // Parse page selection string into array of numbers (1-indexed)
+  const parseSelectedPages = (inputStr: string, maxPages: number): number[] => {
+    if (!inputStr.trim() || maxPages <= 0) return []
+    const raw = inputStr.trim().toLowerCase()
+    if (raw === 'odd') return Array.from({ length: maxPages }, (_, i) => i + 1).filter((p) => p % 2 === 1)
+    if (raw === 'even') return Array.from({ length: maxPages }, (_, i) => i + 1).filter((p) => p % 2 === 0)
+    if (raw === 'all') return Array.from({ length: maxPages }, (_, i) => i + 1)
+
+    const mFirst = raw.match(/^(?:first|initial)\s+(\d+)$/)
+    if (mFirst) {
+      const count = parseInt(mFirst[1])
+      return Array.from({ length: Math.min(count, maxPages) }, (_, i) => i + 1)
+    }
+
+    const mLast = raw.match(/^(?:last)\s+(\d+)$/)
+    if (mLast) {
+      const count = parseInt(mLast[1])
+      const start = Math.max(1, maxPages - count + 1)
+      return Array.from({ length: maxPages - start + 1 }, (_, i) => start + i)
+    }
+
+    const norm = raw.replace(/\s+(?:to|through)\s+/g, '-').replace(/\.\.+/g, '-')
+    const tokens = norm.split(/[,;\s]+/).filter(Boolean)
+    const set = new Set<number>()
+
+    for (const t of tokens) {
+      if (t.includes('-')) {
+        const [startStr, endStr] = t.split('-')
+        const start = parseInt(startStr)
+        const end = parseInt(endStr)
+        if (!isNaN(start) && !isNaN(end) && start >= 1 && end >= start) {
+          for (let p = start; p <= Math.min(end, maxPages); p++) {
+            set.add(p)
+          }
+        }
+      } else {
+        const p = parseInt(t)
+        if (!isNaN(p) && p >= 1 && p <= maxPages) {
+          set.add(p)
+        }
+      }
+    }
+    return Array.from(set).sort((a, b) => a - b)
+  }
+
+  // Convert array of page numbers into compact range string (e.g. 1-6, 8, 10)
+  const formatPagesToRangeString = (pages: number[]): string => {
+    if (pages.length === 0) return ''
+    const sorted = Array.from(new Set(pages)).sort((a, b) => a - b)
+    const ranges: string[] = []
+    let start = sorted[0]
+    let end = sorted[0]
+
+    for (let i = 1; i < sorted.length; i++) {
+      if (sorted[i] === end + 1) {
+        end = sorted[i]
+      } else {
+        ranges.push(start === end ? `${start}` : `${start}-${end}`)
+        start = sorted[i]
+        end = sorted[i]
+      }
+    }
+    ranges.push(start === end ? `${start}` : `${start}-${end}`)
+    return ranges.join(', ')
+  }
+
   const handleStartConversion = async () => {
     if (stagedFiles.length === 0) return
     setError(null)
@@ -595,6 +689,15 @@ export function ToolConverterPage() {
           return
         }
         options.keywords = redactKeywordsInput.trim()
+      } else if (config.id === 'pdf-merge') {
+        options.add_bookmarks = mergeAddBookmarks
+        options.duplex_mode = mergeDuplexMode
+      }
+
+      if (stagedFiles.some((f) => !f.uploaded)) {
+        setError('Please wait for all documents to finish uploading before starting.')
+        setIsProcessing(false)
+        return
       }
 
       const inputIds = stagedFiles.map((f) => f.uploaded!.id)
@@ -657,6 +760,7 @@ export function ToolConverterPage() {
     setIsProcessing(false)
     setIsQrOpen(false)
     setIsPreviewOpen(false)
+    setPreviewCustomFile(null)
     setIsLinkCopied(false)
   }
 
@@ -671,7 +775,10 @@ export function ToolConverterPage() {
       : config.category === 'Images'
       ? '.png'
       : '.pdf'
-  const currentOutputFilename = `${baseName}_converted${ext}`
+  const currentOutputFilename =
+    config.id === 'pdf-merge'
+      ? `merged_${baseName}.pdf`
+      : `${baseName}_converted${ext}`
   const currentDownloadUrl = job?.output_file_id ? getDownloadUrl(job.output_file_id) : ''
 
   const handleCopyLink = async () => {
@@ -776,6 +883,67 @@ export function ToolConverterPage() {
               </div>
             )}
 
+            {config.id === 'pdf-merge' && job.options?.page_count !== undefined && (
+              <div className="my-6 space-y-4 max-w-xl mx-auto">
+                <div className="inline-flex flex-wrap items-center justify-center gap-3 rounded-xl border border-indigo-500/30 bg-card/60 px-4 py-2 text-xs">
+                  <span className="text-muted-foreground">Merged Summary:</span>
+                  <span className="font-bold text-indigo-400">
+                    {String(job.options.page_count)} Total Pages
+                  </span>
+                  {Boolean(job.options.documents_merged) && (
+                    <span className="text-muted-foreground">
+                      ({String(job.options.documents_merged)} documents combined)
+                    </span>
+                  )}
+                </div>
+
+                {Array.isArray(job.options.document_details) && job.options.document_details.length > 0 && (
+                  <div className="rounded-xl border border-border/80 bg-secondary/30 p-3.5 text-left text-xs space-y-2">
+                    <p className="font-semibold text-foreground text-[11px] uppercase tracking-wider text-muted-foreground mb-1.5">
+                      Included Documents Breakdown
+                    </p>
+                    {job.options.document_details.map((item: any, i: number) => (
+                      <div key={i} className="flex items-center justify-between py-1 border-b border-border/40 last:border-0">
+                        <div className="flex items-center gap-2 truncate pr-2">
+                          <span className="text-[10px] font-mono text-muted-foreground shrink-0">{i + 1}.</span>
+                          <span className="truncate text-foreground font-medium">{String(item.title)}</span>
+                          {Boolean(item.is_blank) && (
+                            <span className="rounded bg-amber-500/10 px-1.5 py-0.5 text-[9px] font-semibold text-amber-400 shrink-0">
+                              Blank Page
+                            </span>
+                          )}
+                        </div>
+                        <span className="text-muted-foreground shrink-0 text-[11px]">
+                          {String(item.pages)} {Number(item.pages) === 1 ? 'page' : 'pages'}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {Boolean(job.options.has_blank_document) && (
+                  <div className="flex items-start gap-2.5 rounded-xl border border-amber-500/30 bg-amber-500/10 p-3 text-left text-xs text-amber-300">
+                    <AlertCircle className="h-4 w-4 shrink-0 mt-0.5" />
+                    <span>
+                      Notice: One of your source files was an empty or blank document. It was preserved in the merged file as uploaded.
+                    </span>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {config.id === 'pdf-delete-pages' && job.options?.remaining_pages !== undefined && (
+              <div className="my-6 inline-flex flex-wrap items-center justify-center gap-3 rounded-xl border border-rose-500/30 bg-card/60 px-4 py-2 text-xs">
+                <span className="text-muted-foreground">Pages Deleted:</span>
+                <span className="font-bold text-rose-400">
+                  {job.options.deleted_count !== undefined ? String(job.options.deleted_count) : '1'} Pages Removed
+                </span>
+                <span className="text-muted-foreground">
+                  ({String(job.options.remaining_pages)} pages remaining in final document)
+                </span>
+              </div>
+            )}
+
             <div className="mt-8 flex flex-wrap items-center justify-center gap-3">
               <a
                 href={currentDownloadUrl}
@@ -783,15 +951,17 @@ export function ToolConverterPage() {
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 hover:bg-indigo-500 transition-all cursor-pointer"
               >
                 <Download className="h-4 w-4" />
-                Download Converted {
-                  config.id === 'pdf-to-word'
-                    ? 'Word Document (.docx)'
-                    : config.id === 'pdf-to-images'
-                    ? 'Images (.zip)'
-                    : config.category === 'Images'
-                    ? 'Image File'
-                    : 'PDF Document'
-                }
+                {config.id === 'pdf-merge'
+                  ? 'Download Merged PDF'
+                  : `Download Converted ${
+                      config.id === 'pdf-to-word'
+                        ? 'Word Document (.docx)'
+                        : config.id === 'pdf-to-images'
+                        ? 'Images (.zip)'
+                        : config.category === 'Images'
+                        ? 'Image File'
+                        : 'PDF Document'
+                    }`}
               </a>
 
               <button
@@ -915,11 +1085,25 @@ export function ToolConverterPage() {
                   {stagedFiles.map((item, idx) => (
                     <div
                       key={idx}
-                      className="flex items-center justify-between rounded-xl border border-border/80 bg-secondary/40 px-3.5 py-2.5 text-xs transition-all hover:border-border"
+                      draggable={config.id === 'pdf-merge' || config.id === 'images-to-pdf'}
+                      onDragStart={(e) => handleDragStart(e, idx)}
+                      onDragOver={(e) => handleDragOver(e)}
+                      onDrop={(e) => handleDrop(e, idx)}
+                      onDragEnd={() => setDraggedFileIndex(null)}
+                      className={`flex items-center justify-between rounded-xl border bg-secondary/40 px-3.5 py-2.5 text-xs transition-all ${
+                        draggedFileIndex === idx
+                          ? 'border-indigo-500 bg-indigo-500/10 opacity-60 scale-[0.99]'
+                          : 'border-border/80 hover:border-border'
+                      }`}
                     >
                       <div className="flex items-center gap-2.5 overflow-hidden">
                         {(config.id === 'pdf-merge' || config.id === 'images-to-pdf') && (
-                          <GripVertical className="h-4 w-4 text-muted-foreground/60 shrink-0" />
+                          <div
+                            className="cursor-grab active:cursor-grabbing p-0.5 text-muted-foreground/60 hover:text-foreground shrink-0"
+                            title="Drag to reorder sequence"
+                          >
+                            <GripVertical className="h-4 w-4" />
+                          </div>
                         )}
                         <span className="flex h-5 w-5 items-center justify-center rounded-md bg-secondary text-[10px] font-mono font-semibold text-muted-foreground shrink-0">
                           {idx + 1}
@@ -928,12 +1112,47 @@ export function ToolConverterPage() {
                           <FileText className="h-4 w-4" />
                         </div>
                         <div className="truncate">
-                          <p className="font-semibold text-foreground truncate">{item.file.name}</p>
-                          <p className="text-[11px] text-muted-foreground">{formatBytes(item.file.size)}</p>
+                          <div className="flex items-center gap-2">
+                            <p className="font-semibold text-foreground truncate">{item.file.name}</p>
+                            {item.uploaded?.page_count !== undefined && (
+                              <span className="rounded-md bg-indigo-500/10 px-1.5 py-0.5 text-[10px] font-mono font-semibold text-indigo-400 shrink-0">
+                                {item.uploaded.page_count} {item.uploaded.page_count === 1 ? 'page' : 'pages'}
+                              </span>
+                            )}
+                            {item.uploaded?.is_blank && (
+                              <span
+                                className="inline-flex items-center gap-1 rounded-md bg-amber-500/15 border border-amber-500/30 px-1.5 py-0.5 text-[10px] font-semibold text-amber-400 shrink-0"
+                                title="Warning: This document contains 0 text, 0 drawings, and 0 images. It may be completely blank."
+                              >
+                                <AlertCircle className="h-3 w-3" /> Blank File
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-[11px] text-muted-foreground">
+                            {formatBytes(item.file.size)}
+                            {!item.uploaded && (
+                              <span className="ml-2 text-indigo-400 font-medium">Uploading...</span>
+                            )}
+                          </p>
                         </div>
                       </div>
 
                       <div className="flex items-center gap-1.5 shrink-0">
+                        {item.uploaded && (
+                          <button
+                            onClick={() => {
+                              setPreviewCustomFile({
+                                url: getDownloadUrl(item.uploaded!.id),
+                                filename: item.file.name,
+                              })
+                            }}
+                            className="p-1.5 rounded-lg text-muted-foreground hover:bg-secondary hover:text-indigo-400 cursor-pointer transition-colors"
+                            title="Preview Document"
+                          >
+                            <Eye className="h-3.5 w-3.5" />
+                          </button>
+                        )}
+
                         {(config.id === 'pdf-merge' || config.id === 'images-to-pdf') && stagedFiles.length > 1 && (
                           <div className="flex items-center gap-0.5 mr-1">
                             <button
@@ -1069,23 +1288,194 @@ export function ToolConverterPage() {
                 )}
 
                 {/* Delete Pages Options */}
-                {config.id === 'pdf-delete-pages' && (
-                  <div>
-                    <label className="text-xs font-semibold text-foreground block mb-1.5">
-                      Pages to Delete
-                    </label>
-                    <input
-                      type="text"
-                      value={deletePagesInput}
-                      onChange={(e) => setDeletePagesInput(e.target.value)}
-                      placeholder="e.g. 2, 4-6"
-                      className="w-full sm:w-80 rounded-xl border border-border bg-card/60 px-3.5 py-2 text-xs text-foreground focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
-                    />
-                    <p className="mt-1.5 text-[11px] text-muted-foreground">
-                      At least one page must remain in the document.
-                    </p>
-                  </div>
-                )}
+                {config.id === 'pdf-delete-pages' && (() => {
+                  const maxPages = stagedFiles[0]?.uploaded?.page_count || 0
+                  const selectedPages = parseSelectedPages(deletePagesInput, maxPages || 9999)
+                  const remainingCount = maxPages > 0 ? Math.max(0, maxPages - selectedPages.length) : 0
+
+                  const togglePage = (p: number) => {
+                    let next: number[]
+                    if (selectedPages.includes(p)) {
+                      next = selectedPages.filter((x) => x !== p)
+                    } else {
+                      next = [...selectedPages, p].sort((a, b) => a - b)
+                    }
+                    setDeletePagesInput(formatPagesToRangeString(next))
+                  }
+
+                  const selectPreset = (type: 'first' | 'last' | 'odd' | 'even' | 'clear', count?: number) => {
+                    if (type === 'clear') {
+                      setDeletePagesInput('')
+                      return
+                    }
+                    if (type === 'odd' && maxPages > 0) {
+                      const odds = Array.from({ length: maxPages }, (_, i) => i + 1).filter((p) => p % 2 === 1)
+                      setDeletePagesInput(formatPagesToRangeString(odds))
+                      return
+                    }
+                    if (type === 'even' && maxPages > 0) {
+                      const evens = Array.from({ length: maxPages }, (_, i) => i + 1).filter((p) => p % 2 === 0)
+                      setDeletePagesInput(formatPagesToRangeString(evens))
+                      return
+                    }
+                    if (type === 'first' && count && maxPages > 0) {
+                      const firsts = Array.from({ length: Math.min(count, maxPages) }, (_, i) => i + 1)
+                      setDeletePagesInput(formatPagesToRangeString(firsts))
+                      return
+                    }
+                    if (type === 'last' && count && maxPages > 0) {
+                      const start = Math.max(1, maxPages - count + 1)
+                      const lasts = Array.from({ length: maxPages - start + 1 }, (_, i) => start + i)
+                      setDeletePagesInput(formatPagesToRangeString(lasts))
+                      return
+                    }
+                  }
+
+                  return (
+                    <div className="space-y-4">
+                      <div>
+                        <div className="flex flex-wrap items-center justify-between gap-2 mb-1.5">
+                          <label className="text-xs font-semibold text-foreground">
+                            Pages to Delete
+                          </label>
+                          {maxPages > 0 && (
+                            <span className="text-[11px] font-mono text-muted-foreground">
+                              Document has {maxPages} {maxPages === 1 ? 'page' : 'pages'}
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="flex flex-wrap gap-2">
+                          <input
+                            type="text"
+                            value={deletePagesInput}
+                            onChange={(e) => setDeletePagesInput(e.target.value)}
+                            placeholder="e.g. 1-6, 8, 10 or 'first 6'"
+                            className="flex-1 min-w-[200px] rounded-xl border border-border bg-card/60 px-3.5 py-2 text-xs text-foreground focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 font-mono"
+                          />
+                          {deletePagesInput && (
+                            <button
+                              type="button"
+                              onClick={() => selectPreset('clear')}
+                              className="rounded-xl border border-border/80 bg-secondary/40 px-3 py-2 text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                            >
+                              Clear
+                            </button>
+                          )}
+                        </div>
+                      </div>
+
+                      {/* Quick Presets Bar */}
+                      {maxPages > 1 && (
+                        <div className="flex flex-wrap items-center gap-1.5 pt-1">
+                          <span className="text-[11px] text-muted-foreground mr-1">Quick Select:</span>
+                          {maxPages >= 3 && (
+                            <button
+                              type="button"
+                              onClick={() => selectPreset('first', Math.min(3, maxPages - 1))}
+                              className="rounded-lg border border-border/60 bg-secondary/50 px-2 py-1 text-[11px] text-foreground hover:bg-secondary cursor-pointer transition-colors"
+                            >
+                              First {Math.min(3, maxPages - 1)}
+                            </button>
+                          )}
+                          {maxPages >= 6 && (
+                            <button
+                              type="button"
+                              onClick={() => selectPreset('first', 6)}
+                              className="rounded-lg border border-border/60 bg-secondary/50 px-2 py-1 text-[11px] text-foreground hover:bg-secondary cursor-pointer transition-colors"
+                            >
+                              First 6 Pages
+                            </button>
+                          )}
+                          <button
+                            type="button"
+                            onClick={() => selectPreset('odd')}
+                            className="rounded-lg border border-border/60 bg-secondary/50 px-2 py-1 text-[11px] text-foreground hover:bg-secondary cursor-pointer transition-colors"
+                          >
+                            Odd Pages
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => selectPreset('even')}
+                            className="rounded-lg border border-border/60 bg-secondary/50 px-2 py-1 text-[11px] text-foreground hover:bg-secondary cursor-pointer transition-colors"
+                          >
+                            Even Pages
+                          </button>
+                        </div>
+                      )}
+
+                      {/* Interactive Visual Page Grid */}
+                      {maxPages > 0 && maxPages <= 60 && (
+                        <div className="pt-2">
+                          <p className="text-[11px] text-muted-foreground mb-2">
+                            Click page tiles to mark/unmark them for deletion:
+                          </p>
+                          <div className="grid grid-cols-4 sm:grid-cols-6 md:grid-cols-8 lg:grid-cols-12 gap-1.5 max-h-56 overflow-y-auto p-2 rounded-xl border border-border/60 bg-secondary/20">
+                            {Array.from({ length: maxPages }, (_, i) => i + 1).map((p) => {
+                              const isMarked = selectedPages.includes(p)
+                              return (
+                                <button
+                                  key={p}
+                                  type="button"
+                                  onClick={() => togglePage(p)}
+                                  className={`flex flex-col items-center justify-center rounded-lg p-2 text-xs font-semibold transition-all cursor-pointer ${
+                                    isMarked
+                                      ? 'border border-rose-500 bg-rose-500/20 text-rose-300 shadow-sm'
+                                      : 'border border-border/80 bg-card/60 text-muted-foreground hover:border-border hover:text-foreground'
+                                  }`}
+                                  title={isMarked ? `Page ${p} marked for deletion` : `Click to delete page ${p}`}
+                                >
+                                  {isMarked ? (
+                                    <Trash2 className="h-3.5 w-3.5 mb-0.5 text-rose-400" />
+                                  ) : (
+                                    <FileText className="h-3.5 w-3.5 mb-0.5 opacity-40" />
+                                  )}
+                                  <span className={isMarked ? 'line-through text-[11px]' : 'text-[11px]'}>
+                                    P{p}
+                                  </span>
+                                </button>
+                              )
+                            })}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Real-time Status Banner */}
+                      <div className="rounded-xl border border-border/80 bg-secondary/40 p-3 text-xs">
+                        {selectedPages.length === 0 ? (
+                          <span className="text-muted-foreground">
+                            No pages selected yet. Type page numbers above or click page tiles to choose.
+                          </span>
+                        ) : selectedPages.length >= maxPages && maxPages > 0 ? (
+                          <div className="flex items-center gap-2 text-rose-400 font-semibold">
+                            <AlertCircle className="h-4 w-4 shrink-0" />
+                            <span>Cannot delete all {maxPages} pages. At least 1 page must remain.</span>
+                          </div>
+                        ) : (
+                          <div className="space-y-1">
+                            <div className="flex items-center gap-2 font-semibold text-foreground">
+                              <span className="inline-flex h-2 w-2 rounded-full bg-rose-500" />
+                              <span>
+                                {selectedPages.length} {selectedPages.length === 1 ? 'page' : 'pages'} will be deleted
+                              </span>
+                              <span className="text-muted-foreground font-normal">
+                                ({maxPages > 0 ? `${remainingCount} pages will remain` : ''})
+                              </span>
+                            </div>
+                            <div className="text-[11px] font-mono text-muted-foreground truncate">
+                              Target pages: {formatPagesToRangeString(selectedPages)}
+                            </div>
+                            {selectedPages.length === 1 && maxPages > 2 && /^\d+$/.test(deletePagesInput.trim()) && (
+                              <p className="text-[11px] text-amber-400/90 pt-1 font-sans">
+                                💡 Tip: You entered single number "{deletePagesInput}". This deletes only Page #{deletePagesInput}. To delete multiple pages (e.g. pages 1 through {deletePagesInput}), enter "1-{deletePagesInput}".
+                              </p>
+                            )}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  )
+                })()}
 
                 {/* Extract Pages Options */}
                 {config.id === 'pdf-extract-pages' && (
@@ -1122,11 +1512,45 @@ export function ToolConverterPage() {
                   </div>
                 )}
 
-                {/* PDF Merge Note */}
+                {/* PDF Merge Options */}
                 {config.id === 'pdf-merge' && (
-                  <p className="text-xs text-muted-foreground">
-                    Documents will be merged in the top-to-bottom order displayed above. Ensure you have at least 2 files.
-                  </p>
+                  <div className="space-y-4">
+                    <p className="text-xs text-muted-foreground">
+                      Documents will be merged in the exact sequence displayed above. Drag files or use arrows to adjust order.
+                    </p>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                      <label className="flex items-start gap-3 rounded-xl border border-border/80 bg-card/40 p-3.5 hover:border-border cursor-pointer transition-all">
+                        <input
+                          type="checkbox"
+                          checked={mergeAddBookmarks}
+                          onChange={(e) => setMergeAddBookmarks(e.target.checked)}
+                          className="mt-0.5 rounded border-border text-indigo-600 focus:ring-indigo-500"
+                        />
+                        <div>
+                          <div className="text-xs font-semibold text-foreground">Interactive Bookmarks (TOC)</div>
+                          <div className="text-[11px] text-muted-foreground mt-0.5">
+                            Generates a clickable Table of Contents outline to easily jump between merged documents in PDF viewers.
+                          </div>
+                        </div>
+                      </label>
+
+                      <label className="flex items-start gap-3 rounded-xl border border-border/80 bg-card/40 p-3.5 hover:border-border cursor-pointer transition-all">
+                        <input
+                          type="checkbox"
+                          checked={mergeDuplexMode}
+                          onChange={(e) => setMergeDuplexMode(e.target.checked)}
+                          className="mt-0.5 rounded border-border text-indigo-600 focus:ring-indigo-500"
+                        />
+                        <div>
+                          <div className="text-xs font-semibold text-foreground">Duplex Print Spacing</div>
+                          <div className="text-[11px] text-muted-foreground mt-0.5">
+                            Appends a blank page after odd-paged documents so each file starts on a clean sheet when double-side printed.
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                  </div>
                 )}
 
                 {/* Image Resize Options */}
@@ -1630,11 +2054,19 @@ export function ToolConverterPage() {
                 <Button
                   variant="primary"
                   size="lg"
-                  disabled={config.id === 'pdf-merge' && stagedFiles.length < 2}
+                  disabled={
+                    (config.id === 'pdf-merge' && stagedFiles.length < 2) ||
+                    isUploading ||
+                    stagedFiles.some((f) => !f.uploaded)
+                  }
                   onClick={handleStartConversion}
                 >
                   <Sparkles className="h-4 w-4 mr-2" />
-                  {config.id === 'pdf-merge' ? 'Merge Documents' : 'Process File Now'}
+                  {isUploading
+                    ? 'Uploading Documents...'
+                    : config.id === 'pdf-merge'
+                    ? 'Merge Documents'
+                    : 'Process File Now'}
                 </Button>
               </div>
             )}
@@ -1653,11 +2085,14 @@ export function ToolConverterPage() {
       />
 
       <DocumentPreviewModal
-        isOpen={isPreviewOpen}
-        onClose={() => setIsPreviewOpen(false)}
-        downloadUrl={currentDownloadUrl}
-        filename={currentOutputFilename}
-        toolTitle={config.name}
+        isOpen={isPreviewOpen || Boolean(previewCustomFile)}
+        onClose={() => {
+          setIsPreviewOpen(false)
+          setPreviewCustomFile(null)
+        }}
+        downloadUrl={previewCustomFile ? previewCustomFile.url : currentDownloadUrl}
+        filename={previewCustomFile ? previewCustomFile.filename : currentOutputFilename}
+        toolTitle={previewCustomFile ? 'Source Document Preview' : config.name}
       />
     </div>
   )

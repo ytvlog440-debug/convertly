@@ -50,3 +50,7 @@ yarn-error.log*
 # OS
 .DS_Store
 Thumbs.db
+# Python Virtual Environment
+backend/.venv/
+.venv/
+venv/

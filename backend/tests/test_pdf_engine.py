@@ -43,15 +43,32 @@ async def test_pdf_merge():
     pdf1 = create_dummy_pdf("doc1.pdf", page_count=2, text_prefix="Doc1")
     pdf2 = create_dummy_pdf("doc2.pdf", page_count=3, text_prefix="Doc2")
 
-    result = await converter.convert([pdf1, pdf2], TEST_TMP_DIR, {})
+    result = await converter.convert([pdf1, pdf2], TEST_TMP_DIR, {"add_bookmarks": True})
     assert os.path.exists(result.output_path)
     assert result.mime_type == "application/pdf"
     assert result.metadata["page_count"] == 5
+    assert result.metadata["documents_merged"] == 2
+    assert len(result.metadata["document_details"]) == 2
+    assert result.metadata["document_details"][0]["title"] == "doc1"
+    assert result.metadata["document_details"][1]["title"] == "doc2"
 
-    # Verify output structure
+    # Verify output structure and bookmarks
     doc = open_and_validate_pdf(result.output_path)
     assert doc.page_count == 5
+    toc = doc.get_toc()
+    assert len(toc) >= 2  # Bookmarks for doc1 and doc2
+    assert toc[0][1] == "doc1"
+    assert toc[0][2] == 1
+    assert toc[1][1] == "doc2"
+    assert toc[1][2] == 3
     doc.close()
+
+    # Test duplex padding (doc2 has 3 pages which is odd, but doc1 has 2 pages which is even)
+    pdf_odd1 = create_dummy_pdf("odd1.pdf", page_count=3, text_prefix="Odd1")
+    pdf_odd2 = create_dummy_pdf("odd2.pdf", page_count=2, text_prefix="Odd2")
+    duplex_result = await converter.convert([pdf_odd1, pdf_odd2], TEST_TMP_DIR, {"duplex_mode": True})
+    # odd1 has 3 pages -> adds 1 blank page -> total 3 + 1 + 2 = 6 pages
+    assert duplex_result.metadata["page_count"] == 6
 
 
 @pytest.mark.asyncio

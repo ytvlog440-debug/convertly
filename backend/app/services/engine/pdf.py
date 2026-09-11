@@ -1,4 +1,5 @@
 import os
+import re
 import uuid
 import fitz  # PyMuPDF
 from typing import List, Dict, Any, Set
@@ -17,7 +18,14 @@ def open_and_validate_pdf(file_path: str) -> fitz.Document:
         raise FileValidationError(f"File is corrupted or not a valid PDF: {str(e)}")
 
     if doc.is_encrypted:
-        raise FileValidationError("Password-protected PDFs are not supported. Please remove the password first.")
+        # Check if the document can be unlocked with an empty password (standard permissions/empty pass)
+        is_authenticated = False
+        try:
+            is_authenticated = bool(doc.authenticate(""))
+        except Exception:
+            pass
+        if not is_authenticated:
+            raise FileValidationError("Password-protected PDFs are not supported. Please remove the password first.")
 
     if doc.page_count < 1:
         doc.close()
@@ -28,38 +36,72 @@ def open_and_validate_pdf(file_path: str) -> fitz.Document:
 
 def parse_page_ranges(range_str: str, max_pages: int) -> List[int]:
     """
-    Parse a page range string like '1-3, 5, 7-9' into a zero-indexed list of integers.
-    Throws FileValidationError if pages exceed max_pages or are invalid.
+    Smartly parse page expressions into a zero-indexed sorted list of unique page integers.
+    Supports:
+      - Comma / space / semicolon separated: '1, 2, 3', '1 2 3', '1; 2; 3'
+      - Ranges: '1-5', '1 to 5', '1 through 5', '1..5', '1 - 5'
+      - Keywords: 'first 6', 'last 2', 'odd', 'even', 'all'
     """
     selected_pages: Set[int] = set()
-    parts = [p.strip() for p in range_str.split(",") if p.strip()]
+    raw = range_str.strip().lower()
 
-    if not parts:
+    if not raw:
         raise FileValidationError("Please specify at least one valid page number or range.")
 
-    for part in parts:
-        if "-" in part:
-            bounds = part.split("-")
+    if raw == "all":
+        return list(range(max_pages))
+    elif raw == "odd":
+        return [i for i in range(max_pages) if (i + 1) % 2 == 1]
+    elif raw == "even":
+        return [i for i in range(max_pages) if (i + 1) % 2 == 0]
+
+    # Keyword check: e.g. "first 6", "last 3"
+    m_first = re.match(r'^(?:first|initial)\s+(\d+)$', raw)
+    if m_first:
+        count = int(m_first.group(1))
+        if count < 1:
+            raise FileValidationError("Page count must be at least 1.")
+        return list(range(min(count, max_pages)))
+
+    m_last = re.match(r'^(?:last)\s+(\d+)$', raw)
+    if m_last:
+        count = int(m_last.group(1))
+        if count < 1:
+            raise FileValidationError("Page count must be at least 1.")
+        start = max(0, max_pages - count)
+        return list(range(start, max_pages))
+
+    # Standardize 'to', 'through', and '..' into '-'
+    normalized = re.sub(r'\s+(?:to|through)\s+', '-', raw)
+    normalized = re.sub(r'\.\.+', '-', normalized)
+
+    # Tokenize by commas, semicolons, or whitespace (ignoring spaces around hyphens)
+    tokens = re.split(r'[,;\s]+', normalized)
+    tokens = [t.strip() for t in tokens if t.strip()]
+
+    for token in tokens:
+        if "-" in token:
+            bounds = token.split("-")
             if len(bounds) != 2:
-                raise FileValidationError(f"Invalid range expression: '{part}'")
+                raise FileValidationError(f"Invalid range expression: '{token}'")
             try:
                 start = int(bounds[0].strip())
                 end = int(bounds[1].strip())
             except ValueError:
-                raise FileValidationError(f"Non-numeric values in page range: '{part}'")
+                raise FileValidationError(f"Non-numeric values in page range: '{token}'")
 
             if start < 1 or end < 1 or start > end:
-                raise FileValidationError(f"Invalid range boundaries: '{part}'")
+                raise FileValidationError(f"Invalid range boundaries: '{token}' (start must be <= end)")
             if end > max_pages:
-                raise FileValidationError(f"Page range '{part}' exceeds total document pages ({max_pages}).")
+                raise FileValidationError(f"Page range '{token}' exceeds total document pages ({max_pages}).")
 
             for p in range(start - 1, end):
                 selected_pages.add(p)
         else:
             try:
-                page_num = int(part)
+                page_num = int(token)
             except ValueError:
-                raise FileValidationError(f"Invalid page number: '{part}'")
+                raise FileValidationError(f"Invalid page number or token: '{token}'")
 
             if page_num < 1 or page_num > max_pages:
                 raise FileValidationError(f"Page number {page_num} is out of bounds (1 to {max_pages}).")
@@ -104,14 +146,70 @@ class PdfMergeConverter(BaseConverter):
     ) -> ConversionResult:
         self.validate_inputs(input_paths, options)
 
+        add_bookmarks = options.get("add_bookmarks", True)
+        duplex_mode = options.get("duplex_mode", False)
+
         merged_doc = fitz.open()
         total_input_pages = 0
+        combined_toc = []
+        doc_details = []
 
-        for path in input_paths:
+        for idx, path in enumerate(input_paths):
             src_doc = open_and_validate_pdf(path)
-            total_input_pages += src_doc.page_count
-            merged_doc.insert_pdf(src_doc)
+            src_page_count = src_doc.page_count
+            total_input_pages += src_page_count
+
+            # Extract clean document title for Table of Contents / bookmarking
+            raw_filename = os.path.splitext(os.path.basename(path))[0]
+            clean_title = re.sub(r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}_', '', raw_filename)
+            clean_title = clean_title.replace('_', ' ').strip() or f"Document {idx + 1}"
+
+            # Check if document has 0 text/content (e.g. blank page)
+            is_blank = False
+            if src_page_count == 1:
+                p0 = src_doc[0]
+                if len(p0.get_text().strip()) == 0 and len(p0.get_images()) == 0 and len(p0.get_drawings()) == 0:
+                    is_blank = True
+
+            doc_details.append({
+                "index": idx + 1,
+                "title": clean_title,
+                "pages": src_page_count,
+                "is_blank": is_blank
+            })
+
+            # Preserve & aggregate Table of Contents / bookmarks
+            current_page_offset = merged_doc.page_count
+            if add_bookmarks:
+                # Add root entry for this document
+                combined_toc.append([1, clean_title, current_page_offset + 1])
+                # Preserve existing internal bookmarks of the document
+                try:
+                    src_toc = src_doc.get_toc()
+                    for item in src_toc:
+                        # item format: [level, title, page_number]
+                        item_level = min(item[0] + 1, 6)
+                        item_page = item[2] + current_page_offset
+                        combined_toc.append([item_level, item[1], item_page])
+                except Exception:
+                    pass
+
+            # Insert PDF pages preserving annotations, links, and form widgets
+            merged_doc.insert_pdf(src_doc, links=1, annots=1, widgets=1)
             src_doc.close()
+
+            # Duplex mode: if document ends on an odd page, insert blank page so next document starts on a new sheet
+            if duplex_mode and (src_page_count % 2 == 1) and (idx < len(input_paths) - 1):
+                last_page = merged_doc[-1]
+                merged_doc.new_page(width=last_page.rect.width, height=last_page.rect.height)
+                total_input_pages += 1
+
+        # Apply combined table of contents if bookmarks were generated
+        if add_bookmarks and combined_toc:
+            try:
+                merged_doc.set_toc(combined_toc)
+            except Exception:
+                pass
 
         out_filename = f"merged_{uuid.uuid4().hex[:8]}.pdf"
         out_path = os.path.join(output_dir, out_filename)
@@ -134,7 +232,12 @@ class PdfMergeConverter(BaseConverter):
             output_filename=out_filename,
             mime_type=self.output_mime_type,
             size_bytes=os.path.getsize(out_path),
-            metadata={"page_count": actual_pages}
+            metadata={
+                "page_count": actual_pages,
+                "documents_merged": len(input_paths),
+                "document_details": doc_details,
+                "has_blank_document": any(d["is_blank"] for d in doc_details)
+            }
         )
 
 
@@ -395,7 +498,11 @@ class PdfDeletePagesConverter(BaseConverter):
             output_filename=out_filename,
             mime_type=self.output_mime_type,
             size_bytes=os.path.getsize(out_path),
-            metadata={"remaining_pages": actual_remaining}
+            metadata={
+                "deleted_count": len(page_indices),
+                "deleted_pages": [p + 1 for p in sorted(page_indices)],
+                "remaining_pages": actual_remaining
+            }
         )
 
 
