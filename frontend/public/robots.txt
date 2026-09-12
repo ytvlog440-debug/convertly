@@ -1,6 +1,20 @@
-# Convertly V2 Robots.txt
+# ==========================================
+# Convertly Tools - robots.txt
+# https://convertlytools.xyz
+# ==========================================
+
 User-agent: *
 Allow: /
-Disallow: /api/
 
-Sitemap: https://convertly.app/sitemap.xml
+# Block unnecessary files
+Disallow: /api/
+Disallow: /admin/
+Disallow: /private/
+Disallow: /_*
+Disallow: /*?
+
+# Main Sitemap
+Sitemap: https://convertlytools.xyz/sitemap.xml
+
+# Crawl delay (ignored by Google but respected by some bots)
+Crawl-delay: 1
