@@ -852,7 +852,7 @@ export function ToolConverterPage() {
         canonicalUrl={`https://convertlytools.xyz/tools/${config.id}`}
         toolName={config.name}
         breadcrumbs={[
-          { name: 'Home', item: 'https://convertlytools.xyz/' },
+          { name: 'Home', item: 'https://convertlytools.xyz' },
           { name: 'Tools', item: 'https://convertlytools.xyz/tools' },
           { name: config.name, item: `https://convertlytools.xyz/tools/${config.id}` }
         ]}

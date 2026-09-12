@@ -30,6 +30,10 @@ htmlcov/
 storage_data/
 temp_test_storage/
 test_storage_data/
+/office_test.docx
+/sample1.pdf
+/sample2.pdf
+/sample_graphic.png
 
 # Node
 node_modules/

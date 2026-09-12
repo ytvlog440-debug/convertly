@@ -10,7 +10,7 @@ export function PrivacyPage() {
         description="Learn how Convertly protects your privacy with zero permanent document storage, automated 120-minute privacy shredding, and full GDPR compliance."
         canonicalUrl="https://convertlytools.xyz/privacy"
         breadcrumbs={[
-          { name: 'Home', item: 'https://convertlytools.xyz/' },
+          { name: 'Home', item: 'https://convertlytools.xyz' },
           { name: 'Privacy Policy', item: 'https://convertlytools.xyz/privacy' }
         ]}
       />
@@ -34,6 +34,7 @@ export function PrivacyPage() {
         </div>
 
         {/* Highlight Pillars */}
+        <h2 className="sr-only">Core Privacy Principles</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           <Card className="p-6 border-emerald-500/20 bg-card/60">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 mb-4">

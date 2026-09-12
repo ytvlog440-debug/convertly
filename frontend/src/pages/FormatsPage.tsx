@@ -189,7 +189,7 @@ export function FormatsPage() {
         description="Comprehensive technical specifications of all formats supported by Convertly: MIME types, magic byte signatures, transformation engines, and conversion matrix."
         canonicalUrl="https://convertlytools.xyz/formats"
         breadcrumbs={[
-          { name: 'Home', item: 'https://convertlytools.xyz/' },
+          { name: 'Home', item: 'https://convertlytools.xyz' },
           { name: 'Supported Formats', item: 'https://convertlytools.xyz/formats' }
         ]}
       />

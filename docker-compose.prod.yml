@@ -30,7 +30,7 @@ services:
       - STORAGE_DRIVER=local
       - LOCAL_STORAGE_DIR=/app/storage
       - RETENTION_POLICY_MINUTES=120
-      - CORS_ORIGINS=["http://localhost", "http://127.0.0.1", "https://convertly.app"]
+      - CORS_ORIGINS=["http://localhost", "http://127.0.0.1", "https://convertlytools.xyz", "https://www.convertlytools.xyz"]
     volumes:
       - app-storage:/app/storage
     depends_on:

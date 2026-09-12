@@ -11,7 +11,7 @@ export function SecurityPage() {
         description="Comprehensive technical overview of Convertly's multi-tier security architecture, sandbox isolation, TLS 1.3 encryption, and automated multi-pass shredder."
         canonicalUrl="https://convertlytools.xyz/security"
         breadcrumbs={[
-          { name: 'Home', item: 'https://convertlytools.xyz/' },
+          { name: 'Home', item: 'https://convertlytools.xyz' },
           { name: 'Security Architecture', item: 'https://convertlytools.xyz/security' }
         ]}
       />
@@ -35,6 +35,7 @@ export function SecurityPage() {
         <SecurityInspector />
 
         {/* Technical Architecture Grid */}
+        <h2 className="sr-only">Security Architecture Overview</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
           <Card className="p-6 border-border/80 bg-card/60">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-400 mb-4">

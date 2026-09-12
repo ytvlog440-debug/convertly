@@ -425,6 +425,7 @@ const HOMEPAGE_SCHEMAS = [
   {
     '@context': 'https://schema.org',
     '@type': 'Organization',
+    '@id': 'https://convertlytools.xyz/#organization',
     name: 'Convertly',
     url: 'https://convertlytools.xyz',
     logo: 'https://convertlytools.xyz/icon.svg',
@@ -439,8 +440,14 @@ const HOMEPAGE_SCHEMAS = [
   {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
+    '@id': 'https://convertlytools.xyz/#website',
     name: 'Convertly',
     url: 'https://convertlytools.xyz',
+    publisher: {
+      '@type': 'Organization',
+      '@id': 'https://convertlytools.xyz/#organization',
+      name: 'Convertly'
+    },
     potentialAction: {
       '@type': 'SearchAction',
       target: {

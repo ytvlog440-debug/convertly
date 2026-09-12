@@ -365,7 +365,7 @@ export function ToolsDirectoryPage() {
         keywords="conversion tools directory, free pdf converter, word to pdf, pdf to word, image to pdf, compress pdf, merge pdf"
         canonicalUrl="https://convertlytools.xyz/tools"
         breadcrumbs={[
-          { name: 'Home', item: 'https://convertlytools.xyz/' },
+          { name: 'Home', item: 'https://convertlytools.xyz' },
           { name: 'Tools Directory', item: 'https://convertlytools.xyz/tools' }
         ]}
         schemaJson={DIRECTORY_SCHEMAS}

@@ -4,6 +4,7 @@
   "description": "Enterprise-grade free file conversion platform with 30 real binary tools and zero-retention privacy.",
   "start_url": "/",
   "display": "standalone",
+  "categories": ["utilities", "productivity"],
   "background_color": "#090d16",
   "theme_color": "#4f46e5",
   "icons": [

@@ -13,7 +13,7 @@ export function Footer() {
               <ShieldCheck className="h-5 w-5" />
             </div>
             <div>
-              <h4 className="text-sm font-semibold text-foreground">Zero Retention Guarantee</h4>
+              <p className="text-sm font-semibold text-foreground">Zero Retention Guarantee</p>
               <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
                 All uploaded and converted files are automatically destroyed from our memory and storage within 120 minutes.
               </p>
@@ -25,7 +25,7 @@ export function Footer() {
               <Zap className="h-5 w-5" />
             </div>
             <div>
-              <h4 className="text-sm font-semibold text-foreground">Native Engine Execution</h4>
+              <p className="text-sm font-semibold text-foreground">Native Engine Execution</p>
               <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
                 Powered by native PyMuPDF, LibreOffice, and Ghostscript pipelines. No low-fidelity browser canvas hacks.
               </p>
@@ -37,7 +37,7 @@ export function Footer() {
               <Lock className="h-5 w-5" />
             </div>
             <div>
-              <h4 className="text-sm font-semibold text-foreground">End-to-End Encryption</h4>
+              <p className="text-sm font-semibold text-foreground">End-to-End Encryption</p>
               <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
                 Transport layer security (TLS 1.3) with strictly isolated sandbox processes for every conversion request.
               </p>
@@ -48,9 +48,9 @@ export function Footer() {
         {/* Links Navigation */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-10">
           <div>
-            <h5 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4">
+            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4">
               PDF Toolkit
-            </h5>
+            </p>
             <ul className="space-y-2.5 text-xs">
               <li><Link to="/tools/pdf-merge" className="text-foreground/80 hover:text-indigo-400 transition-colors">Merge PDF</Link></li>
               <li><Link to="/tools/pdf-split" className="text-foreground/80 hover:text-indigo-400 transition-colors">Split PDF</Link></li>
@@ -62,9 +62,9 @@ export function Footer() {
           </div>
 
           <div>
-            <h5 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4">
+            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4">
               Office ⇄ PDF
-            </h5>
+            </p>
             <ul className="space-y-2.5 text-xs">
               <li><Link to="/tools/pdf-to-word" className="text-foreground/80 hover:text-indigo-400 transition-colors">PDF to Word</Link></li>
               <li><Link to="/tools/word-to-pdf" className="text-foreground/80 hover:text-indigo-400 transition-colors">Word to PDF</Link></li>
@@ -75,9 +75,9 @@ export function Footer() {
           </div>
 
           <div>
-            <h5 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4">
+            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4">
               Image Converter
-            </h5>
+            </p>
             <ul className="space-y-2.5 text-xs">
               <li><Link to="/tools/images-to-pdf" className="text-foreground/80 hover:text-indigo-400 transition-colors">Images to PDF</Link></li>
               <li><Link to="/tools/pdf-to-images" className="text-foreground/80 hover:text-indigo-400 transition-colors">PDF to Images</Link></li>
@@ -89,9 +89,9 @@ export function Footer() {
           </div>
 
           <div>
-            <h5 className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4">
+            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4">
               Platform & Standards
-            </h5>
+            </p>
             <ul className="space-y-2.5 text-xs">
               <li><Link to="/developers" className="text-foreground/80 hover:text-indigo-400 transition-colors">Developer REST API</Link></li>
               <li><Link to="/formats" className="text-foreground/80 hover:text-indigo-400 transition-colors">Format Standards & Specs</Link></li>

@@ -278,7 +278,7 @@ export function DevelopersPage() {
         description="Integrate Convertly's 30 native document conversion engines programmatically with cURL, Python, and JavaScript REST endpoints."
         canonicalUrl="https://convertlytools.xyz/developers"
         breadcrumbs={[
-          { name: 'Home', item: 'https://convertlytools.xyz/' },
+          { name: 'Home', item: 'https://convertlytools.xyz' },
           { name: 'Developer API', item: 'https://convertlytools.xyz/developers' }
         ]}
       />

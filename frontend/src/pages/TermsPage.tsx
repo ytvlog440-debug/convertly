@@ -10,7 +10,7 @@ export function TermsPage() {
         description="Review the Convertly Terms of Service covering acceptable use, free availability, and document ownership."
         canonicalUrl="https://convertlytools.xyz/terms"
         breadcrumbs={[
-          { name: 'Home', item: 'https://convertlytools.xyz/' },
+          { name: 'Home', item: 'https://convertlytools.xyz' },
           { name: 'Terms of Service', item: 'https://convertlytools.xyz/terms' }
         ]}
       />

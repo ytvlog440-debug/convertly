@@ -97,14 +97,18 @@ export function Navbar() {
           {/* Right Actions & Health Status */}
           <div className="flex items-center gap-2.5">
             {/* Quick Search trigger button */}
-            <button
-              onClick={() => setIsPaletteOpen(true)}
-              className="hidden lg:flex items-center gap-2 rounded-xl border border-border/80 bg-card/60 px-3 py-1.5 text-xs text-muted-foreground hover:bg-secondary/60 hover:text-foreground transition-all cursor-pointer"
-            >
-              <Search className="h-3.5 w-3.5" />
-              <span>Search 30 tools...</span>
-              <kbd className="rounded border border-border bg-background px-1.5 py-0.5 text-[10px] font-mono">Ctrl K</kbd>
-            </button>
+            <div role="search">
+              <button
+                type="button"
+                aria-label="Search all 30 conversion tools"
+                onClick={() => setIsPaletteOpen(true)}
+                className="hidden lg:flex items-center gap-2 rounded-xl border border-border/80 bg-card/60 px-3 py-1.5 text-xs text-muted-foreground hover:bg-secondary/60 hover:text-foreground transition-all cursor-pointer"
+              >
+                <Search className="h-3.5 w-3.5" />
+                <span>Search 30 tools...</span>
+                <kbd className="rounded border border-border bg-background px-1.5 py-0.5 text-[10px] font-mono">Ctrl K</kbd>
+              </button>
+            </div>
 
             {/* Recent Activity Drawer trigger button */}
             <button

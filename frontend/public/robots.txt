@@ -1,28 +1,50 @@
 # ==========================================================
 # Convertly Tools - robots.txt
 # https://convertlytools.xyz
+# Production Technical SEO & Crawler Policy
 # ==========================================================
 
-# Standard Web & AI Search Engine Directives
+# Standard Web & Search Engine Directives
 User-agent: *
 Allow: /
+Allow: /assets/
+Allow: /*.js$
+Allow: /*.css$
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.svg$
+Allow: /*.webp$
+Allow: /*.woff2$
 Disallow: /api/
 Disallow: /admin/
 Disallow: /private/
 
-# Explicit permissions for major Search & AI Discovery Crawlers
+# Explicit Directives for Googlebot & Render Crawlers
 User-agent: Googlebot
 Allow: /
+Allow: /assets/
+Allow: /*.js$
+Allow: /*.css$
+Allow: /*.png$
+Allow: /*.svg$
 Disallow: /api/
 
 User-agent: Googlebot-Image
 Allow: /
-Disallow: /api/
+Allow: /assets/
+Allow: /*.png$
+Allow: /*.jpg$
+Allow: /*.svg$
+Allow: /*.webp$
 
 User-agent: Bingbot
 Allow: /
+Allow: /assets/
+Allow: /*.js$
+Allow: /*.css$
 Disallow: /api/
 
+# Explicit permissions for Knowledge & AI Discovery Crawlers
 User-agent: GPTBot
 Allow: /
 Disallow: /api/
@@ -50,5 +72,5 @@ Disallow: /
 User-agent: CCBot
 Disallow: /
 
-# Canonical Sitemap Reference
+# Canonical XML Sitemap Reference
 Sitemap: https://convertlytools.xyz/sitemap.xml

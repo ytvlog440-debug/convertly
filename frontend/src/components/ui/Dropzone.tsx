@@ -53,9 +53,9 @@ export function Dropzone({
           <UploadCloud className="h-8 w-8" />
         </div>
 
-        <h3 className="text-lg font-semibold text-foreground">
+        <p className="text-lg font-semibold text-foreground">
           {isDragActive ? 'Drop your files here...' : 'Choose files or drag & drop here'}
-        </h3>
+        </p>
         
         <p className="mt-1.5 text-xs text-muted-foreground font-medium">
           {hintText}

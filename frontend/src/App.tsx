@@ -1,9 +1,14 @@
 import { Suspense, lazy } from 'react'
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate, useParams } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Navbar } from './components/layout/Navbar'
 import { Footer } from './components/layout/Footer'
 import { ScrollToTop } from './components/ScrollToTop'
+
+function LegacyToolRedirect() {
+  const { toolId } = useParams()
+  return <Navigate to={`/tools/${toolId || ''}`} replace />
+}
 
 
 // Route-level Code Splitting for Lighthouse Performance
@@ -53,7 +58,7 @@ export function App() {
                 <Route path="/" element={<HomePage />} />
                 <Route path="/tools" element={<ToolsDirectoryPage />} />
                 <Route path="/tools/:toolId" element={<ToolConverterPage />} />
-                <Route path="/tool/:toolId" element={<ToolConverterPage />} />
+                <Route path="/tool/:toolId" element={<LegacyToolRedirect />} />
                 <Route path="/privacy" element={<PrivacyPage />} />
                 <Route path="/terms" element={<TermsPage />} />
                 <Route path="/security" element={<SecurityPage />} />
