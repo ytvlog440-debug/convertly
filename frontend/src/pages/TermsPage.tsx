@@ -34,6 +34,7 @@ export function TermsPage() {
         </div>
 
         {/* Highlight Summary */}
+        <h2 className="sr-only">Key Terms Summary</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           <Card className="p-6 border-border/80 bg-card/60">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 mb-4">

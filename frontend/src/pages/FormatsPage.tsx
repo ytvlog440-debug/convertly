@@ -240,6 +240,7 @@ export function FormatsPage() {
         </div>
 
         {/* Formats Grid */}
+        <h2 className="sr-only">Supported Format Specifications Directory</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
           {filteredFormats.map((fmt) => (
             <Card
@@ -317,7 +318,7 @@ export function FormatsPage() {
               <ShieldCheck className="h-5 w-5" />
             </div>
             <div>
-              <h4 className="text-sm font-bold text-foreground">Need a custom enterprise format?</h4>
+              <h2 className="text-sm font-bold text-foreground">Need a custom enterprise format?</h2>
               <p className="text-xs text-muted-foreground">
                 Our ephemeral worker architecture supports custom plug-in converters for TIFF, EPUB, SVG, and PostScript.
               </p>

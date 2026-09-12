@@ -320,6 +320,7 @@ export function DevelopersPage() {
         </div>
 
         {/* Technical Specs Cards */}
+        <h2 className="sr-only">Technical Performance Specifications</h2>
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-12">
           <Card className="p-4 border-border/80 bg-card/60">
             <div className="flex items-center gap-2 text-indigo-400 mb-2">
@@ -384,6 +385,7 @@ export function DevelopersPage() {
         </div>
 
         {/* Endpoints List */}
+        <h2 className="sr-only">API Endpoints Reference</h2>
         <div className="space-y-8">
           {ENDPOINTS.map((ep) => (
             <Card key={ep.id} className="p-6 sm:p-8 border-border/80 bg-card/80 overflow-hidden relative">
