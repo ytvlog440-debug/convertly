@@ -1,20 +1,59 @@
-# ==========================================
+# ==========================================================
 # Convertly Tools - robots.txt
 # https://convertlytools.xyz
-# ==========================================
+# ==========================================================
+
+# ----------------------------------------------------------
+# Cloudflare Managed Content
+# ----------------------------------------------------------
+
+# As a condition of accessing this website, you agree to abide
+# by the following content signals.
 
 User-agent: *
+Content-Signal: search=yes,ai-train=no,use=reference
 Allow: /
 
-# Block unnecessary files
+User-agent: Amazonbot
+Disallow: /
+
+User-agent: Applebot-Extended
+Disallow: /
+
+User-agent: Bytespider
+Disallow: /
+
+User-agent: CCBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: CloudflareBrowserRenderingCrawler
+Disallow: /
+
+User-agent: Google-Extended
+Disallow: /
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: meta-externalagent
+Disallow: /
+
+# ----------------------------------------------------------
+# Convertly Crawl Rules
+# ----------------------------------------------------------
+
+User-agent: *
+
+# Allow crawling of the public website
+Allow: /
+
+# Prevent indexing of private/internal endpoints
 Disallow: /api/
 Disallow: /admin/
 Disallow: /private/
-Disallow: /_*
-Disallow: /*?
 
-# Main Sitemap
+# Sitemap
 Sitemap: https://convertlytools.xyz/sitemap.xml
-
-# Crawl delay (ignored by Google but respected by some bots)
-Crawl-delay: 1
