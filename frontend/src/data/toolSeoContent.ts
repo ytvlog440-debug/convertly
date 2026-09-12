@@ -628,6 +628,853 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       'Stop retyping documents from scratch or paying for expensive software licenses. Convertly gives you enterprise-grade PDF to Word extraction with precision layout reconstruction, integrated OCR, and ironclad privacy.',
       'Scroll up to the converter above, select your file, and experience the fastest, cleanest document transformation online.'
     ]
+  },
+
+  'pdf-merge': {
+    id: 'pdf-merge',
+    name: 'Merge PDF',
+    category: 'PDF',
+    searchIntent: 'Transactional',
+    metaTitle: 'Merge PDF Online — Combine Multiple PDF Files Free | Convertly',
+    metaDescription: 'Merge multiple PDF files into one clean document online for free. Drag-and-drop reordering, automated bookmarks, and zero data retention.',
+    keywords: 'merge pdf, combine pdf, combine pdf files, join pdf, merge pdf online free, combine pdf documents, convertly',
+    badge: 'Multi-File Drag & Drop',
+    introHeading: 'Combine Multiple PDF Files into One Clean, Structured Document',
+    introText: 'Convertly’s Merge PDF tool allows you to combine up to 20 individual PDF documents into a single consolidated file in your exact custom sequence. Featuring intuitive drag-and-drop reordering, interactive bookmark creation, and zero quality loss.',
+    whatIsHeading: 'What is Convertly’s PDF Merger?',
+    whatIsParagraphs: [
+      'Organizing paperwork, monthly invoices, project deliverables, and legal exhibits often results in dozens of disjointed PDF files scattered across your folders. Sharing multiple individual attachments is inconvenient for clients and increases the likelihood of lost documents.',
+      'Convertly streamlines document management by assembling multiple PDFs into a single, cohesive master document. Our engine preserves original page dimensions, color profiles, vector clarity, interactive hyperlinks, and form fields.',
+      'With built-in visual drag-and-drop reordering, you can rearrange files effortlessly before compiling.'
+    ],
+    whoShouldUseHeading: 'Who Should Use Convertly PDF Merger?',
+    whoShouldUseAudiences: [
+      {
+        title: 'Legal Discovery Teams & Paralegals',
+        desc: 'Stitch together pleading documents, numbered trial exhibits, and deposition transcripts into organized, single-file court filings.'
+      },
+      {
+        title: 'Accountants, CPAs & Tax Preparers',
+        desc: 'Combine quarterly receipts, W-2 forms, 1099 filings, and financial balance sheets into comprehensive audit packets for clients.'
+      },
+      {
+        title: 'Job Seekers & Consultants',
+        desc: 'Assemble cover letters, resume credentials, certified diplomas, and design portfolio samples into a clean, unified presentation.'
+      },
+      {
+        title: 'Real Estate Agents & Escrow Officers',
+        desc: 'Package purchase agreements, title disclosures, inspection reports, and closing statements into one seamless document.'
+      }
+    ],
+    whenToUseHeading: 'When Should You Merge PDF Files?',
+    whenToUsePoints: [
+      {
+        title: 'When Portals Accept Only a Single Upload',
+        desc: 'When government, academic, or corporate submission systems permit only one attachment per application.'
+      },
+      {
+        title: 'When Distributing Multi-Part Project Milestones',
+        desc: 'When emailing project deliverables to clients without confusing them with numerous separate attachments.'
+      },
+      {
+        title: 'When Creating an Archival Fiscal Binder',
+        desc: 'When archiving full years of accounting records, vendor receipts, and bank statements for permanent compliance.'
+      },
+      {
+        title: 'When Assembling Multi-Author Publications',
+        desc: 'When combining independent chapters, executive summaries, and appendices written by different team members.'
+      }
+    ],
+    howItWorksHeading: 'How to Combine Multiple PDFs into One Document',
+    steps: [
+      {
+        number: 1,
+        title: 'Upload Your PDF Files',
+        desc: 'Select or drag up to 20 PDF files into the upload dropzone. Files will appear as sequenced cards.'
+      },
+      {
+        number: 2,
+        title: 'Reorder Files to Your Liking',
+        desc: 'Drag file cards or use the up/down arrow buttons to organize documents into your exact desired order.'
+      },
+      {
+        number: 3,
+        title: 'Configure Bookmarks & Compile',
+        desc: 'Enable optional interactive bookmarks (Table of Contents), then click "Merge Documents" to process.'
+      },
+      {
+        number: 4,
+        title: 'Download Combined PDF & QR Transfer',
+        desc: 'Download your unified PDF instantly or scan the private QR code to save directly to your mobile device.'
+      }
+    ],
+    keyFeaturesHeading: 'Key Features of Our PDF Merger',
+    features: [
+      {
+        title: 'Visual Drag-and-Drop Sequencing',
+        desc: 'Intuitive file cards let you reorder pages and documents with smooth drag-and-drop handles or sequential arrow controls.'
+      },
+      {
+        title: 'Automated Table of Contents (Bookmarks)',
+        desc: 'Generates clickable PDF bookmarks corresponding to each original document title for instant section jumping.'
+      },
+      {
+        title: 'Lossless Vector & Image Combination',
+        desc: 'Combines page streams directly without rasterization, preserving 100% of the original text sharpness, images, and formatting.'
+      },
+      {
+        title: '120-Minute Automatic File Shredding',
+        desc: 'All merged files are automatically and permanently deleted from our servers after 120 minutes for confidential security.'
+      },
+      {
+        title: 'Zero File Stamping or Branding',
+        desc: 'Your output documents are free from intrusive watermarks, brand logos, or promotional footers.'
+      },
+      {
+        title: 'Mixed Orientation Support',
+        desc: 'Effortlessly combines portrait and landscape documents in the same unified PDF without cropping.'
+      }
+    ],
+    benefitsHeading: 'Why Professionals Combine PDFs with Convertly',
+    benefits: [
+      {
+        title: 'Present a Unified, Professional Image',
+        desc: 'Consolidate multiple attachments into a single polished document that is easy for clients to read and navigate.'
+      },
+      {
+        title: 'Simplify Legal & Billing Record Keeping',
+        desc: 'Assemble multi-page monthly invoices, receipts, and contracts for seamless accountant and client review.'
+      },
+      {
+        title: '100% Free With No Artificial Limits',
+        desc: 'Merge documents without watermarks, hourly throttling, or forced registration paywalls.'
+      },
+      {
+        title: 'Enterprise Cryptographic Privacy',
+        desc: 'TLS 1.3 transport encryption and automated 120-minute server shredding protect your confidential transactions.'
+      }
+    ],
+    supportedFormatsHeading: 'Supported Specifications & Format Matrix',
+    inputFormats: [
+      { ext: '.pdf', name: 'Portable Document Format (v1.0 - v2.0)', mime: 'application/pdf' }
+    ],
+    outputFormats: [
+      { ext: '.pdf', name: 'Consolidated Merged PDF', mime: 'application/pdf' }
+    ],
+    formatNotes: 'Supports merging up to 20 files per session with combined size up to 100MB. Handles mixed portrait and landscape orientations.',
+    securityHeading: 'Confidentiality & In-Memory Merging',
+    securityParagraphs: [
+      'Combining financial records or legal contracts demands absolute privacy. Convertly operates over secure TLS 1.3 encrypted connections.',
+      'Our Zero-Retention Policy ensures your documents are automatically shredded from temporary servers within 120 minutes.',
+      'Files are merged directly in isolated memory buffers without manual human inspection or artificial intelligence training.'
+    ],
+    certifications: [
+      'Automated 120-Minute Cryptographic Shredder',
+      'TLS 1.3 Transport Encryption Protocol',
+      'Zero AI Model Training Guarantee',
+      'GDPR Article 17 Right to Erasure Compliant'
+    ],
+    performanceHeading: 'Engine Benchmarks & Specifications',
+    specs: [
+      { label: 'Core Engine', value: 'PyMuPDF Native Page Tree Stream Stitcher', detail: 'Direct binary object reference copying' },
+      { label: 'Compilation Speed', value: '< 1.5 Seconds for 10 Documents', detail: 'Near-instantaneous lossless execution' },
+      { label: 'Max Files per Batch', value: 'Up to 20 Documents', detail: 'Generous multi-file staging limit' },
+      { label: 'Max Total Size', value: '100 MB per Batch', detail: 'Ample capacity for graphic-rich documents' }
+    ],
+    compatibilityHeading: 'Cross-Device & Browser Support',
+    platforms: [
+      { name: 'Desktop Workstations', status: 'Full Compatibility', detail: 'Works on Windows, macOS, and Linux with full drag-and-drop reordering.' },
+      { name: 'Smartphones & Tablets', status: 'Mobile Optimized', detail: 'Arrow-based reordering buttons designed specifically for touch screens.' }
+    ],
+    useCasesHeading: 'Common Real-World Use Cases',
+    useCases: [
+      {
+        title: 'Compiling Court Filings & Trial Exhibits',
+        desc: 'Assemble legal briefs, declarations, and evidence exhibits into a single master filing compliant with federal court e-filing systems.'
+      },
+      {
+        title: 'Consolidating Financial Tax Packets',
+        desc: 'Bind tax returns, schedules, donation receipts, and W-2 summaries into a single PDF for streamlined accountant review.'
+      },
+      {
+        title: 'Packaging Real Estate Loan Documents',
+        desc: 'Merge appraisals, title reports, buyer disclosures, and lender notes into a single cohesive closing packet.'
+      },
+      {
+        title: 'Building Academic Dissertation Submissions',
+        desc: 'Join independent thesis chapters, cover sheets, bibliographies, and supplemental data charts into one submission file.'
+      }
+    ],
+    bestResultsHeading: 'Expert Tips for Best Results with Merge PDF',
+    bestResultsTips: [
+      {
+        title: 'Organize Files Sequentially Before Upload',
+        desc: 'Naming your files with numerical prefixes (e.g., 01_Cover, 02_Resume) makes verification fast when staging multi-file batches.'
+      },
+      {
+        title: 'Standardize Page Orientations First',
+        desc: 'If some documents were scanned upside down or sideways, use Convertly Rotate PDF beforehand for uniform presentation.'
+      },
+      {
+        title: 'Compress Large Merged Documents Afterwards',
+        desc: 'If merging 15-20 graphic-rich files results in a large master document, pass it through Convertly Compress PDF to reduce size for email.'
+      },
+      {
+        title: 'Enable Automated Bookmarks',
+        desc: 'Enabling Table of Contents bookmarks creates clickable sidebar links in Adobe Acrobat and web browsers for rapid navigation.'
+      }
+    ],
+    troubleshootingHeading: 'Common Problems & Solutions (Merge PDF)',
+    troubleshootingItems: [
+      {
+        problem: 'Why are some files failing to upload in the merge staging area?',
+        solution: 'Check that the combined size does not exceed 100MB and that all files are valid, uncorrupted PDFs. Encrypted PDFs must be unlocked before merging.'
+      },
+      {
+        problem: 'Can I reorder files after uploading them?',
+        solution: 'Yes! Simply drag the file cards into your preferred sequence, or use the sequential up and down arrows on mobile devices.'
+      },
+      {
+        problem: 'Why does the merged PDF show an incorrect page order?',
+        solution: 'Files are compiled in the exact order shown in the card list from top to bottom. Review card order before clicking "Merge Documents".'
+      }
+    ],
+    whyChooseHeading: 'Why Convertly is the Leading PDF Merger',
+    comparisonPoints: [
+      {
+        title: 'Interactive Bookmarks Included Free',
+        desc: 'Other converters scramble your document structure. Convertly automatically embeds clickable bookmarks matching each merged file title.'
+      },
+      {
+        title: 'No Forced Sign-Ups or Paywalls',
+        desc: 'Combine your files immediately without being asked for credit card details, trial subscriptions, or email addresses.'
+      },
+      {
+        title: 'Clean Lossless Stream Stitching',
+        desc: 'Direct binary object copying ensures text remains sharp, vectors stay crisp, and images lose zero quality.'
+      }
+    ],
+    faqsHeading: 'Frequently Asked Questions (Merge PDF)',
+    faqs: [
+      {
+        question: 'How many PDF files can I merge together at once?',
+        answer: 'You can merge up to 20 PDF files in a single session with a combined total size of up to 100MB.'
+      },
+      {
+        question: 'Can I change the sequence of the files before merging?',
+        answer: 'Yes! You can drag and drop file cards into your preferred sequence, or use the convenient up and down arrows on mobile and desktop.'
+      },
+      {
+        question: 'Will merging PDFs reduce the quality of my images or vector text?',
+        answer: 'No. Convertly merges PDF object streams losslessly. Your vector text, embedded photographs, and diagrams remain at 100% original quality.'
+      },
+      {
+        question: 'Does Convertly add clickable bookmarks to the merged file?',
+        answer: 'Yes, by default Convertly adds an interactive Table of Contents outline matching your file names, allowing readers to jump directly to any document section.'
+      },
+      {
+        question: 'Can I merge PDF files with mixed portrait and landscape orientations?',
+        answer: 'Yes! Convertly supports mixed orientations seamlessly. Each page retains its original width, height, and orientation.'
+      },
+      {
+        question: 'Are my confidential files stored on your servers?',
+        answer: 'No. All documents are protected by TLS 1.3 encryption and automatically shredded from our servers 120 minutes after processing.'
+      },
+      {
+        question: 'Do I need to install Adobe Acrobat or any software?',
+        answer: 'No software installation is required. Convertly operates 100% in your web browser across Windows, Mac, Linux, and mobile devices.'
+      },
+      {
+        question: 'Can I merge PDFs on my iPhone, iPad, or Android phone?',
+        answer: 'Yes, Convertly is fully mobile-responsive and lets you select files directly from your phone’s storage or cloud drive.'
+      },
+      {
+        question: 'Is there any limit to the number of pages in the combined document?',
+        answer: 'There is no strict page limit as long as the combined file size stays under our generous 100MB session threshold.'
+      },
+      {
+        question: 'Can I merge password-protected PDF files?',
+        answer: 'If any of your PDFs are encrypted with an open password, please use Convertly’s "Unlock PDF" tool first to decrypt them, then merge the unlocked files.'
+      },
+      {
+        question: 'Does Convertly add watermarks or branding to merged PDFs?',
+        answer: 'No. We never stamp watermarks, logos, or advertising onto your documents. Your output file remains 100% clean and professional.'
+      },
+      {
+        question: 'Is Convertly’s PDF merger completely free to use?',
+        answer: 'Yes, 100% free with no hidden subscription fees, no credit card requirements, and no daily file conversion caps.'
+      }
+    ],
+    conclusionHeading: 'Merge Your PDF Files Easily with Convertly',
+    conclusionParagraphs: [
+      'Keep your documents organized, professional, and easy to distribute. Convertly delivers lightning-fast multi-file merging with the privacy and reliability your work deserves.',
+      'Upload your files into the staging area above to create your merged PDF now.'
+    ]
+  },
+
+  'pdf-compress': {
+    id: 'pdf-compress',
+    name: 'Compress PDF',
+    category: 'PDF',
+    searchIntent: 'Transactional',
+    metaTitle: 'Compress PDF Online — Reduce PDF File Size Free | Convertly',
+    metaDescription: 'Reduce PDF file size online by up to 85% without sacrificing vector text crispness. Select Recommended, Maximum, or Lossless compression with zero data retention.',
+    keywords: 'compress pdf, reduce pdf size, shrink pdf, pdf compressor online free, optimize pdf file size, convertly',
+    badge: 'PyMuPDF Fast',
+    introHeading: 'Optimize and Shrink PDF File Size Without Sacrificing Visual Quality',
+    introText: 'Convertly’s Compress PDF tool reduces bloated document file sizes by up to 85% while keeping typography razor-sharp and images crisp. Engineered with native PyMuPDF stream optimization and intelligent DCT downsampling, our compressor removes redundant object streams, duplicate fonts, and uncompressed metadata for ultra-fast sharing.',
+    whatIsHeading: 'What is Convertly’s PDF Compressor?',
+    whatIsParagraphs: [
+      'Modern PDF files frequently balloon into massive 20MB–100MB files due to uncompressed high-DPI scans, duplicate embedded font subsets, unreferenced metadata objects, and bloated thumbnail streams. These oversized files cannot be emailed through standard corporate mail gateways and face rejection by government, legal, and academic upload portals.',
+      'Convertly solves this by performing structural bytecode optimization on the PDF document stream. Unlike destructive compressors that blindly rasterize pages into blurry JPEG pictures, Convertly surgically compresses embedded raster image streams using multi-pass quantization while keeping all vector typography, lines, and form fields 100% mathematically intact.',
+      'Whether you are emailing a monthly sales presentation or archiving corporate invoices, Convertly delivers the optimal balance of compact file size and pristine visual clarity.'
+    ],
+    whoShouldUseHeading: 'Who Should Use Convertly PDF Compressor?',
+    whoShouldUseAudiences: [
+      {
+        title: 'Corporate Administrators & Executive Assistants',
+        desc: 'Shrink multi-megabyte executive decks and quarterly reports so they slide under strict 10MB or 25MB corporate email attachment limits.'
+      },
+      {
+        title: 'Academic Applicants & University Students',
+        desc: 'Compress dissertations, admissions portfolios, and financial aid forms to meet strict 2MB or 5MB university portal upload caps.'
+      },
+      {
+        title: 'Web Developers & Content Marketers',
+        desc: 'Optimize downloadable whitepapers, ebooks, and product catalogs to minimize server bandwidth costs and maximize mobile download speeds.'
+      },
+      {
+        title: 'Remote Field Workers & Mobile Technicians',
+        desc: 'Compress image-rich inspection logs and work orders directly on mobile devices before transmitting over cellular data networks.'
+      }
+    ],
+    whenToUseHeading: 'When Should You Compress PDF Files?',
+    whenToUsePoints: [
+      {
+        title: 'When Email Rejects Oversized Attachments',
+        desc: 'When an email bounces back with "Message size exceeds fixed maximum limit" and needs immediate size reduction.'
+      },
+      {
+        title: 'When Submitting to Government & Court Portals',
+        desc: 'When filing court pleadings, grant proposals, or patent applications with strict 2MB or 5MB maximum file boundaries.'
+      },
+      {
+        title: 'When Conserving Cloud Storage Budgets',
+        desc: 'When archiving gigabytes of scanned organizational paperwork in Amazon S3, Google Drive, or Dropbox to reduce storage fees.'
+      },
+      {
+        title: 'When Preparing Documents for Fast Web Viewing',
+        desc: 'When publishing brochures or technical whitepapers that must render instantly in mobile web browsers without buffering.'
+      }
+    ],
+    howItWorksHeading: 'How to Compress PDF Files in 4 Easy Steps',
+    steps: [
+      {
+        number: 1,
+        title: 'Upload Your PDF Document',
+        desc: 'Select or drag your large PDF file into the upload dropzone above.'
+      },
+      {
+        number: 2,
+        title: 'Select Compression Strength',
+        desc: 'Choose Recommended (balanced 75% drop), Maximum (smallest size up to 85%), or Lossless Clean.'
+      },
+      {
+        number: 3,
+        title: 'Execute Stream Optimization',
+        desc: 'Click "Process File Now". Our PyMuPDF native engine optimizes streams and purges redundant bytes in under 2 seconds.'
+      },
+      {
+        number: 4,
+        title: 'Instant Download & QR Beam',
+        desc: 'Save your optimized PDF to your computer or scan the QR code to transfer it straight to your mobile device.'
+      }
+    ],
+    keyFeaturesHeading: 'Key Features of Our PDF Compressor',
+    features: [
+      {
+        title: 'Vector-Preserving Optimization',
+        desc: 'Text, typography, lines, and form fields remain 100% vector-sharp at any zoom level, avoiding blurry character rendering.'
+      },
+      {
+        title: 'Intelligent DCT Downsampling',
+        desc: 'Re-encodes heavy embedded raster photos using perceptual quantization to maximize byte reduction with zero visual distortion.'
+      },
+      {
+        title: 'Unreferenced Stream Purge',
+        desc: 'Removes orphaned metadata, duplicate font tables, and legacy thumbnail streams that bloat document size.'
+      },
+      {
+        title: 'Three Calibrated Compression Presets',
+        desc: 'Provides Recommended, Maximum, and Lossless Clean modes tailored to different submission and distribution requirements.'
+      },
+      {
+        title: '120-Minute Automatic File Shredding',
+        desc: 'All source files and optimized outputs are permanently deleted from our servers after 120 minutes for total confidentiality.'
+      },
+      {
+        title: 'Zero Watermarks or Restrictions',
+        desc: 'Compress unlimited files without branded stamps, hourly limits, or registration paywalls.'
+      }
+    ],
+    benefitsHeading: 'Why Choose Convertly PDF Compressor Over Alternatives?',
+    benefits: [
+      {
+        title: 'Zero Blurry Text Guarantee',
+        desc: 'Inferior tools convert pages into low-resolution pictures. Convertly keeps vector text pure and only optimizes raster streams.'
+      },
+      {
+        title: 'Bypass Email and Portal Upload Barriers',
+        desc: 'Easily shrink 30MB files down to under 5MB to pass corporate email and portal submission limits with confidence.'
+      },
+      {
+        title: 'No Daily Conversion Restrictions',
+        desc: 'Compress dozens of files back-to-back without hitting hourly walls or being forced into paid subscription tiers.'
+      },
+      {
+        title: 'Encrypted Zero-Retention Security',
+        desc: 'TLS 1.3 transport encryption and automated server shredding ensure financial and legal paperwork stays strictly confidential.'
+      }
+    ],
+    supportedFormatsHeading: 'Supported Specifications & Format Matrix',
+    inputFormats: [
+      { ext: '.pdf', name: 'Portable Document Format (v1.0 - v2.0)', mime: 'application/pdf' }
+    ],
+    outputFormats: [
+      { ext: '.pdf', name: 'Optimized Deflated PDF', mime: 'application/pdf' }
+    ],
+    formatNotes: 'Supports standard PDFs, PDF/A archival documents, scanned documents, and multi-page books up to 100MB per file.',
+    securityHeading: 'Confidentiality & In-Memory Stream Compression',
+    securityParagraphs: [
+      'Your financial spreadsheets, medical records, and legal briefs demand strict security. Convertly operates exclusively over TLS 1.3 encrypted connections.',
+      'Our Zero-Retention Policy ensures your documents are automatically shredded from our servers within 120 minutes.',
+      'Compression runs in isolated memory sandboxes without human access or artificial intelligence training.'
+    ],
+    certifications: [
+      'Automated 120-Minute Cryptographic Shredder',
+      'TLS 1.3 Transport Encryption Protocol',
+      'Zero AI Model Training Guarantee',
+      'GDPR Article 17 Right to Erasure Compliant'
+    ],
+    performanceHeading: 'Engine Benchmarks & Technical Specifications',
+    specs: [
+      { label: 'Engine Core', value: 'PyMuPDF v1.24+ Deflate Stream Optimizer', detail: 'High-speed native C library execution' },
+      { label: 'Average Size Reduction', value: '50% to 85% File Reduction', detail: 'Dependent on embedded image ratio and original DPI' },
+      { label: 'Processing Speed', value: '< 1.8 Seconds for 50MB Document', detail: 'Parallel worker processing' },
+      { label: 'Text Crispness', value: '100% Vector Intact', detail: 'Zero blurriness on typographic characters' }
+    ],
+    compatibilityHeading: 'Cross-Device & Browser Support',
+    platforms: [
+      { name: 'Desktop Workstations', status: 'Full Compatibility', detail: 'Runs smoothly on Windows, Mac, and Linux across all modern browsers.' },
+      { name: 'Smartphones & Tablets', status: 'Mobile Optimized', detail: 'Compress files on iPhone, iPad, and Android with direct QR transfer.' }
+    ],
+    useCasesHeading: 'Common Real-World Use Cases',
+    useCases: [
+      {
+        title: 'Meeting Strict Job & Grant Portal Upload Limits',
+        desc: 'Reduce resume portfolios, academic transcripts, and research proposals to under 2MB or 5MB requirements.'
+      },
+      {
+        title: 'Distributing Multi-Page Corporate Newsletters',
+        desc: 'Optimize graphic-heavy monthly company newsletters so employees can download them instantly on mobile devices.'
+      },
+      {
+        title: 'Optimizing Scanned Invoices for Cloud Archiving',
+        desc: 'Shrink multi-gigabyte monthly invoice scans to cut cloud storage costs while keeping invoice numbers legible.'
+      },
+      {
+        title: 'Sharing Architectural Blueprints & Design Proofs',
+        desc: 'Compress high-resolution PDF proofs for quick client review over cellular connections without losing linework detail.'
+      }
+    ],
+    bestResultsHeading: 'Expert Tips for Best Results with Compress PDF',
+    bestResultsTips: [
+      {
+        title: 'Choose "Recommended" for Optimal Balance',
+        desc: 'Our Recommended preset provides the ideal sweet spot of significant size reduction (up to 75%) and visually lossless graphics.'
+      },
+      {
+        title: 'Use "Maximum" for Strict 1MB–2MB Portal Limits',
+        desc: 'When facing hard file caps on government or school portals, Maximum compression applies aggressive quantization to pass verification.'
+      },
+      {
+        title: 'Unlock Protected Files First',
+        desc: 'If your PDF is encrypted with an open password, unlock it with Convertly Unlock PDF first so the stream compressor can access the objects.'
+      },
+      {
+        title: 'Clean Redundant Pages Before Compressing',
+        desc: 'Use Convertly Delete Pages to strip unneeded blank pages or cover sheets prior to compression for even smaller final files.'
+      }
+    ],
+    troubleshootingHeading: 'Common Problems & Solutions (Compress PDF)',
+    troubleshootingItems: [
+      {
+        problem: 'Why did my PDF only compress by 5% to 10%?',
+        solution: 'If your document consists entirely of text with no images, or was already optimized by a modern PDF creator, it may already be near theoretical minimum size.'
+      },
+      {
+        problem: 'Will compression remove my bookmarks, hyperlinks, or page outlines?',
+        solution: 'No. Convertly preserves all document metadata, clickable hyperlinks, bookmarks, and form fields intact.'
+      },
+      {
+        problem: 'Can I compress a scanned PDF containing photos of paper?',
+        solution: 'Yes! Scanned PDFs usually contain high-DPI raster images and experience the largest size reduction (often 70% to 85%).'
+      }
+    ],
+    whyChooseHeading: 'Why Convertly Beats Alternative Compressors',
+    comparisonPoints: [
+      {
+        title: 'Zero Blurry Text',
+        desc: 'Inferior tools re-render entire PDF pages into low-resolution JPEG images, making text fuzzy. Convertly keeps vector text pure and only optimizes raster streams.'
+      },
+      {
+        title: 'No Daily Limits or Watermarks',
+        desc: 'Compress dozens of files back-to-back without hitting hourly walls or being forced to subscribe to paid plans.'
+      },
+      {
+        title: 'Direct Smartphone QR Transfer',
+        desc: 'Scan the temporary encrypted QR code to save your compressed PDF directly to your iPhone or Android device in seconds.'
+      }
+    ],
+    faqsHeading: 'Frequently Asked Questions (Compress PDF)',
+    faqs: [
+      {
+        question: 'Will compressing my PDF make the text look blurry?',
+        answer: 'No. Convertly preserves the original vector typography. Text remains 100% sharp, selectable, and searchable at any magnification level.'
+      },
+      {
+        question: 'How much smaller will my PDF file become?',
+        answer: 'Most documents achieve between 50% and 85% reduction. Documents containing high-resolution scans or photos see the largest size drops.'
+      },
+      {
+        question: 'Which compression level should I choose?',
+        answer: 'We suggest "Recommended" for the optimal balance of file size reduction and pristine visual quality. Use "Maximum" if you need to pass strict 1MB or 2MB portal limits.'
+      },
+      {
+        question: 'Can I compress password-protected PDF files?',
+        answer: 'If your PDF is encrypted, please use our "Unlock PDF" tool first to decrypt it, then compress the resulting file.'
+      },
+      {
+        question: 'Are my files stored on your servers?',
+        answer: 'No. All documents are automatically shredded and permanently deleted from our servers 120 minutes after upload.'
+      },
+      {
+        question: 'Is there a limit on the number of PDFs I can compress?',
+        answer: 'No. You can compress as many documents as you need completely free of charge.'
+      },
+      {
+        question: 'Does compressing a PDF remove bookmarks or interactive links?',
+        answer: 'No. Convertly preserves the full document structure including clickable links, bookmarks, forms, and outline trees.'
+      },
+      {
+        question: 'Can I compress PDFs on my iPhone or Android device?',
+        answer: 'Yes! Convertly works seamlessly on mobile devices with touch-friendly controls and instant QR code file transfer.'
+      },
+      {
+        question: 'What is the maximum upload file size for compression?',
+        answer: 'You can upload documents up to 100MB in size, easily accommodating graphic-dense catalogs and multi-page books.'
+      },
+      {
+        question: 'Do I need to install any desktop software or browser extensions?',
+        answer: 'No. Convertly operates 100% inside your web browser without requiring software installations or plugins.'
+      },
+      {
+        question: 'Does Convertly stamp watermarks onto compressed files?',
+        answer: 'No. Your compressed PDF remains completely clean and professional with zero added watermarks or branding stamps.'
+      },
+      {
+        question: 'Is Convertly PDF compression completely free?',
+        answer: 'Yes, 100% free with no subscriptions, trial periods, or credit card requirements.'
+      }
+    ],
+    conclusionHeading: 'Shrink Your PDF Files with Enterprise Precision',
+    conclusionParagraphs: [
+      'Stop struggling with oversized documents that cannot be emailed or uploaded. Convertly gives you the most advanced PDF compression technology available online.',
+      'Drop your file in the box above to optimize your PDF in seconds.'
+    ]
+  },
+
+  'word-to-pdf': {
+    id: 'word-to-pdf',
+    name: 'Word to PDF',
+    category: 'Office',
+    searchIntent: 'Transactional',
+    metaTitle: 'Word to PDF Converter — Convert DOCX & DOC to PDF Free | Convertly',
+    metaDescription: 'Convert Microsoft Word (.docx, .doc) files to PDF online for free. Preserves exact margins, typography, tables, and headers with zero data retention.',
+    keywords: 'word to pdf, convert word to pdf, docx to pdf, doc to pdf, convert docx to pdf free online, convertly',
+    badge: 'Pixel-Perfect Vector PDF',
+    introHeading: 'Convert Microsoft Word DOCX & DOC Documents to Universal PDF',
+    introText: 'Convertly’s Word to PDF converter transforms Microsoft Word documents (.docx, .doc) into standardized, publication-ready PDF files with 100% font, margin, and layout fidelity. Powered by headless LibreOffice engines and high-speed PyMuPDF rasterizers, our platform ensures your documents look identical on every screen and print device without missing fonts or shifted margins.',
+    whatIsHeading: 'What is Convertly’s Word to PDF Converter?',
+    whatIsParagraphs: [
+      'Microsoft Word documents frequently display differently depending on the recipient’s operating system, installed fonts, and software version. Sharing raw .docx files with clients, hiring managers, or courts often leads to displaced page breaks, missing custom typography, and misaligned tables.',
+      'Convertly eliminates formatting discrepancies by freezing your Word document into an immutable, universally standardized PDF file. Our engine accurately evaluates OpenXML markup, CSS table structures, headers, footers, footnotes, and embedded graphics.',
+      'Whether you are submitting a resume, executing an agreement, or archiving legal paperwork, Convertly guarantees your output looks exactly as intended.'
+    ],
+    whoShouldUseHeading: 'Who Should Use Convertly Word to PDF?',
+    whoShouldUseAudiences: [
+      {
+        title: 'Job Seekers & Candidates',
+        desc: 'Lock in resume formatting, typography, and page margins so hiring managers see your qualifications exactly as designed.'
+      },
+      {
+        title: 'Legal Counsel & Contract Managers',
+        desc: 'Convert finalized Word contracts, settlement agreements, and NDAs into immutable PDFs prior to digital signature.'
+      },
+      {
+        title: 'Students, Academics & Authors',
+        desc: 'Convert dissertations, research papers, and manuscripts to PDF per strict university guidelines (MLA, APA, Chicago).'
+      },
+      {
+        title: 'Corporate Sales & Marketing Teams',
+        desc: 'Turn sales proposals, price quotes, and product brochures into tamper-resistant PDF documents for prospective clients.'
+      }
+    ],
+    whenToUseHeading: 'When Should You Convert Word to PDF?',
+    whenToUsePoints: [
+      {
+        title: 'Before Sending Resumes and Portfolios',
+        desc: 'Prevent hiring applicant tracking systems (ATS) or HR managers from viewing broken margins or altered fonts.'
+      },
+      {
+        title: 'Before Executing Business Agreements',
+        desc: 'Ensure contract clauses, terms, and signature blocks cannot be inadvertently edited or modified by recipients.'
+      },
+      {
+        title: 'Before Printing Multi-Page Handouts',
+        desc: 'Guarantee page numbers, table borders, and image placements align perfectly on physical printers without shifting.'
+      },
+      {
+        title: 'When Archiving Historical Corporate Memos',
+        desc: 'Preserve institutional records in standard PDF/A format that will open faithfully decades into the future.'
+      }
+    ],
+    howItWorksHeading: 'How to Convert Word to PDF in 4 Easy Steps',
+    steps: [
+      {
+        number: 1,
+        title: 'Upload Your Word Document',
+        desc: 'Select or drag your .docx or legacy .doc file into the conversion dropzone above.'
+      },
+      {
+        number: 2,
+        title: 'Verify Document Formatting',
+        desc: 'Our backend engine parses OpenXML styles, font hierarchies, tables, and embedded graphics.'
+      },
+      {
+        number: 3,
+        title: 'Execute High-Fidelity Conversion',
+        desc: 'Click "Process File Now". Headless LibreOffice renders your publication-ready vector PDF in under 3 seconds.'
+      },
+      {
+        number: 4,
+        title: 'Instant Download & Mobile QR Beam',
+        desc: 'Save your standardized PDF to your computer or scan the private QR code to transfer it straight to your phone.'
+      }
+    ],
+    keyFeaturesHeading: 'Key Features of Our Word to PDF Engine',
+    features: [
+      {
+        title: '100% Font & Margin Preservation',
+        desc: 'Accurately renders Microsoft Word typography, line spacing, margins, and footnotes matching Microsoft 365.'
+      },
+      {
+        title: 'Legacy .DOC & Modern .DOCX Support',
+        desc: 'Converts both modern OpenXML .docx files and legacy Microsoft Word 97-2003 .doc binary files.'
+      },
+      {
+        title: 'Clickable Hyperlink Preservation',
+        desc: 'Retains all embedded web hyperlinks, email links, and internal document bookmarks in the resulting PDF.'
+      },
+      {
+        title: '120-Minute Automatic File Shredding',
+        desc: 'All source Word files and generated PDFs are permanently destroyed from our servers after 120 minutes.'
+      },
+      {
+        title: 'Zero Branding or Watermarks',
+        desc: 'We never stamp promotional watermarks or logos onto your documents. Your output remains 100% clean.'
+      },
+      {
+        title: 'High-Throughput Parallel Engine',
+        desc: 'Parallel worker architecture converts multi-page documents with embedded pictures in under 3 seconds.'
+      }
+    ],
+    benefitsHeading: 'Why Professionals Convert Word to PDF with Convertly',
+    benefits: [
+      {
+        title: 'Prevent Inadvertent Document Edits',
+        desc: 'Lock text, formulas, and clauses into an immutable vector format that cannot be accidentally modified.'
+      },
+      {
+        title: 'Eliminate Device Display Discrepancies',
+        desc: 'Ensure your document renders identically on Mac, Windows, Linux, iPhone, iPad, and Android screens.'
+      },
+      {
+        title: '100% Free With Zero Paywalls',
+        desc: 'Convert as many files as you need without daily file limits or subscription prompts.'
+      },
+      {
+        title: 'Enterprise Cryptographic Security',
+        desc: 'TLS 1.3 transport encryption and automated file shredding protect confidential business memos and contracts.'
+      }
+    ],
+    supportedFormatsHeading: 'Supported Specifications & Format Matrix',
+    inputFormats: [
+      { ext: '.docx', name: 'Microsoft Word OpenXML Document', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' },
+      { ext: '.doc', name: 'Legacy Microsoft Word 97-2003 Document', mime: 'application/msword' }
+    ],
+    outputFormats: [
+      { ext: '.pdf', name: 'Standard Portable Document Format', mime: 'application/pdf' }
+    ],
+    formatNotes: 'Fully compatible with Microsoft Word (all versions), Google Docs exports, and LibreOffice Writer files up to 100MB.',
+    securityHeading: 'Confidentiality & In-Memory Office Conversion',
+    securityParagraphs: [
+      'Converting executive proposals, legal disclosures, and personnel files demands absolute privacy. Convertly operates over TLS 1.3 encrypted connections.',
+      'Our Zero-Retention Policy ensures your files are processed in temporary sandboxed memory and automatically shredded from servers after 120 minutes.',
+      'We never read, analyze, share, or train AI models on your private documents.'
+    ],
+    certifications: [
+      'Automated 120-Minute Cryptographic Shredder',
+      'TLS 1.3 Transport Encryption Protocol',
+      'Zero AI Model Training Guarantee',
+      'GDPR Article 17 Right to Erasure Compliant'
+    ],
+    performanceHeading: 'Engine Benchmarks & Specifications',
+    specs: [
+      { label: 'Conversion Engine', value: 'Headless LibreOffice + PyMuPDF', detail: 'Native vector font shaping' },
+      { label: 'Average Execution Time', value: '< 2.8 Seconds for 25 Pages', detail: 'Parallel worker processing' },
+      { label: 'Maximum File Capacity', value: '100 MB per Document', detail: 'Handles image-rich reports and books' },
+      { label: 'Font Matching Accuracy', value: '99.8% Glyph Reproduction', detail: 'Standardized OpenType & TrueType mapping' }
+    ],
+    compatibilityHeading: 'Cross-Device & Browser Support',
+    platforms: [
+      { name: 'Desktop Workstations', status: 'Full Compatibility', detail: 'Works seamlessly on Chrome, Edge, Firefox, and Brave on Windows 11/10 and macOS.' },
+      { name: 'Smartphones & Tablets', status: 'Mobile Optimized', detail: 'Convert Word documents on iPhone, iPad, and Android with direct QR beam transfer.' }
+    ],
+    useCasesHeading: 'Common Real-World Use Cases',
+    useCases: [
+      {
+        title: 'Publishing Job Resumes & CVs',
+        desc: 'Convert Word resumes to PDF so recruiters and hiring platforms see flawless margins and typography.'
+      },
+      {
+        title: 'Executing Business Agreements & NDAs',
+        desc: 'Lock agreements into standardized PDFs before emailing them for electronic signature.'
+      },
+      {
+        title: 'Submitting Academic Papers & Essays',
+        desc: 'Ensure footnote numbers, margins, and citation blocks stay locked in place across different computer platforms.'
+      },
+      {
+        title: 'Distributing Corporate Price Lists & Proposals',
+        desc: 'Distribute client quotes that open reliably in any web browser without requiring Microsoft Office.'
+      }
+    ],
+    bestResultsHeading: 'Expert Tips for Best Results with Word to PDF',
+    bestResultsTips: [
+      {
+        title: 'Embed Custom Fonts Before Saving in Word',
+        desc: 'If using rare or licensed typography, enable "Embed Fonts" in Word’s save options to ensure exact visual matching.'
+      },
+      {
+        title: 'Inspect Page Breaks and Margins',
+        desc: 'Review your Word document in Print Layout view before converting to guarantee page breaks occur at natural paragraph pauses.'
+      },
+      {
+        title: 'Combine Multiple Converted Documents',
+        desc: 'If converting individual chapters or sections, use Convertly Merge PDF afterwards to bind them into a single master document.'
+      },
+      {
+        title: 'Password Protect Sensitive PDFs',
+        desc: 'Use Convertly Protect PDF after conversion to add 256-bit AES encryption to confidential client agreements.'
+      }
+    ],
+    troubleshootingHeading: 'Common Problems & Solutions (Word to PDF)',
+    troubleshootingItems: [
+      {
+        problem: 'Why did my document pagination shift slightly?',
+        solution: 'If your document relies on non-standard third-party fonts not installed on Linux servers, font metrics may shift slightly. Standard fonts (Calibri, Arial, Times New Roman, Georgia) render identically.'
+      },
+      {
+        problem: 'Can I convert password-protected Word files?',
+        solution: 'Please remove the password from Microsoft Word before uploading, or our conversion engine will not be able to read the document streams.'
+      },
+      {
+        problem: 'Will my embedded charts and Excel tables remain crisp?',
+        solution: 'Yes! Vector charts and table grids are rendered losslessly into PDF vector paths with zero pixelation.'
+      }
+    ],
+    whyChooseHeading: 'Why Choose Convertly Over Traditional Alternatives?',
+    comparisonPoints: [
+      {
+        title: 'No Software Installation Required',
+        desc: 'Convert Word files instantly without needing Microsoft Office, Microsoft 365 subscriptions, or desktop software.'
+      },
+      {
+        title: 'No Sign-Up or Email Walls',
+        desc: 'Download your converted PDF immediately without being forced to provide your personal email address or register.'
+      },
+      {
+        title: 'Zero Added Watermarks',
+        desc: 'Unlike competing converters that stamp promotional headers or footers, Convertly outputs 100% clean documents.'
+      }
+    ],
+    faqsHeading: 'Frequently Asked Questions (Word to PDF)',
+    faqs: [
+      {
+        question: 'Will my Word document layout and formatting look identical in PDF?',
+        answer: 'Yes. Convertly renders exact font metrics, margin layouts, headers, footers, and table grids matching Microsoft Word.'
+      },
+      {
+        question: 'Can I convert older legacy .doc files from Word 97-2003?',
+        answer: 'Yes! Both modern OpenXML (.docx) and legacy binary (.doc) files are fully supported.'
+      },
+      {
+        question: 'Are custom fonts and vector shapes preserved during conversion?',
+        answer: 'Yes. Standard system fonts render identically, and embedded vector graphics and charts are converted into crisp vector paths.'
+      },
+      {
+        question: 'Does the generated PDF preserve clickable web and email links?',
+        answer: 'Yes! All embedded hyperlinks and email addresses remain clickable and interactive in the converted PDF.'
+      },
+      {
+        question: 'How long does Convertly take to convert a multi-page Word document?',
+        answer: 'Most Word documents convert in under 3 seconds using our high-speed parallel worker architecture.'
+      },
+      {
+        question: 'Is my confidential Word document safe on your servers?',
+        answer: 'Yes. All files are encrypted in transit with TLS 1.3 and permanently deleted from our servers 120 minutes after conversion.'
+      },
+      {
+        question: 'Can I convert Word documents on my iPhone, iPad, or Android phone?',
+        answer: 'Yes! Convertly is fully mobile-responsive and allows direct file uploads from your phone or cloud storage.'
+      },
+      {
+        question: 'Do I need Microsoft Office or Word installed on my computer?',
+        answer: 'No. The conversion runs entirely in the cloud on Convertly’s servers. You do not need any software installed.'
+      },
+      {
+        question: 'What is the maximum file size limit for Word to PDF?',
+        answer: 'You can convert Word files up to 100MB in size, easily accommodating heavy graphics and lengthy manuscripts.'
+      },
+      {
+        question: 'Can I password-protect the PDF after converting from Word?',
+        answer: 'Yes! Once converted, you can pass your PDF through Convertly’s "Protect PDF" tool to add military-grade AES-256 password encryption.'
+      },
+      {
+        question: 'Does Convertly add any watermarks to converted documents?',
+        answer: 'No. We never stamp watermarks, logos, or advertising onto your files. Your PDF remains 100% clean and professional.'
+      },
+      {
+        question: 'Is Word to PDF conversion completely free?',
+        answer: 'Yes, 100% free with no subscriptions, trial periods, or credit card requirements.'
+      }
+    ],
+    conclusionHeading: 'Convert Your Word Document to PDF Now',
+    conclusionParagraphs: [
+      'Stop worrying about formatting mismatches when sharing documents. Convertly gives you enterprise-grade Word to PDF conversion with precision layout preservation, high speed, and absolute privacy.',
+      'Drop your Word document in the secure box above to get your publication-ready PDF in seconds.'
+    ]
   }
 }
 
