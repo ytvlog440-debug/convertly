@@ -321,6 +321,7 @@ export function ToolSeoContentSection({ content }: ToolSeoContentSectionProps) {
                 className="overflow-hidden rounded-2xl border border-border/80 bg-card/40 transition-all duration-200"
               >
                 <button
+                  type="button"
                   onClick={() => toggleFaq(idx)}
                   aria-expanded={isOpen}
                   aria-controls={`faq-answer-${idx}`}
