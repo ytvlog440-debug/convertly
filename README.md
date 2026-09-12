@@ -165,10 +165,18 @@ docker-compose -f docker-compose.prod.yml logs -f
 ```bash
 cd backend
 python -m pytest tests/ -v
-# Output: 43 passed, 1 warning in 6.39s (100% PASS)
+# Output: 45 passed, 1 warning in 6.75s (100% PASS)
 ```
 
-### 2. Comprehensive 30-Tool Live Audit
+### 2. Comprehensive Technical SEO Audit (297 Assertions)
+Convertly includes an automated technical SEO test suite that audits the compiled static distribution:
+```bash
+cd frontend
+npm run test:seo
+# Output: 297 passed assertions, 0 failures (100% PASS)
+```
+
+### 3. Comprehensive 30-Tool Live Audit
 Convertly includes an automated end-to-end audit script (`verify_all_30_tools.py`) that executes real binary conversions on a live server for all 30 tools:
 
 ```bash
@@ -182,6 +190,17 @@ ALL 30 TOOLS TESTED: 30 / 30 PASSED (100.0%)
 CONVERTLY V2 CERTIFIED FOR ENTERPRISE DEPLOYMENT.
 ================================================================================
 ```
+
+---
+
+## ⚡ Technical SEO Architecture & Core Web Vitals
+
+- **Static Pre-rendering (SSG)**: Automated pre-rendering engine (`scripts/prerender.js`) creates static HTML snapshots for all 36 routes (`/tools/[toolId]`, `/tools`, `/privacy`, etc.) for zero-delay non-JS crawler discovery.
+- **Dynamic Sitemap Generator**: Produces `sitemap.xml` with 37 canonical entries, calibrated priorities (1.0 to 0.5), and daily/weekly change frequencies.
+- **Linked JSON-LD Knowledge Graph**: Complete `@graph` integrating `Organization`, `WebSite`, `SearchAction`, `SiteNavigationElement`, `WebApplication`, `BreadcrumbList`, `HowTo`, and `FAQPage`.
+- **Absolute Canonical Normalization**: Enforces strict canonical URLs, stripping query parameters, hash fragments, and subpath trailing slashes.
+- **Vendor Code Splitting**: Main bundle split via `manualChunks` into cached vendor chunks (`vendor-react`, `vendor-query`, `vendor-icons`), dropping main JS bundle down to 275 KB.
+- **Automated CI/CD**: GitHub Actions workflow (`.github/workflows/ci.yml`) runs on all pushes and pull requests to validate backend tests, frontend builds, and the 297-point SEO audit.
 
 ---
 
