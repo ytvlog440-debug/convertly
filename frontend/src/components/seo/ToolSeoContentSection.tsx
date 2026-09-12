@@ -497,17 +497,26 @@ export function ToolSeoContentSection({ content }: ToolSeoContentSectionProps) {
       {/* Section 15: Recommended Related Tools & Topic Clusters */}
       {content.relatedTools && content.relatedTools.length > 0 && (
         <section aria-labelledby="section-related-cluster" className="space-y-6 pt-4 border-t border-border/40">
-          <div>
-            <div className="inline-flex items-center gap-2 text-indigo-400 text-xs font-semibold uppercase tracking-wider">
-              <Layers className="h-3.5 w-3.5" />
-              <span>Recommended Tool Cluster</span>
+          <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+            <div>
+              <div className="inline-flex items-center gap-2 text-indigo-400 text-xs font-semibold uppercase tracking-wider">
+                <Layers className="h-3.5 w-3.5" />
+                <span>Recommended Tool Cluster</span>
+              </div>
+              <h2 id="section-related-cluster" className="font-heading text-xl sm:text-2xl font-bold tracking-tight text-foreground mt-1">
+                Complementary Document & Media Tools
+              </h2>
+              <p className="text-xs sm:text-sm text-muted-foreground mt-1">
+                Explore interconnected utilities to continue your document optimization workflow.
+              </p>
             </div>
-            <h2 id="section-related-cluster" className="font-heading text-xl sm:text-2xl font-bold tracking-tight text-foreground mt-1">
-              Complementary Document & Media Tools
-            </h2>
-            <p className="text-xs sm:text-sm text-muted-foreground mt-1">
-              Explore interconnected utilities to continue your document optimization workflow.
-            </p>
+            <Link
+              to="/tools"
+              className="text-xs font-semibold text-indigo-400 hover:text-indigo-300 transition-colors inline-flex items-center gap-1 shrink-0"
+            >
+              <span>View all 30 tools</span>
+              <ArrowRight className="h-3.5 w-3.5" />
+            </Link>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">

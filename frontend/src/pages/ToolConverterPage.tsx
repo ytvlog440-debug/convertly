@@ -15,7 +15,6 @@ import {
   ArrowUpDown,
   Download,
   ArrowLeft,
-  ArrowRight,
   CheckCircle2,
   AlertCircle,
   Clock,
@@ -46,7 +45,7 @@ import { addRecentConversion } from '../lib/history'
 import { generateSampleFiles } from '../lib/samples'
 import { QrTransferModal } from '../components/common/QrTransferModal'
 import { DocumentPreviewModal } from '../components/common/DocumentPreviewModal'
-import { getToolSeoContent, TOPIC_CLUSTERS, TOOL_ACTION_ANCHORS } from '../data/toolSeoContent'
+import { getToolSeoContent } from '../data/toolSeoContent'
 import { ToolSeoContentSection } from '../components/seo/ToolSeoContentSection'
 
 interface ToolConfig {
@@ -394,9 +393,6 @@ export function ToolConverterPage() {
   const location = useLocation()
 
   const config = toolId ? TOOL_CONFIGS[toolId] : null
-  const relatedToolIds = toolId && TOPIC_CLUSTERS[toolId]
-    ? TOPIC_CLUSTERS[toolId]
-    : ['pdf-to-word', 'word-to-pdf', 'pdf-compress', 'pdf-merge', 'pdf-split', 'pdf-protect', 'excel-to-pdf', 'ppt-to-pdf']
 
   // Workflow states
   const [stagedFiles, setStagedFiles] = useState<{ file: File; uploaded?: UploadedFile }[]>([])
@@ -2132,72 +2128,6 @@ export function ToolConverterPage() {
 
         {/* Comprehensive Enterprise SEO Content, Technical Specs & FAQ Section */}
         <ToolSeoContentSection content={seoContent} />
-
-        {/* Related Conversion Tools (Section 8: Internal Linking) */}
-        {config && (
-          <div className="mt-20 pt-12 border-t border-border/60">
-            <div className="flex flex-col sm:flex-row sm:items-end justify-between mb-8 gap-4">
-              <div>
-                <span className="text-xs font-semibold text-indigo-400 uppercase tracking-wider">
-                  Recommended Workflow
-                </span>
-                <h2 className="font-heading text-xl sm:text-2xl font-bold tracking-tight text-foreground mt-1">
-                  Related Conversion Tools
-                </h2>
-                <p className="mt-1 text-xs sm:text-sm text-muted-foreground">
-                  Continue working with your document using these complementary processing tools.
-                </p>
-              </div>
-              <Link
-                to="/tools"
-                className="text-xs font-semibold text-indigo-400 hover:text-indigo-300 transition-colors inline-flex items-center gap-1"
-              >
-                <span>View all tools</span>
-                <ArrowRight className="h-3.5 w-3.5" />
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {relatedToolIds.map((relId) => {
-                const relConfig = TOOL_CONFIGS[relId]
-                if (!relConfig) return null
-                const RelIcon = relConfig.icon
-                return (
-                  <Link
-                    key={relId}
-                    to={`/tools/${relId}`}
-                    className="block group"
-                  >
-                    <Card className="h-full p-5 flex flex-col justify-between group-hover:-translate-y-1 transition-all duration-300 hover:border-indigo-500/50 hover:shadow-lg hover:shadow-indigo-500/5">
-                      <div>
-                        <div className="flex items-center gap-3 mb-3">
-                          <div className={`flex h-9 w-9 items-center justify-center rounded-lg ${relConfig.color}`}>
-                            <RelIcon className="h-4 w-4" />
-                          </div>
-                          <div>
-                            <h3 className="text-sm font-semibold text-foreground group-hover:text-indigo-400 transition-colors">
-                              {relConfig.name}
-                            </h3>
-                            <span className="text-[10px] text-muted-foreground uppercase font-medium">
-                              {relConfig.category}
-                            </span>
-                          </div>
-                        </div>
-                        <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
-                          {relConfig.desc}
-                        </p>
-                      </div>
-                      <div className="mt-4 pt-2.5 border-t border-border/40 flex items-center justify-between text-xs font-semibold text-indigo-400 opacity-80 group-hover:opacity-100">
-                        <span className="truncate pr-2">{TOOL_ACTION_ANCHORS[relId]?.actionText || `Convert with ${relConfig.name}`}</span>
-                        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1 shrink-0" />
-                      </div>
-                    </Card>
-                  </Link>
-                )
-              })}
-            </div>
-          </div>
-        )}
 
       </div>
 
