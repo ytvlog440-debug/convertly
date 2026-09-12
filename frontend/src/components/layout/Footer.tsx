@@ -52,11 +52,12 @@ export function Footer() {
               PDF Toolkit
             </h5>
             <ul className="space-y-2.5 text-xs">
-              <li><Link to="/tools?category=pdf" className="text-foreground/80 hover:text-indigo-400 transition-colors">Merge PDF</Link></li>
-              <li><Link to="/tools?category=pdf" className="text-foreground/80 hover:text-indigo-400 transition-colors">Split PDF</Link></li>
-              <li><Link to="/tools?category=pdf" className="text-foreground/80 hover:text-indigo-400 transition-colors">Compress PDF</Link></li>
-              <li><Link to="/tools?category=pdf" className="text-foreground/80 hover:text-indigo-400 transition-colors">Rotate Pages</Link></li>
-              <li><Link to="/tools?category=pdf" className="text-foreground/80 hover:text-indigo-400 transition-colors">Delete / Extract Pages</Link></li>
+              <li><Link to="/tools/pdf-merge" className="text-foreground/80 hover:text-indigo-400 transition-colors">Merge PDF</Link></li>
+              <li><Link to="/tools/pdf-split" className="text-foreground/80 hover:text-indigo-400 transition-colors">Split PDF</Link></li>
+              <li><Link to="/tools/pdf-compress" className="text-foreground/80 hover:text-indigo-400 transition-colors">Compress PDF</Link></li>
+              <li><Link to="/tools/pdf-rotate" className="text-foreground/80 hover:text-indigo-400 transition-colors">Rotate PDF</Link></li>
+              <li><Link to="/tools/pdf-protect" className="text-foreground/80 hover:text-indigo-400 transition-colors">Protect PDF</Link></li>
+              <li><Link to="/tools/pdf-redact" className="text-foreground/80 hover:text-indigo-400 transition-colors">Redact PDF</Link></li>
             </ul>
           </div>
 
@@ -65,10 +66,11 @@ export function Footer() {
               Office ⇄ PDF
             </h5>
             <ul className="space-y-2.5 text-xs">
-              <li><Link to="/tools?category=office" className="text-foreground/80 hover:text-indigo-400 transition-colors">Word to PDF (DOCX)</Link></li>
-              <li><Link to="/tools?category=office" className="text-foreground/80 hover:text-indigo-400 transition-colors">PDF to Word</Link></li>
-              <li><Link to="/tools?category=office" className="text-foreground/80 hover:text-indigo-400 transition-colors">Excel to PDF (XLSX)</Link></li>
-              <li><Link to="/tools?category=office" className="text-foreground/80 hover:text-indigo-400 transition-colors">PowerPoint to PDF (PPTX)</Link></li>
+              <li><Link to="/tools/pdf-to-word" className="text-foreground/80 hover:text-indigo-400 transition-colors">PDF to Word</Link></li>
+              <li><Link to="/tools/word-to-pdf" className="text-foreground/80 hover:text-indigo-400 transition-colors">Word to PDF</Link></li>
+              <li><Link to="/tools/excel-to-pdf" className="text-foreground/80 hover:text-indigo-400 transition-colors">Excel to PDF</Link></li>
+              <li><Link to="/tools/ppt-to-pdf" className="text-foreground/80 hover:text-indigo-400 transition-colors">PowerPoint to PDF</Link></li>
+              <li><Link to="/tools/pdf-to-txt" className="text-foreground/80 hover:text-indigo-400 transition-colors">PDF to Text</Link></li>
             </ul>
           </div>
 
@@ -77,10 +79,12 @@ export function Footer() {
               Image Converter
             </h5>
             <ul className="space-y-2.5 text-xs">
-              <li><Link to="/tools?category=images" className="text-foreground/80 hover:text-indigo-400 transition-colors">JPG to PNG / WEBP</Link></li>
-              <li><Link to="/tools?category=images" className="text-foreground/80 hover:text-indigo-400 transition-colors">PNG to WEBP</Link></li>
-              <li><Link to="/tools?category=images" className="text-foreground/80 hover:text-indigo-400 transition-colors">PDF to High-Res Images</Link></li>
-              <li><Link to="/tools?category=images" className="text-foreground/80 hover:text-indigo-400 transition-colors">Images to Multi-page PDF</Link></li>
+              <li><Link to="/tools/images-to-pdf" className="text-foreground/80 hover:text-indigo-400 transition-colors">Images to PDF</Link></li>
+              <li><Link to="/tools/pdf-to-images" className="text-foreground/80 hover:text-indigo-400 transition-colors">PDF to Images</Link></li>
+              <li><Link to="/tools/jpg-to-png" className="text-foreground/80 hover:text-indigo-400 transition-colors">JPG to PNG</Link></li>
+              <li><Link to="/tools/png-to-jpg" className="text-foreground/80 hover:text-indigo-400 transition-colors">PNG to JPG</Link></li>
+              <li><Link to="/tools/image-to-webp" className="text-foreground/80 hover:text-indigo-400 transition-colors">Image to WebP</Link></li>
+              <li><Link to="/tools/image-compress" className="text-foreground/80 hover:text-indigo-400 transition-colors">Compress Image</Link></li>
             </ul>
           </div>
 

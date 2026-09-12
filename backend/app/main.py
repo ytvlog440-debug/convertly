@@ -63,7 +63,7 @@ async def security_and_rate_limit_middleware(request: Request, call_next):
             return JSONResponse(
                 status_code=429,
                 content={
-                    "type": "https://convertly.app/errors/rate_limit_exceeded",
+                    "type": "https://convertlytools.xyz/errors/rate_limit_exceeded",
                     "title": "Rate Limit Exceeded",
                     "status": 429,
                     "detail": "Too many requests. Please slow down and try again in a moment."

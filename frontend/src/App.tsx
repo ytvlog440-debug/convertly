@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Navbar } from './components/layout/Navbar'
 import { Footer } from './components/layout/Footer'
+import { ScrollToTop } from './components/ScrollToTop'
 
 
 // Route-level Code Splitting for Lighthouse Performance
@@ -43,6 +44,7 @@ export function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
+        <ScrollToTop />
         <div className="flex min-h-screen flex-col bg-background text-foreground transition-colors duration-300">
           <Navbar />
           <main className="flex-1">

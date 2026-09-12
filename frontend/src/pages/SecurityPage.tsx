@@ -7,8 +7,13 @@ export function SecurityPage() {
   return (
     <div className="py-12 md:py-16">
       <SeoHead
-        title="Security Architecture & Trust | Convertly V2"
-        description="Comprehensive technical overview of Convertly V2's multi-tier security architecture, sandbox isolation, TLS 1.3 encryption, and automated multi-pass shredder."
+        title="Security Architecture & Trust | Convertly"
+        description="Comprehensive technical overview of Convertly's multi-tier security architecture, sandbox isolation, TLS 1.3 encryption, and automated multi-pass shredder."
+        canonicalUrl="https://convertlytools.xyz/security"
+        breadcrumbs={[
+          { name: 'Home', item: 'https://convertlytools.xyz/' },
+          { name: 'Security Architecture', item: 'https://convertlytools.xyz/security' }
+        ]}
       />
 
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">

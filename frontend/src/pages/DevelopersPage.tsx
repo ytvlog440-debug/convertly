@@ -34,14 +34,14 @@ const ENDPOINTS: EndpointDoc[] = [
     path: '/api/v1/files/upload',
     desc: 'Upload a document or image with magic-byte validation and antivirus pre-scanning. Returns a unique file ID with 120-minute expiry.',
     snippets: {
-      curl: `curl -X POST "https://convertly.app/api/v1/files/upload" \\
+      curl: `curl -X POST "https://convertlytools.xyz/api/v1/files/upload" \\
   -H "Accept: application/json" \\
   -F "file=@/path/to/quarterly_report.pdf"`,
       python: `import requests
 
 with open("quarterly_report.pdf", "rb") as f:
     response = requests.post(
-        "https://convertly.app/api/v1/files/upload",
+        "https://convertlytools.xyz/api/v1/files/upload",
         files={"file": ("quarterly_report.pdf", f, "application/pdf")}
     )
 
@@ -51,7 +51,7 @@ print("Expires at:", data["expires_at"])`,
       javascript: `const formData = new FormData();
 formData.append("file", fileInput.files[0]);
 
-const res = await fetch("https://convertly.app/api/v1/files/upload", {
+const res = await fetch("https://convertlytools.xyz/api/v1/files/upload", {
   method: "POST",
   body: formData
 });
@@ -80,7 +80,7 @@ console.log("File ID:", data.id);`,
     path: '/api/v1/jobs',
     desc: 'Submit one or more file IDs to any of Convertly 30 binary conversion engines with customized transformation parameters.',
     snippets: {
-      curl: `curl -X POST "https://convertly.app/api/v1/jobs" \\
+      curl: `curl -X POST "https://convertlytools.xyz/api/v1/jobs" \\
   -H "Content-Type: application/json" \\
   -d '{
     "tool_id": "pdf-compress",
@@ -97,10 +97,10 @@ payload = {
     "options": {"level": "recommended"}
 }
 
-res = requests.post("https://convertly.app/api/v1/jobs", json=payload)
+res = requests.post("https://convertlytools.xyz/api/v1/jobs", json=payload)
 job_id = res.json()["data"]["id"]
 print("Dispatched Job ID:", job_id)`,
-      javascript: `const res = await fetch("https://convertly.app/api/v1/jobs", {
+      javascript: `const res = await fetch("https://convertlytools.xyz/api/v1/jobs", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
@@ -134,14 +134,14 @@ console.log("Job ID:", data.id);`,
     path: '/api/v1/jobs/{job_id}',
     desc: 'Poll background worker progress until status reaches "completed" or "failed". Execution typically concludes in under 1 second.',
     snippets: {
-      curl: `curl "https://convertly.app/api/v1/jobs/318a610b-c568-4da4-9fe0-097e0803afb4"`,
+      curl: `curl "https://convertlytools.xyz/api/v1/jobs/318a610b-c568-4da4-9fe0-097e0803afb4"`,
       python: `import time
 import requests
 
 job_id = "318a610b-c568-4da4-9fe0-097e0803afb4"
 
 while True:
-    res = requests.get(f"https://convertly.app/api/v1/jobs/{job_id}")
+    res = requests.get(f"https://convertlytools.xyz/api/v1/jobs/{job_id}")
     job = res.json()["data"]
     if job["status"] == "completed":
         print("Output file ready:", job["output_file_id"])
@@ -149,7 +149,7 @@ while True:
     time.sleep(0.5)`,
       javascript: `async function waitForJob(jobId) {
   while (true) {
-    const res = await fetch(\`https://convertly.app/api/v1/jobs/\${jobId}\`);
+    const res = await fetch(\`https://convertlytools.xyz/api/v1/jobs/\${jobId}\`);
     const { data } = await res.json();
     if (data.status === "completed") return data.output_file_id;
     if (data.status === "failed") throw new Error(data.error_message);
@@ -178,18 +178,18 @@ while True:
     path: '/api/v1/files/{file_id}/download',
     desc: 'Streams the converted binary with safe Content-Disposition headers and anti-sniffing X-Content-Type-Options.',
     snippets: {
-      curl: `curl -O -J "https://convertly.app/api/v1/files/44e2e6cf-8524-409b-ac27-a7ae82017fcb/download"`,
+      curl: `curl -O -J "https://convertlytools.xyz/api/v1/files/44e2e6cf-8524-409b-ac27-a7ae82017fcb/download"`,
       python: `import requests
 
 file_id = "44e2e6cf-8524-409b-ac27-a7ae82017fcb"
-res = requests.get(f"https://convertly.app/api/v1/files/{file_id}/download")
+res = requests.get(f"https://convertlytools.xyz/api/v1/files/{file_id}/download")
 
 with open("compressed_output.pdf", "wb") as f:
     f.write(res.content)
 print("Downloaded converted file successfully!")`,
       javascript: `// Trigger direct browser download
 const fileId = "44e2e6cf-8524-409b-ac27-a7ae82017fcb";
-window.location.href = \`https://convertly.app/api/v1/files/\${fileId}/download\`;`,
+window.location.href = \`https://convertlytools.xyz/api/v1/files/\${fileId}/download\`;`,
     },
     responseExample: `HTTP/1.1 200 OK
 Content-Type: application/pdf
@@ -206,13 +206,13 @@ X-Content-Type-Options: nosniff
     path: '/api/v1/files/inspect',
     desc: 'Inspects PDF byte dictionary for metadata trails, form widgets, embedded JavaScript hooks, and encryption layers.',
     snippets: {
-      curl: `curl -X POST "https://convertly.app/api/v1/files/inspect" \\
+      curl: `curl -X POST "https://convertlytools.xyz/api/v1/files/inspect" \\
   -F "file=@document_to_audit.pdf"`,
       python: `import requests
 
 with open("document_to_audit.pdf", "rb") as f:
     res = requests.post(
-        "https://convertly.app/api/v1/files/inspect",
+        "https://convertlytools.xyz/api/v1/files/inspect",
         files={"file": ("document_to_audit.pdf", f, "application/pdf")}
     )
 
@@ -223,7 +223,7 @@ print("Recommendations:", len(audit["recommendations"]))`,
       javascript: `const formData = new FormData();
 formData.append("file", file);
 
-const res = await fetch("https://convertly.app/api/v1/files/inspect", {
+const res = await fetch("https://convertlytools.xyz/api/v1/files/inspect", {
   method: "POST",
   body: formData
 });
@@ -274,8 +274,13 @@ export function DevelopersPage() {
   return (
     <div className="py-12 md:py-16">
       <SeoHead
-        title="Developer API & REST Integration | Convertly V2"
-        description="Integrate Convertly V2's 30 native document conversion engines programmatically with cURL, Python, and JavaScript REST endpoints."
+        title="Developer API & REST Integration | Convertly"
+        description="Integrate Convertly's 30 native document conversion engines programmatically with cURL, Python, and JavaScript REST endpoints."
+        canonicalUrl="https://convertlytools.xyz/developers"
+        breadcrumbs={[
+          { name: 'Home', item: 'https://convertlytools.xyz/' },
+          { name: 'Developer API', item: 'https://convertlytools.xyz/developers' }
+        ]}
       />
 
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">

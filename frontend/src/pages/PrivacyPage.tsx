@@ -6,8 +6,13 @@ export function PrivacyPage() {
   return (
     <div className="py-12 md:py-16">
       <SeoHead
-        title="Privacy Policy & Zero-Retention Guarantee | Convertly V2"
-        description="Learn how Convertly V2 protects your privacy with zero permanent document storage, automated 120-minute privacy shredding, and full GDPR compliance."
+        title="Privacy Policy & Zero-Retention Guarantee | Convertly"
+        description="Learn how Convertly protects your privacy with zero permanent document storage, automated 120-minute privacy shredding, and full GDPR compliance."
+        canonicalUrl="https://convertlytools.xyz/privacy"
+        breadcrumbs={[
+          { name: 'Home', item: 'https://convertlytools.xyz/' },
+          { name: 'Privacy Policy', item: 'https://convertlytools.xyz/privacy' }
+        ]}
       />
 
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">

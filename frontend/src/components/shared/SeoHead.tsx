@@ -13,16 +13,18 @@ export interface SeoFaq {
 export interface SeoHeadProps {
   title?: string
   description?: string
+  keywords?: string
   canonicalUrl?: string
   breadcrumbs?: SeoBreadcrumb[]
   faqs?: SeoFaq[]
-  schemaJson?: Record<string, unknown>
+  schemaJson?: Record<string, unknown> | Record<string, unknown>[]
 }
 
 export function SeoHead({
-  title = 'Convertly V2 — Free Online PDF, Office & Image Converter',
+  title = 'Convertly — Free Online PDF, Office & Image Converter',
   description = 'High-performance, secure and free file conversion SaaS. Convert PDF, Word, Excel, PowerPoint, and images with zero data retention.',
-  canonicalUrl = 'https://convertly.app',
+  keywords,
+  canonicalUrl = 'https://convertlytools.xyz',
   breadcrumbs,
   faqs,
   schemaJson,
@@ -38,6 +40,17 @@ export function SeoHead({
       document.head.appendChild(metaDesc)
     }
     metaDesc.setAttribute('content', description)
+
+    // Update or insert meta keywords
+    if (keywords) {
+      let metaKeywords = document.querySelector('meta[name="keywords"]')
+      if (!metaKeywords) {
+        metaKeywords = document.createElement('meta')
+        metaKeywords.setAttribute('name', 'keywords')
+        document.head.appendChild(metaKeywords)
+      }
+      metaKeywords.setAttribute('content', keywords)
+    }
 
     // Canonical link tag
     let canonical = document.querySelector('link[rel="canonical"]')
@@ -135,7 +148,11 @@ export function SeoHead({
     }
 
     if (schemaJson) {
-      schemas.push(schemaJson)
+      if (Array.isArray(schemaJson)) {
+        schemas.push(...schemaJson)
+      } else {
+        schemas.push(schemaJson)
+      }
     }
 
     // Inject Script Tag
@@ -148,7 +165,7 @@ export function SeoHead({
       document.head.appendChild(scriptTag)
     }
     scriptTag.text = JSON.stringify(schemas.length === 1 ? schemas[0] : schemas)
-  }, [title, description, canonicalUrl, breadcrumbs, faqs, schemaJson])
+  }, [title, description, keywords, canonicalUrl, breadcrumbs, faqs, schemaJson])
 
   return null
 }

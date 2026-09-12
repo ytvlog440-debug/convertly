@@ -185,8 +185,13 @@ export function FormatsPage() {
   return (
     <div className="py-12 md:py-16">
       <SeoHead
-        title="Supported File Formats & Technical Specifications | Convertly V2"
-        description="Comprehensive technical specifications of all formats supported by Convertly V2: MIME types, magic byte signatures, transformation engines, and conversion matrix."
+        title="Supported File Formats & Technical Specifications | Convertly"
+        description="Comprehensive technical specifications of all formats supported by Convertly: MIME types, magic byte signatures, transformation engines, and conversion matrix."
+        canonicalUrl="https://convertlytools.xyz/formats"
+        breadcrumbs={[
+          { name: 'Home', item: 'https://convertlytools.xyz/' },
+          { name: 'Supported Formats', item: 'https://convertlytools.xyz/formats' }
+        ]}
       />
 
       <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">

@@ -24,6 +24,21 @@ def find_libreoffice_bin() -> Optional[str]:
     return None
 
 
+def find_tesseract_bin() -> Optional[str]:
+    """Find Tesseract OCR executable if installed in system PATH or standard directories."""
+    candidates = [
+        shutil.which("tesseract"),
+        r"C:\Program Files\Tesseract-OCR\tesseract.exe",
+        r"C:\Program Files (x86)\Tesseract-OCR\tesseract.exe",
+        "/usr/bin/tesseract",
+        "/usr/local/bin/tesseract",
+    ]
+    for c in candidates:
+        if c and os.path.isfile(c):
+            return c
+    return None
+
+
 def run_libreoffice_conversion(input_path: str, output_dir: str, target_format: str = "pdf") -> str:
     """Execute headless LibreOffice conversion."""
     soffice_bin = find_libreoffice_bin()
@@ -199,7 +214,7 @@ class WordToPdfConverter(BaseConverter):
         )
 
 
-# 2. PDF to Word Converter
+# 2. PDF to Word Converter with OCR Fallback
 class PdfToWordConverter(BaseConverter):
     @property
     def tool_id(self) -> str:
@@ -230,14 +245,101 @@ class PdfToWordConverter(BaseConverter):
         self.validate_inputs(input_paths, options)
         src_path = input_paths[0]
 
-        from pdf2docx import Converter
+        import fitz
+        from docx import Document
+        from docx.shared import Inches, Pt
+        from app.core.logging import logger
+
         out_filename = f"converted_{uuid.uuid4().hex[:8]}.docx"
         out_path = os.path.join(output_dir, out_filename)
 
-        cv = Converter(src_path)
-        # Parse layout, tables, formatting and write to DOCX
-        cv.convert(out_path)
-        cv.close()
+        # Inspect PDF text density & structure
+        doc = fitz.open(src_path)
+        total_pages = len(doc)
+        page_texts = [page.get_text().strip() for page in doc]
+        total_chars = sum(len(t) for t in page_texts)
+        force_ocr = options.get("ocr", False) or options.get("force_ocr", False)
+
+        has_scanned_pages = force_ocr or (total_chars < max(30, total_pages * 15))
+        converted_with_pdf2docx = False
+
+        if not has_scanned_pages:
+            try:
+                from pdf2docx import Converter
+                cv = Converter(src_path)
+                cv.convert(out_path)
+                cv.close()
+
+                if os.path.exists(out_path):
+                    test_doc = Document(out_path)
+                    docx_text = "".join(p.text for p in test_doc.paragraphs).strip()
+                    if len(docx_text) >= 20:
+                        converted_with_pdf2docx = True
+            except Exception as e:
+                logger.warning(f"pdf2docx conversion failed or incomplete ({e}), falling back to OCR engine.")
+
+        # If pdf2docx failed, document is scanned, or produced an empty document without editable text
+        if not converted_with_pdf2docx:
+            tess_bin = find_tesseract_bin()
+            has_pytess = False
+            if tess_bin:
+                try:
+                    import pytesseract
+                    pytesseract.pytesseract.tesseract_cmd = tess_bin
+                    has_pytess = True
+                except Exception as e:
+                    logger.warning(f"Failed to initialize pytesseract: {e}")
+
+            docx_out = Document()
+
+            # Set clean 0.75" standard Word margins
+            for section in docx_out.sections:
+                section.top_margin = Inches(0.75)
+                section.bottom_margin = Inches(0.75)
+                section.left_margin = Inches(0.75)
+                section.right_margin = Inches(0.75)
+
+            for page_idx, page in enumerate(doc):
+                if page_idx > 0:
+                    docx_out.add_page_break()
+
+                raw_page_text = page_texts[page_idx] if page_idx < len(page_texts) else ""
+
+                # If page already has rich digital text and OCR is not explicitly forced, use native text
+                if len(raw_page_text) > 40 and not force_ocr:
+                    extracted_text = raw_page_text
+                elif has_pytess:
+                    import io
+                    import pytesseract
+                    from PIL import Image
+
+                    pix = page.get_pixmap(dpi=200)
+                    pil_img = Image.open(io.BytesIO(pix.tobytes("png")))
+                    try:
+                        extracted_text = pytesseract.image_to_string(pil_img, lang="eng")
+                    except Exception as ocr_err:
+                        logger.warning(f"OCR failed for page {page_idx + 1}: {ocr_err}")
+                        extracted_text = raw_page_text
+                else:
+                    extracted_text = raw_page_text
+
+                # Build clean editable Word paragraphs
+                blocks = extracted_text.split("\n\n")
+                for block in blocks:
+                    clean_block = block.strip()
+                    if clean_block:
+                        p = docx_out.add_paragraph()
+                        lines = clean_block.splitlines()
+                        for line_idx, line in enumerate(lines):
+                            run = p.add_run(line.strip())
+                            run.font.name = "Calibri"
+                            run.font.size = Pt(11)
+                            if line_idx < len(lines) - 1:
+                                p.add_run("\n")
+
+            docx_out.save(out_path)
+
+        doc.close()
 
         self.validate_output(out_path)
         validate_office_archive(out_path, "word/document.xml")

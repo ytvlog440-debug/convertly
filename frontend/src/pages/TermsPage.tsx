@@ -6,8 +6,13 @@ export function TermsPage() {
   return (
     <div className="py-12 md:py-16">
       <SeoHead
-        title="Terms of Service | Convertly V2"
-        description="Review the Convertly V2 Terms of Service covering acceptable use, free availability, and document ownership."
+        title="Terms of Service | Convertly"
+        description="Review the Convertly Terms of Service covering acceptable use, free availability, and document ownership."
+        canonicalUrl="https://convertlytools.xyz/terms"
+        breadcrumbs={[
+          { name: 'Home', item: 'https://convertlytools.xyz/' },
+          { name: 'Terms of Service', item: 'https://convertlytools.xyz/terms' }
+        ]}
       />
 
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
