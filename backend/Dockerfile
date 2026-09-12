@@ -20,10 +20,12 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# Install runtime system packages (LibreOffice for Office fidelity, Poppler, Fonts)
+# Install runtime system packages (LibreOffice for Office fidelity, Poppler, Tesseract OCR, Fonts)
 RUN apt-get update && apt-get install -y --no-install-recommends \
     libreoffice \
     poppler-utils \
+    tesseract-ocr \
+    tesseract-ocr-eng \
     fonts-dejavu-core \
     fonts-liberation \
     curl \
