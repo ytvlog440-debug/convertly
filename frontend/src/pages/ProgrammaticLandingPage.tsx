@@ -19,6 +19,7 @@ import { Button } from '../components/ui/Button'
 import { SeoHead } from '../components/shared/SeoHead'
 import { resolveProgrammaticPage } from '../data/programmaticSeoData'
 import { NotFoundPage } from './NotFoundPage'
+import { trackToolSelected } from '../lib/analytics'
 
 export function ProgrammaticLandingPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -95,7 +96,10 @@ export function ProgrammaticLandingPage() {
               </div>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
-                <Link to={`/tools/${data.toolId}`}>
+                <Link
+                  to={`/tools/${data.toolId}`}
+                  onClick={() => trackToolSelected(data.h1, undefined, 'programmatic_landing')}
+                >
                   <Button size="lg" className="w-full sm:w-auto bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-500 hover:to-indigo-600 shadow-md shadow-indigo-500/20 gap-2">
                     <span>Open Converter Workspace</span>
                     <ArrowRight className="h-4 w-4" />

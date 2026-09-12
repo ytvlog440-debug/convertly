@@ -14,6 +14,7 @@ import { Button } from '../components/ui/Button'
 import { SeoHead } from '../components/shared/SeoHead'
 import { COMPARISONS_DATA } from '../data/comparisonsData'
 import { NotFoundPage } from './NotFoundPage'
+import { trackToolSelected } from '../lib/analytics'
 
 export function ComparisonDetailPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -223,7 +224,10 @@ export function ComparisonDetailPage() {
                   <h3 className="text-sm font-semibold text-foreground">{tool.name}</h3>
                   <p className="text-xs text-muted-foreground leading-relaxed">{tool.desc}</p>
                 </div>
-                <Link to={`/tools/${tool.id}`}>
+                <Link
+                  to={`/tools/${tool.id}`}
+                  onClick={() => trackToolSelected(tool.name, undefined, 'comparison_detail')}
+                >
                   <Button variant="outline" size="sm" className="w-full gap-1.5 text-xs">
                     <span>Launch {tool.name}</span>
                     <ArrowRight className="h-3 w-3" />

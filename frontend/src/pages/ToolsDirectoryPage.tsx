@@ -26,6 +26,7 @@ import {
 import { Card, CardTitle, CardDescription } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
 import { SeoHead } from '../components/shared/SeoHead'
+import { trackToolSelected, trackSearchUsed } from '../lib/analytics'
 
 // Reordered by search demand, matching HomePage exactly
 const ALL_TOOLS = [
@@ -337,6 +338,21 @@ export function ToolsDirectoryPage() {
     return matchesCategory && matchesSearch
   })
 
+  // Debounced search tracking (minimum 2 characters to avoid noise)
+  useEffect(() => {
+    const trimmed = searchQuery.trim()
+    if (trimmed.length < 2) return
+
+    const timer = setTimeout(() => {
+      trackSearchUsed({
+        search_term: trimmed,
+        results_count: filtered.length,
+      })
+    }, 600)
+
+    return () => clearTimeout(timer)
+  }, [searchQuery, filtered.length])
+
   const DIRECTORY_SCHEMAS = [
     {
       '@context': 'https://schema.org',
@@ -453,7 +469,12 @@ export function ToolsDirectoryPage() {
             {filtered.map((tool) => {
               const Icon = tool.icon
               return (
-                <Link key={tool.id} to={`/tools/${tool.id}`} className="block group">
+                <Link
+                  key={tool.id}
+                  to={`/tools/${tool.id}`}
+                  onClick={() => trackToolSelected(tool.name, tool.category, 'tools_directory')}
+                  className="block group"
+                >
                   <Card className="h-full flex flex-col justify-between group-hover:-translate-y-1 transition-all duration-300 hover:border-indigo-500/50 hover:shadow-lg hover:shadow-indigo-500/5">
                     <div>
                       <div className="flex items-start justify-between mb-4">

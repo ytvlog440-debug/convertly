@@ -47,6 +47,17 @@ import { QrTransferModal } from '../components/common/QrTransferModal'
 import { DocumentPreviewModal } from '../components/common/DocumentPreviewModal'
 import { getToolSeoContent } from '../data/toolSeoContent'
 import { ToolSeoContentSection } from '../components/seo/ToolSeoContentSection'
+import {
+  trackToolOpened,
+  trackFileUploadStarted,
+  trackFileUploadCompleted,
+  trackConversionStarted,
+  trackConversionCompleted,
+  trackToolConversionFinished,
+  trackDownloadStarted,
+  trackDownloadCompleted,
+  trackErrorOccurred,
+} from '../lib/analytics'
 
 interface ToolConfig {
   id: string
@@ -456,7 +467,11 @@ export function ToolConverterPage() {
     setJob(null)
     setError(null)
     setIsProcessing(false)
-  }, [toolId])
+
+    if (config) {
+      trackToolOpened(config.name, config.category)
+    }
+  }, [toolId, config])
 
   if (!config) {
     return (
@@ -471,8 +486,18 @@ export function ToolConverterPage() {
   }
 
   const handleFilesSelected = async (newFiles: File[]) => {
+    if (newFiles.length === 0) return
     setError(null)
     setIsUploading(true)
+
+    const totalBytes = newFiles.reduce((acc, f) => acc + f.size, 0)
+    const inputExt = newFiles[0]?.name.split('.').pop()?.toLowerCase() || ''
+
+    trackFileUploadStarted({
+      tool_name: config.name,
+      file_size: totalBytes,
+      input_format: inputExt,
+    })
 
     try {
       const uploadedList: { file: File; uploaded?: UploadedFile }[] = []
@@ -485,8 +510,26 @@ export function ToolConverterPage() {
       setStagedFiles((prev) =>
         config.maxFiles === 1 ? uploadedList.slice(0, 1) : [...prev, ...uploadedList]
       )
+
+      trackFileUploadCompleted({
+        tool_name: config.name,
+        file_size: totalBytes,
+        input_format: inputExt,
+        success: true,
+      })
     } catch (err: unknown) {
-      setError(err instanceof Error ? err.message : 'Upload failed')
+      const errMsg = err instanceof Error ? err.message : 'Upload failed'
+      setError(errMsg)
+      trackFileUploadCompleted({
+        tool_name: config.name,
+        file_size: totalBytes,
+        input_format: inputExt,
+        success: false,
+      })
+      trackErrorOccurred({
+        error_message: errMsg,
+        tool_name: config.name,
+      })
     } finally {
       setIsUploading(false)
     }
@@ -709,6 +752,28 @@ export function ToolConverterPage() {
       }
 
       const inputIds = stagedFiles.map((f) => f.uploaded!.id)
+      const inputExt = stagedFiles[0]?.file.name.split('.').pop()?.toLowerCase() || ''
+      const outputExt = (
+        config.id === 'pdf-to-word'
+          ? 'docx'
+          : config.id === 'pdf-to-images'
+          ? 'zip'
+          : config.id === 'pdf-to-txt'
+          ? 'txt'
+          : config.category === 'Images'
+          ? 'png'
+          : 'pdf'
+      )
+      const totalBytes = stagedFiles.reduce((acc, f) => acc + f.file.size, 0)
+      const conversionStartTime = Date.now()
+
+      trackConversionStarted({
+        tool_name: config.name,
+        input_format: inputExt,
+        output_format: outputExt,
+        file_size: totalBytes,
+      })
+
       const createdJob = await createJob(config.id, inputIds, options)
       setJob(createdJob)
 
@@ -720,9 +785,42 @@ export function ToolConverterPage() {
           if (current.status === 'completed' || current.status === 'failed') {
             clearInterval(pollInterval)
             setIsProcessing(false)
+            const durationSeconds = Number(((Date.now() - conversionStartTime) / 1000).toFixed(2))
+
             if (current.status === 'failed') {
-              setError(current.error_message || 'Conversion execution failed.')
+              const failMsg = current.error_message || 'Conversion execution failed.'
+              setError(failMsg)
+              trackToolConversionFinished({
+                tool_name: config.name,
+                input_format: inputExt,
+                output_format: outputExt,
+                file_size: totalBytes,
+                conversion_time: durationSeconds,
+                success: false,
+                error_message: failMsg,
+              })
+              trackErrorOccurred({
+                error_message: failMsg,
+                tool_name: config.name,
+              })
             } else if (current.status === 'completed' && current.output_file_id) {
+              trackConversionCompleted({
+                tool_name: config.name,
+                input_format: inputExt,
+                output_format: outputExt,
+                file_size: totalBytes,
+                conversion_time: durationSeconds,
+                success: true,
+              })
+              trackToolConversionFinished({
+                tool_name: config.name,
+                input_format: inputExt,
+                output_format: outputExt,
+                file_size: totalBytes,
+                conversion_time: durationSeconds,
+                success: true,
+              })
+
               const baseName = stagedFiles[0]?.file.name.replace(/\.[^/.]+$/, '') || 'converted'
               const ext =
                 config.id === 'pdf-to-word'
@@ -752,12 +850,38 @@ export function ToolConverterPage() {
         } catch {
           clearInterval(pollInterval)
           setIsProcessing(false)
-          setError('Failed to poll conversion status.')
+          const durationSeconds = Number(((Date.now() - conversionStartTime) / 1000).toFixed(2))
+          const pollErrMsg = 'Failed to poll conversion status.'
+          setError(pollErrMsg)
+          trackToolConversionFinished({
+            tool_name: config.name,
+            input_format: inputExt,
+            output_format: outputExt,
+            file_size: totalBytes,
+            conversion_time: durationSeconds,
+            success: false,
+            error_message: pollErrMsg,
+          })
+          trackErrorOccurred({
+            error_message: pollErrMsg,
+            tool_name: config.name,
+          })
         }
       }, 700)
     } catch (err: unknown) {
       setIsProcessing(false)
-      setError(err instanceof Error ? err.message : 'Job execution failed.')
+      const errorMsg = err instanceof Error ? err.message : 'Job execution failed.'
+      setError(errorMsg)
+      trackToolConversionFinished({
+        tool_name: config.name,
+        conversion_time: 0,
+        success: false,
+        error_message: errorMsg,
+      })
+      trackErrorOccurred({
+        error_message: errorMsg,
+        tool_name: config.name,
+      })
     }
   }
 
@@ -961,6 +1085,21 @@ export function ToolConverterPage() {
               <a
                 href={currentDownloadUrl}
                 download={currentOutputFilename}
+                onClick={() => {
+                  const outExt = ext.replace('.', '').toLowerCase()
+                  const sz = stagedFiles[0]?.file.size
+                  trackDownloadStarted({
+                    tool_name: config.name,
+                    output_format: outExt,
+                    file_size: sz,
+                  })
+                  trackDownloadCompleted({
+                    tool_name: config.name,
+                    output_format: outExt,
+                    file_size: sz,
+                    success: true,
+                  })
+                }}
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 rounded-xl bg-indigo-600 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/25 hover:bg-indigo-500 transition-all cursor-pointer"
               >
                 <Download className="h-4 w-4" />

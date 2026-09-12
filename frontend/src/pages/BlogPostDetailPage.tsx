@@ -12,6 +12,7 @@ import { Button } from '../components/ui/Button'
 import { SeoHead } from '../components/shared/SeoHead'
 import { BLOG_POSTS_DATA } from '../data/blogData'
 import { NotFoundPage } from './NotFoundPage'
+import { trackToolSelected } from '../lib/analytics'
 
 export function BlogPostDetailPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -154,7 +155,10 @@ export function BlogPostDetailPage() {
             <h3 className="text-base font-bold text-foreground">{post.recommendedToolName}</h3>
             <p className="text-xs text-muted-foreground">Execute your workflow in seconds with zero data retention.</p>
           </div>
-          <Link to={`/tools/${post.recommendedToolId}`}>
+          <Link
+            to={`/tools/${post.recommendedToolId}`}
+            onClick={() => trackToolSelected(post.recommendedToolName, undefined, 'blog_post_detail')}
+          >
             <Button className="bg-indigo-600 hover:bg-indigo-500 gap-1.5 text-xs shrink-0">
               <span>Launch Tool Now</span>
               <ArrowRight className="h-3.5 w-3.5" />

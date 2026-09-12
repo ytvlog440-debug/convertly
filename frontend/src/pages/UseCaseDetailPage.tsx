@@ -17,6 +17,7 @@ import { Button } from '../components/ui/Button'
 import { SeoHead } from '../components/shared/SeoHead'
 import { USE_CASES_DATA } from '../data/useCasesData'
 import { NotFoundPage } from './NotFoundPage'
+import { trackToolSelected } from '../lib/analytics'
 
 export function UseCaseDetailPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -112,7 +113,10 @@ export function UseCaseDetailPage() {
                   <h3 className="text-sm font-bold text-foreground">{wf.title}</h3>
                   <p className="text-xs text-muted-foreground leading-relaxed">{wf.desc}</p>
                 </div>
-                <Link to={`/tools/${wf.toolId}`}>
+                <Link
+                  to={`/tools/${wf.toolId}`}
+                  onClick={() => trackToolSelected(wf.toolName, undefined, 'use_case_detail')}
+                >
                   <Button variant="outline" size="sm" className="w-full gap-1.5 text-xs justify-between group">
                     <span>Open {wf.toolName}</span>
                     <ArrowRight className="h-3.5 w-3.5 group-hover:translate-x-0.5 transition-transform" />

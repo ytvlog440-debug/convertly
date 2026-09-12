@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import {
   FileText,
@@ -36,6 +36,7 @@ import { Card, CardTitle, CardDescription } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
 import { SeoHead } from '../components/shared/SeoHead'
 import { useHealth } from '../hooks/useHealth'
+import { trackToolSelected, trackSearchUsed } from '../lib/analytics'
 
 interface ToolItem {
   id: string
@@ -515,6 +516,21 @@ export function HomePage() {
     })
   }, [activeTab, searchQuery])
 
+  // Debounced search tracking (minimum 2 characters to avoid noise)
+  useEffect(() => {
+    const trimmed = searchQuery.trim()
+    if (trimmed.length < 2) return
+
+    const timer = setTimeout(() => {
+      trackSearchUsed({
+        search_term: trimmed,
+        results_count: filteredTools.length,
+      })
+    }, 600)
+
+    return () => clearTimeout(timer)
+  }, [searchQuery, filteredTools.length])
+
   return (
     <div className="relative overflow-hidden">
       <SeoHead
@@ -590,6 +606,7 @@ export function HomePage() {
                 <Link
                   key={tool.name}
                   to={tool.path}
+                  onClick={() => trackToolSelected(tool.name, undefined, 'home_hero_quick_links')}
                   className="inline-flex items-center gap-1.5 rounded-full border border-border/70 bg-card/60 px-3 py-1 text-xs font-medium text-foreground hover:border-indigo-500/60 hover:bg-indigo-500/10 hover:text-indigo-400 transition-all backdrop-blur-sm"
                 >
                   <Icon className="h-3 w-3 text-indigo-400" />
@@ -680,7 +697,12 @@ export function HomePage() {
               {filteredTools.map((tool) => {
                 const Icon = tool.icon
                 return (
-                  <Link key={tool.id} to={`/tools/${tool.id}`} className="block group">
+                  <Link
+                    key={tool.id}
+                    to={`/tools/${tool.id}`}
+                    onClick={() => trackToolSelected(tool.name, tool.category, 'home_tools_grid')}
+                    className="block group"
+                  >
                     <Card className="h-full flex flex-col justify-between group-hover:-translate-y-1 transition-all duration-300 hover:border-indigo-500/50 hover:shadow-lg hover:shadow-indigo-500/5">
                       <div>
                         <div className="flex items-start justify-between mb-4">

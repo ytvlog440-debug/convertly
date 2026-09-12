@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Navbar } from './components/layout/Navbar'
 import { Footer } from './components/layout/Footer'
 import { ScrollToTop } from './components/ScrollToTop'
+import { AnalyticsTracker } from './components/common/AnalyticsTracker'
 
 function LegacyToolRedirect() {
   const { toolId } = useParams()
@@ -59,6 +60,7 @@ export function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
+        <AnalyticsTracker />
         <ScrollToTop />
         <div className="flex min-h-screen flex-col bg-background text-foreground transition-colors duration-300">
           <Navbar />

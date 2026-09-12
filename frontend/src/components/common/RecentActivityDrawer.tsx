@@ -15,6 +15,7 @@ import {
 } from '../../lib/history'
 import { getDownloadUrl } from '../../lib/api'
 import { formatBytes } from '../../lib/utils'
+import { trackDownloadStarted, trackDownloadCompleted } from '../../lib/analytics'
 
 interface RecentActivityDrawerProps {
   isOpen: boolean
@@ -119,6 +120,20 @@ export function RecentActivityDrawer({ isOpen, onClose }: RecentActivityDrawerPr
                       <a
                         href={downloadUrl}
                         download={item.outputFilename}
+                        onClick={() => {
+                          const ext = item.outputFilename.split('.').pop()?.toLowerCase()
+                          trackDownloadStarted({
+                            tool_name: item.toolName,
+                            output_format: ext,
+                            file_size: item.sizeBytes,
+                          })
+                          trackDownloadCompleted({
+                            tool_name: item.toolName,
+                            output_format: ext,
+                            file_size: item.sizeBytes,
+                            success: true,
+                          })
+                        }}
                         className="flex items-center gap-1.5 rounded-lg bg-indigo-600 px-2.5 py-1 text-xs font-semibold text-white shadow-xs hover:bg-indigo-500 transition-colors shrink-0"
                       >
                         <Download className="h-3.5 w-3.5" />

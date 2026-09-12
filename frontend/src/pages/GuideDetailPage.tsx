@@ -18,6 +18,7 @@ import { Button } from '../components/ui/Button'
 import { SeoHead } from '../components/shared/SeoHead'
 import { PROBLEM_GUIDES_DATA } from '../data/guidesData'
 import { NotFoundPage } from './NotFoundPage'
+import { trackToolSelected } from '../lib/analytics'
 
 export function GuideDetailPage() {
   const { slug } = useParams<{ slug: string }>()
@@ -88,7 +89,10 @@ export function GuideDetailPage() {
                 <span className="text-xs font-bold text-indigo-400">Recommended Converter Engine:</span>
                 <p className="text-sm font-semibold text-foreground">{data.recommendedToolName}</p>
               </div>
-              <Link to={`/tools/${data.recommendedToolId}`}>
+              <Link
+                to={`/tools/${data.recommendedToolId}`}
+                onClick={() => trackToolSelected(data.recommendedToolName, undefined, 'guide_detail')}
+              >
                 <Button size="sm" className="bg-indigo-600 hover:bg-indigo-500 gap-1.5 text-xs shrink-0">
                   <span>Open Tool</span>
                   <ArrowRight className="h-3.5 w-3.5" />

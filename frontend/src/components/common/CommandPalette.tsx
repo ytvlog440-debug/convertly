@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { trackToolSelected, trackSearchUsed } from '../../lib/analytics'
 import {
   Search,
   X,
@@ -116,7 +117,26 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
     return matchesCategory && matchesQuery
   })
 
+  // Debounced search tracking (minimum 2 characters to avoid noise)
+  useEffect(() => {
+    const trimmed = query.trim()
+    if (trimmed.length < 2) return
+
+    const timer = setTimeout(() => {
+      trackSearchUsed({
+        search_term: trimmed,
+        results_count: filteredTools.length,
+      })
+    }, 600)
+
+    return () => clearTimeout(timer)
+  }, [query, filteredTools.length])
+
   const handleSelect = (toolId: string) => {
+    const selected = ALL_30_TOOLS.find((t) => t.id === toolId)
+    if (selected) {
+      trackToolSelected(selected.name, selected.category, 'command_palette')
+    }
     onClose()
     navigate(`/tools/${toolId}`)
   }

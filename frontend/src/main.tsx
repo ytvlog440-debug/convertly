@@ -1,7 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
+import { initGA } from './lib/analytics'
 import './styles/index.css'
+
+// Initialize Google Analytics 4 (production-only, lazy-loaded, DNT-compliant)
+initGA()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
