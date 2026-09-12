@@ -1475,6 +1475,576 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       'Stop worrying about formatting mismatches when sharing documents. Convertly gives you enterprise-grade Word to PDF conversion with precision layout preservation, high speed, and absolute privacy.',
       'Drop your Word document in the secure box above to get your publication-ready PDF in seconds.'
     ]
+  },
+
+  'images-to-pdf': {
+    id: 'images-to-pdf',
+    name: 'Images to PDF',
+    category: 'Images',
+    searchIntent: 'Transactional',
+    metaTitle: 'Images to PDF Converter — Convert JPG, PNG & Photos to PDF Online Free',
+    metaDescription: 'Convert JPG, PNG, WebP images, and photos to a single organized PDF document online for free. Features drag-and-drop reordering, auto-orientation, and zero data retention.',
+    keywords: 'images to pdf, convert images to pdf, jpg to pdf, png to pdf, photos to pdf, combine photos into pdf, convertly',
+    badge: 'Multi-Image Batch to PDF',
+    introHeading: 'Combine Photos and Image Assets into a Clean, Multi-Page PDF Document',
+    introText: 'Convertly’s Images to PDF converter allows you to seamlessly assemble up to 20 individual JPG, PNG, and WebP graphics into a single consolidated, presentation-ready PDF document. Engineered with native Pillow and PyMuPDF pipelines, our engine normalizes aspect ratios, preserves true color gamuts, and auto-rotates phone snapshots for seamless viewing across all desktop and mobile devices.',
+    whatIsHeading: 'What is Convertly’s Images to PDF Converter?',
+    whatIsParagraphs: [
+      'Sharing dozens of individual image files over email or cloud portals is messy, inconvenient for clients, and prone to lost attachments. Whether submitting homework assignments, insurance claim photos, or scanned receipts, recipients expect an organized, single-document deliverable.',
+      'Convertly’s Images to PDF tool solves this by transforming raster image streams directly into standardized vector PDF pages. Rather than simply embedding compressed thumbnails, our engine analyzes each image’s native resolution and orientation, constructing clean PDF page viewports with zero loss in visual clarity.',
+      'With visual drag-and-drop reordering, you can arrange your pictures in the exact sequence you desire before generating your unified PDF file.'
+    ],
+    whoShouldUseHeading: 'Who Should Use Convertly Images to PDF?',
+    whoShouldUseAudiences: [
+      {
+        title: 'Students, Educators & Academics',
+        desc: 'Photograph handwritten homework, exam sheets, and research notes, then compile them into a single, clean PDF submission for online portals.'
+      },
+      {
+        title: 'Insurance Adjusters & Field Inspectors',
+        desc: 'Combine vehicle damage photos, property inspection snapshots, and incident scene evidence into organized claim packets.'
+      },
+      {
+        title: 'Real Estate Agents & Property Managers',
+        desc: 'Assemble listing photos, architectural floor plans, and tenant condition reports into a single, client-ready presentation brochure.'
+      },
+      {
+        title: 'Accountants & Business Travelers',
+        desc: 'Compile snapshots of paper receipts, hotel invoices, and travel vouchers into unified expense reimbursement reports.'
+      }
+    ],
+    whenToUseHeading: 'When Should You Convert Images to PDF?',
+    whenToUsePoints: [
+      {
+        title: 'When Portals Require a Single PDF Upload',
+        desc: 'When job applications, university submission portals, or government websites only permit a single document upload rather than multiple photo files.'
+      },
+      {
+        title: 'When Sending Multi-Photo Emails to Clients',
+        desc: 'When distributing multiple high-resolution photos without clogging client inboxes with loose, unorganized attachments.'
+      },
+      {
+        title: 'When Archiving Scanned Receipts & Paperwork',
+        desc: 'When digitizing tax records and paper invoices into a durable, universally searchable document format for long-term storage.'
+      },
+      {
+        title: 'When Creating Digital Handouts & Portfolios',
+        desc: 'When assembling graphic design sketches, photography mockups, or product line sheets into a cohesive client portfolio.'
+      }
+    ],
+    howItWorksHeading: 'How to Convert Images to PDF in 4 Simple Steps',
+    steps: [
+      {
+        number: 1,
+        title: 'Upload Your Images & Photos',
+        desc: 'Drag and drop up to 20 JPG, PNG, or WebP files into the secure dropzone above or click "Browse Files" to choose from your device.'
+      },
+      {
+        number: 2,
+        title: 'Arrange Page Sequence Visually',
+        desc: 'Drag and drop the thumbnail cards into your desired reading order. Add more photos or remove unwanted images in one click.'
+      },
+      {
+        number: 3,
+        title: 'Generate Unified Vector PDF',
+        desc: 'Click "Process File Now". Our server engine compiles each photo onto a standardized PDF canvas in under 3 seconds.'
+      },
+      {
+        number: 4,
+        title: 'Instant Download & QR Transfer',
+        desc: 'Download your assembled PDF file directly to your desktop or scan the private QR code to save it immediately on your smartphone.'
+      }
+    ],
+    keyFeaturesHeading: 'Key Features of Our Images to PDF Engine',
+    features: [
+      {
+        title: 'Multi-Format Batch Support',
+        desc: 'Accepts mixed batches of JPG, JPEG, PNG, and next-gen WebP images, stitching them into a unified PDF seamlessly.'
+      },
+      {
+        title: 'Lossless Image Embedding',
+        desc: 'Bypasses lossy re-encoding to preserve original camera resolution, pixel density, and color profiles without blur.'
+      },
+      {
+        title: 'EXIF Auto-Orientation Correction',
+        desc: 'Automatically reads camera orientation tags to ensure vertical portrait photos remain upright rather than sideways.'
+      },
+      {
+        title: 'Interactive Drag-and-Drop Sequencing',
+        desc: 'Reorder pages dynamically using smooth visual handles before finalizing document structure.'
+      },
+      {
+        title: '120-Minute Automatic File Shredding',
+        desc: 'All uploaded photos and generated PDF documents are permanently erased from memory and disk after 120 minutes.'
+      },
+      {
+        title: '100% Free With Zero Watermarks',
+        desc: 'Enjoy unrestricted multi-image conversion without branding stamps, page count paywalls, or subscription traps.'
+      }
+    ],
+    benefitsHeading: 'Benefits of Convertly Images to PDF',
+    benefits: [
+      {
+        title: 'Universal Device Compatibility',
+        desc: 'Generated PDF documents open identically on Windows, macOS, iOS, Android, and Linux without font or software discrepancies.'
+      },
+      {
+        title: 'Eliminate Cluttered Attachments',
+        desc: 'Deliver a single, organized PDF file rather than forcing clients and professors to download 20 separate image files.'
+      },
+      {
+        title: 'Enterprise-Grade Data Privacy',
+        desc: 'Protected by TLS 1.3 transport encryption and strict zero-retention policies that guarantee your photos are never exposed.'
+      },
+      {
+        title: 'No App Installations Required',
+        desc: 'Run powerful photo-to-PDF conversions directly inside your mobile or desktop web browser without installing storage-heavy apps.'
+      }
+    ],
+    supportedFormatsHeading: 'Supported Image Formats & PDF Specifications',
+    inputFormats: [
+      { ext: '.jpg, .jpeg', name: 'JPEG Photographs', mime: 'image/jpeg' },
+      { ext: '.png', name: 'Portable Network Graphics', mime: 'image/png' },
+      { ext: '.webp', name: 'Next-Gen WebP Images', mime: 'image/webp' }
+    ],
+    outputFormats: [
+      { ext: '.pdf', name: 'Standard Portable Document Format', mime: 'application/pdf' }
+    ],
+    formatNotes: 'Supports mixed-format uploads in a single session. Up to 20 files and 100MB total capacity per conversion.',
+    securityHeading: 'Security, Confidentiality & Automated Shredding',
+    securityParagraphs: [
+      'Personal snapshots, medical receipts, and property inspection photos require the highest standard of data privacy. Convertly executes all image-to-PDF transformations over encrypted TLS 1.3 channels.',
+      'Under our strict Zero-Retention Policy, your source images and compiled PDF files are stored in isolated, sandboxed containers and are permanently destroyed after exactly 120 minutes. We never view, index, share, or train AI models on your images.'
+    ],
+    certifications: [
+      'Automated 120-Minute Cryptographic File Shredder',
+      'TLS 1.3 Transport Encryption Protocol',
+      'Zero AI Model Training Guarantee',
+      'GDPR Article 17 Right to Erasure Compliant'
+    ],
+    performanceHeading: 'Engine Benchmarks & Technical Specifications',
+    specs: [
+      { label: 'Processing Engine', value: 'PyMuPDF + Pillow Core', detail: 'High-speed native C/Python vector synthesis' },
+      { label: 'Average Execution Time', value: '< 2.4 Seconds', detail: 'Processes 15+ photos in under three seconds' },
+      { label: 'Max File Capacity', value: '100 MB per Session', detail: 'Supports high-resolution RAW-derived images' },
+      { label: 'Retention SLA', value: '120 Minutes Auto-Shredding', detail: 'Strict zero-retention privacy policy' }
+    ],
+    compatibilityHeading: 'Operating System & Mobile Compatibility',
+    platforms: [
+      { name: 'Apple iPhone & iPad (iOS)', status: 'Fully Optimized', detail: 'Direct photo library picker and camera capture with instant QR code download.' },
+      { name: 'Android Smartphones & Tablets', status: 'Fully Optimized', detail: 'Seamless Google Photos and local file integration on Chrome and Samsung Internet.' },
+      { name: 'Windows Workstations', status: 'Full Compatibility', detail: 'Drag-and-drop support across Google Chrome, Microsoft Edge, and Firefox on Windows 10/11.' },
+      { name: 'Apple macOS & Linux', status: 'Full Compatibility', detail: 'Hardware-accelerated rendering on Apple Silicon (M1-M4) and all Linux distributions.' }
+    ],
+    useCasesHeading: 'Real-World Applications for Images to PDF',
+    useCases: [
+      {
+        title: 'Submitting Academic Homework & Multi-Page Exams',
+        desc: 'Combine photos of multiple handwritten exam pages into a single PDF document for Canvas, Blackboard, or Google Classroom.'
+      },
+      {
+        title: 'Compiling Field Inspection & Damage Photos',
+        desc: 'Assemble automotive damage, construction milestones, or property lease inspection snapshots into a clean client report.'
+      },
+      {
+        title: 'Assembling Expense Receipts for Corporate Reimbursement',
+        desc: 'Photograph meal receipts, taxi slips, and hotel vouchers, stitching them into an orderly PDF packet for HR and accounting.'
+      },
+      {
+        title: 'Creating Multi-Page Product Catalog Handouts',
+        desc: 'Combine merchandise photos, lookbook shots, and pricing graphics into a printable digital catalog for sales presentations.'
+      }
+    ],
+    bestResultsHeading: 'Expert Tips for Best Images to PDF Results',
+    bestResultsTips: [
+      {
+        title: 'Maintain Consistent Camera Orientation',
+        desc: 'Capture all pages in portrait or landscape mode to ensure consistent orientation throughout the generated document.'
+      },
+      {
+        title: 'Ensure Bright, Even Lighting on Text',
+        desc: 'When photographing documents or receipts, avoid shadows across words so readers can easily inspect text details.'
+      },
+      {
+        title: 'Use Drag-and-Drop to Verify Sequence',
+        desc: 'Double-check page order using the thumbnail preview strip before clicking process to avoid backwards page numbering.'
+      },
+      {
+        title: 'Compress Afterward for Email Distribution',
+        desc: 'If your assembled PDF exceeds corporate email limits, run it through Convertly’s Compress PDF tool to reduce file size without losing clarity.'
+      }
+    ],
+    troubleshootingHeading: 'Common Problems & Solutions (Images to PDF)',
+    troubleshootingItems: [
+      {
+        problem: 'Why did one of my photos turn out sideways in the PDF?',
+        solution: 'Some mobile camera apps do not write standard EXIF orientation tags. You can pass the resulting PDF through Convertly’s Rotate PDF tool to correct individual page orientations in seconds.'
+      },
+      {
+        problem: 'My resulting PDF is over 25MB and cannot be emailed.',
+        solution: 'High-resolution smartphone photos contain millions of pixels. Simply upload your assembled document to Convertly’s free Compress PDF tool to reduce file size by up to 85%.'
+      },
+      {
+        problem: 'Can I add more photos after uploading the first batch?',
+        solution: 'Yes! Click "+ Add More" in the staging area to select additional images before clicking "Process File Now".'
+      }
+    ],
+    whyChooseHeading: 'Why Choose Convertly Over Traditional Image Converters?',
+    comparisonPoints: [
+      {
+        title: 'No 2-File Daily Limitations',
+        desc: 'Unlike competing services that cut you off after 1 or 2 files to force an expensive monthly subscription, Convertly offers generous, unrestricted conversions.'
+      },
+      {
+        title: 'No App Installations or Sign-Ups',
+        desc: 'Bypass ad-filled mobile scanner apps that demand credit card details. Convertly works 100% in your browser with zero registration.'
+      },
+      {
+        title: 'Pristine Clean Output',
+        desc: 'We never stamp promotional watermarks, app logos, or footer notices onto your compiled PDF documents.'
+      }
+    ],
+    faqsHeading: 'Frequently Asked Questions (Images to PDF)',
+    faqs: [
+      {
+        question: 'How do I convert multiple images into a single PDF document?',
+        answer: 'Drag and drop your photos into the dropzone above, rearrange the thumbnail cards into your desired reading order, and click "Process File Now". Convertly compiles all photos into a single PDF within seconds.'
+      },
+      {
+        question: 'How many images can I convert into one PDF at once?',
+        answer: 'You can upload and merge up to 20 image files simultaneously per conversion session, with a total file capacity of up to 100MB.'
+      },
+      {
+        question: 'Which image formats are supported by Convertly?',
+        answer: 'Convertly supports standard JPG, JPEG, PNG, and modern WebP image formats. You can even mix and match different formats in the same batch.'
+      },
+      {
+        question: 'Will converting images to PDF reduce the quality of my photos?',
+        answer: 'No. Convertly embeds your images at their native pixel resolution, preserving color reproduction, sharp contrast, and fine details.'
+      },
+      {
+        question: 'Can I change the order of the images before converting?',
+        answer: 'Yes! Convertly features an intuitive drag-and-drop reordering interface that lets you easily rearrange thumbnails into your preferred sequence.'
+      },
+      {
+        question: 'Are my uploaded pictures stored or saved on your servers?',
+        answer: 'No. All uploaded images and generated PDF documents are stored in temporary, isolated memory and are permanently shredded after 120 minutes under our Zero-Retention Policy.'
+      },
+      {
+        question: 'Is Convertly’s Images to PDF tool completely free?',
+        answer: 'Yes, 100% free with no subscription fees, trial limits, watermarks, or credit card requirements.'
+      },
+      {
+        question: 'Can I convert photos to PDF directly from my iPhone or Android phone?',
+        answer: 'Yes! Convertly works seamlessly in mobile Safari, Chrome, and Samsung Internet. You can select photos directly from your camera roll or scan our instant QR code to download the finished PDF.'
+      },
+      {
+        question: 'Does Convertly add any watermarks to the compiled PDF?',
+        answer: 'Never. Your PDF remains 100% clean and professional, free of any watermarks, branding stamps, or promotional text.'
+      },
+      {
+        question: 'What if my final PDF file size is too large for email?',
+        answer: 'You can immediately pass the finished document into Convertly’s free "Compress PDF" tool to shrink the file size by up to 85% while keeping photos sharp.'
+      },
+      {
+        question: 'Do I need to create an account or register to use this tool?',
+        answer: 'No account registration is required. You can use the tool anonymously without providing an email address or creating a password.'
+      },
+      {
+        question: 'Are my uploaded photos used to train AI models?',
+        answer: 'Never. Convertly guarantees a strict Zero AI Model Training policy. Your files are never read, analyzed, shared, or used for machine learning.'
+      }
+    ],
+    conclusionHeading: 'Convert Your Images to PDF Now',
+    conclusionParagraphs: [
+      'Transform your collection of loose photos, scanned notes, and graphic assets into a professional, single-document PDF in seconds.',
+      'Drop your images into the secure upload area above to assemble your free, publication-ready PDF immediately.'
+    ]
+  },
+
+  'pdf-to-images': {
+    id: 'pdf-to-images',
+    name: 'PDF to Images',
+    category: 'Images',
+    searchIntent: 'Transactional',
+    metaTitle: 'PDF to Images Converter — Convert PDF Pages to JPG & PNG Online Free',
+    metaDescription: 'Convert PDF pages to high-resolution JPG or PNG images online for free. Features 300 DPI high-definition rendering, batch ZIP download, and zero data retention.',
+    keywords: 'pdf to images, convert pdf to jpg, convert pdf to png, pdf to picture, extract images from pdf, render pdf to jpg, convertly',
+    badge: '300 DPI High-Definition Rendering',
+    introHeading: 'Render PDF Pages into Crisp, High-Resolution JPG or PNG Images',
+    introText: 'Convertly’s PDF to Images converter transforms every page of your PDF document into standalone, publication-quality raster images (PNG or JPG). Powered by the high-speed PyMuPDF rasterization engine, our platform lets you select between web-optimized 150 DPI and studio-grade 300 DPI resolutions, delivering razor-sharp text, vivid illustrations, and convenient single-click ZIP archive downloads.',
+    whatIsHeading: 'What is Convertly’s PDF to Images Converter?',
+    whatIsParagraphs: [
+      'Portable Document Format (PDF) files are excellent for multi-page reading, but sharing specific pages on social media, embedding document diagrams into blog posts, or inserting slides into PowerPoint decks requires raster image formats like PNG or JPG.',
+      'Convertly’s PDF to Images converter parses the vector layout and embedded font definitions of your PDF document, rendering each page onto an uncompressed pixel raster with sub-pixel antialiasing. Our backend preserves color gamuts, line art, and typography without introducing fuzziness or compression artifacts.',
+      'Whether you are extracting a single chart from an annual report or converting an entire 50-page magazine into high-resolution JPGs, Convertly provides fast, automated batch rendering with zero software installations.'
+    ],
+    whoShouldUseHeading: 'Who Should Use Convertly PDF to Images?',
+    whoShouldUseAudiences: [
+      {
+        title: 'Social Media Managers & Marketers',
+        desc: 'Extract eye-catching infographics, case study excerpts, and whitepaper quotes to share as image carousels on LinkedIn, Instagram, and Twitter.'
+      },
+      {
+        title: 'Web Developers & Content Editors',
+        desc: 'Convert PDF diagrams and visual assets into web-ready PNGs or JPGs for embedding in blogs, documentation wikis, and CMS portals.'
+      },
+      {
+        title: 'Graphic Designers & Illustrators',
+        desc: 'Render vector print proofs and digital sketches into 300 DPI lossless PNGs for client review and mockup presentations.'
+      },
+      {
+        title: 'Educators & Course Creators',
+        desc: 'Turn textbook pages, worksheets, and presentation slides into standalone image files for insertion into LMS software and classroom slides.'
+      }
+    ],
+    whenToUseHeading: 'When Should You Convert PDF to Images?',
+    whenToUsePoints: [
+      {
+        title: 'When Posting Document Highlights to Social Media',
+        desc: 'When sharing key findings from an industry report on LinkedIn or Twitter where PDF attachments cannot be previewed natively.'
+      },
+      {
+        title: 'When Inserting PDF Pages into PowerPoint Decks',
+        desc: 'When incorporating specific pages, charts, or diagrams from a PDF report into a keynote or team presentation slide.'
+      },
+      {
+        title: 'When Uploading Portfolio Samples to Image Galleries',
+        desc: 'When showcasing design projects, brochures, or resumes on Behance, Dribbble, or portfolio sites that only accept JPG or PNG uploads.'
+      },
+      {
+        title: 'When Archiving Pages as Independent Graphics',
+        desc: 'When separating multi-page documents into individual, easily searchable image files for photo management software.'
+      }
+    ],
+    howItWorksHeading: 'How to Convert PDF to Images in 4 Easy Steps',
+    steps: [
+      {
+        number: 1,
+        title: 'Upload Your PDF File',
+        desc: 'Drag and drop your PDF document into the upload dropzone above or click "Browse Files" to choose from your computer or phone.'
+      },
+      {
+        number: 2,
+        title: 'Choose Image Format & DPI',
+        desc: 'Select your preferred output format (PNG for lossless graphics or JPG for smaller file sizes) and target resolution (150 DPI or 300 DPI).'
+      },
+      {
+        number: 3,
+        title: 'Execute High-Fidelity Rendering',
+        desc: 'Click "Process File Now". Our native PyMuPDF engine renders every page with anti-aliased vector precision in under 3 seconds.'
+      },
+      {
+        number: 4,
+        title: 'Download ZIP Archive or Transfer via QR',
+        desc: 'Download all rendered page images bundled in a convenient ZIP archive, or scan the private QR code to transfer directly to mobile.'
+      }
+    ],
+    keyFeaturesHeading: 'Key Features of Our PDF to Images Engine',
+    features: [
+      {
+        title: 'Studio-Grade 300 DPI Resolution',
+        desc: 'Render razor-sharp pages at up to 300 DPI print quality, ensuring fine text and detailed vector diagrams remain crystal clear.'
+      },
+      {
+        title: 'Format Choice (Lossless PNG vs. JPG)',
+        desc: 'Select PNG for pixel-perfect transparency and diagrams, or JPG for compressed, lightweight photo pages.'
+      },
+      {
+        title: 'Convenient ZIP Archive Packaging',
+        desc: 'Multi-page documents are automatically rendered and bundled into a neatly organized ZIP file for single-click downloading.'
+      },
+      {
+        title: 'Sub-Pixel Vector Antialiasing',
+        desc: 'Applies smooth typographic antialiasing to prevent jagged edges on fine fonts and thin line illustrations.'
+      },
+      {
+        title: '120-Minute Automatic File Shredding',
+        desc: 'All source PDFs and generated image packages are permanently deleted from our servers after 120 minutes for total confidentiality.'
+      },
+      {
+        title: '100% Free With Zero Watermarks',
+        desc: 'Convert complete documents without restrictive page limits, trial expirations, or promotional branding stamps.'
+      }
+    ],
+    benefitsHeading: 'Benefits of Convertly PDF to Images',
+    benefits: [
+      {
+        title: 'Effortless Visual Sharing',
+        desc: 'Share document pages seamlessly on messaging apps, email threads, and social networks without requiring recipients to have a PDF reader.'
+      },
+      {
+        title: 'No Bulky Desktop Software Needed',
+        desc: 'Eliminate the need for expensive software suites like Adobe Photoshop or Acrobat Pro just to extract a few page pictures.'
+      },
+      {
+        title: 'Strict Confidentiality SLA',
+        desc: 'All data transfers are encrypted with TLS 1.3, and server memory is wiped automatically after 120 minutes.'
+      },
+      {
+        title: 'Seamless Mobile Workflow',
+        desc: 'Render PDF pages directly on your smartphone and save high-resolution pictures straight to your photo gallery.'
+      }
+    ],
+    supportedFormatsHeading: 'Supported Input & Output Specifications',
+    inputFormats: [
+      { ext: '.pdf', name: 'Portable Document Format', mime: 'application/pdf' }
+    ],
+    outputFormats: [
+      { ext: '.png', name: 'Lossless PNG Image', mime: 'image/png' },
+      { ext: '.jpg, .jpeg', name: 'Standard JPEG Image', mime: 'image/jpeg' },
+      { ext: '.zip', name: 'ZIP Archive of All Pages', mime: 'application/zip' }
+    ],
+    formatNotes: 'Supports standard vector and scanned PDF documents up to 100MB in size. Outputs individual high-res images packaged in a single ZIP file.',
+    securityHeading: 'Enterprise Security & Automated File Deletion',
+    securityParagraphs: [
+      'Document security is paramount. Convertly handles every PDF to Images transformation inside isolated worker environments protected by TLS 1.3 transport security.',
+      'Under our strict Zero-Retention Policy, your source PDF and the rendered image files are permanently destroyed after exactly 120 minutes. Your documents are never accessed, cataloged, or used to train artificial intelligence models.'
+    ],
+    certifications: [
+      'Automated 120-Minute Cryptographic File Shredder',
+      'TLS 1.3 Transport Encryption Protocol',
+      'Zero AI Model Training Guarantee',
+      'GDPR Article 17 Right to Erasure Compliant'
+    ],
+    performanceHeading: 'Performance & Rasterization Benchmarks',
+    specs: [
+      { label: 'Rendering Engine', value: 'PyMuPDF Native C Engine', detail: 'Sub-pixel vector rasterization with anti-aliasing' },
+      { label: 'Rendering Speed', value: '< 150ms per Page', detail: 'Rapid parallel page rendering architecture' },
+      { label: 'Max File Capacity', value: '100 MB per Session', detail: 'Easily handles heavy multi-page documents' },
+      { label: 'Retention SLA', value: '120 Minutes Auto-Shredding', detail: 'Strict zero-retention privacy policy' }
+    ],
+    compatibilityHeading: 'Cross-Platform Device & Browser Support',
+    platforms: [
+      { name: 'Windows Workstations', status: 'Full Compatibility', detail: 'Works seamlessly across Chrome, Edge, and Firefox on Windows 10 and 11.' },
+      { name: 'Apple macOS & iOS', status: 'Full Compatibility', detail: 'Native Safari performance with direct photo album saving on iPhone, iPad, and Mac.' },
+      { name: 'Android Smartphones', status: 'Mobile Optimized', detail: 'Download ZIP files or individual pictures directly to your device storage.' },
+      { name: 'Linux Desktops', status: 'Full Compatibility', detail: 'Pure web-standard execution on Ubuntu, Fedora, Debian, and Arch without extra packages.' }
+    ],
+    useCasesHeading: 'Common Real-World Use Cases for PDF to Images',
+    useCases: [
+      {
+        title: 'Publishing Infographics on LinkedIn & Twitter',
+        desc: 'Extract graphic-rich pages from research papers and whitepapers to create high-engagement visual social posts.'
+      },
+      {
+        title: 'Embedding Document Samples into Website Articles',
+        desc: 'Convert PDF certificate samples, forms, and guides into lightweight PNG images for publication on blogs and landing pages.'
+      },
+      {
+        title: 'Importing Financial Charts into Keynotes',
+        desc: 'Extract 300 DPI high-resolution figures and balance sheet graphics for inclusion in investor presentation slide decks.'
+      },
+      {
+        title: 'Creating Digital Thumbnails for Document Catalogs',
+        desc: 'Generate clean cover page previews for digital libraries, online bookshops, and corporate document repositories.'
+      }
+    ],
+    bestResultsHeading: 'Expert Tips for Optimal PDF to Images Conversion',
+    bestResultsTips: [
+      {
+        title: 'Choose 300 DPI for Print and Close-Ups',
+        desc: 'Select the 300 DPI option if you intend to zoom in on intricate charts or reprint pages as high-resolution graphics.'
+      },
+      {
+        title: 'Use PNG for Text and Diagrams',
+        desc: 'PNG provides lossless compression that eliminates the ringing artifacts and smudges common in JPEG text rendering.'
+      },
+      {
+        title: 'Use JPG for Photographic Documents',
+        desc: 'If your PDF contains magazine spreads or full-page photographs, JPG delivers significantly smaller download file sizes.'
+      },
+      {
+        title: 'Extract Images from Scanned Documents',
+        desc: 'Even if your source PDF contains scanned pages, Convertly extracts the highest possible resolution from the underlying scan.'
+      }
+    ],
+    troubleshootingHeading: 'Common Problems & Solutions (PDF to Images)',
+    troubleshootingItems: [
+      {
+        problem: 'How do I open the downloaded ZIP file on my computer?',
+        solution: 'On Windows, right-click the downloaded ZIP file and choose "Extract All". On Mac, double-click the ZIP archive to automatically expand it into a folder of images.'
+      },
+      {
+        problem: 'Why are the text lines in my JPG image slightly fuzzy?',
+        solution: 'JPEG compression is lossy and can cause compression noise around high-contrast text edges. For razor-sharp typography, select PNG format and 300 DPI before converting.'
+      },
+      {
+        problem: 'Can I convert a password-protected PDF to images?',
+        solution: 'If your PDF is encrypted, run it through Convertly’s "Unlock PDF" tool first to decrypt it, then convert the pages to images.'
+      }
+    ],
+    whyChooseHeading: 'Why Convertly Beats Alternative PDF Converters',
+    comparisonPoints: [
+      {
+        title: 'No 2-Page Extraction Limits',
+        desc: 'Unlike competitors that convert only the first 2 pages of your document before demanding an upgrade, Convertly renders your entire PDF.'
+      },
+      {
+        title: 'Zero Account Registration Walls',
+        desc: 'No email requirements, passwords to manage, or marketing emails. Convert and download your images instantly.'
+      },
+      {
+        title: '100% Watermark-Free Images',
+        desc: 'Your output pictures are completely clean, professional, and ready for commercial publication.'
+      }
+    ],
+    faqsHeading: 'Frequently Asked Questions (PDF to Images)',
+    faqs: [
+      {
+        question: 'How do I convert a PDF document into JPG or PNG images?',
+        answer: 'Upload your PDF document into the dropzone above, choose your preferred format (PNG or JPG) and DPI (150 or 300), and click "Process File Now". Download your images individually or as a single ZIP archive.'
+      },
+      {
+        question: 'What is the difference between 150 DPI and 300 DPI?',
+        answer: '150 DPI is optimized for web display, email sharing, and digital screens. 300 DPI is ultra-high definition, perfect for graphic design, presentations, and print reproduction.'
+      },
+      {
+        question: 'Should I choose PNG or JPG format for my images?',
+        answer: 'Choose PNG if your PDF contains text, diagrams, screenshots, or logos, as PNG preserves crisp lines without blur. Choose JPG for documents containing heavy photographs to keep file sizes compact.'
+      },
+      {
+        question: 'How are multi-page PDF documents delivered after conversion?',
+        answer: 'Every page of your PDF is rendered as a sequentially numbered image file (e.g., page_1.png, page_2.png) and packaged inside a convenient ZIP file for single-click download.'
+      },
+      {
+        question: 'Is Convertly’s PDF to Images tool completely free?',
+        answer: 'Yes, 100% free with no subscriptions, trial periods, daily conversion caps, or hidden costs.'
+      },
+      {
+        question: 'Does Convertly put watermarks on my rendered images?',
+        answer: 'No. We never stamp watermarks, branding logos, or promotional labels onto your images. Your output remains 100% clean.'
+      },
+      {
+        question: 'Can I convert PDF to images on my mobile phone?',
+        answer: 'Yes! Convertly works seamlessly on iOS and Android devices. You can download the image archive or use our QR code transfer feature.'
+      },
+      {
+        question: 'Are my uploaded PDF documents stored on your servers?',
+        answer: 'No. Under our strict Zero-Retention Policy, all files and generated image packages are permanently shredded from our servers exactly 120 minutes after processing.'
+      },
+      {
+        question: 'What is the maximum PDF file size I can upload?',
+        answer: 'You can upload PDF files up to 100MB in size, which easily accommodates long, graphic-rich documents.'
+      },
+      {
+        question: 'Can I extract images from scanned PDF documents?',
+        answer: 'Yes! Convertly accurately rasterizes scanned documents into clean, standalone image files at the highest possible fidelity.'
+      },
+      {
+        question: 'Do I need to install any software or extensions?',
+        answer: 'No software or browser extensions are required. Everything runs securely in the cloud inside your modern web browser.'
+      },
+      {
+        question: 'Are my files used to train artificial intelligence models?',
+        answer: 'Never. Convertly has a strict Zero AI Model Training policy. Your documents and images are never read, analyzed, shared, or used for AI training.'
+      }
+    ],
+    conclusionHeading: 'Render Your PDF into High-Resolution Images Now',
+    conclusionParagraphs: [
+      'Extract beautiful, publication-ready images from your PDF documents in seconds without paying for expensive desktop software.',
+      'Drop your PDF into the converter above to download your high-definition image archive immediately.'
+    ]
   }
 }
 
