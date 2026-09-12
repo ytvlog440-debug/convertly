@@ -87,8 +87,11 @@ for (const tool of TOOLS) {
   }
 }
 
-// 5. Verify Core Pages
-const CORE_PAGES = ['privacy', 'security', 'terms', 'developers', 'formats', 'tools']
+// 5. Verify Core Pages & Hubs
+const CORE_PAGES = [
+  'privacy', 'security', 'terms', 'developers', 'formats', 'tools',
+  'compare', 'use-cases', 'guides', 'blog', 'sitemap'
+]
 for (const page of CORE_PAGES) {
   const pageHtmlPath = path.join(DIST_DIR, page, 'index.html')
   assert(fs.existsSync(pageHtmlPath), `Pre-rendered static HTML exists for /${page}`)
@@ -96,6 +99,97 @@ for (const page of CORE_PAGES) {
     const html = fs.readFileSync(pageHtmlPath, 'utf-8')
     assert(html.includes('<title>'), `Page ${page} has <title>`)
     assert(html.includes('<meta name="description"'), `Page ${page} has meta description`)
+    assert(html.includes(`https://convertlytools.xyz/${page}`), `Page ${page} has canonical`)
+  }
+}
+
+// 6. Verify Programmatic SEO Landing Pages
+const PROGRAMMATIC_SLUGS = [
+  'pdf-to-word', 'pdf-to-word-online', 'pdf-to-word-free', 'pdf-to-word-windows',
+  'pdf-to-word-mac', 'pdf-to-word-mobile', 'word-to-pdf', 'merge-pdf-online',
+  'compress-pdf-online', 'convert-pdf-without-losing-formatting',
+  'convert-jpg-to-png', 'convert-image-to-pdf'
+]
+for (const slug of PROGRAMMATIC_SLUGS) {
+  const htmlPath = path.join(DIST_DIR, 'convert', slug, 'index.html')
+  assert(fs.existsSync(htmlPath), `Pre-rendered static HTML exists for /convert/${slug}`)
+  if (fs.existsSync(htmlPath)) {
+    const html = fs.readFileSync(htmlPath, 'utf-8')
+    assert(html.includes('<title>'), `Programmatic page ${slug} has <title>`)
+    assert(html.includes('<meta name="description"'), `Programmatic page ${slug} has meta description`)
+    assert(html.includes(`https://convertlytools.xyz/convert/${slug}`), `Programmatic page ${slug} has canonical`)
+  }
+}
+
+// 7. Verify Competitor Comparisons
+const COMPARISON_SLUGS = [
+  'convertly-vs-smallpdf', 'convertly-vs-ilovepdf', 'convertly-vs-pdf24',
+  'convertly-vs-adobe-acrobat', 'convertly-vs-freeconvert'
+]
+for (const slug of COMPARISON_SLUGS) {
+  const htmlPath = path.join(DIST_DIR, 'compare', slug, 'index.html')
+  assert(fs.existsSync(htmlPath), `Pre-rendered static HTML exists for /compare/${slug}`)
+  if (fs.existsSync(htmlPath)) {
+    const html = fs.readFileSync(htmlPath, 'utf-8')
+    assert(html.includes('<title>'), `Comparison ${slug} has <title>`)
+    assert(html.includes('<meta name="description"'), `Comparison ${slug} has meta description`)
+  }
+}
+
+// 8. Verify Audience Use Cases
+const USE_CASE_SLUGS = [
+  'students', 'teachers', 'businesses', 'lawyers', 'hr', 'freelancers', 'designers'
+]
+for (const slug of USE_CASE_SLUGS) {
+  const htmlPath = path.join(DIST_DIR, 'use-cases', slug, 'index.html')
+  assert(fs.existsSync(htmlPath), `Pre-rendered static HTML exists for /use-cases/${slug}`)
+  if (fs.existsSync(htmlPath)) {
+    const html = fs.readFileSync(htmlPath, 'utf-8')
+    assert(html.includes('<title>'), `Use case ${slug} has <title>`)
+    assert(html.includes('<meta name="description"'), `Use case ${slug} has meta description`)
+  }
+}
+
+// 9. Verify Problem Solving Guides
+const GUIDE_SLUGS = [
+  'how-to-convert-pdf-to-word-without-losing-formatting',
+  'how-to-compress-pdf-without-losing-quality',
+  'how-to-merge-pdf-files',
+  'how-to-split-pdf-pages',
+  'how-to-convert-excel-to-pdf',
+  'how-to-convert-powerpoint-to-pdf',
+  'how-to-convert-images-into-pdf'
+]
+for (const slug of GUIDE_SLUGS) {
+  const htmlPath = path.join(DIST_DIR, 'guides', slug, 'index.html')
+  assert(fs.existsSync(htmlPath), `Pre-rendered static HTML exists for /guides/${slug}`)
+  if (fs.existsSync(htmlPath)) {
+    const html = fs.readFileSync(htmlPath, 'utf-8')
+    assert(html.includes('<title>'), `Guide ${slug} has <title>`)
+    assert(html.includes('<meta name="description"'), `Guide ${slug} has meta description`)
+  }
+}
+
+// 10. Verify Engineering Blog Articles
+const BLOG_SLUGS = [
+  'the-definitive-guide-to-lossless-pdf-compression',
+  'how-to-fix-broken-formatting-in-pdf-to-word',
+  'excel-to-pdf-best-practices-for-executive-reporting',
+  'powerpoint-to-pdf-handout-optimization',
+  'next-gen-image-formats-webp-vs-png-vs-jpg',
+  'zero-retention-architecture-in-modern-file-converters',
+  'security-defense-in-depth-document-pipeline',
+  'paperless-office-productivity-hacks',
+  'why-convertly-is-the-best-free-alternative-to-adobe-acrobat',
+  'step-by-step-tutorial-redacting-confidential-data-from-pdf'
+]
+for (const slug of BLOG_SLUGS) {
+  const htmlPath = path.join(DIST_DIR, 'blog', slug, 'index.html')
+  assert(fs.existsSync(htmlPath), `Pre-rendered static HTML exists for /blog/${slug}`)
+  if (fs.existsSync(htmlPath)) {
+    const html = fs.readFileSync(htmlPath, 'utf-8')
+    assert(html.includes('<title>'), `Blog post ${slug} has <title>`)
+    assert(html.includes('<meta name="description"'), `Blog post ${slug} has meta description`)
   }
 }
 
@@ -107,6 +201,6 @@ if (failed > 0) {
   console.error(`\n❌ Technical SEO Audit FAILED with ${failed} issues.`)
   process.exit(1)
 } else {
-  console.log(`\n🎉 Technical SEO Audit PASSED 100%! All routes, tags, schemas, and assets verified.`)
+  console.log(`\n🎉 Technical SEO Audit PASSED 100%! All search ecosystem routes, tags, schemas, and assets verified.`)
   process.exit(0)
 }

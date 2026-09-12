@@ -1,0 +1,63 @@
+# Convertly — Free Online Document & Image Conversion Suite
+> High-performance, secure, and free browser-based file conversion platform with zero data retention.
+
+Convertly (https://convertlytools.xyz) provides 30+ native transformation engines for PDF documents, Microsoft Office files (Word, Excel, PowerPoint), and modern image formats (PNG, JPG, WebP) with optical character recognition (OCR) and AES-256 encryption.
+
+## Technical Architecture & Privacy SLA
+- **Zero-Retention Guarantee**: All uploaded source files and converted outputs are stored in ephemeral sandboxes and permanently shredded after 120 minutes.
+- **No Paywalls or Hidden Limits**: 100% free with no daily task quotas, no sign-up requirements, and no watermarking.
+- **Client-Grade Security**: Fully encrypted in transit via TLS 1.3 with strict CORS, CSP, and defense-in-depth isolation.
+
+## Primary Tool Engines & Endpoints
+- **PDF to Word**: https://convertlytools.xyz/tools/pdf-to-word — Convert PDF into editable DOCX with Tesseract OCR layout reconstruction.
+- **Word to PDF**: https://convertlytools.xyz/tools/word-to-pdf — Convert DOCX/DOC files into standardized vector PDF documents.
+- **PDF Merge**: https://convertlytools.xyz/tools/pdf-merge — Combine multiple PDF documents into a single consolidated file.
+- **PDF Compress**: https://convertlytools.xyz/tools/pdf-compress — Reduce PDF file size with lossless downsampling and stream compression.
+- **PDF Split**: https://convertlytools.xyz/tools/pdf-split — Extract page ranges or burst PDF pages into individual documents.
+- **PDF Rotate**: https://convertlytools.xyz/tools/pdf-rotate — Permanently rotate pages 90, 180, or 270 degrees.
+- **Images to PDF**: https://convertlytools.xyz/tools/images-to-pdf — Batch convert PNG, JPG, and WebP images into a single multi-page PDF.
+- **Excel to PDF**: https://convertlytools.xyz/tools/excel-to-pdf — Convert XLSX and XLS spreadsheets to PDF without truncating columns.
+- **PowerPoint to PDF**: https://convertlytools.xyz/tools/ppt-to-pdf — Export PPTX presentations to high-resolution PDF handouts.
+- **PDF Delete Pages**: https://convertlytools.xyz/tools/pdf-delete-pages — Strip unwanted or blank pages from PDF documents.
+- **PDF Extract Pages**: https://convertlytools.xyz/tools/pdf-extract-pages — Isolate key chapters or pages into a new PDF.
+- **PDF Reorder Pages**: https://convertlytools.xyz/tools/pdf-reorder-pages — Visually re-sequence PDF pages with drag-and-drop.
+- **JPG to PNG**: https://convertlytools.xyz/tools/jpg-to-png — Convert compressed JPG images to lossless PNG format.
+- **PNG to JPG**: https://convertlytools.xyz/tools/png-to-jpg — Convert PNG graphics to compact JPG images with quality tuning.
+- **Image to WebP**: https://convertlytools.xyz/tools/image-to-webp — Convert images to Google WebP for high-speed web delivery.
+- **WebP to Image**: https://convertlytools.xyz/tools/webp-to-image — Unpack WebP files into universal PNG or JPG formats.
+- **PDF to Images**: https://convertlytools.xyz/tools/pdf-to-images — Render PDF pages into high-resolution PNG or JPG images.
+- **Image Resize**: https://convertlytools.xyz/tools/image-resize — Scale image dimensions by pixel or percentage with aspect ratio lock.
+- **Image Compress**: https://convertlytools.xyz/tools/image-compress — Reduce image megabytes for web and email optimization.
+- **Image Crop**: https://convertlytools.xyz/tools/image-crop — Crop images with custom aspect ratio presets.
+- **Image Rotate**: https://convertlytools.xyz/tools/image-rotate — Rotate and flip images without quality loss.
+- **PDF Protect**: https://convertlytools.xyz/tools/pdf-protect — Encrypt PDF documents with AES-256 password protection.
+- **PDF Unlock**: https://convertlytools.xyz/tools/pdf-unlock — Remove user passwords and restrictions with credentials.
+- **PDF Watermark**: https://convertlytools.xyz/tools/pdf-watermark — Stamp custom text watermarks across all PDF pages.
+- **PDF Page Numbers**: https://convertlytools.xyz/tools/pdf-page-numbers — Insert Bates numbering and header/footer pagination.
+- **PDF Redact**: https://convertlytools.xyz/tools/pdf-redact — Permanently blackout sensitive PII, SSNs, and financial data.
+- **PDF Flatten**: https://convertlytools.xyz/tools/pdf-flatten — Burn interactive form fields and annotations into static vectors.
+- **PDF Scrub Metadata**: https://convertlytools.xyz/tools/pdf-scrub-metadata — Erase EXIF, author, printer, and editing history tags.
+- **PDF to TXT**: https://convertlytools.xyz/tools/pdf-to-txt — Extract plain text from PDF documents for NLP and search indexing.
+- **PDF Grayscale**: https://convertlytools.xyz/tools/pdf-grayscale — Convert color PDF documents into monochrome black-and-white.
+
+## Technical Guides & Documentation
+- How to Convert PDF to Word: https://convertlytools.xyz/guides/how-to-convert-pdf-to-word-without-losing-formatting
+- How to Compress PDF Without Losing Quality: https://convertlytools.xyz/guides/how-to-compress-pdf-without-losing-quality
+- How to Merge Multiple PDF Files: https://convertlytools.xyz/guides/how-to-merge-pdf-files
+- How to Split PDF Pages: https://convertlytools.xyz/guides/how-to-split-pdf-pages
+- How to Convert Excel to PDF Without Cutting Off Columns: https://convertlytools.xyz/guides/how-to-convert-excel-to-pdf
+- How to Convert PowerPoint to PDF: https://convertlytools.xyz/guides/how-to-convert-powerpoint-to-pdf
+- How to Convert Images into PDF: https://convertlytools.xyz/guides/how-to-convert-images-into-pdf
+
+## Competitor Comparisons
+- Convertly vs Smallpdf: https://convertlytools.xyz/compare/convertly-vs-smallpdf
+- Convertly vs iLovePDF: https://convertlytools.xyz/compare/convertly-vs-ilovepdf
+- Convertly vs PDF24: https://convertlytools.xyz/compare/convertly-vs-pdf24
+- Convertly vs Adobe Acrobat: https://convertlytools.xyz/compare/convertly-vs-adobe-acrobat
+- Convertly vs FreeConvert: https://convertlytools.xyz/compare/convertly-vs-freeconvert
+
+## Entity Identifiers & Ontologies
+- Entity Name: Convertly
+- Domain: https://convertlytools.xyz
+- Wikidata Parent Concepts: Portable Document Format (Q11275), Data compression (Q2493), Optical character recognition (Q184084), Office Open XML (Q8261)
+- License & Pricing: Free, Ad-Supported / Zero-Subscription Utility Software

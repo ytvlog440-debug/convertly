@@ -681,11 +681,49 @@ function renderToolHtml(tool) {
         'Smartphone QR Direct File Transfer',
         'No File Limits and No Watermarks',
       ],
+      about: [
+        {
+          '@type': 'Thing',
+          name: 'Document conversion',
+          sameAs: 'https://en.wikipedia.org/wiki/Data_conversion',
+        },
+        ...(tool.name.toLowerCase().includes('pdf') || tool.category === 'PDF' ? [{
+          '@type': 'Thing',
+          name: 'Portable Document Format',
+          sameAs: 'https://en.wikipedia.org/wiki/PDF',
+        }] : []),
+        ...(tool.name.toLowerCase().includes('word') ? [{
+          '@type': 'Thing',
+          name: 'Microsoft Word',
+          sameAs: 'https://en.wikipedia.org/wiki/Microsoft_Word',
+        }] : []),
+        ...(tool.name.toLowerCase().includes('excel') ? [{
+          '@type': 'Thing',
+          name: 'Microsoft Excel',
+          sameAs: 'https://en.wikipedia.org/wiki/Microsoft_Excel',
+        }] : []),
+        ...(tool.category === 'Images' ? [{
+          '@type': 'Thing',
+          name: 'Image file format',
+          sameAs: 'https://en.wikipedia.org/wiki/Image_file_format',
+        }] : []),
+      ],
       creator: {
         '@type': 'Organization',
         '@id': `${BASE_DOMAIN}/#organization`,
         name: 'Convertly',
         url: BASE_DOMAIN,
+        sameAs: [
+          'https://github.com/convertly',
+          'https://twitter.com/convertlytools',
+          'https://www.linkedin.com/company/convertlytools',
+        ],
+        knowsAbout: [
+          'https://en.wikipedia.org/wiki/PDF',
+          'https://en.wikipedia.org/wiki/Microsoft_Word',
+          'https://en.wikipedia.org/wiki/Data_compression',
+          'https://en.wikipedia.org/wiki/Optical_character_recognition',
+        ],
       },
       publisher: {
         '@type': 'Organization',
@@ -822,13 +860,18 @@ toolsPageHtml = toolsPageHtml.replace(/<link rel="canonical" href=".*?" \/>/, `<
 fs.writeFileSync(path.join(toolsDir, 'index.html'), toolsPageHtml, 'utf-8')
 console.log(`  ✓ Pre-rendered: /tools`)
 
-// 3. Generate static landing directories for core informational pages
+// 3. Generate static landing directories for core hubs, specifications & legal
 const CORE_PAGES = [
   { slug: 'privacy', title: 'Privacy Policy — 120-Minute Auto-Shredder Guarantee | Convertly', desc: 'Convertly Privacy Policy. Strict zero-retention guarantee, 120-minute automated file shredding, TLS 1.3 encryption, and GDPR compliance.' },
   { slug: 'security', title: 'Security Architecture & Defense-in-Depth | Convertly', desc: 'Learn how Convertly protects your confidential documents with TLS 1.3, sandboxed subprocesses, magic-byte inspection, and automated shredding.' },
   { slug: 'terms', title: 'Terms of Service — Convertly V2 File Conversion', desc: 'Terms and conditions for utilizing Convertly online document and image conversion services.' },
   { slug: 'developers', title: 'Developers API & Architecture — Convertly V2', desc: 'Explore the Convertly V2 REST API documentation, webhook integration guides, and document pipeline specs.' },
   { slug: 'formats', title: 'Supported File Formats & MIME Type Specifications — Convertly', desc: 'Comprehensive technical specification guide covering all supported PDF, Microsoft Office, and raster image formats.' },
+  { slug: 'compare', title: 'Convertly vs Competitors (2026) — Comprehensive PDF & Tool Comparisons', desc: 'Factual side-by-side comparisons of Convertly against Smallpdf, iLovePDF, PDF24, Adobe Acrobat, and FreeConvert.' },
+  { slug: 'use-cases', title: 'Document Solutions by Industry & Profession — Convertly Use Cases', desc: 'Tailored PDF and document workflows for Students, Teachers, Businesses, Lawyers, HR, Freelancers, and Designers.' },
+  { slug: 'guides', title: 'Problem Solving Guides & PDF Tutorials (2026) — Convertly', desc: 'Comprehensive technical guides on solving PDF formatting, compression, page splitting, merging, and conversion issues.' },
+  { slug: 'blog', title: 'Convertly Engineering Blog — Deep Dives in PDF, Office & Image Optimization', desc: 'Explore technical tutorials, format breakdowns, zero-retention security research, and productivity guides.' },
+  { slug: 'sitemap', title: 'HTML Sitemap & Complete Entity Index — Convertly', desc: 'Comprehensive index of all Convertly conversion tools, landing pages, competitor comparisons, and guides.' },
 ]
 
 for (const page of CORE_PAGES) {
@@ -844,7 +887,133 @@ for (const page of CORE_PAGES) {
   console.log(`  ✓ Pre-rendered: /${page.slug}`)
 }
 
-// 4. Automated Production XML Sitemap Generator (Auto-supports future tools)
+// 4. Pre-render Programmatic SEO Landing Pages
+const PROGRAMMATIC_PAGES = [
+  { slug: 'pdf-to-word', title: 'PDF to Word Converter — Convert PDF to DOCX Free | Convertly', desc: 'Convert PDF to editable Word DOCX online for free. Preserves layout, tables, fonts, and inline graphics with built-in optical character recognition (OCR).' },
+  { slug: 'pdf-to-word-online', title: 'PDF to Word Online — Convert PDF to DOCX in Web Browser | Convertly', desc: 'Convert PDF to Word online directly in your browser. No desktop software installation required. Fast, private, secure, and completely free.' },
+  { slug: 'pdf-to-word-free', title: 'Free PDF to Word Converter — 100% Free DOCX Output | Convertly', desc: 'Convert PDF to Word free online. No hidden trial limitations, no daily file limits, no registration, and no intrusive watermarks.' },
+  { slug: 'pdf-to-word-windows', title: 'PDF to Word for Windows 11 & 10 — Fast Web Converter | Convertly', desc: 'Convert PDF to Word on Windows 11, 10, and 8. Compatible with Microsoft Edge, Chrome, and Firefox. Generates native DOCX for Microsoft Word.' },
+  { slug: 'pdf-to-word-mac', title: 'PDF to Word for Mac — Convert PDF to DOCX on macOS | Convertly', desc: 'Convert PDF to Word on Apple Mac (macOS Sonoma, Ventura, Monterey). Compatible with Apple Silicon M1/M2/M3/M4 and Intel Macs with Safari support.' },
+  { slug: 'pdf-to-word-mobile', title: 'PDF to Word on Mobile — Convert PDF to DOCX on iPhone & Android', desc: 'Convert PDF to Word on mobile devices. Touch-optimized converter for iPhone, iPad, and Android phones. Direct QR code transfer included.' },
+  { slug: 'word-to-pdf', title: 'Word to PDF Online — Convert DOCX & DOC to PDF Free | Convertly', desc: 'Convert Microsoft Word DOCX and DOC files into print-ready PDF documents online for free. Preserves exact fonts, margins, vector tables, and headers.' },
+  { slug: 'merge-pdf-online', title: 'Merge PDF Online — Combine Multiple PDF Files Free | Convertly', desc: 'Combine and merge multiple PDF documents into a single organized file online for free. Drag and drop to reorder pages with zero data retention.' },
+  { slug: 'compress-pdf-online', title: 'Compress PDF Online — Reduce PDF File Size Free | Convertly', desc: 'Reduce PDF file size online while maintaining crisp text and sharp image quality. Perfect for email attachments and portal uploads. 100% free.' },
+  { slug: 'convert-pdf-without-losing-formatting', title: 'Convert PDF Without Losing Formatting — 100% Layout Preservation', desc: 'Convert PDF to Word without losing formatting, tables, font styles, or margins. Advanced structural synthesis ensures pixel-accurate editable documents.' },
+  { slug: 'convert-jpg-to-png', title: 'Convert JPG to PNG Online — Lossless Raster Image Conversion', desc: 'Convert JPG images to lossless PNG format online for free. Support high bit-depth and transparency preparation with zero compression artifacts.' },
+  { slug: 'convert-image-to-pdf', title: 'Convert Image to PDF Online — Combine JPG, PNG & WebP into PDF', desc: 'Convert JPG, PNG, and WebP images into a single professional PDF document online for free. Clean page margins and orientation with zero data retention.' },
+]
+
+for (const prog of PROGRAMMATIC_PAGES) {
+  const pageDir = path.join(DIST_DIR, 'convert', prog.slug)
+  if (!fs.existsSync(pageDir)) {
+    fs.mkdirSync(pageDir, { recursive: true })
+  }
+  let progHtml = template
+  progHtml = progHtml.replace(/<title>.*?<\/title>/, `<title>${prog.title}</title>`)
+  progHtml = progHtml.replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${prog.desc}" />`)
+  progHtml = progHtml.replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${BASE_DOMAIN}/convert/${prog.slug}" />`)
+  fs.writeFileSync(path.join(pageDir, 'index.html'), progHtml, 'utf-8')
+  console.log(`  ✓ Pre-rendered: /convert/${prog.slug}`)
+}
+
+// 5. Pre-render Competitor Comparison Pages
+const COMPARISON_PAGES = [
+  { slug: 'convertly-vs-smallpdf', title: 'Convertly vs Smallpdf Comparison (2026) — Features, Limits & Pricing', desc: 'Unbiased factual comparison between Convertly and Smallpdf. Compare free tier file limits, OCR accuracy, privacy retention SLAs, and pricing models.' },
+  { slug: 'convertly-vs-ilovepdf', title: 'Convertly vs iLovePDF Comparison (2026) — Limits, Ads & Security', desc: 'Detailed technical comparison between Convertly and iLovePDF. Compare advertising density, file size limits, API availability, and processing speeds.' },
+  { slug: 'convertly-vs-pdf24', title: 'Convertly vs PDF24 Comparison (2026) — Performance, UI & Speed', desc: 'Objective comparison between Convertly and PDF24 Tools. Compare UI design, mobile responsiveness, processing speeds, and document security.' },
+  { slug: 'convertly-vs-adobe-acrobat', title: 'Convertly vs Adobe Acrobat Online (2026) — Free vs Enterprise Suite', desc: 'Compare Convertly and Adobe Acrobat Online. Weigh Adobe’s proprietary rendering and subscription fees against Convertly’s free cloud converter.' },
+  { slug: 'convertly-vs-freeconvert', title: 'Convertly vs FreeConvert Comparison (2026) — Conversion Limits & Privacy', desc: 'Compare Convertly and FreeConvert. Analyze conversion minutes, maximum file sizes, queue wait times, advertising levels, and privacy guarantees.' },
+]
+
+for (const comp of COMPARISON_PAGES) {
+  const pageDir = path.join(DIST_DIR, 'compare', comp.slug)
+  if (!fs.existsSync(pageDir)) {
+    fs.mkdirSync(pageDir, { recursive: true })
+  }
+  let compHtml = template
+  compHtml = compHtml.replace(/<title>.*?<\/title>/, `<title>${comp.title}</title>`)
+  compHtml = compHtml.replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${comp.desc}" />`)
+  compHtml = compHtml.replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${BASE_DOMAIN}/compare/${comp.slug}" />`)
+  fs.writeFileSync(path.join(pageDir, 'index.html'), compHtml, 'utf-8')
+  console.log(`  ✓ Pre-rendered: /compare/${comp.slug}`)
+}
+
+// 6. Pre-render Industry & Persona Use Case Pages
+const USE_CASE_PAGES = [
+  { slug: 'students', title: 'Best PDF Converter for Students (100% Free & Unlimited) | Convertly', desc: 'Free, unlimited PDF and document tools for college and university students. Convert research papers, merge assignments, compress thesis PDFs, and extract lecture notes.' },
+  { slug: 'teachers', title: 'Best PDF Converter for Teachers & Educators (Free) | Convertly', desc: 'Free document conversion suite for teachers, professors, and educators. Create printable worksheets, merge grading packets, and convert slides to handouts.' },
+  { slug: 'businesses', title: 'Best PDF Converter for Small Businesses & Enterprises | Convertly', desc: 'Secure, fast, and 100% free document converter for businesses and startups. Convert invoices, merge contracts, optimize reports for email, and protect sensitive IP.' },
+  { slug: 'lawyers', title: 'Best PDF Converter for Lawyers & Legal Counsel (Secure & Private)', desc: 'Strictly private, zero-retention PDF tools for lawyers, paralegals, and legal firms. Redact sensitive disclosures, merge case exhibits, and prepare court filings.' },
+  { slug: 'hr', title: 'Best PDF Converter for HR & People Operations | Convertly', desc: 'Streamline onboarding packets, payroll records, and employee contracts with secure, free PDF tools. Convert Word resumes, merge benefit packets, and protect PII.' },
+  { slug: 'freelancers', title: 'Best PDF Converter for Freelancers & Contractors | Convertly', desc: 'Free, professional document conversion suite for freelancers and solo contractors. Convert invoices to PDF, merge project deliverables, and compress client proposals.' },
+  { slug: 'designers', title: 'Best Image & PDF Converter for Designers & Creatives | Convertly', desc: 'High-fidelity image and PDF conversion suite for UI/UX and graphic designers. Convert WebP, PNG, and JPG, compress vector PDFs, and export design portfolios.' },
+]
+
+for (const uc of USE_CASE_PAGES) {
+  const pageDir = path.join(DIST_DIR, 'use-cases', uc.slug)
+  if (!fs.existsSync(pageDir)) {
+    fs.mkdirSync(pageDir, { recursive: true })
+  }
+  let ucHtml = template
+  ucHtml = ucHtml.replace(/<title>.*?<\/title>/, `<title>${uc.title}</title>`)
+  ucHtml = ucHtml.replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${uc.desc}" />`)
+  ucHtml = ucHtml.replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${BASE_DOMAIN}/use-cases/${uc.slug}" />`)
+  fs.writeFileSync(path.join(pageDir, 'index.html'), ucHtml, 'utf-8')
+  console.log(`  ✓ Pre-rendered: /use-cases/${uc.slug}`)
+}
+
+// 7. Pre-render Problem Solving Guides
+const GUIDE_PAGES = [
+  { slug: 'how-to-convert-pdf-to-word-without-losing-formatting', title: 'How to Convert PDF to Word Without Losing Formatting (2026 Guide)', desc: 'Step-by-step guide to converting complex PDF documents into editable Microsoft Word DOCX files while preserving exact tables, margins, fonts, and layouts.' },
+  { slug: 'how-to-compress-pdf-without-losing-quality', title: 'How to Compress PDF Without Losing Quality (Email & Portal Ready)', desc: 'Learn how to reduce large PDF file sizes by up to 90% while keeping vector text mathematically crisp and images sharp. Full technical walkthrough.' },
+  { slug: 'how-to-merge-pdf-files', title: 'How to Merge Multiple PDF Files into One (Free Step-by-Step Guide)', desc: 'Combine multiple PDF documents into a single cohesive file online. Learn how to sequence pages, preserve bookmarks, and merge up to 20 files in seconds.' },
+  { slug: 'how-to-split-pdf-pages', title: 'How to Split PDF Pages & Extract Ranges Online Free | Convertly', desc: 'Extract specific pages, chapters, or page ranges from any PDF file. Step-by-step instructions on separating single pages or breaking large documents down.' },
+  { slug: 'how-to-convert-excel-to-pdf', title: 'How to Convert Excel to PDF Without Cutting Off Columns (Guide)', desc: 'Convert XLSX and XLS spreadsheets to beautifully paginated PDF documents. How to avoid split tables, cropped columns, and pagination issues.' },
+  { slug: 'how-to-convert-powerpoint-to-pdf', title: 'How to Convert PowerPoint to PDF (Slide Deck to Universal Handout)', desc: 'Convert PPTX and PPT presentation slide decks into universal PDF documents. Maintain slide typography, vector graphics, and speaker notes.' },
+  { slug: 'how-to-convert-images-into-pdf', title: 'How to Convert Images into a Single PDF (JPG, PNG & WebP)', desc: 'Step-by-step guide to combining photos, screenshots, and graphic scans into a multi-page PDF document online for free.' },
+]
+
+for (const guide of GUIDE_PAGES) {
+  const pageDir = path.join(DIST_DIR, 'guides', guide.slug)
+  if (!fs.existsSync(pageDir)) {
+    fs.mkdirSync(pageDir, { recursive: true })
+  }
+  let guideHtml = template
+  guideHtml = guideHtml.replace(/<title>.*?<\/title>/, `<title>${guide.title}</title>`)
+  guideHtml = guideHtml.replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${guide.desc}" />`)
+  guideHtml = guideHtml.replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${BASE_DOMAIN}/guides/${guide.slug}" />`)
+  fs.writeFileSync(path.join(pageDir, 'index.html'), guideHtml, 'utf-8')
+  console.log(`  ✓ Pre-rendered: /guides/${guide.slug}`)
+}
+
+// 8. Pre-render Engineering Blog Articles
+const BLOG_PAGES = [
+  { slug: 'the-definitive-guide-to-lossless-pdf-compression', title: 'The Definitive Guide to Lossless PDF Compression: Behind the Code', desc: 'Discover how modern compression engines reduce PDF file size by 80% without degrading visual vector sharpness or font typography.' },
+  { slug: 'how-to-fix-broken-formatting-in-pdf-to-word', title: 'How to Fix Broken Formatting When Converting PDF to Word DOCX', desc: 'Solve misaligned tables, jumping text frames, and broken font styles when exporting PDF documents to editable Microsoft Word.' },
+  { slug: 'excel-to-pdf-best-practices-for-executive-reporting', title: 'Excel to PDF Best Practices: Creating Board-Ready Financial Reports', desc: 'How to convert Microsoft Excel spreadsheets to clean, presentation-ready PDF reports without awkward column splits or distorted gridlines.' },
+  { slug: 'powerpoint-to-pdf-handout-optimization', title: 'PowerPoint to PDF: Creating Crisp Slide Handouts for High-Stakes Pitches', desc: 'Transform slide decks into universal PDF presentation handouts. Prevent missing corporate fonts and format shifts across presentation hardware.' },
+  { slug: 'next-gen-image-formats-webp-vs-png-vs-jpg', title: 'WebP vs PNG vs JPG: Modern Image Format Selection Guide (2026)', desc: 'A technical deep-dive into Google WebP, PNG, and JPEG. Learn which format to choose for Core Web Vitals, transparency, and photography compression.' },
+  { slug: 'zero-retention-architecture-in-modern-file-converters', title: 'Zero-Retention Architecture: Protecting Document Privacy in the Cloud', desc: 'How Convertly protects sensitive user documents with TLS 1.3 encryption, isolated worker containers, and automated 120-minute file shredding.' },
+  { slug: 'security-defense-in-depth-document-pipeline', title: 'Security Defense-in-Depth: Sandboxing Untrusted Document Pipelines', desc: 'A technical analysis of document processing vulnerabilities (Buffer Overflows, Ghostscript CVEs) and how defense-in-depth sandboxing mitigates them.' },
+  { slug: 'paperless-office-productivity-hacks', title: '10 Paperless Productivity Hacks to Automate Document Workflows', desc: 'Boost daily office efficiency with 10 actionable document hacks: instant QR transfers, multi-file merging, PDF page isolation, and Bates numbering.' },
+  { slug: 'why-convertly-is-the-best-free-alternative-to-adobe-acrobat', title: 'Why Convertly Is the Best Free Alternative to Adobe Acrobat in 2026', desc: 'A direct comparison between Convertly and Adobe Acrobat. Compare annual subscription costs ($239+/yr), forced account logins, and web conversion speed.' },
+  { slug: 'step-by-step-tutorial-redacting-confidential-data-from-pdf', title: 'Step-by-Step Tutorial: Redacting Confidential Data from PDF Documents', desc: 'Learn how to properly redact sensitive information from PDF files. Why drawing black rectangles fails and how to permanently purge confidential bytes.' },
+]
+
+for (const post of BLOG_PAGES) {
+  const pageDir = path.join(DIST_DIR, 'blog', post.slug)
+  if (!fs.existsSync(pageDir)) {
+    fs.mkdirSync(pageDir, { recursive: true })
+  }
+  let postHtml = template
+  postHtml = postHtml.replace(/<title>.*?<\/title>/, `<title>${post.title} | Convertly Blog</title>`)
+  postHtml = postHtml.replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${post.desc}" />`)
+  postHtml = postHtml.replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${BASE_DOMAIN}/blog/${post.slug}" />`)
+  fs.writeFileSync(path.join(pageDir, 'index.html'), postHtml, 'utf-8')
+  console.log(`  ✓ Pre-rendered: /blog/${post.slug}`)
+}
+
+// 9. Automated Production XML Sitemap Generator (Comprehensive Multi-Cluster Coverage)
 const today = new Date().toISOString().split('T')[0]
 const flagshipToolIds = new Set([
   'pdf-to-word', 'word-to-pdf', 'pdf-merge', 'pdf-compress',
@@ -853,19 +1022,54 @@ const flagshipToolIds = new Set([
 
 let sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n`
 
-// A. Main Entrypoints
-sitemapXml += `  <!-- Main Entrypoints -->\n`
+// A. Main Entrypoints & Directory Hubs
+sitemapXml += `  <!-- Main Entrypoints & Hubs -->\n`
 sitemapXml += `  <url>\n    <loc>${BASE_DOMAIN}</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>1.0</priority>\n  </url>\n`
-sitemapXml += `  <url>\n    <loc>${BASE_DOMAIN}/tools</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.9</priority>\n  </url>\n\n`
+sitemapXml += `  <url>\n    <loc>${BASE_DOMAIN}/tools</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.9</priority>\n  </url>\n`
+sitemapXml += `  <url>\n    <loc>${BASE_DOMAIN}/compare</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.85</priority>\n  </url>\n`
+sitemapXml += `  <url>\n    <loc>${BASE_DOMAIN}/use-cases</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.85</priority>\n  </url>\n`
+sitemapXml += `  <url>\n    <loc>${BASE_DOMAIN}/guides</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.85</priority>\n  </url>\n`
+sitemapXml += `  <url>\n    <loc>${BASE_DOMAIN}/blog</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>daily</changefreq>\n    <priority>0.8</priority>\n  </url>\n`
+sitemapXml += `  <url>\n    <loc>${BASE_DOMAIN}/sitemap</loc>\n    <lastmod>${today}</lastmod>\n    <changefreq>weekly</changefreq>\n    <priority>0.7</priority>\n  </url>\n\n`
 
-// B. Conversion Tools
+// B. Conversion Tools (30 Active Engines)
 sitemapXml += `  <!-- All Converter Tools (${TOOLS.length} Active Engines) -->\n`
 for (const tool of TOOLS) {
   const priority = flagshipToolIds.has(tool.id) ? '0.9' : '0.8'
   sitemapXml += `  <url><loc>${BASE_DOMAIN}/tools/${tool.id}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>${priority}</priority></url>\n`
 }
 
-// C. Core Information, Specs & Legal
+// C. Programmatic Landing Pages
+sitemapXml += `\n  <!-- Programmatic SEO Landing Pages (${PROGRAMMATIC_PAGES.length} URLs) -->\n`
+for (const prog of PROGRAMMATIC_PAGES) {
+  sitemapXml += `  <url><loc>${BASE_DOMAIN}/convert/${prog.slug}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>\n`
+}
+
+// D. Competitor Comparisons
+sitemapXml += `\n  <!-- Competitor Comparisons (${COMPARISON_PAGES.length} URLs) -->\n`
+for (const comp of COMPARISON_PAGES) {
+  sitemapXml += `  <url><loc>${BASE_DOMAIN}/compare/${comp.slug}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>\n`
+}
+
+// E. Industry & Persona Use Cases
+sitemapXml += `\n  <!-- Industry Use Cases (${USE_CASE_PAGES.length} URLs) -->\n`
+for (const uc of USE_CASE_PAGES) {
+  sitemapXml += `  <url><loc>${BASE_DOMAIN}/use-cases/${uc.slug}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>\n`
+}
+
+// F. Problem Solving Guides
+sitemapXml += `\n  <!-- Problem Solving Guides (${GUIDE_PAGES.length} URLs) -->\n`
+for (const guide of GUIDE_PAGES) {
+  sitemapXml += `  <url><loc>${BASE_DOMAIN}/guides/${guide.slug}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>\n`
+}
+
+// G. Engineering Blog Articles
+sitemapXml += `\n  <!-- Engineering Blog Articles (${BLOG_PAGES.length} URLs) -->\n`
+for (const post of BLOG_PAGES) {
+  sitemapXml += `  <url><loc>${BASE_DOMAIN}/blog/${post.slug}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>\n`
+}
+
+// H. Core Technical & Legal Specifications
 sitemapXml += `\n  <!-- Core Technical & Legal Specifications -->\n`
 const pagePriorities = {
   formats: '0.7',
@@ -875,8 +1079,10 @@ const pagePriorities = {
   terms: '0.5',
 }
 for (const page of CORE_PAGES) {
-  const prio = pagePriorities[page.slug] || '0.5'
-  sitemapXml += `  <url><loc>${BASE_DOMAIN}/${page.slug}</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>${prio}</priority></url>\n`
+  if (['privacy', 'security', 'terms', 'developers', 'formats'].includes(page.slug)) {
+    const prio = pagePriorities[page.slug] || '0.5'
+    sitemapXml += `  <url><loc>${BASE_DOMAIN}/${page.slug}</loc><lastmod>${today}</lastmod><changefreq>monthly</changefreq><priority>${prio}</priority></url>\n`
+  }
 }
 
 sitemapXml += `\n</urlset>\n`
@@ -885,6 +1091,18 @@ sitemapXml += `\n</urlset>\n`
 const PUBLIC_DIR = path.resolve(__dirname, '../public')
 fs.writeFileSync(path.join(PUBLIC_DIR, 'sitemap.xml'), sitemapXml, 'utf-8')
 fs.writeFileSync(path.join(DIST_DIR, 'sitemap.xml'), sitemapXml, 'utf-8')
-console.log(`  ✓ Dynamically Generated Production Sitemap: ${TOOLS.length + CORE_PAGES.length + 2} URLs`)
+
+const totalUrls =
+  2 + // / and /tools
+  5 + // 5 hubs
+  TOOLS.length +
+  PROGRAMMATIC_PAGES.length +
+  COMPARISON_PAGES.length +
+  USE_CASE_PAGES.length +
+  GUIDE_PAGES.length +
+  BLOG_PAGES.length +
+  5 // 5 legal/specs
+
+console.log(`  ✓ Dynamically Generated Production Sitemap: ${totalUrls} Verified URLs`)
 
 console.log('✅ Static pre-rendering and dynamic sitemap generation completed successfully!')

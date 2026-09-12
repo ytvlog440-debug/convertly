@@ -48,6 +48,8 @@ export function Navbar() {
     { name: 'PDF Suite', href: '/tools?category=pdf' },
     { name: 'Office ⇄ PDF', href: '/tools?category=office' },
     { name: 'Image Suite', href: '/tools?category=images' },
+    { name: 'Guides', href: '/guides' },
+    { name: 'Blog', href: '/blog' },
   ]
 
   const isHealthy = !isLoading && !isError && (health?.status === 'healthy' || health?.status === 'degraded')

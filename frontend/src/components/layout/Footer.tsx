@@ -46,7 +46,7 @@ export function Footer() {
         </div>
 
         {/* Links Navigation */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 py-10">
+        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 py-10">
           <div>
             <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4">
               PDF Toolkit
@@ -90,7 +90,21 @@ export function Footer() {
 
           <div>
             <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4">
-              Platform & Standards
+              Resources & Hubs
+            </p>
+            <ul className="space-y-2.5 text-xs">
+              <li><Link to="/guides" className="text-foreground/80 hover:text-indigo-400 transition-colors">Problem Solving Guides</Link></li>
+              <li><Link to="/compare" className="text-foreground/80 hover:text-indigo-400 transition-colors">Tool Comparisons</Link></li>
+              <li><Link to="/use-cases" className="text-foreground/80 hover:text-indigo-400 transition-colors">Industry Solutions</Link></li>
+              <li><Link to="/blog" className="text-foreground/80 hover:text-indigo-400 transition-colors">Engineering Blog</Link></li>
+              <li><Link to="/sitemap" className="text-foreground/80 hover:text-indigo-400 transition-colors">HTML Sitemap Index</Link></li>
+              <li><Link to="/convert/pdf-to-word-online" className="text-foreground/80 hover:text-indigo-400 transition-colors">PDF to Word Online</Link></li>
+            </ul>
+          </div>
+
+          <div>
+            <p className="text-xs font-bold uppercase tracking-wider text-muted-foreground mb-4">
+              Platform & Specs
             </p>
             <ul className="space-y-2.5 text-xs">
               <li><Link to="/developers" className="text-foreground/80 hover:text-indigo-400 transition-colors">Developer REST API</Link></li>

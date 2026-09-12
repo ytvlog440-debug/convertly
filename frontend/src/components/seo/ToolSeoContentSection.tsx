@@ -21,12 +21,14 @@ import {
 } from 'lucide-react'
 import { Card } from '../ui/Card'
 import type { ToolSeoContent } from '../../data/toolSeoContent'
+import { getContextualEcosystemLinks } from '../../data/topicClustersData'
 
 interface ToolSeoContentSectionProps {
   content: ToolSeoContent
 }
 
 export function ToolSeoContentSection({ content }: ToolSeoContentSectionProps) {
+  const ecosystemLinks = getContextualEcosystemLinks(content.id)
   // State for interactive accessible FAQ accordion
   const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(0)
 
@@ -543,6 +545,87 @@ export function ToolSeoContentSection({ content }: ToolSeoContentSectionProps) {
           </div>
         </section>
       )}
+
+      {/* Contextual Ecosystem Knowledge Matrix */}
+      <section aria-labelledby="section-ecosystem-links" className="space-y-4 pt-6 border-t border-border/60">
+        <div className="flex items-center gap-2 text-indigo-400 text-xs font-semibold uppercase tracking-wider">
+          <Sparkles className="h-3.5 w-3.5" />
+          <span>Knowledge Base, Industry Solutions & Comparisons</span>
+        </div>
+        <h2 id="section-ecosystem-links" className="font-heading text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+          Related Guides & Industry Workflows for {content.name}
+        </h2>
+        
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          {/* Guides */}
+          <div className="rounded-xl border border-border/70 bg-card/40 p-4 space-y-2">
+            <span className="text-[11px] font-bold text-indigo-400 uppercase tracking-wider block">
+              Step-by-Step Guides
+            </span>
+            <ul className="space-y-1.5 text-xs">
+              {ecosystemLinks.guides.map(g => (
+                <li key={g.slug}>
+                  <Link to={`/guides/${g.slug}`} className="text-foreground/80 hover:text-indigo-400 transition-colors flex items-center gap-1">
+                    <ArrowRight className="h-3 w-3 text-muted-foreground shrink-0" />
+                    <span className="truncate">{g.title}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Competitor Comparisons */}
+          <div className="rounded-xl border border-border/70 bg-card/40 p-4 space-y-2">
+            <span className="text-[11px] font-bold text-indigo-400 uppercase tracking-wider block">
+              Platform Comparisons
+            </span>
+            <ul className="space-y-1.5 text-xs">
+              {ecosystemLinks.comparisons.map(c => (
+                <li key={c.slug}>
+                  <Link to={`/compare/${c.slug}`} className="text-foreground/80 hover:text-indigo-400 transition-colors flex items-center gap-1">
+                    <ArrowRight className="h-3 w-3 text-muted-foreground shrink-0" />
+                    <span className="truncate">{c.title}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Industry Use Cases */}
+          <div className="rounded-xl border border-border/70 bg-card/40 p-4 space-y-2">
+            <span className="text-[11px] font-bold text-indigo-400 uppercase tracking-wider block">
+              Industry Solutions
+            </span>
+            <ul className="space-y-1.5 text-xs">
+              {ecosystemLinks.useCases.map(u => (
+                <li key={u.slug}>
+                  <Link to={`/use-cases/${u.slug}`} className="text-foreground/80 hover:text-indigo-400 transition-colors flex items-center gap-1">
+                    <ArrowRight className="h-3 w-3 text-muted-foreground shrink-0" />
+                    <span className="truncate">{u.title}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* High-Intent Variations */}
+          <div className="rounded-xl border border-border/70 bg-card/40 p-4 space-y-2">
+            <span className="text-[11px] font-bold text-indigo-400 uppercase tracking-wider block">
+              Targeted Variations
+            </span>
+            <ul className="space-y-1.5 text-xs">
+              {ecosystemLinks.programmatic.map(p => (
+                <li key={p.slug}>
+                  <Link to={`/convert/${p.slug}`} className="text-foreground/80 hover:text-indigo-400 transition-colors flex items-center gap-1">
+                    <ArrowRight className="h-3 w-3 text-muted-foreground shrink-0" />
+                    <span className="truncate">{p.title}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </section>
 
       {/* Section 16: Conclusion & Action */}
       <section aria-labelledby="section-conclusion" className="rounded-2xl border border-border/80 bg-gradient-to-br from-card to-card/60 p-6 sm:p-8 space-y-4">

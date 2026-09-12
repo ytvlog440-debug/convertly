@@ -93,6 +93,7 @@ export function SeoHead({
   faqs,
   howToSteps,
   toolName,
+  toolCategory,
   schemaJson,
   noindex = false,
   ogImage = DEFAULT_OG_IMAGE,
@@ -183,8 +184,19 @@ export function SeoHead({
         url: LOGO_IMAGE,
         caption: 'Convertly Logo',
       },
-      image: DEFAULT_OG_IMAGE,
-      sameAs: ['https://github.com/convertly'],
+      sameAs: [
+        'https://github.com/convertly',
+        'https://twitter.com/convertlytools',
+        'https://www.linkedin.com/company/convertlytools',
+      ],
+      knowsAbout: [
+        'https://en.wikipedia.org/wiki/PDF',
+        'https://en.wikipedia.org/wiki/Microsoft_Word',
+        'https://en.wikipedia.org/wiki/Data_compression',
+        'https://en.wikipedia.org/wiki/Optical_character_recognition',
+        'https://en.wikipedia.org/wiki/Computer_security',
+        'https://en.wikipedia.org/wiki/Information_privacy',
+      ],
       contactPoint: {
         '@type': 'ContactPoint',
         contactType: 'customer support',
@@ -271,6 +283,33 @@ export function SeoHead({
           'In-Browser Live Document Preview',
           'Smartphone QR Direct File Transfer',
           'No File Limits and No Watermarks',
+        ],
+        about: [
+          {
+            '@type': 'Thing',
+            name: 'Document conversion',
+            sameAs: 'https://en.wikipedia.org/wiki/Data_conversion',
+          },
+          ...(toolName?.toLowerCase().includes('pdf') || toolCategory === 'PDF' ? [{
+            '@type': 'Thing',
+            name: 'Portable Document Format',
+            sameAs: 'https://en.wikipedia.org/wiki/PDF',
+          }] : []),
+          ...(toolName?.toLowerCase().includes('word') || toolName?.toLowerCase().includes('docx') ? [{
+            '@type': 'Thing',
+            name: 'Microsoft Word',
+            sameAs: 'https://en.wikipedia.org/wiki/Microsoft_Word',
+          }] : []),
+          ...(toolName?.toLowerCase().includes('excel') ? [{
+            '@type': 'Thing',
+            name: 'Microsoft Excel',
+            sameAs: 'https://en.wikipedia.org/wiki/Microsoft_Excel',
+          }] : []),
+          ...(toolName?.toLowerCase().includes('image') || toolCategory === 'Images' ? [{
+            '@type': 'Thing',
+            name: 'Image file format',
+            sameAs: 'https://en.wikipedia.org/wiki/Image_file_format',
+          }] : []),
         ],
       })
     } else if (determinedType === 'CollectionPage') {

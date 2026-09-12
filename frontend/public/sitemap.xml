@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
-  <!-- Main Entrypoints -->
+  <!-- Main Entrypoints & Hubs -->
   <url>
     <loc>https://convertlytools.xyz</loc>
     <lastmod>2026-09-12</lastmod>
@@ -13,6 +13,36 @@
     <lastmod>2026-09-12</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://convertlytools.xyz/compare</loc>
+    <lastmod>2026-09-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://convertlytools.xyz/use-cases</loc>
+    <lastmod>2026-09-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://convertlytools.xyz/guides</loc>
+    <lastmod>2026-09-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+  </url>
+  <url>
+    <loc>https://convertlytools.xyz/blog</loc>
+    <lastmod>2026-09-12</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://convertlytools.xyz/sitemap</loc>
+    <lastmod>2026-09-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
 
   <!-- All Converter Tools (30 Active Engines) -->
@@ -46,6 +76,57 @@
   <url><loc>https://convertlytools.xyz/tools/pdf-scrub-metadata</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://convertlytools.xyz/tools/pdf-to-txt</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
   <url><loc>https://convertlytools.xyz/tools/pdf-grayscale</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+
+  <!-- Programmatic SEO Landing Pages (12 URLs) -->
+  <url><loc>https://convertlytools.xyz/convert/pdf-to-word</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://convertlytools.xyz/convert/pdf-to-word-online</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://convertlytools.xyz/convert/pdf-to-word-free</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://convertlytools.xyz/convert/pdf-to-word-windows</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://convertlytools.xyz/convert/pdf-to-word-mac</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://convertlytools.xyz/convert/pdf-to-word-mobile</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://convertlytools.xyz/convert/word-to-pdf</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://convertlytools.xyz/convert/merge-pdf-online</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://convertlytools.xyz/convert/compress-pdf-online</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://convertlytools.xyz/convert/convert-pdf-without-losing-formatting</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://convertlytools.xyz/convert/convert-jpg-to-png</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://convertlytools.xyz/convert/convert-image-to-pdf</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+
+  <!-- Competitor Comparisons (5 URLs) -->
+  <url><loc>https://convertlytools.xyz/compare/convertly-vs-smallpdf</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertlytools.xyz/compare/convertly-vs-ilovepdf</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertlytools.xyz/compare/convertly-vs-pdf24</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertlytools.xyz/compare/convertly-vs-adobe-acrobat</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertlytools.xyz/compare/convertly-vs-freeconvert</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+
+  <!-- Industry Use Cases (7 URLs) -->
+  <url><loc>https://convertlytools.xyz/use-cases/students</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertlytools.xyz/use-cases/teachers</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertlytools.xyz/use-cases/businesses</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertlytools.xyz/use-cases/lawyers</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertlytools.xyz/use-cases/hr</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertlytools.xyz/use-cases/freelancers</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+  <url><loc>https://convertlytools.xyz/use-cases/designers</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>
+
+  <!-- Problem Solving Guides (7 URLs) -->
+  <url><loc>https://convertlytools.xyz/guides/how-to-convert-pdf-to-word-without-losing-formatting</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://convertlytools.xyz/guides/how-to-compress-pdf-without-losing-quality</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://convertlytools.xyz/guides/how-to-merge-pdf-files</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://convertlytools.xyz/guides/how-to-split-pdf-pages</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://convertlytools.xyz/guides/how-to-convert-excel-to-pdf</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://convertlytools.xyz/guides/how-to-convert-powerpoint-to-pdf</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+  <url><loc>https://convertlytools.xyz/guides/how-to-convert-images-into-pdf</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>
+
+  <!-- Engineering Blog Articles (10 URLs) -->
+  <url><loc>https://convertlytools.xyz/blog/the-definitive-guide-to-lossless-pdf-compression</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://convertlytools.xyz/blog/how-to-fix-broken-formatting-in-pdf-to-word</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://convertlytools.xyz/blog/excel-to-pdf-best-practices-for-executive-reporting</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://convertlytools.xyz/blog/powerpoint-to-pdf-handout-optimization</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://convertlytools.xyz/blog/next-gen-image-formats-webp-vs-png-vs-jpg</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://convertlytools.xyz/blog/zero-retention-architecture-in-modern-file-converters</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://convertlytools.xyz/blog/security-defense-in-depth-document-pipeline</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://convertlytools.xyz/blog/paperless-office-productivity-hacks</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://convertlytools.xyz/blog/why-convertly-is-the-best-free-alternative-to-adobe-acrobat</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>
+  <url><loc>https://convertlytools.xyz/blog/step-by-step-tutorial-redacting-confidential-data-from-pdf</loc><lastmod>2026-09-12</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>
 
   <!-- Core Technical & Legal Specifications -->
   <url><loc>https://convertlytools.xyz/privacy</loc><lastmod>2026-09-12</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
