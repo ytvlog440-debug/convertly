@@ -566,8 +566,82 @@ const TOOLS = [
   },
 ]
 
+function getFullToolFaqs(tool) {
+  const isImage = tool.category === 'Images'
+  const isOffice = tool.category === 'Office'
+  const baseFaqs = [
+    {
+      question: `Is Convertly’s ${tool.name} tool completely free to use?`,
+      answer: `Yes. Convertly’s ${tool.name} tool is 100% free with no hidden subscription fees, no trial limits, and no daily conversion caps. You can process files whenever you need without credit card details.`
+    },
+    {
+      question: `How long are my uploaded files stored on your servers?`,
+      answer: `Under our strict Zero-Retention Policy, all uploaded files and converted outputs are stored exclusively in temporary sandboxed storage and are permanently and irreversibly shredded after 120 minutes.`
+    },
+    {
+      question: `Will my file formatting, fonts, or image quality be lost?`,
+      answer: `No. Convertly uses native C++ and Python processing engines (such as PyMuPDF, LibreOffice, and Pillow) to ensure 100% vector accuracy, exact font metrics, and high-fidelity raster preservation.`
+    },
+    {
+      question: `Do I need to create an account or register to use ${tool.name}?`,
+      answer: `No account registration is required. We do not ask for your email address, phone number, or personal details. Simply upload your file, execute the task, and download your result instantly.`
+    },
+    {
+      question: `Can I use ${tool.name} on my iPhone, iPad, or Android phone?`,
+      answer: `Yes! Convertly is fully mobile-optimized. You can access the tool on any smartphone or tablet, select files directly from device storage or cloud drives, and even scan a QR code to transfer files to your phone.`
+    },
+    {
+      question: `Does this tool work on Mac, Windows, and Linux?`,
+      answer: `Yes. Convertly runs entirely in your web browser and is fully compatible with Windows 10/11, macOS (Intel & Apple Silicon), Linux (Ubuntu, Fedora, Debian), and ChromeOS across all modern browsers.`
+    },
+    {
+      question: `What is the maximum file size limit for uploads?`,
+      answer: `You can process files up to 100MB per session, which provides ample headroom for heavy multi-page documents, high-resolution photographs, and complex presentations.`
+    },
+    {
+      question: `Does Convertly add watermarks to my converted files?`,
+      answer: `No. We never stamp logos, watermarks, branding labels, or advertising onto your documents. Your output files remain 100% clean and professional.`
+    },
+    {
+      question: `Which web browsers are supported?`,
+      answer: `Convertly supports all modern web browsers including Google Chrome, Apple Safari, Mozilla Firefox, Microsoft Edge, Brave, and Opera without needing third-party plugins or browser extensions.`
+    },
+    {
+      question: isImage
+        ? `Can I convert multiple images at the same time?`
+        : isOffice
+        ? `Can I convert older legacy Microsoft Office formats like .doc, .xls, or .ppt?`
+        : `Can I process password-protected or encrypted PDF documents?`,
+      answer: isImage
+        ? `Yes! Convertly supports multi-file batch uploads so you can process multiple graphics sequentially with high-speed parallel workers.`
+        : isOffice
+        ? `Yes. Both modern XML-based formats (.docx, .xlsx, .pptx) and legacy binary formats (.doc, .xls, .ppt) are fully supported by our backend office conversion engine.`
+        : `If your PDF is encrypted with an open password, please use Convertly’s "Unlock PDF" tool first to decrypt it, then use ${tool.name} to complete your workflow.`
+    },
+    {
+      question: `Are my files used to train AI models or shared with third parties?`,
+      answer: `Never. Convertly guarantees a Zero AI Model Training policy. Your documents and images are never read, analyzed, shared, sold, or used to train machine learning models.`
+    },
+    {
+      question: `Can I continue editing my document with other Convertly tools?`,
+      answer: `Yes! You can seamlessly pipe your result into our other 29 conversion tools, such as Compress PDF, Merge PDF, Protect PDF, or Convert to Word.`
+    }
+  ]
+
+  const custom = tool.faqs || []
+  const existingQuestions = new Set(custom.map(f => f.question.toLowerCase()))
+  const combined = [...custom]
+  for (const f of baseFaqs) {
+    if (!existingQuestions.has(f.question.toLowerCase())) {
+      combined.push(f)
+    }
+  }
+  return combined
+}
+
 function renderToolHtml(tool) {
   const canonicalUrl = `${BASE_DOMAIN}/tools/${tool.id}`
+  const fullFaqs = getFullToolFaqs(tool)
   const schema = [
     {
       '@context': 'https://schema.org',
@@ -645,7 +719,7 @@ function renderToolHtml(tool) {
     {
       '@context': 'https://schema.org',
       '@type': 'FAQPage',
-      mainEntity: tool.faqs.map((f) => ({
+      mainEntity: fullFaqs.map((f) => ({
         '@type': 'Question',
         name: f.question,
         acceptedAnswer: {
@@ -660,7 +734,7 @@ function renderToolHtml(tool) {
   const stepsList = tool.steps
     .map((s) => `<li><strong>Step ${s.number}: ${s.title}</strong> — ${s.desc}</li>`)
     .join('')
-  const faqsList = tool.faqs
+  const faqsList = fullFaqs
     .map((f) => `<details style="margin-bottom: 12px;"><summary><strong>${f.question}</strong></summary><p>${f.answer}</p></details>`)
     .join('')
 

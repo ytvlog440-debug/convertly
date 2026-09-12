@@ -46,7 +46,7 @@ import { addRecentConversion } from '../lib/history'
 import { generateSampleFiles } from '../lib/samples'
 import { QrTransferModal } from '../components/common/QrTransferModal'
 import { DocumentPreviewModal } from '../components/common/DocumentPreviewModal'
-import { getToolSeoContent } from '../data/toolSeoContent'
+import { getToolSeoContent, TOPIC_CLUSTERS, TOOL_ACTION_ANCHORS } from '../data/toolSeoContent'
 import { ToolSeoContentSection } from '../components/seo/ToolSeoContentSection'
 
 interface ToolConfig {
@@ -387,39 +387,6 @@ const TOOL_CONFIGS: Record<string, ToolConfig> = {
   }
 }
 
-const RELATED_TOOLS_MAP: Record<string, string[]> = {
-  'pdf-to-word': ['word-to-pdf', 'pdf-compress', 'pdf-merge', 'pdf-split'],
-  'word-to-pdf': ['pdf-to-word', 'pdf-compress', 'pdf-merge', 'pdf-protect'],
-  'images-to-pdf': ['pdf-to-images', 'image-compress', 'pdf-compress', 'pdf-merge'],
-  'excel-to-pdf': ['pdf-to-word', 'word-to-pdf', 'pdf-compress', 'pdf-merge'],
-  'ppt-to-pdf': ['pdf-to-images', 'pdf-compress', 'word-to-pdf', 'pdf-merge'],
-  'pdf-compress': ['pdf-merge', 'pdf-split', 'pdf-to-word', 'word-to-pdf'],
-  'pdf-merge': ['pdf-split', 'pdf-compress', 'pdf-reorder-pages', 'pdf-protect'],
-  'pdf-split': ['pdf-merge', 'pdf-extract-pages', 'pdf-delete-pages', 'pdf-compress'],
-  'pdf-to-images': ['images-to-pdf', 'jpg-to-png', 'image-compress', 'image-to-webp'],
-  'jpg-to-png': ['png-to-jpg', 'image-to-webp', 'image-compress', 'images-to-pdf'],
-  'png-to-jpg': ['jpg-to-png', 'image-to-webp', 'image-compress', 'images-to-pdf'],
-  'image-compress': ['image-resize', 'image-crop', 'image-to-webp', 'images-to-pdf'],
-  'image-resize': ['image-crop', 'image-rotate', 'image-compress', 'images-to-pdf'],
-  'image-crop': ['image-resize', 'image-rotate', 'image-compress', 'jpg-to-png'],
-  'image-rotate': ['image-resize', 'image-crop', 'image-compress', 'images-to-pdf'],
-  'image-to-webp': ['webp-to-image', 'image-compress', 'jpg-to-png', 'images-to-pdf'],
-  'webp-to-image': ['image-to-webp', 'image-compress', 'jpg-to-png', 'png-to-jpg'],
-  'pdf-rotate': ['pdf-reorder-pages', 'pdf-delete-pages', 'pdf-merge', 'pdf-compress'],
-  'pdf-delete-pages': ['pdf-extract-pages', 'pdf-split', 'pdf-reorder-pages', 'pdf-merge'],
-  'pdf-extract-pages': ['pdf-split', 'pdf-delete-pages', 'pdf-merge', 'pdf-compress'],
-  'pdf-reorder-pages': ['pdf-merge', 'pdf-rotate', 'pdf-extract-pages', 'pdf-delete-pages'],
-  'pdf-protect': ['pdf-unlock', 'pdf-redact', 'pdf-flatten', 'pdf-scrub-metadata'],
-  'pdf-unlock': ['pdf-protect', 'pdf-compress', 'pdf-to-word', 'pdf-merge'],
-  'pdf-watermark': ['pdf-page-numbers', 'pdf-protect', 'pdf-flatten', 'pdf-compress'],
-  'pdf-page-numbers': ['pdf-watermark', 'pdf-merge', 'pdf-compress', 'pdf-protect'],
-  'pdf-redact': ['pdf-flatten', 'pdf-scrub-metadata', 'pdf-protect', 'pdf-compress'],
-  'pdf-flatten': ['pdf-protect', 'pdf-redact', 'pdf-scrub-metadata', 'pdf-compress'],
-  'pdf-scrub-metadata': ['pdf-redact', 'pdf-protect', 'pdf-flatten', 'pdf-compress'],
-  'pdf-to-txt': ['pdf-to-word', 'pdf-to-images', 'pdf-split', 'word-to-pdf'],
-  'pdf-grayscale': ['pdf-compress', 'pdf-merge', 'pdf-protect', 'pdf-to-images']
-}
-
 export function ToolConverterPage() {
   const { toolId: rawToolId } = useParams<{ toolId: string }>()
   const toolId = rawToolId === 'pptx-to-pdf' ? 'ppt-to-pdf' : rawToolId
@@ -427,9 +394,9 @@ export function ToolConverterPage() {
   const location = useLocation()
 
   const config = toolId ? TOOL_CONFIGS[toolId] : null
-  const relatedToolIds = toolId && RELATED_TOOLS_MAP[toolId]
-    ? RELATED_TOOLS_MAP[toolId]
-    : ['pdf-to-word', 'word-to-pdf', 'pdf-compress', 'pdf-merge']
+  const relatedToolIds = toolId && TOPIC_CLUSTERS[toolId]
+    ? TOPIC_CLUSTERS[toolId]
+    : ['pdf-to-word', 'word-to-pdf', 'pdf-compress', 'pdf-merge', 'pdf-split', 'pdf-protect', 'excel-to-pdf', 'ppt-to-pdf']
 
   // Workflow states
   const [stagedFiles, setStagedFiles] = useState<{ file: File; uploaded?: UploadedFile }[]>([])
@@ -2221,8 +2188,8 @@ export function ToolConverterPage() {
                         </p>
                       </div>
                       <div className="mt-4 pt-2.5 border-t border-border/40 flex items-center justify-between text-xs font-semibold text-indigo-400 opacity-80 group-hover:opacity-100">
-                        <span>Launch Tool</span>
-                        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+                        <span className="truncate pr-2">{TOOL_ACTION_ANCHORS[relId]?.actionText || `Convert with ${relConfig.name}`}</span>
+                        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1 shrink-0" />
                       </div>
                     </Card>
                   </Link>
