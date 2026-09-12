@@ -1,10 +1,11 @@
-import { Suspense, lazy } from 'react'
+import { Suspense, lazy, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate, useParams } from 'react-router-dom'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Navbar } from './components/layout/Navbar'
 import { Footer } from './components/layout/Footer'
 import { ScrollToTop } from './components/ScrollToTop'
 import { AnalyticsTracker } from './components/common/AnalyticsTracker'
+import { initClarity } from './lib/clarity'
 
 function LegacyToolRedirect() {
   const { toolId } = useParams()
@@ -57,6 +58,11 @@ function RouteLoadingFallback() {
 }
 
 export function App() {
+  useEffect(() => {
+    // Initialize Microsoft Clarity strictly after root application mounts
+    initClarity()
+  }, [])
+
   return (
     <QueryClientProvider client={queryClient}>
       <Router>

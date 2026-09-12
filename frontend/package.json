@@ -8,6 +8,7 @@
     "build": "tsc -b && vite build && node scripts/prerender.js",
     "prerender": "node scripts/prerender.js",
     "test:seo": "node scripts/verify-seo.js",
+    "test:clarity": "node scripts/test-clarity.js",
     "indexnow": "node scripts/submit-indexnow.js",
     "preview": "vite preview"
   },

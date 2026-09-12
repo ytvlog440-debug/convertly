@@ -7,13 +7,15 @@
 import { useEffect, useRef } from 'react'
 import { useLocation } from 'react-router-dom'
 import { trackPageView } from '../../lib/analytics'
+import { trackClarityNavigation } from '../../lib/clarity'
 
 /**
  * AnalyticsTracker Component
  * 
  * Must be mounted as a child of <Router>.
  * Monitors `location.pathname` and `location.search`.
- * Guarantees that every page navigation in the SPA emits a single, accurate page_view
+ * Guarantees that every page navigation in the SPA emits accurate page view and
+ * session navigation events for both Google Analytics 4 and Microsoft Clarity
  * with updated document title once the destination page components mount.
  */
 export function AnalyticsTracker(): null {
@@ -32,6 +34,7 @@ export function AnalyticsTracker(): null {
     // Brief timeout ensures document.title updated by SeoHead / route components takes effect
     const timerId = window.setTimeout(() => {
       trackPageView(currentPath, document.title)
+      trackClarityNavigation(currentPath, document.title)
     }, 120)
 
     return () => {
