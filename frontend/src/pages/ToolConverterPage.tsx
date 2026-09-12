@@ -46,6 +46,8 @@ import { addRecentConversion } from '../lib/history'
 import { generateSampleFiles } from '../lib/samples'
 import { QrTransferModal } from '../components/common/QrTransferModal'
 import { DocumentPreviewModal } from '../components/common/DocumentPreviewModal'
+import { getToolSeoContent } from '../data/toolSeoContent'
+import { ToolSeoContentSection } from '../components/seo/ToolSeoContentSection'
 
 interface ToolConfig {
   id: string
@@ -839,18 +841,23 @@ export function ToolConverterPage() {
   }
 
   const Icon = config.icon
+  const seoContent = getToolSeoContent(config.id, config.name, config.category)
 
   return (
-    <div className="py-12 md:py-16">
+    <div id="tool-top" className="py-12 md:py-16">
       <SeoHead
-        title={`${config.name} — Free Online Converter | Convertly`}
-        description={config.desc}
+        title={seoContent.metaTitle}
+        description={seoContent.metaDescription}
+        keywords={seoContent.keywords}
         canonicalUrl={`https://convertlytools.xyz/tools/${config.id}`}
+        toolName={config.name}
         breadcrumbs={[
           { name: 'Home', item: 'https://convertlytools.xyz/' },
           { name: 'Tools', item: 'https://convertlytools.xyz/tools' },
           { name: config.name, item: `https://convertlytools.xyz/tools/${config.id}` }
         ]}
+        faqs={seoContent.faqs}
+        howToSteps={seoContent.steps}
       />
 
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
@@ -893,7 +900,7 @@ export function ToolConverterPage() {
               <span className="font-bold">Error: </span>
               {error}
             </div>
-            <button onClick={() => setError(null)} className="text-rose-400 hover:text-rose-300">
+            <button onClick={() => setError(null)} aria-label="Dismiss error message" className="text-rose-400 hover:text-rose-300">
               <X className="h-4 w-4" />
             </button>
           </div>
@@ -1191,6 +1198,7 @@ export function ToolConverterPage() {
                             }}
                             className="p-1.5 rounded-lg text-muted-foreground hover:bg-secondary hover:text-indigo-400 cursor-pointer transition-colors"
                             title="Preview Document"
+                            aria-label={`Preview document ${item.file.name}`}
                           >
                             <Eye className="h-3.5 w-3.5" />
                           </button>
@@ -1203,6 +1211,7 @@ export function ToolConverterPage() {
                               disabled={idx === 0}
                               className="p-1 rounded text-muted-foreground hover:bg-secondary hover:text-foreground disabled:opacity-20 cursor-pointer transition-colors"
                               title="Move Up"
+                              aria-label={`Move ${item.file.name} up in sequence`}
                             >
                               <ChevronUp className="h-3.5 w-3.5" />
                             </button>
@@ -1211,6 +1220,7 @@ export function ToolConverterPage() {
                               disabled={idx === stagedFiles.length - 1}
                               className="p-1 rounded text-muted-foreground hover:bg-secondary hover:text-foreground disabled:opacity-20 cursor-pointer transition-colors"
                               title="Move Down"
+                              aria-label={`Move ${item.file.name} down in sequence`}
                             >
                               <ChevronDown className="h-3.5 w-3.5" />
                             </button>
@@ -1221,6 +1231,7 @@ export function ToolConverterPage() {
                           onClick={() => removeFile(idx)}
                           className="rounded-lg p-1.5 text-muted-foreground hover:bg-rose-500/10 hover:text-rose-400 transition-colors cursor-pointer"
                           title="Remove file"
+                          aria-label={`Remove ${item.file.name}`}
                         >
                           <X className="h-4 w-4" />
                         </button>
@@ -2151,6 +2162,9 @@ export function ToolConverterPage() {
 
           </div>
         )}
+
+        {/* Comprehensive Enterprise SEO Content, Technical Specs & FAQ Section */}
+        <ToolSeoContentSection content={seoContent} />
 
         {/* Related Conversion Tools (Section 8: Internal Linking) */}
         {config && (

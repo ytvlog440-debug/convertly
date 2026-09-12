@@ -337,6 +337,26 @@ export function ToolsDirectoryPage() {
     return matchesCategory && matchesSearch
   })
 
+  const DIRECTORY_SCHEMAS = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'CollectionPage',
+      name: 'Directory of Conversion Tools — Convertly',
+      url: 'https://convertlytools.xyz/tools',
+      description: 'Comprehensive directory of 30 enterprise-grade document, PDF, and image conversion tools with zero retention privacy.',
+      mainEntity: {
+        '@type': 'ItemList',
+        itemListElement: ALL_TOOLS.map((t, idx) => ({
+          '@type': 'ListItem',
+          position: idx + 1,
+          name: t.name,
+          url: `https://convertlytools.xyz/tools/${t.id}`,
+          description: t.desc
+        }))
+      }
+    }
+  ]
+
   return (
     <div className="py-12 md:py-16">
       <SeoHead
@@ -348,6 +368,7 @@ export function ToolsDirectoryPage() {
           { name: 'Home', item: 'https://convertlytools.xyz/' },
           { name: 'Tools Directory', item: 'https://convertlytools.xyz/tools' }
         ]}
+        schemaJson={DIRECTORY_SCHEMAS}
       />
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -397,6 +418,7 @@ export function ToolsDirectoryPage() {
               placeholder="Search PDF, Word, Excel, Image tools..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
+              aria-label="Search conversion tools by name or format"
               className="w-full rounded-xl border border-border bg-card/60 pl-10 pr-9 py-2 text-xs text-foreground placeholder:text-muted-foreground focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all"
             />
             {searchQuery && (

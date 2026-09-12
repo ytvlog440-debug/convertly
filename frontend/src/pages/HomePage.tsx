@@ -511,9 +511,9 @@ export function HomePage() {
   return (
     <div className="relative overflow-hidden">
       <SeoHead
-        title="Convertly — Free Online PDF, Office & Image Converter | Fast & Secure"
-        description="Convert PDF to Word, Word to PDF, Excel to PDF, merge, compress, split PDFs and optimize images online for free. Enterprise fidelity with zero data retention."
-        keywords="pdf to word, word to pdf, merge pdf, compress pdf, excel to pdf, ppt to pdf, image to pdf, pdf converter online, free pdf tools, convertly"
+        title="Convertly — Free Online PDF Converter & Document Tools | Fast & Secure"
+        description="Free online PDF converter to convert PDF to Word, Word to PDF, Excel to PDF, PowerPoint to PDF, merge, compress, and optimize images with zero data retention."
+        keywords="PDF Converter, Word to PDF, PDF to Word, Merge PDF, Compress PDF, Image Converter, Excel to PDF, PowerPoint to PDF, Free Online Converter, Online PDF Tools, convertly"
         canonicalUrl="https://convertlytools.xyz"
         faqs={HOME_FAQS}
         schemaJson={HOMEPAGE_SCHEMAS}

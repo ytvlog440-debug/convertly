@@ -6,7 +6,11 @@ import { SeoHead } from '../components/shared/SeoHead'
 export function NotFoundPage() {
   return (
     <div className="flex min-h-[60vh] flex-col items-center justify-center text-center px-4 py-16">
-      <SeoHead title="Page Not Found — Convertly V2" />
+      <SeoHead
+        title="Page Not Found (404) — Convertly"
+        description="The page or conversion tool you requested does not exist on Convertly."
+        noindex={true}
+      />
       <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-400 mb-6">
         <FileQuestion className="h-8 w-8" />
       </div>
