@@ -84,7 +84,7 @@ export function normalizeCanonicalUrl(inputUrl?: string): string {
 }
 
 export function SeoHead({
-  title = 'Convertly — Free Online PDF, Office & Image Converter | Fast & Secure',
+  title = 'Convertly | Free Online PDF, Word, Excel, PowerPoint & Image Converter',
   description = 'High-performance, secure and free file conversion SaaS. Convert PDF, Word, Excel, PowerPoint, and images with zero data retention.',
   keywords = 'pdf to word, word to pdf, merge pdf, compress pdf, excel to pdf, ppt to pdf, image to pdf, pdf converter online, free pdf tools, convertly',
   canonicalUrl,
