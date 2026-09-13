@@ -351,54 +351,70 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     name: 'PDF to Word',
     category: 'Office',
     searchIntent: 'Transactional',
-    metaTitle: 'PDF to Word Converter — Convert PDF to Editable DOCX Online Free',
-    metaDescription: 'Convert PDF to Word DOCX online for free. Features optical character recognition (OCR) for scanned PDFs, preserving original tables, fonts, and layouts with zero data retention.',
-    keywords: 'pdf to word, convert pdf to word, pdf to docx, pdf to word editable, ocr pdf to word, free online pdf converter, convertly',
+    metaTitle: 'PDF to Word Converter — Free, Secure & No Sign-Up | Convertly',
+    metaDescription: 'Convert PDF to editable Word DOCX online free. Smart OCR for scanned PDFs. Preserves tables, fonts & layout. No sign-up. Files auto-deleted in 120 min. No watermarks.',
+    keywords: 'pdf to word, convert pdf to word, pdf to docx, pdf to word converter free, pdf to word online, free pdf to word, convert pdf to editable word, ocr pdf to word, pdf to word no signup, pdf to word no watermark, pdf to docx online free, convertly',
     badge: 'Smart OCR & Editable DOCX',
-    introHeading: 'Transform PDF Documents into 100% Editable Microsoft Word DOCX Files',
-    introText: 'Convertly’s PDF to Word converter allows you to instantly extract and transform static PDF documents into fully editable Microsoft Word (.docx) files. Engineered with native vector reconstruction and built-in Tesseract optical character recognition (OCR), our engine ensures every paragraph, table, font hierarchy, and inline graphic is faithfully preserved for seamless editing in Microsoft Word, Google Docs, and LibreOffice Writer.',
-    whatIsHeading: 'What is Convertly’s PDF to Word Converter?',
+    introHeading: 'Convert PDF to Editable Word — Free, Instant, Private',
+    introText: 'You received a PDF you need to edit. Maybe it\'s a contract that needs revisions, a report with data to update, or a document whose original source file is gone. Convertly\'s PDF to Word converter transforms any PDF — including scanned documents — into a fully editable Microsoft Word (.docx) file with tables, fonts, and layout intact. No sign-up. No watermarks. Files permanently deleted in 120 minutes.',
+    whatIsHeading: 'What Is a PDF to Word Converter?',
     whatIsParagraphs: [
-      'Convertly PDF to Word is an enterprise document extraction tool built to bridge the gap between fixed-layout vector documents (PDF) and dynamic, editable word processing files (DOCX). Unlike primitive web converters that merely take screenshots of pages and paste uneditable bitmap pictures into a blank Word page, Convertly performs deep structural analysis of the underlying PDF binary stream.',
-      'Our backend combines high-speed PyMuPDF text stream extraction with pdf2docx semantic layout synthesis. When a scanned PDF or photograph is uploaded, our integrated Tesseract OCR pipeline automatically detects the absence of vector text, renders the pages at 200 DPI clarity, and runs optical character recognition to extract real, selectable, and editable words into clean document paragraphs.',
-      'Whether you are revising an employment contract, editing an academic dissertation, or updating financial reports, Convertly gives you complete editing freedom without requiring costly software subscriptions.'
+      'A PDF to Word converter reads the internal binary structure of a Portable Document Format file and rebuilds it as a Microsoft Word OpenXML document (.docx) — with real, selectable, editable text rather than static images of pages.',
+      'Convertly uses a dual-pipeline architecture engineered for two distinct document types. For native digital PDFs, PyMuPDF (a compiled C library) reads raw PDF object streams — text glyphs, font descriptors, coordinate matrices — and pdf2docx performs semantic layout synthesis: detecting columns, paragraphs, lists, and table grids, then writing them as genuine Word XML elements. For scanned PDFs or image-only PDFs (where no text layer exists), Tesseract v5 OCR renders each page at 200 DPI and runs character recognition across the raster pixels, producing real text that goes into the resulting Word document.',
+      'The result is not a picture of a document inside a Word file — a common failure of low-quality converters. It is actual, editable text that behaves correctly in Microsoft Word, Google Docs, LibreOffice Writer, and Apple Pages. Whether you are revising a contract, updating a financial report, or digitizing a scanned archive, Convertly gives you complete editing freedom without software subscriptions or registration.'
     ],
     whoShouldUseHeading: 'Who Should Use Convertly PDF to Word?',
     whoShouldUseAudiences: [
       {
         title: 'Legal Counsel & Paralegals',
-        desc: 'Quickly convert signed agreements, court filings, and regulatory exhibits back into editable Word format to add redlines, amendments, or revision clauses.'
+        desc: 'Convert signed agreements, court filings, and regulatory exhibits into editable Word format to add redlines, tracked changes, amendments, or new signature blocks without retyping a single paragraph.'
       },
       {
         title: 'Corporate Administrators & HR Teams',
-        desc: 'Update legacy handbooks, offer letter templates, and onboarding guides when original editable files have been lost or misplaced.'
+        desc: 'Recover editable master copies of handbooks, offer letter templates, and onboarding guides when the original .docx files were never saved or have been lost.'
       },
       {
         title: 'Academics, Researchers & Students',
-        desc: 'Extract quotations, statistical tables, and citations from research papers directly into working dissertation drafts without manual retyping.'
+        desc: 'Extract quotations, statistical tables, and citations from research papers directly into dissertation drafts — without fighting PDF\'s copy-paste behavior or retyping pages of data.'
       },
       {
         title: 'Financial Analysts & Accountants',
-        desc: 'Convert annual reports and scanned invoices into editable tables for seamless spreadsheet ingestion and audit documentation.'
+        desc: 'Convert annual reports, audit tables, and scanned invoices into editable Word documents, ready for revision, spreadsheet ingestion, or formal audit documentation workflows.'
+      },
+      {
+        title: 'Translators & Localization Teams',
+        desc: 'Convert PDFs to DOCX format as required input for computer-assisted translation (CAT) tools like SDL Trados, memoQ, and Phrase — which cannot process raw PDF files.'
+      },
+      {
+        title: 'Teachers & Educators',
+        desc: 'Convert student submission PDFs, assessment rubrics, and curriculum documents back to Word for inline annotation, grading comments, tracked revisions, and redistribution.'
       }
     ],
     whenToUseHeading: 'When Should You Convert PDF to Word?',
     whenToUsePoints: [
       {
         title: 'When Contract Revisions Are Required',
-        desc: 'When receiving a finalized PDF contract that requires negotiated updates or redlines before counter-signing.'
+        desc: 'When receiving a finalized PDF contract that needs negotiated updates, redlines, or new signature blocks before counter-signing.'
       },
       {
         title: 'When Dealing with Scanned Paper Records',
-        desc: 'When historical physical documents need to be digitized into editable, searchable text using integrated Optical Character Recognition (OCR).'
+        desc: 'When historical physical documents need to be digitized into editable, searchable text using integrated OCR — eliminating manual retyping.'
       },
       {
         title: 'When Original Authoring Files Are Lost',
-        desc: 'When you only possess the exported PDF version of a corporate document and need to restore an editable master copy.'
+        desc: 'When the only copy of a document is its PDF export and you need to restore a fully editable master version to update or redistribute.'
       },
       {
         title: 'When Extracting Complex Multi-Column Tables',
-        desc: 'When copy-pasting from a PDF results in scrambled text or broken columns that need structured table reconstruction.'
+        desc: 'When copy-pasting from a PDF produces scrambled text or broken columns that need proper structural table reconstruction.'
+      },
+      {
+        title: 'When Preparing Documents for Translation',
+        desc: 'When converting a PDF manual or guide into DOCX so a translation agency\'s CAT tools can process it with translation memory and terminology workflows.'
+      },
+      {
+        title: 'When Updating Annual Reports or Presentations',
+        desc: 'When the only remaining copy of a document is its PDF export and the figures, dates, or narrative need to be refreshed for the current period.'
       }
     ],
     howItWorksHeading: 'How to Convert PDF to Word in 4 Easy Steps',
@@ -406,227 +422,346 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       {
         number: 1,
         title: 'Upload Your PDF Document',
-        desc: 'Drag and drop your PDF file into the secure dropzone above or click "Browse Files" to choose from your device storage.'
+        desc: 'Drag and drop your PDF into the secure dropzone above, or click "Browse Files" to choose from device storage or cloud drive. Files up to 100MB are accepted.'
       },
       {
         number: 2,
-        title: 'Enable Smart OCR (If Scanned)',
-        desc: 'If your PDF contains scanned paper or photos of text, toggle OCR mode to synthesize vector text characters from raster pixels.'
+        title: 'Enable Smart OCR (If Your PDF Is Scanned)',
+        desc: 'If your PDF is a scanned paper or photographed page — try selecting text with your cursor; if you can\'t highlight individual words, it\'s image-based — toggle OCR mode to extract real text.'
       },
       {
         number: 3,
         title: 'Execute High-Fidelity Conversion',
-        desc: 'Click "Process File Now". Our dedicated backend reconstructs margins, typographic hierarchy, and table grids in under 3 seconds.'
+        desc: 'Click "Process File Now". Our backend reconstructs margins, typographic hierarchy, table grids, and inline images. Most 20-page documents convert in under 3 seconds.'
       },
       {
         number: 4,
-        title: 'Instant Download & QR Transfer',
-        desc: 'Download your editable .docx file immediately to your computer or scan the private QR code to save directly to your mobile device.'
+        title: 'Download DOCX or Scan QR for Mobile',
+        desc: 'Download your editable .docx file to your computer immediately, or scan the private QR code to save it directly to your phone\'s Files app — no emailing attachments to yourself.'
       }
     ],
     keyFeaturesHeading: 'Key Features of Our PDF to Word Engine',
     features: [
       {
         title: 'Semantic Table Reconstruction',
-        desc: 'Detects grid borders and cell coordinates to rebuild native Microsoft Word tables rather than broken tab-separated lines.'
+        desc: 'Detects grid borders and cell coordinate matrices to rebuild native Microsoft Word tables — not broken tab-separated lines. Your data stays in its grid, editable like any Word table.'
       },
       {
-        title: 'Dual-Engine Architecture with OCR',
-        desc: 'Combines PyMuPDF for native vector PDFs with Tesseract OCR for scanned documents, delivering 99.4% character accuracy.'
+        title: 'Dual-Engine Architecture: PyMuPDF + Tesseract OCR',
+        desc: 'Auto-detects whether your PDF is text-based or image-based and routes it through the correct engine. You never need to guess — the system handles it.'
       },
       {
-        title: 'Font and Style Matching',
-        desc: 'Maps PDF font weights, italics, colors, and line spacing to standard typography styles in Microsoft Word and Google Docs.'
+        title: 'Font & Style Fidelity',
+        desc: 'Maps PDF font weights, italic styles, text colors, and line spacing to Word equivalents. Standard fonts (Calibri, Arial, Times New Roman) render identically.'
       },
       {
         title: 'Embedded Image Extraction',
-        desc: 'Preserves inline charts, diagrams, and corporate logos at their native resolution without blurriness or compression artifacts.'
+        desc: 'Preserves inline charts, diagrams, and logos at native resolution without blurriness — reinserted at the correct position in the Word document.'
       },
       {
-        title: '120-Minute Automatic File Shredding',
-        desc: 'Your documents are permanently erased from memory and disk storage after 120 minutes for confidential security.'
+        title: 'Automatic Layout & Structure Detection',
+        desc: 'Recognizes headers, footers, footnotes, multi-column sections, numbered lists, and bullet points — converting each to its proper Word XML element.'
       },
       {
-        title: '100% Free With Zero Watermarks',
-        desc: 'Convert as many files as you need without branded stamps, page count restrictions, or registration paywalls.'
+        title: '120-Minute Cryptographic Shredding',
+        desc: 'Exactly 120 minutes after conversion, automated routines permanently destroy your source PDF and the converted DOCX from all storage. No archive. No exceptions.'
+      },
+      {
+        title: 'QR Mobile Transfer',
+        desc: 'After conversion, scan the generated QR code with any phone camera to instantly save the DOCX to your mobile device — no cables, no emailing, no cloud sync setup.'
+      },
+      {
+        title: '100% Free — No Watermarks, No Daily Limits',
+        desc: 'Convert as many files as you need without branded stamps, daily quotas, or registration walls. No credit card. No account. No promotional footers on your document.'
       }
     ],
-    benefitsHeading: 'Why Choose Convertly PDF to Word Over Alternatives?',
+    benefitsHeading: 'Why Convert PDF to Word with Convertly?',
     benefits: [
       {
         title: 'Save Hours of Manual Retyping',
-        desc: 'Eliminate tedious manual re-keying of documents. Complex multi-page PDFs are converted into editable text in seconds.'
+        desc: 'Retyping a 40-page contract or 15-table financial report is a full day\'s work. Convertly reconstructs everything into an immediately editable Word document in seconds.'
       },
       {
-        title: 'Preserve Precise Document Layouts',
-        desc: 'Retain headers, footers, footnotes, bulleted lists, and multi-column formatting just as they appeared in the original PDF.'
+        title: 'Preserve Exact Document Structure',
+        desc: 'Headers stay as headers. Tables stay as tables. Footnotes stay as footnotes. You don\'t spend 30 minutes reformatting to match the original.'
       },
       {
         title: 'Enterprise-Grade Data Confidentiality',
-        desc: 'TLS 1.3 encrypted transfers and automated 120-minute server purging ensure your legal and personal documents stay strictly private.'
+        desc: 'TLS 1.3 encryption in transit. Isolated sandbox processing. Cryptographic shredding at 120 minutes. Your legal, HR, and financial documents are never retained, indexed, or shared.'
       },
       {
         title: 'Universal DOCX Compatibility',
-        desc: 'Generated files open seamlessly in Microsoft Word 2007 through 365, Google Docs, Apple Pages, and LibreOffice Writer.'
+        desc: 'Output files open seamlessly in Microsoft Word 2007–365, Google Docs (web and mobile), Apple Pages, and LibreOffice Writer — no format dependency, no compatibility issues.'
+      },
+      {
+        title: 'No Software Required — Works on Any Device',
+        desc: 'No Adobe Acrobat Pro at $19.99/month. No desktop app. No browser extension. The full conversion runs in our cloud engine from any device, any OS, any browser.'
+      },
+      {
+        title: 'Zero Registration — No Email, No Password',
+        desc: 'Convertly never asks who you are. Drop a file, convert it, download it. Nothing else. No signup modal, no upsell pop-up, no confirmation email.'
       }
     ],
     supportedFormatsHeading: 'Supported Specifications & Format Matrix',
     inputFormats: [
-      { ext: '.pdf', name: 'Portable Document Format (v1.0 - v2.0)', mime: 'application/pdf' }
+      { ext: '.pdf', name: 'Portable Document Format (v1.0 — v2.0, PDF/A, scanned image PDF)', mime: 'application/pdf' }
     ],
     outputFormats: [
-      { ext: '.docx', name: 'Microsoft Word OpenXML Document', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }
+      { ext: '.docx', name: 'Microsoft Word OpenXML Document (ISO/IEC 29500)', mime: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }
     ],
-    formatNotes: 'Compatible with standard PDFs, PDF/A archival files, password-protected PDFs (when decrypted), and scanned bitmap PDFs up to 100MB.',
-    securityHeading: 'Confidentiality, Privacy & Zero-Retention Guarantee',
+    formatNotes: 'Compatible with standard PDFs, PDF/A archival files, and scanned bitmap PDFs up to 100MB. Password-protected PDFs must be decrypted first using Convertly\'s Unlock PDF tool. Output .docx files are compatible with Word 2007–365, Google Docs, LibreOffice Writer, and Apple Pages.',
+    securityHeading: 'Security & Privacy: What Happens to Your File?',
     securityParagraphs: [
-      'Document privacy is at the core of Convertly’s engineering philosophy. When you upload a document to our PDF to Word converter, your data is protected in transit using TLS 1.3 with 256-bit AES encryption.',
-      'Unlike free converters that harvest or monetize uploaded content, Convertly operates under a strict Zero-Retention Policy. Your files are processed inside isolated sandbox containers and are never indexed, read by human reviewers, or used to train artificial intelligence models.',
-      'Exactly 120 minutes after conversion, automated background cleanup routines permanently shred and overwrite all source and target files from our servers.'
+      'This matters — especially when you\'re uploading contracts, medical records, or financial statements to an online service.',
+      'In Transit: Your PDF travels from your device to our servers over a TLS 1.3 encrypted channel with a 256-bit AES cipher — the same standard used by online banking. Your file cannot be intercepted in transit.',
+      'In Processing: Your file runs in a temporary, sandboxed container isolated from other users\' jobs. Our engine reads the structure, converts it, and writes the DOCX. No human reviewer sees the content of your document.',
+      'After Conversion: Exactly 120 minutes after your job completes, automated routines trigger cryptographic shredding of the source PDF and converted DOCX from all temporary storage. This is not a soft delete — the data is permanently overwritten.',
+      'We never store documents beyond 120 minutes, never read or index file content, never share files with third parties, never use files to train AI, and never require your email, name, or payment information. This policy is designed to comply with GDPR Article 17 (Right to Erasure).'
     ],
     certifications: [
-      'Automated 120-Minute Cryptographic Shredder',
-      'TLS 1.3 Transport Encryption Protocol',
-      'Zero AI Model Training Guarantee',
-      'GDPR Article 17 Right to Erasure Compliant'
+      'TLS 1.3 Transport Encryption with AES-256 Cipher',
+      'Automated 120-Minute Cryptographic Shredding',
+      'Zero AI Model Training — Explicit Policy',
+      'GDPR Article 17 Right to Erasure Aligned',
+      'No Third-Party Data Sharing',
+      'No Registration or Email Required'
     ],
     performanceHeading: 'Engine Benchmarks & Technical Specifications',
     specs: [
-      { label: 'Core Engine', value: 'PyMuPDF + pdf2docx + Tesseract', detail: 'Native C++ execution for maximum throughput' },
-      { label: 'Average Execution Time', value: '< 2.4 Seconds for 20 Pages', detail: 'Parallel worker processing architecture' },
-      { label: 'Max File Capacity', value: '100 MB per Document', detail: 'Generous ceiling for image-dense reports' },
-      { label: 'Text Extraction Rate', value: '99.4% Vector Character Accuracy', detail: 'Lossless font glyph mapping' }
+      { label: 'Core Engine', value: 'PyMuPDF + pdf2docx + Tesseract v5 (LSTM)', detail: 'Native C++ execution for maximum throughput' },
+      { label: 'Average Execution Time', value: '< 2.4 Seconds for 20-Page PDF', detail: 'Parallel worker processing architecture' },
+      { label: 'OCR Throughput', value: '~1.8 Seconds per Page at 200 DPI', detail: 'LSTM neural network character recognition' },
+      { label: 'Max File Capacity', value: '100 MB per Document', detail: 'Generous ceiling for image-dense reports and legal briefs' },
+      { label: 'Text Extraction Accuracy', value: '99.4% for Native Vector PDFs', detail: 'Lossless font glyph mapping' },
+      { label: 'OCR Character Accuracy', value: '97–99% for High-Contrast Scans', detail: 'At 200+ DPI with dark text on white background' }
     ],
     compatibilityHeading: 'Cross-Device & Operating System Support',
     platforms: [
-      { name: 'Windows Workstations', status: 'Full Compatibility', detail: 'Works seamlessly on Chrome, Edge, Firefox, and Brave on Windows 11 and 10.' },
-      { name: 'Apple macOS & iPadOS', status: 'Full Compatibility', detail: 'Native Safari and Chromium acceleration on Apple Silicon (M1–M4) and Intel Macs.' },
-      { name: 'Linux Desktops', status: 'Full Compatibility', detail: 'No plugins or wine emulators required on Ubuntu, Fedora, Debian, and Arch.' },
-      { name: 'Smartphones (iOS & Android)', status: 'Mobile Optimized', detail: 'Responsive dropzone with direct cloud storage selection and QR transfer.' }
+      { name: 'Windows 10/11 (Chrome, Edge, Firefox, Brave)', status: 'Full Support', detail: 'Native performance with no plugins or compatibility layers.' },
+      { name: 'macOS (Safari, Chrome — Intel & Apple Silicon M1–M4)', status: 'Full Support', detail: 'Hardware-accelerated on Apple Silicon. Full Safari compatibility.' },
+      { name: 'Linux (Ubuntu, Fedora, Debian, Arch)', status: 'Full Support', detail: 'All modern browsers supported. No Wine or emulation required.' },
+      { name: 'iOS (iPhone, iPad — Safari, Chrome)', status: 'Mobile Optimized', detail: 'Cloud file picker, responsive UI, and QR download transfer.' },
+      { name: 'Android (Chrome, Firefox, Samsung Internet)', status: 'Mobile Optimized', detail: 'Cloud file picker, responsive UI, and QR download transfer.' },
+      { name: 'ChromeOS', status: 'Full Support', detail: 'Works natively in Chrome browser without extensions.' }
     ],
-    useCasesHeading: 'Common Real-World Use Cases',
+    useCasesHeading: 'Real-World Use Cases',
     useCases: [
       {
-        title: 'Revising Vendor & Employment Contracts',
-        desc: 'Convert signed PDF contracts back into DOCX format to incorporate negotiated revisions, add signature blocks, or adjust payment terms.'
+        title: 'Revising Legal Contracts',
+        desc: 'A lawyer receives a counterparty\'s signed PDF agreement. Rather than retyping 30 pages, they upload to Convertly, convert in 4 seconds, and apply tracked changes and redlines immediately in Microsoft Word.'
       },
       {
-        title: 'Updating Annual Financial Statements',
-        desc: 'Extract balance sheets, audit tables, and executive summaries from PDF disclosures into editable Word documents for quarterly review.'
+        title: 'Updating Annual Financial Reports',
+        desc: 'A finance team has last year\'s annual report as PDF only (the original InDesign file is gone). They convert to Word, refresh revenue figures, update the executive summary, and prepare the current year\'s document.'
       },
       {
         title: 'Digitizing Historical Paper Archives',
-        desc: 'Scan older physical records to PDF, then run Convertly’s OCR to produce searchable, editable Word documents for digital repository indexing.'
+        desc: 'A university library converts boxes of scanned paper records from PDF to searchable, editable DOCX files using Convertly\'s OCR pipeline — making decades of institutional records fully citable.'
       },
       {
-        title: 'Translating Multilingual Documents',
-        desc: 'Convert foreign-language PDF manuals into Word documents so translation teams can use computer-assisted translation (CAT) tools.'
+        title: 'Preparing Documents for Translation',
+        desc: 'A software company converts its PDF user manual to DOCX so a translation agency\'s CAT tools (Trados, memoQ) can process it with translation memory — reducing localization cost and time.'
+      },
+      {
+        title: 'Recovering Lost Source Documents',
+        desc: 'A small business owner discovers the only copy of their employee handbook is a PDF. They convert it to editable Word, update HR policies, and redistribute the refreshed version to new hires.'
+      },
+      {
+        title: 'Grading & Annotating Student Submissions',
+        desc: 'A teacher converts submitted PDF assignments to Word documents, adds inline comments and tracked corrections, then returns personalized feedback to each student.'
       }
     ],
-    bestResultsHeading: 'Expert Tips for Optimal Conversion Results',
+    bestResultsHeading: 'Expert Tips for Optimal PDF to Word Conversion',
     bestResultsTips: [
       {
-        title: 'Use High-Contrast Scans for OCR',
-        desc: 'When converting scanned documents, ensure the source scan was captured at 200–300 DPI with good lighting to maximize optical character accuracy.'
+        title: 'Use High-Quality Scans for OCR',
+        desc: 'Scanned documents should be captured at 200–300 DPI with good contrast — dark text on white background. A blurry phone photo will produce lower accuracy than a flatbed scanner at 300 DPI.'
       },
       {
-        title: 'Unlock Encrypted Files Beforehand',
-        desc: 'If your PDF is password-protected, run it through Convertly’s Unlock PDF tool first to ensure our layout analyzer can read the vector streams.'
+        title: 'Unlock Encrypted PDFs First',
+        desc: 'Password-protected PDFs must be decrypted before conversion. Use Convertly\'s Unlock PDF tool to remove the access password, then upload the unlocked file for Word conversion.'
       },
       {
-        title: 'Inspect Table Formatting in Microsoft Word',
-        desc: 'Convertly rebuilds Word tables with auto-fit margins. If text wraps tightly, toggle "Distribute Columns Evenly" in Word for customized spacing.'
+        title: 'Inspect Table Borders After Conversion',
+        desc: 'Some PDFs use background shading rather than borders to separate table rows. In Word, select the table → "Table Design" → "All Borders" to make the grid visible if cells appear borderless.'
       },
       {
-        title: 'Verify Standard System Fonts',
-        desc: 'Standard fonts (Calibri, Times New Roman, Arial) render identically. Unusual embedded custom fonts will be mapped to the closest visual equivalent.'
+        title: 'Expect Standard Font Substitution',
+        desc: 'Standard fonts (Calibri, Arial, Times New Roman, Helvetica) render identically. Rare custom fonts are mapped to the closest visual equivalent — text content is always preserved correctly.'
+      },
+      {
+        title: 'Adjust Multi-Column Layouts in Word',
+        desc: 'Academic papers and newsletters with two or three columns may need minor reformatting in Word if the layout analyzer treats them as a single text flow. Use Word\'s Layout → Columns to restore the structure.'
+      },
+      {
+        title: 'Use QR Transfer on Mobile for Fast Delivery',
+        desc: 'After conversion, tap "Get QR Code" and scan it with your phone camera. The DOCX opens directly in your browser for one-tap download to your Files app or Google Drive — no emailing required.'
       }
     ],
-    troubleshootingHeading: 'Common Problems & Troubleshooting Solutions',
+    troubleshootingHeading: 'Troubleshooting Common Problems',
     troubleshootingItems: [
       {
-        problem: 'Why is the converted Word document filled with pictures instead of editable text?',
-        solution: 'Your original PDF was likely a scan or image with no underlying text layer. Toggle the "Smart OCR" option before converting so our engine can recognize character glyphs into real text.'
+        problem: 'My converted Word file contains images of pages instead of editable text.',
+        solution: 'Your PDF is scanned or image-based — no underlying text layer. Return to the converter, enable "Smart OCR", and reprocess. OCR extracts real, editable characters from the raster page images.'
       },
       {
-        problem: 'Why did some table lines disappear in Microsoft Word?',
-        solution: 'Some PDF documents use background shading instead of borders to separate rows. In Microsoft Word, select the table, open "Table Design", and choose "All Borders" to reveal gridlines.'
+        problem: 'Table data appears in a single column or is scrambled after conversion.',
+        solution: 'Some PDFs use whitespace alignment rather than actual table borders. After converting, select the affected text in Word → Insert → Table → "Convert Text to Table" and adjust delimiter settings to reconstruct the grid.'
       },
       {
-        problem: 'My converted file failed to download on mobile.',
-        solution: 'Ensure your mobile browser has permissions to save downloads. Alternatively, use our built-in QR Code transfer feature to open and save the file directly to your mobile files app.'
+        problem: 'The conversion failed or timed out.',
+        solution: 'Verify the file is a valid, non-corrupted PDF under 100MB. Encrypted PDFs will fail — use Convertly\'s Unlock PDF tool first to decrypt, then retry. Try a different browser if the issue persists.'
+      },
+      {
+        problem: 'Characters appear garbled or display as random symbols.',
+        solution: 'Your PDF may use non-standard glyph encoding — rare in modern PDFs but possible with legacy documents or files from unusual software. Enabling OCR mode typically resolves this by treating the content as a scanned image.'
+      },
+      {
+        problem: 'My download did not start on my mobile device.',
+        solution: 'Enable "Allow Downloads" in your mobile browser\'s site settings for convertlytools.xyz. Alternatively, use the QR Code feature to open and save the file directly through your phone\'s native browser behavior.'
       }
     ],
     whyChooseHeading: 'Why Convertly Beats Legacy Competitors',
     comparisonPoints: [
       {
-        title: 'No 1-File Daily Paywall',
-        desc: 'Most online converters limit free users to 1 or 2 files per day before demanding expensive monthly subscriptions. Convertly provides dependable, unrestricted conversions.'
+        title: 'No Daily File Limits or Paywalls',
+        desc: 'Smallpdf, iLovePDF, and Adobe Acrobat Online cap free users at 1–2 conversions per day before demanding expensive subscriptions. Convertly provides unlimited, unrestricted conversions — always free.'
       },
       {
-        title: 'Zero Account Registration Barriers',
-        desc: 'We never ask for your email address, credit card, or personal information. Drop your file and download your result immediately.'
+        title: 'Explicit 120-Minute Data Deletion',
+        desc: 'Competitors mention vague "1-hour" or "24-hour" retention. Convertly is specific: files are cryptographically shredded exactly 120 minutes after conversion. No ambiguity, no surprises.'
       },
       {
-        title: 'No Intrusive Watermarks',
-        desc: 'Unlike competitors that stamp intrusive logos or promotional footers onto your documents, Convertly guarantees 100% clean output.'
+        title: 'Zero Account Registration Required',
+        desc: 'We never ask for your email, name, credit card, or any personal information. Drop your file and download your result immediately — no signup step, no confirmation email.'
+      },
+      {
+        title: 'Zero Watermarks — Guaranteed Clean Output',
+        desc: 'Unlike competitors that stamp promotional logos or branded footers on free-tier documents, Convertly guarantees 100% clean, unbranded output. The file you download is completely yours.'
+      },
+      {
+        title: 'Explicit Zero AI Training Policy',
+        desc: 'Most competitors are silent on whether uploaded files influence their AI products. Convertly states this explicitly: your documents are never read, analyzed, or used to train any machine learning models.'
+      },
+      {
+        title: 'QR Mobile Transfer — Industry Unique',
+        desc: 'No major competitor offers a post-conversion QR code for direct mobile file transfer. Scan the code, the DOCX goes straight to your phone — no emailing attachments to yourself.'
       }
     ],
-    faqsHeading: 'Frequently Asked Questions (PDF to Word)',
+    faqsHeading: 'Frequently Asked Questions',
     faqs: [
       {
         question: 'Is PDF to Word completely free to use on Convertly?',
-        answer: 'Yes. Convertly’s PDF to Word converter is 100% free with no hidden subscriptions, trial periods, daily limits, or watermarks. You can convert documents anytime without entering credit card information.'
+        answer: 'Yes. Convertly\'s PDF to Word converter is 100% free with no hidden subscriptions, trial periods, daily limits, or watermarks. You can convert documents anytime without entering credit card information.'
       },
       {
         question: 'Can I convert scanned PDFs or photographs of documents?',
-        answer: 'Yes. Convertly features integrated Tesseract Optical Character Recognition (OCR). When you convert a scanned PDF or photo, our engine automatically detects raster text, renders the pages at high resolution, and extracts real, editable words into Word paragraphs.'
+        answer: 'Yes. Convertly integrates Tesseract v5 OCR (LSTM engine). When you upload a scanned PDF or photo, enable OCR mode and our engine detects raster text, renders pages at high resolution, and extracts real, editable words into Word paragraphs.'
       },
       {
         question: 'Will my formatting, tables, and fonts remain intact?',
-        answer: 'Yes. Our engine uses structural layout synthesis to preserve multi-column sections, tables, headers, footers, bulleted lists, and font styles. While complex graphic layouts may require minor margin adjustments, text and tables remain fully editable.'
+        answer: 'Yes. Our engine uses structural layout synthesis and native grid detection to preserve multi-column sections, tables (as real Word table elements), headers, footers, bulleted lists, and font styles. Complex graphic layouts may need minor margin adjustments, but text and tables are always editable.'
       },
       {
         question: 'Are my uploaded PDF files stored on your servers?',
-        answer: 'No. All uploaded documents and converted Word files are protected by strict zero-retention policies and are automatically, permanently shredded from our servers exactly 120 minutes after conversion.'
+        answer: 'No. All uploaded documents and converted Word files run in isolated temporary containers and are permanently, cryptographically shredded exactly 120 minutes after conversion — not soft-deleted, permanently overwritten.'
       },
       {
-        question: 'Do I need to create an account or register to convert files?',
-        answer: 'No registration is required. You do not need to provide an email address, create a password, or download software. The converter works directly in your web browser.'
+        question: 'Do I need to create an account or register?',
+        answer: 'No registration is required. You do not need to provide an email address, create a password, or install software. The converter works directly in your web browser — upload, convert, download. Nothing else.'
       },
       {
-        question: 'Can I convert PDF to Word on my smartphone or mobile device?',
-        answer: 'Yes! Convertly is fully mobile-responsive and works seamlessly on iPhone, iPad, Android phones, and tablets. You can select files from your phone’s storage or cloud drive and use our QR code transfer feature.'
+        question: 'Can I convert PDF to Word on my smartphone or tablet?',
+        answer: 'Yes. Convertly is fully mobile-responsive and works on iPhone, iPad, Android phones, and tablets. Select files from your device storage or cloud drive, and use the QR code feature to instantly save the converted DOCX without emailing it to yourself.'
       },
       {
         question: 'Does this converter work on Mac, Windows, and Linux?',
-        answer: 'Yes. Convertly is a browser-based cloud platform that functions identically across Windows 10/11, macOS (Intel and Apple Silicon), Linux distributions, and ChromeOS across all modern browsers.'
+        answer: 'Yes. Convertly is a browser-based cloud platform that functions identically on Windows 10/11, macOS (Intel and Apple Silicon M1–M4), Linux (Ubuntu, Fedora, Debian), and ChromeOS — across all modern browsers.'
       },
       {
-        question: 'What is the maximum file size limit for PDF conversion?',
-        answer: 'You can upload and convert PDF files up to 100MB in size, which easily accommodates lengthy corporate reports, legal briefs, and image-rich documents.'
+        question: 'What is the maximum file size for PDF to Word conversion?',
+        answer: 'You can upload and convert PDF files up to 100MB, which easily accommodates lengthy corporate reports, legal briefs, and image-rich documents with dozens of pages.'
       },
       {
-        question: 'Can I convert multiple PDF files at the same time?',
-        answer: 'Yes, Convertly supports batch queuing. You can process your documents sequentially with high-speed parallel workers.'
+        question: 'Can I convert a password-protected PDF to Word?',
+        answer: 'If your PDF is encrypted with an access password, use Convertly\'s Unlock PDF tool first to decrypt the document, then upload the unlocked file to convert it to Word.'
       },
       {
         question: 'Which web browsers are supported?',
-        answer: 'Convertly supports all modern web browsers including Google Chrome, Apple Safari, Mozilla Firefox, Microsoft Edge, Brave, and Opera without needing plugins or extensions.'
-      },
-      {
-        question: 'Can I convert password-protected PDF files?',
-        answer: 'If your PDF is encrypted with an access password, please use Convertly’s "Unlock PDF" tool first to decrypt the document, then upload the unlocked file to convert it to Word.'
+        answer: 'Convertly supports all modern browsers: Google Chrome, Apple Safari, Mozilla Firefox, Microsoft Edge, Brave, and Opera — no plugins or browser extensions required.'
       },
       {
         question: 'Can I convert the Word document back to PDF after editing?',
-        answer: 'Yes! Once you finish editing your DOCX file in Microsoft Word or Google Docs, you can use Convertly’s "Word to PDF" tool to convert it back into a standardized vector PDF.'
+        answer: 'Yes. Once you\'ve finished editing your DOCX in Microsoft Word or Google Docs, use Convertly\'s Word to PDF converter to transform it back into a clean, standardized, print-ready PDF.'
+      },
+      {
+        question: 'Does Convertly use my files to train AI models?',
+        answer: 'Never. Convertly maintains an explicit Zero AI Model Training policy. Your documents are never analyzed, indexed, shared, or used to train any machine learning or AI systems — by design and by policy.'
       }
     ],
-    conclusionHeading: 'Convert Your PDF to Word in Seconds',
+    relatedTools: [
+      {
+        id: 'word-to-pdf',
+        name: 'Word to PDF',
+        actionText: 'Convert Word DOCX back to Standard PDF',
+        desc: 'Transform your edited Microsoft Word document back into a print-ready, universally viewable PDF file.',
+        category: 'Office' as const
+      },
+      {
+        id: 'pdf-compress',
+        name: 'Compress PDF',
+        actionText: 'Compress PDF to Reduce File Size',
+        desc: 'Reduce large PDF file sizes by up to 85% while preserving crisp vector text and image clarity.',
+        category: 'PDF' as const
+      },
+      {
+        id: 'pdf-unlock',
+        name: 'Unlock PDF',
+        actionText: 'Remove Password & Restrictions from PDF',
+        desc: 'Decrypt password-protected PDFs before converting to Word — required for encrypted documents.',
+        category: 'PDF' as const
+      },
+      {
+        id: 'pdf-merge',
+        name: 'Merge PDF',
+        actionText: 'Combine Multiple PDFs into One File',
+        desc: 'Merge up to 20 PDF documents into a single consolidated master document with drag-and-drop ordering.',
+        category: 'PDF' as const
+      },
+      {
+        id: 'pdf-split',
+        name: 'Split PDF',
+        actionText: 'Split PDF Pages into Separate Files',
+        desc: 'Extract custom page ranges or break large PDFs into smaller individual files before converting.',
+        category: 'PDF' as const
+      },
+      {
+        id: 'pdf-to-txt',
+        name: 'PDF to Text',
+        actionText: 'Extract Plain Text from PDF Documents',
+        desc: 'Pull raw, unformatted text streams from PDFs for data processing, NLP analysis, or note-taking.',
+        category: 'PDF' as const
+      },
+      {
+        id: 'pdf-protect',
+        name: 'Protect PDF',
+        actionText: 'Lock PDF with AES-256 Password Encryption',
+        desc: 'Add military-grade password encryption to your converted documents before sharing.',
+        category: 'PDF' as const
+      },
+      {
+        id: 'pdf-to-images',
+        name: 'PDF to Images',
+        actionText: 'Render PDF Pages into High-Res JPG / PNG',
+        desc: 'Export every page of your PDF as crisp 300 DPI image files or a convenient ZIP archive.',
+        category: 'Images' as const
+      }
+    ],
+    relatedToolIds: ['word-to-pdf', 'pdf-compress', 'pdf-merge', 'pdf-split', 'pdf-to-txt', 'pdf-protect', 'pdf-to-images', 'pdf-extract-pages', 'pdf-unlock'],
+    conclusionHeading: 'Convert Your PDF to Word — Free, Private, No Limits',
     conclusionParagraphs: [
-      'Stop retyping documents from scratch or paying for expensive software licenses. Convertly gives you enterprise-grade PDF to Word extraction with precision layout reconstruction, integrated OCR, and ironclad privacy.',
-      'Scroll up to the converter above, select your file, and experience the fastest, cleanest document transformation online.'
+      'Stop retyping documents from scratch or paying for expensive software licenses. Convertly gives you enterprise-grade PDF to Word extraction with precision layout reconstruction, integrated Tesseract OCR, semantic table recovery, and ironclad 120-minute data shredding.',
+      'No account. No watermarks. No daily limits. No surprises. Scroll up to the converter, drop your file, and your editable Word document will be ready in seconds.'
     ]
   },
 
