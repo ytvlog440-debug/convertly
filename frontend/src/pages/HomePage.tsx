@@ -559,8 +559,8 @@ export function HomePage() {
 
           {/* Large H1 Heading */}
           <h1 className="font-heading text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-foreground leading-[1.1]">
-            Free Online File Converter. <br />
-            <span className="gradient-text">Fast, Private & Enterprise-Grade.</span>
+            Free Online File Converter <br className="hidden sm:inline" />
+            <span className="gradient-text">for PDF, Word, Excel, Images and More</span>
           </h1>
 
           {/* Short SEO Description */}
