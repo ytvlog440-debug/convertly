@@ -872,24 +872,51 @@ class PdfToExcelConverter(BaseConverter):
 
     def validate_inputs(self, input_paths: List[str], options: Dict[str, Any]) -> None:
         super().validate_inputs(input_paths, options)
-        # Validate it's actually a PDF
         src_path = input_paths[0]
+
+        # 1. File existence & size validation
+        if not os.path.exists(src_path):
+            raise FileValidationError(f"File does not exist: {src_path}")
+        size_bytes = os.path.getsize(src_path)
+        if size_bytes == 0:
+            raise FileValidationError("Uploaded PDF file is empty (0 bytes).")
+        if size_bytes > 100 * 1024 * 1024:
+            raise FileValidationError("File size exceeds the 100 MB upload limit.")
+
+        # 2. Magic bytes validation: must contain %PDF-
+        with open(src_path, "rb") as f:
+            header = f.read(1024)
+        if b"%PDF-" not in header:
+            raise FileValidationError("Invalid file format: Not a genuine PDF document.")
+
+        # 3. Document integrity, password & bomb checks
         try:
             doc = fitz.open(src_path)
             if doc.is_encrypted:
                 is_authenticated = False
+                pwd = options.get("password", "")
                 try:
-                    is_authenticated = bool(doc.authenticate(""))
+                    is_authenticated = bool(doc.authenticate(pwd))
                 except Exception:
                     pass
                 if not is_authenticated:
                     doc.close()
                     raise FileValidationError(
-                        "This PDF is password-protected. Please use the Unlock PDF tool first, then convert to Excel."
+                        "This PDF is password-protected. Please provide the correct password or unlock the PDF first."
                     )
             if doc.page_count < 1:
                 doc.close()
                 raise FileValidationError("PDF contains 0 pages and is invalid.")
+            if doc.page_count > 1000:
+                doc.close()
+                raise FileValidationError("Document exceeds maximum supported limit of 1,000 pages.")
+
+            # Decompression bomb / huge dimension protection (max 28800 pt = 400 inches)
+            for p in doc:
+                r = p.rect
+                if r.width > 28800 or r.height > 28800:
+                    doc.close()
+                    raise FileValidationError("PDF page dimensions exceed safety limits (potential decompression attack).")
             doc.close()
         except FileValidationError:
             raise

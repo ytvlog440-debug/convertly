@@ -9,7 +9,52 @@ import fitz  # PyMuPDF
 import os
 
 from app.core.logging import logger
-from app.services.engine.table_extractor.models import PageLayout, TableBlock, KeyValueBlock
+from dataclasses import asdict
+from app.services.engine.table_extractor.constants import (
+    DocumentType,
+    TableTopology,
+    DocumentGenre,
+    EngineType,
+)
+from app.services.engine.table_extractor.models import (
+    TableCell,
+    TableRow,
+    TableBlock,
+    PageLayout,
+    KeyValueBlock,
+    BoundingBox,
+    ConfidenceScore,
+    QualityScore,
+    ExtractionCandidate,
+    DocumentProfile,
+    RoutingDecision,
+    ValidationReport,
+    EngineMetrics,
+    ExtractionResult,
+)
+from app.services.engine.table_extractor.errors import (
+    TableExtractorError,
+    ExtractionError,
+    OCRFailure,
+    ValidationError,
+    RoutingError,
+    RepairError,
+    ExcelWriterError,
+    ConfigurationError,
+    QualityThresholdError,
+)
+from app.services.engine.table_extractor.config import TableExtractorConfig
+from app.services.engine.table_extractor.container import ExtractorContainer, get_default_container
+from app.services.engine.table_extractor.logging import StageLogger, stage_timer
+from app.services.engine.table_extractor.interfaces import (
+    BaseExtractor,
+    BaseClassifier,
+    BaseRouter,
+    BaseArbiter,
+    BaseValidator,
+    BaseReconstructor,
+    BaseExcelWriter,
+)
 from app.services.engine.table_extractor.vector_parser import VectorPathParser
 from app.services.engine.table_extractor.cv_preprocessor import CvDocumentPreProcessor
 from app.services.engine.table_extractor.lattice_extractor import LatticeTableExtractor
@@ -26,9 +71,9 @@ from app.services.engine.table_extractor.text_normalizer import (
 class EnterpriseTableExtractor:
     """
     High-accuracy, production-grade PDF table extraction pipeline.
-    Combines vector path inspection, computer vision pre-processing,
-    font kerning normalization, dual-path lattice/stream parsing,
-    and OpenXML cell span synthesis.
+    Combines Document Intelligence, Dynamic Engine Routing, Multi-Engine
+    Arbitration, Cell Reconstruction & Deterministic Repair, and
+    High-Fidelity OpenXML Excel generation.
     """
 
     def __init__(self):
@@ -46,30 +91,180 @@ class EnterpriseTableExtractor:
         options: Optional[Dict[str, Any]] = None
     ) -> Dict[str, Any]:
         """
-        Executes the complete document layout and table extraction pipeline.
+        Executes the complete document layout and table extraction pipeline using the
+        modular Enterprise V2 architecture (Intelligence -> Router -> Arbiter -> Reconstructor -> Validator -> ExcelWriter).
         """
         options = options or {}
-        force_ocr = options.get("ocr", False) or options.get("force_ocr", False)
+        config = TableExtractorConfig.from_options(options)
+        container = get_default_container()
 
-        doc = fitz.open(pdf_path)
+        if not os.path.exists(pdf_path) or os.path.getsize(pdf_path) == 0:
+            raise ExtractionError(f"PDF file is empty or does not exist: {pdf_path}")
+
+        try:
+            doc = fitz.open(pdf_path)
+        except Exception as e:
+            raise ExtractionError(f"Failed to open or parse damaged PDF file: {e}") from e
+
+        # Check password / encryption
+        was_encrypted = False
+        if doc.is_encrypted or doc.needs_pass:
+            was_encrypted = True
+            pwd = options.get("password")
+            if pwd:
+                authenticated = doc.authenticate(pwd)
+                if not authenticated:
+                    doc.close()
+                    raise ExtractionError("Invalid password provided for encrypted PDF document.")
+            else:
+                doc.close()
+                raise ExtractionError("PDF document is encrypted and requires a password.")
+
         total_pages = len(doc)
-        page_layouts: List[PageLayout] = []
+        if total_pages == 0:
+            doc.close()
+            # Return empty response for 0-page documents
+            return {
+                "total_pages": 0,
+                "total_tables_extracted": 0,
+                "total_rows": 0,
+                "worksheets_created": 0,
+                "pages_with_data": 0,
+                "total_pages_processed": 0,
+                "quality_score": 0.0,
+                "validation_reports": [],
+            }
 
-        logger.info(f"[EnterpriseTableExtractor] Starting processing for {total_pages} pages: {os.path.basename(pdf_path)}")
+        if was_encrypted:
+            pdf_bytes = doc.tobytes(encryption=fitz.PDF_ENCRYPT_NONE)
+        else:
+            with open(pdf_path, "rb") as f:
+                pdf_bytes = f.read()
 
-        for page_idx in range(total_pages):
-            page = doc[page_idx]
-            layout = self._analyze_page(page, page_idx, force_ocr)
-            page_layouts.append(layout)
+        logger.info(f"[EnterpriseTableExtractor] Processing {total_pages} pages: {os.path.basename(pdf_path)}")
 
-        doc.close()
+        # Stage 1: Document Intelligence Profiling
+        classifier = container.get_classifier()
+        profile = classifier.profile_document(pdf_bytes, config)
+
+        # Stage 2: Dynamic Engine Routing
+        router = container.get_router()
+        decision = router.route(profile, config)
+
+        arbiter = container.get_arbiter()
+        reconstructor = container.get_reconstructor()
+        validator = container.get_validator()
+
+        def _process_single_page(p_idx: int, p_doc: fitz.Document) -> Tuple[int, PageLayout, List[Dict[str, Any]], Optional[float]]:
+            page = p_doc[p_idx]
+            p_rect = page.rect
+            width, height = p_rect.width, p_rect.height
+            page_val_reports: List[Dict[str, Any]] = []
+            q_score_val: Optional[float] = None
+
+            primary_engine_name = decision.page_routes.get(p_idx, decision.primary_engine)
+            tables: List[TableBlock] = []
+
+            try:
+                primary_engine = container.get_extractor(primary_engine_name)
+                candidate = primary_engine.extract_page(pdf_bytes, p_idx, config)
+                q_score = arbiter.score_candidate(candidate, config)
+
+                if (q_score.score < config.confidence.fallback_threshold) and decision.fallback_engine and decision.fallback_engine != primary_engine_name:
+                    fallback_engine = container.get_extractor(decision.fallback_engine)
+                    fallback_candidate = fallback_engine.extract_page(pdf_bytes, p_idx, config)
+                    winner = arbiter.arbitrate([candidate, fallback_candidate], config)
+                else:
+                    winner = candidate
+
+                if winner.tables:
+                    repaired_tables = [reconstructor.reconstruct(t, config) for t in winner.tables]
+                    tables = repaired_tables
+
+                    for t in tables:
+                        val_rep = validator.validate(t, config)
+                        page_val_reports.append(asdict(val_rep))
+
+                    q_score_val = winner.quality.score
+            except Exception as e:
+                logger.warning(f"[EnterpriseTableExtractor] Modular extraction on page {p_idx + 1} encountered: {e}. Attempting fallback.", exc_info=True)
+
+            if not tables:
+                fallback_layout = self._analyze_page(page, p_idx, force_ocr=decision.ocr_required)
+                tables = fallback_layout.tables
+                kvs = fallback_layout.key_values
+            else:
+                kvs = []
+                text_lines = self._extract_text_lines_with_bbox(page)
+                if text_lines and tables:
+                    table_top = tables[0].bbox[1]
+                    table_bot = tables[0].bbox[3]
+                    hdr_kv = self.invoice_segmenter.extract_header_key_values(text_lines, table_top)
+                    if hdr_kv:
+                        kvs.append(hdr_kv)
+                    ftr_kv = self.invoice_segmenter.extract_footer_summary_totals(text_lines, table_bot)
+                    if ftr_kv:
+                        kvs.append(ftr_kv)
+
+            layout = PageLayout(
+                page_idx=p_idx,
+                width=width,
+                height=height,
+                is_scanned=(decision.page_routes.get(p_idx) == EngineType.OCR_TSV.value),
+                tables=tables,
+                key_values=kvs,
+            )
+            return (p_idx, layout, page_val_reports, q_score_val)
+
+        page_results: List[Tuple[int, PageLayout, List[Dict[str, Any]], Optional[float]]] = []
+
+        import concurrent.futures
+        import gc
+
+        max_workers = min(config.workers.max_workers, total_pages)
+        if total_pages > 2 and max_workers > 1:
+            def _thread_worker(p_idx: int):
+                thread_doc = fitz.open(stream=pdf_bytes, filetype="pdf")
+                try:
+                    return _process_single_page(p_idx, thread_doc)
+                finally:
+                    thread_doc.close()
+
+            with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
+                futures = [executor.submit(_thread_worker, i) for i in range(total_pages)]
+                for future in concurrent.futures.as_completed(futures):
+                    page_results.append(future.result())
+            doc.close()
+        else:
+            try:
+                for p_idx in range(total_pages):
+                    page_results.append(_process_single_page(p_idx, doc))
+            finally:
+                doc.close()
+
+        # Sort results strictly by page index
+        page_results.sort(key=lambda item: item[0])
+
+        page_layouts: List[PageLayout] = [item[1] for item in page_results]
+        validation_reports: List[Dict[str, Any]] = [rep for item in page_results for rep in item[2]]
+        total_quality_scores: List[float] = [item[3] for item in page_results if item[3] is not None]
+
+        # Trigger garbage collection for large documents
+        if total_pages >= config.memory.streaming_page_threshold and config.memory.aggressive_gc:
+            gc.collect()
 
         # Synthesize into OpenXML XLSX
         logger.info(f"[EnterpriseTableExtractor] Synthesizing OpenXML XLSX workbook: {output_excel_path}")
         result_meta = self.excel_writer.write_workbook(page_layouts, output_excel_path)
 
+        avg_quality = (sum(total_quality_scores) / len(total_quality_scores)) if total_quality_scores else 1.0
+
         return {
             "total_pages": total_pages,
+            "document_profile": profile,
+            "routing_decision": decision,
+            "quality_score": round(avg_quality, 4),
+            "validation_reports": validation_reports,
             **result_meta
         }
 
