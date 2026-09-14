@@ -10683,7 +10683,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'How are multi-page PDF documents handled?',
-        answer: 'Each page of your PDF is extracted into a dedicated worksheet tab named "Page 1", "Page 2", etc., or structured continuously with clear section demarcations so no data is lost.'
+        answer: 'Each page of your PDF is extracted into a dedicated worksheet tab named "Page 1", "Page 2", etc. Additionally, for multi-page documents with matching column structures like bank statements or invoices, Convertly automatically creates an "All Data (Consolidated)" master tab so you can analyze all transactions in one continuous table.'
       },
       {
         question: 'Can I extract bank statements and credit card bills into Excel?',
