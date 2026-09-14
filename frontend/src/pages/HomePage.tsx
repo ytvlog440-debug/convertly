@@ -94,7 +94,7 @@ const TOOLS_CATALOG: ToolItem[] = [
   {
     id: 'pdf-to-excel',
     name: 'PDF to Excel',
-    desc: 'Extract tables, invoices, and financial data from PDF into structured, editable Excel spreadsheets.',
+    desc: 'Extract tables, invoices, and financial data from PDF into structured, editable Excel (XLSX) spreadsheets.',
     category: 'Office',
     icon: FileSpreadsheet,
     color: 'text-emerald-500 bg-emerald-500/10',

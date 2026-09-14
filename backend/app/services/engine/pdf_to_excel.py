@@ -21,7 +21,8 @@ from typing import List, Dict, Any, Optional, Tuple
 
 import fitz  # PyMuPDF
 import openpyxl
-from openpyxl.styles import Font, Alignment, numbers
+from openpyxl.cell.cell import ILLEGAL_CHARACTERS_RE
+from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
 from openpyxl.utils import get_column_letter
 
 from app.core.errors import FileValidationError, ConversionExecutionError
@@ -35,22 +36,40 @@ from app.services.engine.pdf import open_and_validate_pdf
 # ---------------------------------------------------------------------------
 
 # Currency symbols and patterns
-_CURRENCY_SYMBOLS = r'[\$\u20ac\u00a3\u00a5\u20b9\u20a9\u20ab\u20aa\u20ba\u20b1\u20bf]'
+_CURRENCY_SYMBOLS = r'[\$\u20ac\u00a3\u00a5\u20b9\u20a9\u20bd\u20ba\u20b1\u20bf]'
 _CURRENCY_PATTERN = re.compile(
-    rf'^\s*{_CURRENCY_SYMBOLS}\s*[\-\(]?\s*[\d,]+\.?\d*\s*\)?\s*$'
+    rf'^\s*({_CURRENCY_SYMBOLS}|CHF|USD|EUR|GBP|JPY|CAD|AUD)\s*[\-\(]?\s*[\d,.]+\s*\)?\s*$'
     r'|'
-    rf'^\s*[\-\(]?\s*[\d,]+\.?\d*\s*\)?\s*{_CURRENCY_SYMBOLS}\s*$',
-    re.UNICODE
+    rf'^\s*[\-\(]?\s*[\d,.]+\s*\)?\s*({_CURRENCY_SYMBOLS}|CHF|USD|EUR|GBP|JPY|CAD|AUD)\s*$',
+    re.UNICODE | re.IGNORECASE
 )
+
+_CURRENCY_FORMAT_MAP = {
+    '$': '$#,##0.00;($#,##0.00);"-"',
+    '€': '€#,##0.00;(€#,##0.00);"-"',
+    '£': '£#,##0.00;(£#,##0.00);"-"',
+    '¥': '¥#,##0;(¥#,##0);"-"',
+    '₹': '₹#,##0.00;(₹#,##0.00);"-"',
+    '₩': '₩#,##0;(₩#,##0);"-"',
+    '₽': '₽#,##0.00;(₽#,##0.00);"-"',
+    '₺': '₺#,##0.00;(₺#,##0.00);"-"',
+    'USD': '$#,##0.00;($#,##0.00);"-"',
+    'EUR': '€#,##0.00;(€#,##0.00);"-"',
+    'GBP': '£#,##0.00;(£#,##0.00);"-"',
+    'JPY': '¥#,##0;(¥#,##0);"-"',
+    'CHF': 'CHF #,##0.00;(CHF #,##0.00);"-"',
+    'CAD': '$#,##0.00;($#,##0.00);"-"',
+    'AUD': '$#,##0.00;($#,##0.00);"-"',
+}
 
 # Accounting negative: (1,234.56)
 _ACCOUNTING_NEG_PATTERN = re.compile(
-    r'^\s*\(\s*[\d,]+\.?\d*\s*\)\s*$'
+    r'^\s*\(\s*[\d,.]+\s*\)\s*$'
 )
 
 # Percentage: 12.5%, 0.5 %, -3.2%
 _PERCENTAGE_PATTERN = re.compile(
-    r'^\s*[\-+]?\s*[\d,]+\.?\d*\s*%\s*$'
+    r'^\s*[\-+]?\s*[\d,.]+\s*%\s*$'
 )
 
 # Date patterns
@@ -66,19 +85,28 @@ _DATE_PATTERNS = [
     (re.compile(r'^\s*\d{1,2}\s+\w{3,9}\s+\d{4}\s*$'), None),
 ]
 
-# Pure number: 1,234.56  or  -1234.56  or  1234
+# Pure number: 1,234.56  or  -1234.56  or  1234  or  1.234,56 (European)
 _NUMBER_PATTERN = re.compile(
-    r'^\s*[\-+]?\s*[\d,]+\.?\d*\s*$'
+    r'^\s*[\-+]?\s*[\d,.]+\s*$'
 )
 
 
-def _strip_currency(text: str) -> str:
-    """Remove currency symbols from text."""
-    return re.sub(rf'{_CURRENCY_SYMBOLS}', '', text).strip()
+def _detect_currency_symbol(text: str) -> Tuple[str, str]:
+    """Extract currency symbol/code and cleaned numerical text."""
+    for symbol, fmt in _CURRENCY_FORMAT_MAP.items():
+        if symbol in text or symbol.lower() in text.lower():
+            cleaned = re.sub(re.escape(symbol), '', text, flags=re.IGNORECASE).strip()
+            return symbol, cleaned
+    # Fallback to default USD symbol
+    cleaned = re.sub(rf'{_CURRENCY_SYMBOLS}', '', text).strip()
+    return '$', cleaned
 
 
 def _parse_number(text: str) -> Optional[float]:
-    """Try to parse a string as a number, handling commas and accounting format."""
+    """
+    Parse a string as a number, handling accounting parentheses (1,234.56),
+    US standard comma-thousands (1,234.56), and European dot-thousands (1.234,56).
+    """
     cleaned = text.strip()
     if not cleaned:
         return None
@@ -96,8 +124,20 @@ def _parse_number(text: str) -> Optional[float]:
     elif cleaned.startswith('+'):
         cleaned = cleaned.lstrip('+').strip()
 
-    # Remove thousand separators
-    cleaned = cleaned.replace(',', '')
+    # Detect European formatting: e.g. 1.234,56 (dot thousands, comma decimal)
+    # or simple comma decimals with 1-2 digits where no dot exists and not 3-digit thousands (e.g. 125,50)
+    has_dot_thousands = bool(re.search(r'^\d{1,3}(\.\d{3})+,\d+$', cleaned))
+    has_comma_decimals = bool(
+        ',' in cleaned and '.' not in cleaned and
+        re.search(r',\d{1,2}$', cleaned) and
+        not re.search(r'^\d{1,3}(,\d{3})+$', cleaned)
+    )
+
+    if has_dot_thousands or has_comma_decimals:
+        cleaned = cleaned.replace('.', '').replace(',', '.')
+    else:
+        # Standard US/UK format: remove thousands comma
+        cleaned = cleaned.replace(',', '')
 
     if not cleaned:
         return None
@@ -113,64 +153,65 @@ def detect_cell_type(text: str) -> Tuple[Any, Optional[str]]:
     """
     Detect the data type of a cell value and return (typed_value, number_format).
     Returns (original_text, None) if no specific type is detected.
+    Automatically filters XML control characters that crash openpyxl.
     """
     if text is None:
         return None, None
 
-    stripped = str(text).strip()
-    if not stripped:
+    # Clean illegal XML characters
+    raw_str = ILLEGAL_CHARACTERS_RE.sub('', str(text)).strip()
+    if not raw_str:
         return None, None
 
-    # 1. Currency detection
-    if _CURRENCY_PATTERN.match(stripped):
-        num_str = _strip_currency(stripped)
+    # 1. Currency detection (e.g. $1,250.00, €450.50, £99.00, (¥10,000))
+    if _CURRENCY_PATTERN.match(raw_str):
+        symbol, num_str = _detect_currency_symbol(raw_str)
         value = _parse_number(num_str)
         if value is not None:
-            return value, '$#,##0.00'
+            fmt = _CURRENCY_FORMAT_MAP.get(symbol, f'{symbol}#,##0.00;({symbol}#,##0.00);"-"')
+            return value, fmt
 
-    # 2. Percentage detection
-    if _PERCENTAGE_PATTERN.match(stripped):
-        num_str = stripped.replace('%', '').strip()
+    # 2. Percentage detection (e.g. 12.5%, -3.2%)
+    if _PERCENTAGE_PATTERN.match(raw_str):
+        num_str = raw_str.replace('%', '').strip()
         value = _parse_number(num_str)
         if value is not None:
             return value / 100.0, '0.00%'
 
-    # 3. Date detection
-    for pattern, fmt in _DATE_PATTERNS:
-        if pattern.match(stripped):
-            # Try common date formats
+    # 3. Date detection (ISO, US, European, Textual)
+    for pattern, _ in _DATE_PATTERNS:
+        if pattern.match(raw_str):
             for try_fmt in [
-                '%m/%d/%Y', '%d/%m/%Y', '%Y-%m-%d', '%Y/%m/%d',
+                '%Y-%m-%d', '%m/%d/%Y', '%d/%m/%Y', '%Y/%m/%d',
                 '%m-%d-%Y', '%d-%m-%Y', '%m.%d.%Y', '%d.%m.%Y',
                 '%b %d, %Y', '%B %d, %Y', '%d %b %Y', '%d %B %Y',
                 '%b %d %Y', '%B %d %Y',
             ]:
                 try:
-                    dt = datetime.strptime(stripped, try_fmt)
-                    # Sanity check: year between 1900 and 2100
+                    dt = datetime.strptime(raw_str, try_fmt)
                     if 1900 <= dt.year <= 2100:
                         return dt, 'YYYY-MM-DD'
                 except ValueError:
                     continue
-            break  # Pattern matched but couldn't parse - don't try further
+            break
 
     # 4. Accounting negative: (1,234.56)
-    if _ACCOUNTING_NEG_PATTERN.match(stripped):
-        value = _parse_number(stripped)
+    if _ACCOUNTING_NEG_PATTERN.match(raw_str):
+        value = _parse_number(raw_str)
         if value is not None:
-            return value, '#,##0.00'
+            return value, '#,##0.00;(#,##0.00);"-"'
 
-    # 5. Plain number
-    if _NUMBER_PATTERN.match(stripped):
-        value = _parse_number(stripped)
+    # 5. Plain number (integer or floating point)
+    if _NUMBER_PATTERN.match(raw_str):
+        value = _parse_number(raw_str)
         if value is not None:
-            # Use integer format for whole numbers
-            if value == int(value) and abs(value) < 1e15:
+            # Whole numbers without decimals
+            if value == int(value) and abs(value) < 1e15 and '.' not in raw_str and ',' not in raw_str[-3:]:
                 return int(value), '#,##0'
             return value, '#,##0.00'
 
-    # 6. Default: keep as string
-    return stripped, None
+    # 6. Default: return sanitized string
+    return raw_str, None
 
 
 # ---------------------------------------------------------------------------
@@ -236,8 +277,12 @@ def _extract_tables_pymupdf(pdf_path: str, page_indices: List[int]) -> Dict[int,
 def _extract_tables_pdfplumber(pdf_path: str, page_indices: List[int]) -> Dict[int, List[List[List[str]]]]:
     """
     Primary extraction using pdfplumber with automatic fallback to PyMuPDF.
+    Uses multi-strategy table detection:
+      1. Bordered tables (lines & lines)
+      2. Semi-bordered tables with horizontal dividers (common in financial statements & invoices)
+      3. Borderless tables (text & text)
+      4. Text & surrounding key-value metadata preservation (Invoice headers & summary totals)
     Returns: {page_index: [table1_rows, table2_rows, ...]}
-    Each table is a list of rows, each row is a list of cell strings.
     """
     try:
         import pdfplumber
@@ -256,34 +301,30 @@ def _extract_tables_pdfplumber(pdf_path: str, page_indices: List[int]) -> Dict[i
                 page = pdf.pages[page_idx]
                 page_tables: List[List[List[str]]] = []
 
-                # Strategy 1: Try with line-based detection (bordered tables)
-                tables = page.extract_tables(table_settings={
+                # Find tables using bounding-box aware finder
+                # Strategy 1: Explicit line-based detection (bordered tables)
+                found_tables = page.find_tables(table_settings={
                     "vertical_strategy": "lines",
                     "horizontal_strategy": "lines",
                     "snap_tolerance": 4,
                     "join_tolerance": 4,
                     "edge_min_length": 10,
-                    "min_words_vertical": 2,
-                    "min_words_horizontal": 1,
                 })
 
-                if tables:
-                    for table in tables:
-                        if table and len(table) > 0:
-                            # Clean cells
-                            cleaned_table = []
-                            for row in table:
-                                cleaned_row = [
-                                    (cell.strip() if cell and isinstance(cell, str) else (str(cell).strip() if cell is not None else ''))
-                                    for cell in row
-                                ]
-                                cleaned_table.append(cleaned_row)
-                            if cleaned_table:
-                                page_tables.append(cleaned_table)
+                # Strategy 2: Text verticals with line horizontals (very common in invoices & bank statements)
+                if not found_tables:
+                    found_tables = page.find_tables(table_settings={
+                        "vertical_strategy": "text",
+                        "horizontal_strategy": "lines",
+                        "snap_tolerance": 5,
+                        "join_tolerance": 5,
+                        "min_words_vertical": 2,
+                        "min_words_horizontal": 1,
+                    })
 
-                # Strategy 2: If no tables found, try text-based detection (borderless tables)
-                if not page_tables:
-                    tables = page.extract_tables(table_settings={
+                # Strategy 3: Text-only borderless tables
+                if not found_tables:
+                    found_tables = page.find_tables(table_settings={
                         "vertical_strategy": "text",
                         "horizontal_strategy": "text",
                         "snap_tolerance": 5,
@@ -292,29 +333,72 @@ def _extract_tables_pdfplumber(pdf_path: str, page_indices: List[int]) -> Dict[i
                         "min_words_horizontal": 1,
                     })
 
-                    if tables:
-                        for table in tables:
-                            if table and len(table) > 0:
-                                cleaned_table = []
-                                for row in table:
-                                    cleaned_row = [
-                                        (cell.strip() if cell and isinstance(cell, str) else (str(cell).strip() if cell is not None else ''))
-                                        for cell in row
-                                    ]
-                                    cleaned_table.append(cleaned_row)
-                                if cleaned_table:
-                                    page_tables.append(cleaned_table)
+                if found_tables:
+                    # Sort tables top-to-bottom by y-coordinate
+                    sorted_tables = sorted(found_tables, key=lambda t: t.bbox[1])
 
-                # Strategy 3: If still no tables, extract full-page text as single-column grid
+                    # Check for header metadata above the first table (e.g. Invoice #, Bill-To, Date)
+                    first_top = sorted_tables[0].bbox[1]
+                    if first_top > 45:
+                        try:
+                            above_crop = page.crop((0, 0, page.width, max(0, first_top - 4)))
+                            above_text = above_crop.extract_text()
+                            if above_text and above_text.strip():
+                                meta_rows = []
+                                for line in above_text.strip().split('\n'):
+                                    cleaned_line = line.strip()
+                                    if cleaned_line:
+                                        parts = re.split(r'\t|  {2,}|:\s+', cleaned_line, maxsplit=2)
+                                        parts = [p.strip() for p in parts if p.strip()]
+                                        if parts:
+                                            meta_rows.append(parts)
+                                if meta_rows:
+                                    page_tables.append(meta_rows)
+                        except Exception as e:
+                            logger.debug(f"Above-table metadata extraction warning: {e}")
+
+                    # Extract the structured table bodies
+                    for t in sorted_tables:
+                        raw_extracted = t.extract()
+                        if raw_extracted and len(raw_extracted) > 0:
+                            cleaned_table = []
+                            for row in raw_extracted:
+                                cleaned_row = [
+                                    (cell.strip() if cell and isinstance(cell, str) else (str(cell).strip() if cell is not None else ''))
+                                    for cell in row
+                                ]
+                                cleaned_table.append(cleaned_row)
+                            if cleaned_table:
+                                page_tables.append(cleaned_table)
+
+                    # Check for summary metadata below the last table (e.g. Subtotals, Taxes, Total Due, Terms)
+                    last_bottom = sorted_tables[-1].bbox[3]
+                    if last_bottom < page.height - 35:
+                        try:
+                            below_crop = page.crop((0, min(page.height, last_bottom + 4), page.width, page.height))
+                            below_text = below_crop.extract_text()
+                            if below_text and below_text.strip():
+                                summary_rows = []
+                                for line in below_text.strip().split('\n'):
+                                    cleaned_line = line.strip()
+                                    if cleaned_line:
+                                        parts = re.split(r'\t|  {2,}|:\s+', cleaned_line, maxsplit=2)
+                                        parts = [p.strip() for p in parts if p.strip()]
+                                        if parts:
+                                            summary_rows.append(parts)
+                                if summary_rows:
+                                    page_tables.append(summary_rows)
+                        except Exception as e:
+                            logger.debug(f"Below-table metadata extraction warning: {e}")
+
+                # Strategy 4: Fallback to full-page text grid if no tables detected
                 if not page_tables:
                     text = page.extract_text()
                     if text and text.strip():
                         lines = [line.strip() for line in text.strip().split('\n') if line.strip()]
                         if lines:
-                            # Attempt to detect tab or multi-space delimited columns
                             grid = []
                             for line in lines:
-                                # Split on 2+ spaces or tabs
                                 cells = re.split(r'\t|  {2,}', line)
                                 cells = [c.strip() for c in cells if c.strip()]
                                 if cells:
@@ -574,12 +658,17 @@ def _build_xlsx(
     output_path: str,
 ) -> Dict[str, Any]:
     """
-    Build an XLSX workbook from extracted table data.
-    Each page with tables gets its own worksheet.
-    Returns metadata about the generation.
+    Build an enterprise-grade XLSX workbook from extracted table data.
+    Features:
+      - Header styling: Slate fill (#F1F5F9), bold dark typography (#0F172A).
+      - Grid lines and clean cell borders (#CBD5E1).
+      - Smart alignments: Right-aligned numbers & currencies, centered dates, left-aligned text.
+      - Consolidated master worksheet for multi-page documents with consistent schemas.
+      - Individual page worksheets (Page 1, Page 2...).
+      - Column width auto-sizing with text-wrapping support.
     """
     wb = openpyxl.Workbook()
-    # Remove default sheet
+    # Remove default empty sheet
     default_sheet = wb.active
     if default_sheet:
         wb.remove(default_sheet)
@@ -588,25 +677,135 @@ def _build_xlsx(
     total_rows_written = 0
     pages_with_data = 0
 
-    header_font = Font(bold=True, size=11)
-    normal_font = Font(size=11)
+    # Styling definitions
+    header_font = Font(name='Calibri', size=11, bold=True, color='0F172A')
+    header_fill = PatternFill(start_color='F1F5F9', end_color='F1F5F9', fill_type='solid')
     header_alignment = Alignment(horizontal='center', vertical='center', wrap_text=True)
-    normal_alignment = Alignment(vertical='top', wrap_text=True)
 
+    normal_font = Font(name='Calibri', size=11, color='1E293B')
+    num_alignment = Alignment(horizontal='right', vertical='center')
+    date_alignment = Alignment(horizontal='center', vertical='center')
+    text_alignment = Alignment(horizontal='left', vertical='center', wrap_text=True)
+
+    thin_border = Border(
+        left=Side(style='thin', color='CBD5E1'),
+        right=Side(style='thin', color='CBD5E1'),
+        top=Side(style='thin', color='CBD5E1'),
+        bottom=Side(style='thin', color='CBD5E1')
+    )
+
+    def write_table_to_sheet(
+        ws: openpyxl.worksheet.worksheet.Worksheet,
+        table: List[List[str]],
+        start_row: int
+    ) -> int:
+        nonlocal total_rows_written
+        curr_row = start_row
+        is_first = True
+        has_header = _is_likely_header(table[0], len(table))
+
+        for row_data in table:
+            for col_idx, cell_value in enumerate(row_data):
+                cell = ws.cell(row=curr_row, column=col_idx + 1)
+                typed_val, num_fmt = detect_cell_type(cell_value)
+                cell.value = typed_val
+                cell.border = thin_border
+
+                if num_fmt:
+                    cell.number_format = num_fmt
+
+                if is_first and has_header:
+                    cell.font = header_font
+                    cell.fill = header_fill
+                    cell.alignment = header_alignment
+                else:
+                    cell.font = normal_font
+                    # Apply semantic alignment
+                    if num_fmt and ('$' in num_fmt or '€' in num_fmt or '£' in num_fmt or '¥' in num_fmt or '0.00' in num_fmt or '%' in num_fmt):
+                        cell.alignment = num_alignment
+                    elif isinstance(typed_val, (int, float)):
+                        cell.alignment = num_alignment
+                    elif isinstance(typed_val, datetime) or (num_fmt and 'YYYY' in num_fmt):
+                        cell.alignment = date_alignment
+                    else:
+                        cell.alignment = text_alignment
+
+            is_first = False
+            curr_row += 1
+            total_rows_written += 1
+
+        return curr_row
+
+    def auto_fit_columns(ws: openpyxl.worksheet.worksheet.Worksheet):
+        for col_idx in range(1, (ws.max_column or 0) + 1):
+            col_letter = get_column_letter(col_idx)
+            max_len = 10  # Minimum comfortable column width
+            for row_idx in range(1, (ws.max_row or 0) + 1):
+                c = ws.cell(row=row_idx, column=col_idx)
+                if c.value is not None:
+                    line_lens = [len(str(line)) for line in str(c.value).split('\n')]
+                    cell_max = max(line_lens) if line_lens else 0
+                    max_len = max(max_len, min(cell_max + 3, 60))
+            ws.column_dimensions[col_letter].width = max_len
+
+    # Multi-page consolidation check: identify primary data tables (with >= 2 columns) per page
+    valid_pages = [p for p in range(total_pages) if all_page_tables.get(p)]
+    can_consolidate = len(valid_pages) >= 2
+
+    consolidated_rows: List[List[str]] = []
+    if can_consolidate:
+        primary_tables: Dict[int, List[List[str]]] = {}
+        first_cols = None
+
+        for p_idx in valid_pages:
+            tables = all_page_tables[p_idx]
+            # Select table with largest grid volume having at least 2 columns
+            multi_col_tables = [
+                _normalize_table_columns(t) for t in tables
+                if t and len(_normalize_table_columns(t)[0]) >= 2
+            ]
+
+            if not multi_col_tables:
+                can_consolidate = False
+                break
+
+            chosen_table = max(multi_col_tables, key=lambda t: len(t) * len(t[0]))
+            num_cols = len(chosen_table[0])
+
+            if first_cols is None:
+                first_cols = num_cols
+            elif first_cols != num_cols:
+                can_consolidate = False
+                break
+
+            primary_tables[p_idx] = chosen_table
+
+        if can_consolidate and first_cols and len(primary_tables) == len(valid_pages):
+            for idx, p_idx in enumerate(valid_pages):
+                norm_t = primary_tables[p_idx]
+                has_hdr = _is_likely_header(norm_t[0], len(norm_t))
+                if idx == 0:
+                    consolidated_rows.extend(norm_t)
+                else:
+                    rows_to_add = norm_t[1:] if has_hdr else norm_t
+                    consolidated_rows.extend(rows_to_add)
+
+            if len(consolidated_rows) > 1:
+                ws_cons = wb.create_sheet(title="All Data (Consolidated)")
+                write_table_to_sheet(ws_cons, consolidated_rows, 1)
+                auto_fit_columns(ws_cons)
+
+    # Individual page worksheets
     for page_idx in range(total_pages):
         page_tables = all_page_tables.get(page_idx, [])
-
         if not page_tables:
             continue
 
         pages_with_data += 1
-        # Create worksheet
         ws_title = f"Page {page_idx + 1}"
-        # Excel sheet names have a 31-char limit
         ws = wb.create_sheet(title=ws_title[:31])
 
         current_row = 1
-
         for table_idx, table in enumerate(page_tables):
             if not table:
                 continue
@@ -614,53 +813,19 @@ def _build_xlsx(
             table = _normalize_table_columns(table)
             total_tables += 1
 
-            # Add table spacing between multiple tables on the same page
             if table_idx > 0:
-                current_row += 2  # 2-row gap between tables
+                current_row += 2  # Visual separation between tables
 
-            is_first_row = True
-            has_header = _is_likely_header(table[0], len(table))
+            current_row = write_table_to_sheet(ws, table, current_row)
 
-            for row_data in table:
-                for col_idx, cell_value in enumerate(row_data):
-                    cell = ws.cell(row=current_row, column=col_idx + 1)
+        auto_fit_columns(ws)
 
-                    # Detect and apply typed value
-                    typed_value, num_format = detect_cell_type(cell_value)
-                    cell.value = typed_value
-
-                    if num_format:
-                        cell.number_format = num_format
-
-                    # Apply header styling
-                    if is_first_row and has_header:
-                        cell.font = header_font
-                        cell.alignment = header_alignment
-                    else:
-                        cell.font = normal_font
-                        cell.alignment = normal_alignment
-
-                is_first_row = False
-                current_row += 1
-                total_rows_written += 1
-
-        # Auto-width columns
-        for col_idx in range(1, (ws.max_column or 0) + 1):
-            max_width = 8  # minimum width
-            col_letter = get_column_letter(col_idx)
-            for row_idx in range(1, (ws.max_row or 0) + 1):
-                cell = ws.cell(row=row_idx, column=col_idx)
-                if cell.value is not None:
-                    cell_len = len(str(cell.value))
-                    max_width = max(max_width, min(cell_len + 2, 50))
-            ws.column_dimensions[col_letter].width = max_width
-
-    # If no data was extracted at all, create a single empty sheet with a message
+    # Empty document fallback sheet
     if not wb.sheetnames:
         ws = wb.create_sheet(title="Results")
         ws.cell(row=1, column=1, value="No tables or structured data found in the PDF document.")
-        ws.cell(row=2, column=1, value="The PDF may contain only text, images, or non-tabular content.")
-        ws.column_dimensions['A'].width = 60
+        ws.cell(row=2, column=1, value="The PDF may contain only images, raw scanned graphics, or non-tabular content.")
+        ws.column_dimensions['A'].width = 65
 
     wb.save(output_path)
 

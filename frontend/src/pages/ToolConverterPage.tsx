@@ -2262,8 +2262,10 @@ export function ToolConverterPage() {
                           </p>
                         </div>
                       </div>
-                      <label className="relative inline-flex items-center cursor-pointer shrink-0 ml-4">
+                      <label htmlFor="pdf-to-excel-ocr-toggle" className="relative inline-flex items-center cursor-pointer shrink-0 ml-4">
                         <input
+                          id="pdf-to-excel-ocr-toggle"
+                          aria-label="Enable Smart OCR for Scanned PDFs"
                           type="checkbox"
                           checked={pdfToExcelOcr}
                           onChange={(e) => setPdfToExcelOcr(e.target.checked)}

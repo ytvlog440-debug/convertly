@@ -113,7 +113,8 @@ export const PDF_LIFECYCLE_CLUSTER = [
   { id: 'pdf-watermark', name: 'Watermark PDF', step: 9, action: 'Stamp copyright, draft notices, or confidentiality badges' },
   { id: 'pdf-redact', name: 'Redact PDF', step: 10, action: 'Blackout sensitive SSNs, financial figures, or confidential text' },
   { id: 'pdf-flatten', name: 'Flatten PDF', step: 11, action: 'Bake interactive forms and annotations permanently into the canvas' },
-  { id: 'pdf-grayscale', name: 'Grayscale PDF', step: 12, action: 'Convert full-color layouts to black-and-white to save ink' }
+  { id: 'pdf-grayscale', name: 'Grayscale PDF', step: 12, action: 'Convert full-color layouts to black-and-white to save ink' },
+  { id: 'pdf-to-excel', name: 'PDF to Excel', step: 13, action: 'Extract tables, statements, and financial figures into editable spreadsheets' }
 ]
 
 export function getRelatedClusterTools(toolId: string): { id: string; name: string; action: string }[] {
@@ -163,6 +164,10 @@ export function getContextualEcosystemLinks(toolId: string): ContextualEcosystem
       { slug: 'how-to-convert-excel-to-pdf', title: 'Convert Excel to PDF Without Cutting Off Columns' },
       { slug: 'how-to-compress-pdf-without-losing-quality', title: 'Compress PDF for Email Distribution' }
     ],
+    'pdf-to-excel': [
+      { slug: 'how-to-extract-tables-from-pdf-to-excel', title: 'Extract Tables from PDF to Excel (XLSX)' },
+      { slug: 'how-to-convert-excel-to-pdf', title: 'Convert Excel to PDF Without Cutting Off Columns' }
+    ],
     'ppt-to-pdf': [
       { slug: 'how-to-convert-powerpoint-to-pdf', title: 'Convert PowerPoint Slides to Universal Handouts' },
       { slug: 'how-to-compress-pdf-without-losing-quality', title: 'Compress PDF Presentation Decks' }
@@ -202,6 +207,11 @@ export function getContextualEcosystemLinks(toolId: string): ContextualEcosystem
       { slug: 'businesses', title: 'For Small Businesses & Enterprises' },
       { slug: 'freelancers', title: 'For Independent Contractors' }
     ],
+    'pdf-to-excel': [
+      { slug: 'businesses', title: 'For Financial Analysts & Accountants' },
+      { slug: 'freelancers', title: 'For Independent Contractors & Invoicing' },
+      { slug: 'lawyers', title: 'For Legal Discovery & Document Audits' }
+    ],
     'pdf-redact': [
       { slug: 'lawyers', title: 'For Lawyers & Legal Counsel' },
       { slug: 'hr', title: 'For HR & Personnel Records' },
@@ -236,6 +246,11 @@ export function getContextualEcosystemLinks(toolId: string): ContextualEcosystem
       { slug: 'pdf-to-word-free', title: 'Free PDF to Word' },
       { slug: 'pdf-to-word-windows', title: 'PDF to Word Windows' },
       { slug: 'pdf-to-word-mac', title: 'PDF to Word Mac' }
+    ],
+    'pdf-to-excel': [
+      { slug: 'pdf-to-word', title: 'PDF to Word Converter' },
+      { slug: 'compress-pdf-online', title: 'Compress PDF Online' },
+      { slug: 'convert-pdf-without-losing-formatting', title: 'Preserve Formatting Guide' }
     ],
     'word-to-pdf': [
       { slug: 'word-to-pdf', title: 'Word to PDF Online' },

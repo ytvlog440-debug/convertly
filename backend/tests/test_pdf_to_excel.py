@@ -135,6 +135,98 @@ async def test_pdf_to_excel_conversion():
     wb.close()
 
 
+def test_advanced_cell_type_and_currency_detection():
+    """Verify European decimal formatting, currencies, and XML sanitization."""
+    # Euros with European dot/comma notation
+    val, fmt = detect_cell_type("€ 1.250,50")
+    assert val == 1250.50
+    assert "€" in (fmt or "")
+
+    # British Pounds
+    val, fmt = detect_cell_type("£450.75")
+    assert val == 450.75
+    assert "£" in (fmt or "")
+
+    # Japanese Yen
+    val, fmt = detect_cell_type("¥12,000")
+    assert val == 12000
+    assert "¥" in (fmt or "")
+
+    # European pure number with comma decimals
+    val, fmt = detect_cell_type("123,45")
+    assert val == 123.45
+
+    # Negative accounting notation with comma thousands
+    val, fmt = detect_cell_type("(2,500.00)")
+    assert val == -2500.00
+    assert "#,##0.00" in (fmt or "")
+
+    # Control character sanitization
+    val, _ = detect_cell_type("Clean\x00\x08Text")
+    assert val == "CleanText"
+
+
+@pytest.mark.asyncio
+async def test_multi_page_pdf_consolidation():
+    """Verify that multi-page PDFs with matching table structures generate a consolidated sheet."""
+    pdf_path = os.path.join(TEST_TMP_DIR, "multi_page_statement.pdf")
+    doc = fitz.open()
+
+    for page_idx in range(2):
+        page = doc.new_page(width=612, height=792)
+        page.insert_text((50, 50), f"Financial Statement - Page {page_idx + 1}", fontsize=14)
+
+        # Draw 3-column table
+        x_coords = [50, 200, 380, 550]
+        y_coords = [100, 130, 160, 190]
+        for y in y_coords:
+            page.draw_line((x_coords[0], y), (x_coords[-1], y))
+        for x in x_coords:
+            page.draw_line((x, y_coords[0]), (x, y_coords[-1]))
+
+        # Header
+        page.insert_text((55, 120), "Account Code", fontsize=10)
+        page.insert_text((205, 120), "Description", fontsize=10)
+        page.insert_text((385, 120), "Amount", fontsize=10)
+
+        # Row 1
+        page.insert_text((55, 150), f"ACT-{page_idx}01", fontsize=10)
+        page.insert_text((205, 150), f"Service Ledger {page_idx + 1}A", fontsize=10)
+        page.insert_text((385, 150), "$1,200.00", fontsize=10)
+
+        # Row 2
+        page.insert_text((55, 180), f"ACT-{page_idx}02", fontsize=10)
+        page.insert_text((205, 180), f"Service Ledger {page_idx + 1}B", fontsize=10)
+        page.insert_text((385, 180), "$2,450.50", fontsize=10)
+
+    doc.save(pdf_path)
+    doc.close()
+
+    converter = PdfToExcelConverter()
+    output_dir = os.path.join(TEST_TMP_DIR, "multi_output")
+    os.makedirs(output_dir, exist_ok=True)
+
+    result = await converter.convert(
+        input_paths=[pdf_path],
+        output_dir=output_dir,
+        options={"output_format": "xlsx", "ocr": False}
+    )
+
+    wb = openpyxl.load_workbook(result.output_path)
+    # Check that consolidated sheet and per-page sheets exist
+    assert "All Data (Consolidated)" in wb.sheetnames
+    assert "Page 1" in wb.sheetnames
+    assert "Page 2" in wb.sheetnames
+
+    # Check that consolidated sheet has rows from both pages
+    ws_cons = wb["All Data (Consolidated)"]
+    cons_rows = list(ws_cons.iter_rows(values_only=True))
+    # 1 header + 2 rows from page 1 + 2 rows from page 2 = 5 rows
+    assert len(cons_rows) >= 5
+
+    wb.close()
+
+
 def test_api_tools_endpoint_includes_pdf_to_excel(client):
     """Verify that /api/v1/tools lists pdf-to-excel with correct metadata."""
     res = client.get("/api/v1/tools")
@@ -148,4 +240,5 @@ def test_api_tools_endpoint_includes_pdf_to_excel(client):
     assert pdf_to_excel_tool["name"] == "PDF to Excel"
     assert "pdf" in pdf_to_excel_tool["supported_inputs"]
     assert pdf_to_excel_tool["output_extension"] == "xlsx"
+
 

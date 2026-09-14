@@ -76,6 +76,11 @@ export async function generateSampleFiles(toolId: string): Promise<File[]> {
     ]
   }
 
+  if (toolId === 'pdf-to-excel') {
+    const pdf = createSampleFinancialTablePdf()
+    return [new File([pdf], 'Sample_Financial_Statement.pdf', { type: 'application/pdf' })]
+  }
+
   if (isPdfTool) {
     const pdf = createMinimalPdf(`Convertly V2 — Sample Test Document\nTool: ${toolId}`)
     return [new File([pdf], `Sample_${toolId.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`, { type: 'application/pdf' })]
@@ -127,6 +132,165 @@ xref
 trailer << /Size 6 /Root 1 0 R >>
 startxref
 490
+%%EOF`
+
+  return new Blob([pdfString], { type: 'application/pdf' })
+}
+
+function createSampleFinancialTablePdf(): Blob {
+  const stream = `0.5 w
+0.8 0.8 0.8 RG
+50 670 512 25 re S
+50 645 512 25 re S
+50 620 512 25 re S
+50 595 512 25 re S
+50 570 512 25 re S
+50 545 512 25 re S
+BT
+/F1 16 Tf
+50 730 Td
+(Quarterly Financial Performance Statement) Tj
+ET
+BT
+/F1 10 Tf
+55 678 Td (Quarter) Tj
+ET
+BT
+/F1 10 Tf
+160 678 Td (Gross Revenue) Tj
+ET
+BT
+/F1 10 Tf
+280 678 Td (Operating Cost) Tj
+ET
+BT
+/F1 10 Tf
+400 678 Td (Net Income) Tj
+ET
+BT
+/F1 10 Tf
+490 678 Td (Margin) Tj
+ET
+BT
+/F1 10 Tf
+55 653 Td (Q1 2024) Tj
+ET
+BT
+/F1 10 Tf
+160 653 Td ($1,250,000.00) Tj
+ET
+BT
+/F1 10 Tf
+280 653 Td ($820,000.00) Tj
+ET
+BT
+/F1 10 Tf
+400 653 Td ($430,000.00) Tj
+ET
+BT
+/F1 10 Tf
+490 653 Td (34.40%) Tj
+ET
+BT
+/F1 10 Tf
+55 628 Td (Q2 2024) Tj
+ET
+BT
+/F1 10 Tf
+160 628 Td ($1,420,000.00) Tj
+ET
+BT
+/F1 10 Tf
+280 628 Td ($890,000.00) Tj
+ET
+BT
+/F1 10 Tf
+400 628 Td ($530,000.00) Tj
+ET
+BT
+/F1 10 Tf
+490 628 Td (37.32%) Tj
+ET
+BT
+/F1 10 Tf
+55 603 Td (Q3 2024) Tj
+ET
+BT
+/F1 10 Tf
+160 603 Td ($1,680,000.00) Tj
+ET
+BT
+/F1 10 Tf
+280 603 Td ($940,000.00) Tj
+ET
+BT
+/F1 10 Tf
+400 603 Td ($740,000.00) Tj
+ET
+BT
+/F1 10 Tf
+490 603 Td (44.05%) Tj
+ET
+BT
+/F1 10 Tf
+55 578 Td (Q4 2024) Tj
+ET
+BT
+/F1 10 Tf
+160 578 Td ($1,950,000.00) Tj
+ET
+BT
+/F1 10 Tf
+280 578 Td ($1,050,000.00) Tj
+ET
+BT
+/F1 10 Tf
+400 578 Td ($900,000.00) Tj
+ET
+BT
+/F1 10 Tf
+490 578 Td (46.15%) Tj
+ET
+BT
+/F1 10 Tf
+55 553 Td (Total FY) Tj
+ET
+BT
+/F1 10 Tf
+160 553 Td ($6,300,000.00) Tj
+ET
+BT
+/F1 10 Tf
+280 553 Td ($3,700,000.00) Tj
+ET
+BT
+/F1 10 Tf
+400 553 Td ($2,600,000.00) Tj
+ET
+BT
+/F1 10 Tf
+490 553 Td (41.27%) Tj
+ET`.trim()
+
+  const pdfString = `%PDF-1.4
+1 0 obj << /Type /Catalog /Pages 2 0 R >> endobj
+2 0 obj << /Type /Pages /Kids [3 0 R] /Count 1 >> endobj
+3 0 obj << /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >> endobj
+4 0 obj << /Length ${stream.length} >> stream
+${stream}
+endstream endobj
+5 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> endobj
+xref
+0 6
+0000000000 65535 f 
+0000000009 00000 n 
+0000000058 00000 n 
+0000000115 00000 n 
+0000000244 00000 n 
+0000000250 00000 n 
+trailer << /Size 6 /Root 1 0 R >>
+startxref
+500
 %%EOF`
 
   return new Blob([pdfString], { type: 'application/pdf' })
