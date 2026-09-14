@@ -29,6 +29,7 @@ from app.core.errors import FileValidationError, ConversionExecutionError
 from app.core.logging import logger
 from app.services.engine.base import BaseConverter, ConversionResult
 from app.services.engine.pdf import open_and_validate_pdf
+from app.services.engine.table_extractor import EnterpriseTableExtractor
 
 
 # ---------------------------------------------------------------------------
@@ -903,6 +904,37 @@ class PdfToExcelConverter(BaseConverter):
     ) -> ConversionResult:
         self.validate_inputs(input_paths, options)
         src_path = input_paths[0]
+        out_filename = f"converted_{uuid.uuid4().hex[:8]}.xlsx"
+        out_path = os.path.join(output_dir, out_filename)
+
+        # ---------------------------------------------------------------
+        # Stage 0: Enterprise High-Accuracy Document Processing Engine
+        # ---------------------------------------------------------------
+        try:
+            logger.info("Executing EnterpriseTableExtractor engine...")
+            extractor = EnterpriseTableExtractor()
+            meta = extractor.process_pdf_document(src_path, out_path, options)
+
+            # If tables were detected and written, validate and return
+            if meta.get("total_tables_extracted", 0) > 0:
+                self.validate_output(out_path)
+                return ConversionResult(
+                    output_path=out_path,
+                    output_filename=out_filename,
+                    mime_type=self.output_mime_type,
+                    size_bytes=os.path.getsize(out_path),
+                    metadata={
+                        "page_count": meta.get("total_pages", 1),
+                        "extraction_method": "enterprise_table_extractor",
+                        "is_scanned": meta.get("is_scanned", False),
+                        **meta,
+                    }
+                )
+        except Exception as exc:
+            logger.warning(
+                f"EnterpriseTableExtractor encountered an issue, proceeding to secondary fallback pipeline: {exc}",
+                exc_info=True
+            )
 
         force_ocr = options.get("ocr", False) or options.get("force_ocr", False)
 
