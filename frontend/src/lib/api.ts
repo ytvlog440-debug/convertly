@@ -56,21 +56,90 @@ export interface ConversionJob {
   updated_at: string
 }
 
-export async function fetchHealth(): Promise<HealthData> {
-  const res = await fetch(`${API_BASE}/health`)
-  if (!res.ok) {
-    throw new Error(`Failed to fetch health status: ${res.statusText}`)
+// In-flight promise map for request deduplication
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+const inFlightRequests = new Map<string, Promise<any>>()
+
+// In-memory cache for static and semi-static API responses
+interface CacheEntry<T> {
+  data: T
+  expiresAt: number
+}
+/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+const memoryCache = new Map<string, CacheEntry<any>>()
+
+/**
+ * Executes a network request with in-flight deduplication, configurable in-memory TTL caching,
+ * and AbortController timeout protection.
+ */
+async function fetchWithDeduplication<T>(
+  key: string,
+  fetcher: (signal: AbortSignal) => Promise<T>,
+  ttlMs = 0,
+  timeoutMs = 15000
+): Promise<T> {
+  // 1. Check in-memory cache
+  if (ttlMs > 0) {
+    const cached = memoryCache.get(key)
+    if (cached && cached.expiresAt > Date.now()) {
+      return cached.data
+    }
   }
-  return res.json()
+
+  // 2. Deduplicate in-flight requests (prevents duplicate calls in React StrictMode)
+  if (inFlightRequests.has(key)) {
+    return inFlightRequests.get(key) as Promise<T>
+  }
+
+  const controller = new AbortController()
+  const timeoutId = setTimeout(() => controller.abort(), timeoutMs)
+
+  const promise = fetcher(controller.signal)
+    .then((data) => {
+      clearTimeout(timeoutId)
+      inFlightRequests.delete(key)
+      if (ttlMs > 0) {
+        memoryCache.set(key, { data, expiresAt: Date.now() + ttlMs })
+      }
+      return data
+    })
+    .catch((err) => {
+      clearTimeout(timeoutId)
+      inFlightRequests.delete(key)
+      throw err
+    })
+
+  inFlightRequests.set(key, promise)
+  return promise
+}
+
+export async function fetchHealth(): Promise<HealthData> {
+  return fetchWithDeduplication<HealthData>(
+    'health',
+    async (signal) => {
+      const res = await fetch(`${API_BASE}/health`, { signal })
+      if (!res.ok) {
+        throw new Error(`Failed to fetch health status: ${res.statusText}`)
+      }
+      return res.json()
+    },
+    60000 // 60s in-memory cache
+  )
 }
 
 export async function fetchTools(): Promise<ToolMetadata[]> {
-  const res = await fetch(`${API_BASE}/tools`)
-  if (!res.ok) {
-    throw new Error(`Failed to fetch tools: ${res.statusText}`)
-  }
-  const body: ApiResponse<ToolMetadata[]> = await res.json()
-  return body.data
+  return fetchWithDeduplication<ToolMetadata[]>(
+    'tools',
+    async (signal) => {
+      const res = await fetch(`${API_BASE}/tools`, { signal })
+      if (!res.ok) {
+        throw new Error(`Failed to fetch tools: ${res.statusText}`)
+      }
+      const body: ApiResponse<ToolMetadata[]> = await res.json()
+      return body.data
+    },
+    300000 // 5-minute in-memory cache for static tool catalog
+  )
 }
 
 export async function uploadFile(file: File): Promise<UploadedFile> {
@@ -116,12 +185,20 @@ export async function createJob(
 }
 
 export async function fetchJob(jobId: string): Promise<ConversionJob> {
-  const res = await fetch(`${API_BASE}/jobs/${jobId}`)
-  if (!res.ok) {
-    throw new Error(`Failed to fetch job status: ${res.statusText}`)
-  }
-  const body: ApiResponse<ConversionJob> = await res.json()
-  return body.data
+  // Deduplicate concurrent polling calls for the exact same jobId
+  return fetchWithDeduplication<ConversionJob>(
+    `job-${jobId}`,
+    async (signal) => {
+      const res = await fetch(`${API_BASE}/jobs/${jobId}`, { signal })
+      if (!res.ok) {
+        throw new Error(`Failed to fetch job status: ${res.statusText}`)
+      }
+      const body: ApiResponse<ConversionJob> = await res.json()
+      return body.data
+    },
+    0, // Do not cache completed poll state in memory
+    10000
+  )
 }
 
 export function getDownloadUrl(fileId: string): string {

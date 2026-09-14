@@ -12,6 +12,7 @@ Pipeline:
   6. openpyxl XLSX generation with formatting and auto-width columns
 """
 
+import asyncio
 import io
 import os
 import re
@@ -521,7 +522,7 @@ def _extract_tables_ocr(
             # Use pytesseract TSV output for coordinate-based cell detection
             try:
                 tsv_data = pytesseract.image_to_data(
-                    pil_img, lang="eng", output_type=pytesseract.Output.DICT
+                    pil_img, lang="eng", output_type=pytesseract.Output.DICT, timeout=15
                 )
 
                 # Group words by their block/paragraph/line
@@ -609,7 +610,7 @@ def _extract_tables_ocr(
             except Exception as e:
                 logger.warning(f"OCR TSV extraction failed for page {page_idx + 1}: {e}")
                 # Fallback: simple line-based extraction
-                text = pytesseract.image_to_string(pil_img, lang="eng")
+                text = pytesseract.image_to_string(pil_img, lang="eng", timeout=15)
                 if text and text.strip():
                     lines = [line.strip() for line in text.strip().split('\n') if line.strip()]
                     grid = []
@@ -940,7 +941,7 @@ class PdfToExcelConverter(BaseConverter):
         try:
             logger.info("Executing EnterpriseTableExtractor engine...")
             extractor = EnterpriseTableExtractor()
-            meta = extractor.process_pdf_document(src_path, out_path, options)
+            meta = await asyncio.to_thread(extractor.process_pdf_document, src_path, out_path, options)
 
             # If tables were detected and written, validate and return
             if meta.get("total_tables_extracted", 0) > 0:
@@ -973,10 +974,13 @@ class PdfToExcelConverter(BaseConverter):
         # Detect if PDF is scanned (low text density)
         page_texts = [page.get_text().strip() for page in doc]
         total_chars = sum(len(t) for t in page_texts)
-        is_scanned = force_ocr or (total_chars < max(30, total_pages * 15))
+        has_native_text = total_chars >= max(30, total_pages * 15)
+        is_scanned = not has_native_text
+        if force_ocr and has_native_text:
+            logger.info("OCR requested, but PDF contains native selectable text. Automatically skipping OCR to preserve speed and vector quality.")
 
         logger.info(
-            f"PDF to Excel: {total_pages} pages, {total_chars} chars, "
+            f"PDF to Excel fallback: {total_pages} pages, {total_chars} chars, "
             f"scanned={'yes' if is_scanned else 'no'}, force_ocr={force_ocr}"
         )
 

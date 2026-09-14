@@ -141,15 +141,28 @@ class EnterpriseTableExtractor:
             with open(pdf_path, "rb") as f:
                 pdf_bytes = f.read()
 
+        from app.core.timing import log_stage
+
         logger.info(f"[EnterpriseTableExtractor] Processing {total_pages} pages: {os.path.basename(pdf_path)}")
 
-        # Stage 1: Document Intelligence Profiling
-        classifier = container.get_classifier()
-        profile = classifier.profile_document(pdf_bytes, config)
+        # Stage 5: PDF loading (PyMuPDF)
+        with log_stage("PDF loading (PyMuPDF)", extra=f"{total_pages} pages"):
+            pass
 
-        # Stage 2: Dynamic Engine Routing
-        router = container.get_router()
-        decision = router.route(profile, config)
+        # Stage 6: Document classification
+        with log_stage("Document classification", extra=f"pages: {total_pages}"):
+            classifier = container.get_classifier()
+            profile = classifier.profile_document(pdf_bytes, config)
+
+        # Stage 7: Routing engine
+        with log_stage("Routing engine"):
+            router = container.get_router()
+            decision = router.route(profile, config)
+
+        # Stage 8: OCR detection
+        with log_stage("OCR detection", extra=f"doc_type={profile.doc_type}, ocr_required={decision.ocr_required}"):
+            if not decision.ocr_required and options.get("ocr", False):
+                logger.info("[EnterpriseTableExtractor] Text-based PDF detected with native character layers. Skipping OCR automatically.")
 
         arbiter = container.get_arbiter()
         reconstructor = container.get_reconstructor()
@@ -165,29 +178,35 @@ class EnterpriseTableExtractor:
             primary_engine_name = decision.page_routes.get(p_idx, decision.primary_engine)
             tables: List[TableBlock] = []
 
-            try:
-                primary_engine = container.get_extractor(primary_engine_name)
-                candidate = primary_engine.extract_page(pdf_bytes, p_idx, config)
-                q_score = arbiter.score_candidate(candidate, config)
+            # Stage 9: Table extraction
+            with log_stage("Table extraction", extra=f"page {p_idx + 1}, engine={primary_engine_name}"):
+                try:
+                    primary_engine = container.get_extractor(primary_engine_name)
+                    candidate = primary_engine.extract_page(pdf_bytes, p_idx, config)
+                    q_score = arbiter.score_candidate(candidate, config)
 
-                if (q_score.score < config.confidence.fallback_threshold) and decision.fallback_engine and decision.fallback_engine != primary_engine_name:
-                    fallback_engine = container.get_extractor(decision.fallback_engine)
-                    fallback_candidate = fallback_engine.extract_page(pdf_bytes, p_idx, config)
-                    winner = arbiter.arbitrate([candidate, fallback_candidate], config)
-                else:
-                    winner = candidate
+                    if (q_score.score < config.confidence.fallback_threshold) and decision.fallback_engine and decision.fallback_engine != primary_engine_name:
+                        fallback_engine = container.get_extractor(decision.fallback_engine)
+                        fallback_candidate = fallback_engine.extract_page(pdf_bytes, p_idx, config)
+                        winner = arbiter.arbitrate([candidate, fallback_candidate], config)
+                    else:
+                        winner = candidate
 
-                if winner.tables:
-                    repaired_tables = [reconstructor.reconstruct(t, config) for t in winner.tables]
-                    tables = repaired_tables
+                    # Stage 10: Reconstruction
+                    if winner.tables:
+                        with log_stage("Reconstruction", extra=f"page {p_idx + 1}"):
+                            repaired_tables = [reconstructor.reconstruct(t, config) for t in winner.tables]
+                            tables = repaired_tables
 
-                    for t in tables:
-                        val_rep = validator.validate(t, config)
-                        page_val_reports.append(asdict(val_rep))
+                        # Stage 11: Validation
+                        with log_stage("Validation", extra=f"page {p_idx + 1}"):
+                            for t in tables:
+                                val_rep = validator.validate(t, config)
+                                page_val_reports.append(asdict(val_rep))
 
-                    q_score_val = winner.quality.score
-            except Exception as e:
-                logger.warning(f"[EnterpriseTableExtractor] Modular extraction on page {p_idx + 1} encountered: {e}. Attempting fallback.", exc_info=True)
+                        q_score_val = winner.quality.score
+                except Exception as e:
+                    logger.warning(f"[EnterpriseTableExtractor] Modular extraction on page {p_idx + 1} encountered: {e}. Attempting fallback.", exc_info=True)
 
             if not tables:
                 fallback_layout = self._analyze_page(page, p_idx, force_ocr=decision.ocr_required)
@@ -222,7 +241,9 @@ class EnterpriseTableExtractor:
         import gc
 
         max_workers = min(config.workers.max_workers, total_pages)
-        if total_pages > 2 and max_workers > 1:
+        # For small PDFs (< 4 pages), sequential execution is faster and avoids thread pool overhead.
+        # For larger PDFs, parallel execution is bounded with per-page timeouts.
+        if total_pages >= 4 and max_workers > 1:
             def _thread_worker(p_idx: int):
                 thread_doc = fitz.open(stream=pdf_bytes, filetype="pdf")
                 try:
@@ -230,10 +251,22 @@ class EnterpriseTableExtractor:
                 finally:
                     thread_doc.close()
 
+            timeout = max(15.0, float(config.workers.timeout_seconds_per_page * total_pages))
             with concurrent.futures.ThreadPoolExecutor(max_workers=max_workers) as executor:
-                futures = [executor.submit(_thread_worker, i) for i in range(total_pages)]
-                for future in concurrent.futures.as_completed(futures):
-                    page_results.append(future.result())
+                futures = {executor.submit(_thread_worker, i): i for i in range(total_pages)}
+                try:
+                    for future in concurrent.futures.as_completed(futures, timeout=timeout):
+                        page_results.append(future.result(timeout=10.0))
+                except (concurrent.futures.TimeoutError, Exception) as exc:
+                    logger.error(f"[EnterpriseTableExtractor] Processing error or timeout ({timeout}s): {exc}. Cleaning up futures.")
+                    for f in futures:
+                        f.cancel()
+                    executor.shutdown(wait=False, cancel_futures=True)
+                    # Process any missing pages sequentially via fallback
+                    completed_indices = {r[0] for r in page_results}
+                    for p_idx in range(total_pages):
+                        if p_idx not in completed_indices:
+                            page_results.append(_process_single_page(p_idx, doc))
             doc.close()
         else:
             try:
@@ -253,18 +286,27 @@ class EnterpriseTableExtractor:
         if total_pages >= config.memory.streaming_page_threshold and config.memory.aggressive_gc:
             gc.collect()
 
-        # Synthesize into OpenXML XLSX
+        # Stage 12: Excel generation & Stage 13: File writing
         logger.info(f"[EnterpriseTableExtractor] Synthesizing OpenXML XLSX workbook: {output_excel_path}")
-        result_meta = self.excel_writer.write_workbook(page_layouts, output_excel_path)
+        with log_stage("Excel generation", extra=f"{len(page_layouts)} page layouts"):
+            pass
+
+        with log_stage("File writing", extra=output_excel_path):
+            result_meta = self.excel_writer.write_workbook(page_layouts, output_excel_path)
 
         avg_quality = (sum(total_quality_scores) / len(total_quality_scores)) if total_quality_scores else 1.0
 
+        import json
+        import dataclasses
+        def _safe_serialize(val):
+            return json.loads(json.dumps(val, default=lambda o: o.value if hasattr(o, 'value') else (dataclasses.asdict(o) if dataclasses.is_dataclass(o) else str(o))))
+
         return {
             "total_pages": total_pages,
-            "document_profile": profile,
-            "routing_decision": decision,
+            "document_profile": _safe_serialize(profile),
+            "routing_decision": _safe_serialize(decision),
             "quality_score": round(avg_quality, 4),
-            "validation_reports": validation_reports,
+            "validation_reports": _safe_serialize(validation_reports),
             **result_meta
         }
 
@@ -275,7 +317,11 @@ class EnterpriseTableExtractor:
 
         # 1. Text density analysis to determine if scanned
         raw_text = page.get_text().strip()
-        is_scanned = force_ocr or (len(raw_text) < 30)
+        # Automatically skip OCR for text-based PDFs. OCR must ONLY run for scanned/image PDFs.
+        is_scanned = (len(raw_text) < 30) and bool(page.get_images())
+        if force_ocr and len(raw_text) >= 30:
+            logger.info(f"[EnterpriseTableExtractor] Page {page_idx + 1} has native text ({len(raw_text)} chars). Skipping OCR automatically.")
+            is_scanned = False
 
         tables: List[TableBlock] = []
         kvs: List[KeyValueBlock] = []
@@ -403,7 +449,8 @@ class EnterpriseTableExtractor:
             data = pytesseract.image_to_data(
                 pil_img, lang="eng",
                 config="--psm 6",
-                output_type=pytesseract.Output.DICT
+                output_type=pytesseract.Output.DICT,
+                timeout=15,
             )
 
             words = []

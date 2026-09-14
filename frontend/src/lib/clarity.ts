@@ -175,8 +175,12 @@ export const initClarity = (customProjectId?: string): void => {
     return
   }
 
-  // Idempotency: prevent double initialization
-  if (isClarityInitialized || document.getElementById('microsoft-clarity')) {
+  // Idempotency: prevent double initialization and duplicate script injection
+  if (
+    isClarityInitialized ||
+    document.getElementById('microsoft-clarity') ||
+    document.querySelector('script[src*="clarity.ms/tag"]')
+  ) {
     return
   }
 
@@ -203,22 +207,31 @@ export const initClarity = (customProjectId?: string): void => {
 
   isClarityInitialized = true
 
+  /* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+  const win = window as any
+
+  // Define Clarity command queue stub so any early tracking calls are buffered safely
+  win.clarity =
+    win.clarity ||
+    function () {
+      ;(win.clarity.q = win.clarity.q || []).push(arguments)
+    }
+
   /**
-   * Inject Clarity tracking snippet asynchronously.
-   * Standard Microsoft Clarity asynchronous bootstrap snippet.
+   * Inject Clarity tracking snippet asynchronously outside critical rendering path.
    */
   const injectClarityScript = (): void => {
-    try {
-      // Define the Clarity command queue before the external script finishes downloading
-      /* eslint-disable @typescript-eslint/no-explicit-any */
-      const win = window as any
-      win.clarity =
-        win.clarity ||
-        function () {
-          ;(win.clarity.q = win.clarity.q || []).push(arguments)
-        }
-      /* eslint-enable @typescript-eslint/no-explicit-any */
+    if (typeof document === 'undefined') return
 
+    // Defensive check: prevent duplicate script element injection
+    if (
+      document.getElementById('microsoft-clarity') ||
+      document.querySelector(`script[src*="clarity.ms/tag/${projectId}"]`)
+    ) {
+      return
+    }
+
+    try {
       const scriptElement = document.createElement('script')
       scriptElement.id = 'microsoft-clarity'
       scriptElement.type = 'text/javascript'
@@ -247,11 +260,63 @@ export const initClarity = (customProjectId?: string): void => {
     }
   }
 
-  // Use requestIdleCallback so initial page rendering and hydration complete with zero friction
-  if ('requestIdleCallback' in window) {
-    window.requestIdleCallback(injectClarityScript, { timeout: 2500 })
+  let idleCallbackId: number | undefined
+  let fallbackTimeoutId: number | undefined
+  let isClarityScriptInjected = false
+
+  const INTERACTION_EVENTS = ['scroll', 'pointerdown', 'touchstart', 'keydown'] as const
+
+  const cleanupListeners = (): void => {
+    INTERACTION_EVENTS.forEach((evt) => {
+      window.removeEventListener(evt, onEarlyInteraction)
+    })
+    if (idleCallbackId !== undefined && typeof win.cancelIdleCallback === 'function') {
+      win.cancelIdleCallback(idleCallbackId)
+    }
+    if (fallbackTimeoutId !== undefined) {
+      window.clearTimeout(fallbackTimeoutId)
+    }
+  }
+
+  const triggerInjection = (): void => {
+    cleanupListeners()
+    if (!isClarityScriptInjected) {
+      isClarityScriptInjected = true
+      injectClarityScript()
+    }
+  }
+
+  const onEarlyInteraction = (): void => {
+    triggerInjection()
+  }
+
+  // Register passive interaction triggers so any early user engagement (clicks, scrolls, typing)
+  // starts Clarity recording on-demand without losing heatmaps, rage clicks, or dead clicks
+  INTERACTION_EVENTS.forEach((evt) => {
+    window.addEventListener(evt, onEarlyInteraction, { once: true, passive: true })
+  })
+
+  // Preferred loading order: requestIdleCallback(), Fallback: setTimeout(..., 4000)
+  const scheduleAfterInteractive = (): void => {
+    if (typeof win.requestIdleCallback === 'function') {
+      idleCallbackId = win.requestIdleCallback(
+        () => {
+          triggerInjection()
+        },
+        { timeout: 4000 }
+      )
+    } else {
+      fallbackTimeoutId = window.setTimeout(() => {
+        triggerInjection()
+      }, 4000)
+    }
+  }
+
+  // Load Clarity only after initial page render is complete (load event or complete readyState)
+  if (document.readyState === 'complete') {
+    scheduleAfterInteractive()
   } else {
-    setTimeout(injectClarityScript, 1000)
+    window.addEventListener('load', scheduleAfterInteractive, { once: true })
   }
 }
 

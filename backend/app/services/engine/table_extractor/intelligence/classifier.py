@@ -220,11 +220,11 @@ class DocumentClassifier(BaseClassifier):
         char_density = char_count / area
 
         # 2. Scanned detection
-        # If character count is extremely low (< 30) or character density < min_native_density
-        # while raster images are present, page is scanned
+        # Skip OCR automatically for text-based PDFs.
+        # OCR must ONLY run for scanned/image PDFs (lacking native text and containing raster images).
         image_list = page.get_images()
         has_images = len(image_list) > 0
-        is_scanned = (char_count < 30 and has_images) or (char_density < config.confidence.min_text_native_density and has_images)
+        is_scanned = (char_count < 30) and has_images
 
         # 3. Vector rulings analysis
         h_lines, v_lines = self._extract_rulings(page, config.thresholds.min_line_length)

@@ -470,7 +470,7 @@ export function ToolConverterPage() {
   const [enableOcr, setEnableOcr] = useState<boolean>(true)
 
   // PDF to Excel options
-  const [pdfToExcelOcr, setPdfToExcelOcr] = useState<boolean>(true)
+  const [pdfToExcelOcr, setPdfToExcelOcr] = useState<boolean>(false)
 
   useEffect(() => {
     // Reset state and guarantee scroll to top on tool load or tool change
@@ -675,7 +675,7 @@ export function ToolConverterPage() {
   }
 
   const handleStartConversion = async () => {
-    if (stagedFiles.length === 0) return
+    if (isProcessing || stagedFiles.length === 0) return
     setError(null)
     setIsProcessing(true)
 

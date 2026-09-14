@@ -127,6 +127,7 @@ class OCRExtractor(BaseExtractor):
                     lang=config.ocr.language,
                     config=f"--psm {config.ocr.psm}",
                     output_type=pytesseract.Output.DICT,
+                    timeout=max(5, getattr(config.workers, 'timeout_seconds_per_page', 15)),
                 )
 
                 scale = 72.0 / dpi

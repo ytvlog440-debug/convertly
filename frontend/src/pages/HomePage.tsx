@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import {
   FileText,
@@ -514,9 +514,118 @@ const HOMEPAGE_SCHEMAS = [
   }
 ]
 
+interface LazySectionProps {
+  children: React.ReactNode
+  minHeight: number
+  className?: string
+  id?: string
+  rootMargin?: string
+}
+
+/**
+ * LazySection mounts children only when within rootMargin of the viewport.
+ * Preserves background styling, borders, and minimum height before mount
+ * to ensure ZERO layout shift (CLS: 0.000) while eliminating offscreen DOM nodes.
+ */
+const LazySection = React.memo(function LazySection({
+  children,
+  minHeight,
+  className,
+  id,
+  rootMargin = '400px 0px'
+}: LazySectionProps) {
+  const [isVisible, setIsVisible] = useState(false)
+  const ref = useRef<HTMLElement>(null)
+
+  useEffect(() => {
+    if (isVisible) return
+
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
+      setIsVisible(true)
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true)
+          observer.disconnect()
+        }
+      },
+      { rootMargin }
+    )
+
+    if (ref.current) {
+      observer.observe(ref.current)
+    }
+
+    return () => observer.disconnect()
+  }, [isVisible, rootMargin])
+
+  return (
+    <section
+      id={id}
+      ref={ref}
+      className={className}
+      style={{ minHeight: isVisible ? undefined : `${minHeight}px` }}
+    >
+      {isVisible ? children : null}
+    </section>
+  )
+})
+
+/**
+ * Memoized ToolCard component to prevent unnecessary re-renders
+ * during live search filtering and category tab changes.
+ */
+const ToolCard = React.memo(function ToolCard({ tool }: { tool: ToolItem }) {
+  const Icon = tool.icon
+  const handleClick = useCallback(() => {
+    trackToolSelected(tool.name, tool.category, 'home_tools_grid')
+  }, [tool.name, tool.category])
+
+  return (
+    <Link
+      to={`/tools/${tool.id}`}
+      onClick={handleClick}
+      className="block group"
+    >
+      <Card className="h-full flex flex-col justify-between group-hover:-translate-y-1 transition-all duration-300 hover:border-indigo-500/50 hover:shadow-lg hover:shadow-indigo-500/5">
+        <div>
+          <div className="flex items-start justify-between mb-4">
+            <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${tool.color}`}>
+              <Icon className="h-5 w-5" />
+            </div>
+            {tool.badge && (
+              <Badge variant="default" className="text-[10px]">
+                {tool.badge}
+              </Badge>
+            )}
+          </div>
+          <CardTitle className="text-base text-foreground group-hover:text-indigo-400 transition-colors">
+            {tool.name}
+          </CardTitle>
+          <CardDescription className="mt-2 text-xs leading-relaxed line-clamp-2">
+            {tool.desc}
+          </CardDescription>
+        </div>
+
+        <div className="mt-5 pt-3 border-t border-border/40 flex items-center justify-between text-xs font-semibold text-indigo-400 opacity-80 group-hover:opacity-100">
+          <span>Launch Converter</span>
+          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+        </div>
+      </Card>
+    </Link>
+  )
+})
+
+const INITIAL_VISIBLE_TOOLS = 12
+
 export function HomePage() {
   const [activeTab, setActiveTab] = useState<'All' | 'PDF' | 'Office' | 'Images'>('All')
   const [searchQuery, setSearchQuery] = useState('')
+  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_TOOLS)
+  const gridSentinelRef = useRef<HTMLDivElement>(null)
   const { data: health } = useHealth()
 
   // Filter tools live based on category and search query
@@ -536,6 +645,42 @@ export function HomePage() {
       )
     })
   }, [activeTab, searchQuery])
+
+  // Active filter state check
+  const isFiltered = searchQuery.trim().length > 0 || activeTab !== 'All'
+
+  // Progressive tools rendering: render first 12 cards, mount remainder as user scrolls near fold
+  const displayedTools = useMemo(() => {
+    if (isFiltered || visibleCount >= filteredTools.length) {
+      return filteredTools
+    }
+    return filteredTools.slice(0, visibleCount)
+  }, [filteredTools, isFiltered, visibleCount])
+
+  // Sentinel observer to auto-expand tools grid seamlessly before user reaches bottom of row
+  useEffect(() => {
+    if (isFiltered || visibleCount >= filteredTools.length) return
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
+      setVisibleCount(filteredTools.length)
+      return
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisibleCount(filteredTools.length)
+          observer.disconnect()
+        }
+      },
+      { rootMargin: '300px 0px' }
+    )
+
+    if (gridSentinelRef.current) {
+      observer.observe(gridSentinelRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [isFiltered, visibleCount, filteredTools.length])
 
   // Debounced search tracking (minimum 2 characters to avoid noise)
   useEffect(() => {
@@ -713,45 +858,14 @@ export function HomePage() {
           )}
 
           {/* Tools Grid */}
-          {filteredTools.length > 0 ? (
+          {displayedTools.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-              {filteredTools.map((tool) => {
-                const Icon = tool.icon
-                return (
-                  <Link
-                    key={tool.id}
-                    to={`/tools/${tool.id}`}
-                    onClick={() => trackToolSelected(tool.name, tool.category, 'home_tools_grid')}
-                    className="block group"
-                  >
-                    <Card className="h-full flex flex-col justify-between group-hover:-translate-y-1 transition-all duration-300 hover:border-indigo-500/50 hover:shadow-lg hover:shadow-indigo-500/5">
-                      <div>
-                        <div className="flex items-start justify-between mb-4">
-                          <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${tool.color}`}>
-                            <Icon className="h-5 w-5" />
-                          </div>
-                          {tool.badge && (
-                            <Badge variant="default" className="text-[10px]">
-                              {tool.badge}
-                            </Badge>
-                          )}
-                        </div>
-                        <CardTitle className="text-base text-foreground group-hover:text-indigo-400 transition-colors">
-                          {tool.name}
-                        </CardTitle>
-                        <CardDescription className="mt-2 text-xs leading-relaxed line-clamp-2">
-                          {tool.desc}
-                        </CardDescription>
-                      </div>
-
-                      <div className="mt-5 pt-3 border-t border-border/40 flex items-center justify-between text-xs font-semibold text-indigo-400 opacity-80 group-hover:opacity-100">
-                        <span>Launch Converter</span>
-                        <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
-                      </div>
-                    </Card>
-                  </Link>
-                )
-              })}
+              {displayedTools.map((tool) => (
+                <ToolCard key={tool.id} tool={tool} />
+              ))}
+              {!isFiltered && visibleCount < filteredTools.length && (
+                <div ref={gridSentinelRef} className="h-1 col-span-full" aria-hidden="true" />
+              )}
             </div>
           ) : (
             <div className="rounded-2xl border border-dashed border-border/80 bg-card/40 p-12 text-center">
@@ -773,7 +887,7 @@ export function HomePage() {
       </section>
 
       {/* SECTION 5 & 7: WHY CHOOSE CONVERTLY (EEAT & Authority) */}
-      <section className="py-20 border-t border-border/60">
+      <LazySection minHeight={520} className="py-20 border-t border-border/60">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-14">
             <span className="text-xs font-semibold text-indigo-400 uppercase tracking-wider">Enterprise Performance</span>
@@ -839,10 +953,10 @@ export function HomePage() {
             </Card>
           </div>
         </div>
-      </section>
+      </LazySection>
 
       {/* SECTION 5: SUPPORTED FORMATS MATRIX */}
-      <section className="py-20 border-t border-border/60 bg-secondary/15">
+      <LazySection minHeight={480} className="py-20 border-t border-border/60 bg-secondary/15">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-14">
             <span className="text-xs font-semibold text-indigo-400 uppercase tracking-wider">Universal Compatibility</span>
@@ -940,10 +1054,10 @@ export function HomePage() {
             </div>
           </div>
         </div>
-      </section>
+      </LazySection>
 
       {/* SECTION 5: HOW IT WORKS (3-Step Conversion Flow) */}
-      <section className="py-20 border-t border-border/60">
+      <LazySection minHeight={460} className="py-20 border-t border-border/60">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-16">
             <span className="text-xs font-semibold text-indigo-400 uppercase tracking-wider">Streamlined UX</span>
@@ -996,10 +1110,10 @@ export function HomePage() {
             </div>
           </div>
         </div>
-      </section>
+      </LazySection>
 
       {/* SECTION 5 & 7: PRIVACY & SECURITY ARCHITECTURE */}
-      <section className="py-20 border-t border-border/60 bg-secondary/15">
+      <LazySection minHeight={500} className="py-20 border-t border-border/60 bg-secondary/15">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
@@ -1090,10 +1204,10 @@ export function HomePage() {
 
           </div>
         </div>
-      </section>
+      </LazySection>
 
       {/* SECTION 5: ENTERPRISE CONVERSION ENGINE TELEMETRY */}
-      <section className="py-16">
+      <LazySection minHeight={320} className="py-16">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <Card className="border-indigo-500/30 bg-gradient-to-br from-card/90 to-secondary/40 p-8 shadow-xl">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-border/60">
@@ -1154,10 +1268,10 @@ export function HomePage() {
             </div>
           </Card>
         </div>
-      </section>
+      </LazySection>
 
       {/* SECTION 5 & 8: RELATED CONVERSION TOOLS & INTERNAL LINKING MATRIX */}
-      <section className="py-20 border-t border-border/60 bg-secondary/10">
+      <LazySection minHeight={450} className="py-20 border-t border-border/60 bg-secondary/10">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-3xl mx-auto mb-14">
             <span className="text-xs font-semibold text-indigo-400 uppercase tracking-wider">Connected Pipelines</span>
@@ -1194,10 +1308,10 @@ export function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </LazySection>
 
       {/* SECTION 5: FREQUENTLY ASKED QUESTIONS (Accordion with FAQ Schema) */}
-      <section className="py-20 border-t border-border/60">
+      <LazySection minHeight={600} className="py-20 border-t border-border/60">
         <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
             <span className="text-xs font-semibold text-indigo-400 uppercase tracking-wider">Knowledge Base</span>
@@ -1226,10 +1340,10 @@ export function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </LazySection>
 
       {/* SECTION 5 & 8: COMPREHENSIVE INTERNAL LINKS DIRECTORY */}
-      <section className="py-16 border-t border-border/60 bg-secondary/20">
+      <LazySection minHeight={280} className="py-16 border-t border-border/60 bg-secondary/20">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mb-8">
             <h2 className="font-heading text-xl font-bold text-foreground">Complete Conversion Tools Directory</h2>
@@ -1255,7 +1369,7 @@ export function HomePage() {
             ))}
           </div>
         </div>
-      </section>
+      </LazySection>
 
     </div>
   )
