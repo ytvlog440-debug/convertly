@@ -83,6 +83,10 @@ converter_registry.register(PdfToWordConverter())
 converter_registry.register(ExcelToPdfConverter())
 converter_registry.register(PptToPdfConverter())
 
+# Register Production PDF-to-Excel Tool
+from app.services.engine.pdf_to_excel import PdfToExcelConverter
+converter_registry.register(PdfToExcelConverter())
+
 # Register Production Image Tools
 from app.services.engine.images import (
     JpgToPngConverter,

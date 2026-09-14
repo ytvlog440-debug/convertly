@@ -240,6 +240,7 @@ def main():
         ("word-to-pdf", [docx_file], {}, "pdf"),
         ("pdf-to-word", [pdf1], {}, "docx"),
         ("excel-to-pdf", [xlsx_file], {}, "pdf"),
+        ("pdf-to-excel", [pdf1], {}, "xlsx"),
         ("ppt-to-pdf", [pptx_file], {}, "pdf"),
 
         # --- Image Suite ---
@@ -302,6 +303,12 @@ def main():
             elif expected_ext == "docx":
                 assert size > 1000, "DOCX suspiciously small"
                 integrity_note = "Valid DOCX"
+            elif expected_ext == "xlsx":
+                import openpyxl
+                wb = openpyxl.load_workbook(out_path)
+                assert len(wb.sheetnames) >= 1, "No sheets in XLSX"
+                integrity_note = f"Valid XLSX ({len(wb.sheetnames)} sheets)"
+                wb.close()
             elif expected_ext == "zip":
                 assert size > 500, "ZIP suspiciously small"
                 integrity_note = "Valid ZIP"

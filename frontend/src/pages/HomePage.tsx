@@ -90,7 +90,17 @@ const TOOLS_CATALOG: ToolItem[] = [
     color: 'text-emerald-600 bg-emerald-600/10',
     badge: 'Table Preserved'
   },
-  // 5. PowerPoint to PDF
+  // 5. PDF to Excel
+  {
+    id: 'pdf-to-excel',
+    name: 'PDF to Excel',
+    desc: 'Extract tables, invoices, and financial data from PDF into structured, editable Excel spreadsheets.',
+    category: 'Office',
+    icon: FileSpreadsheet,
+    color: 'text-emerald-500 bg-emerald-500/10',
+    badge: 'Table Extraction'
+  },
+  // 6. PowerPoint to PDF
   {
     id: 'ppt-to-pdf',
     name: 'PowerPoint to PDF',
@@ -340,6 +350,7 @@ const POPULAR_QUICK_LINKS = [
   { name: 'Word to PDF', path: '/tools/word-to-pdf', icon: FileText },
   { name: 'Image to PDF', path: '/tools/images-to-pdf', icon: ImageIcon },
   { name: 'Excel to PDF', path: '/tools/excel-to-pdf', icon: FileSpreadsheet },
+  { name: 'PDF to Excel', path: '/tools/pdf-to-excel', icon: FileSpreadsheet },
   { name: 'PowerPoint to PDF', path: '/tools/ppt-to-pdf', icon: Presentation },
   { name: 'Compress PDF', path: '/tools/pdf-compress', icon: Sparkles },
   { name: 'Merge PDF', path: '/tools/pdf-merge', icon: Layers }
@@ -417,6 +428,16 @@ const CONVERSION_WORKFLOWS = [
       { id: 'pdf-delete-pages', name: 'Delete Pages' },
       { id: 'pdf-extract-pages', name: 'Extract Pages' },
       { id: 'pdf-reorder-pages', name: 'Reorder Pages' }
+    ]
+  },
+  {
+    title: "Financial Data Extraction & Analysis Pipeline",
+    description: "Extract tabular data from PDF reports and invoices into structured, editable Excel spreadsheets.",
+    steps: [
+      { id: 'pdf-to-excel', name: 'PDF to Excel' },
+      { id: 'excel-to-pdf', name: 'Excel to PDF' },
+      { id: 'pdf-compress', name: 'Compress PDF' },
+      { id: 'pdf-protect', name: 'Protect PDF' }
     ]
   }
 ]

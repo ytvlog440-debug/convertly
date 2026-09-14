@@ -394,6 +394,17 @@ const TOOL_CONFIGS: Record<string, ToolConfig> = {
     acceptTypes: { 'application/pdf': ['.pdf'] },
     maxFiles: 1,
     color: 'text-slate-400 bg-slate-500/10'
+  },
+  'pdf-to-excel': {
+    id: 'pdf-to-excel',
+    name: 'PDF to Excel',
+    desc: 'Extract tables, financial data, and structured content from PDF documents into editable Excel spreadsheets.',
+    category: 'Office',
+    icon: FileSpreadsheet,
+    badge: 'Smart Table Extraction',
+    acceptTypes: { 'application/pdf': ['.pdf'] },
+    maxFiles: 1,
+    color: 'text-emerald-500 bg-emerald-500/10'
   }
 }
 
@@ -457,6 +468,9 @@ export function ToolConverterPage() {
   const [mergeDuplexMode, setMergeDuplexMode] = useState<boolean>(false)
   const [draggedFileIndex, setDraggedFileIndex] = useState<number | null>(null)
   const [enableOcr, setEnableOcr] = useState<boolean>(true)
+
+  // PDF to Excel options
+  const [pdfToExcelOcr, setPdfToExcelOcr] = useState<boolean>(true)
 
   useEffect(() => {
     // Reset state and guarantee scroll to top on tool load or tool change
@@ -743,6 +757,8 @@ export function ToolConverterPage() {
         options.duplex_mode = mergeDuplexMode
       } else if (config.id === 'pdf-to-word') {
         options.ocr = enableOcr
+      } else if (config.id === 'pdf-to-excel') {
+        options.ocr = pdfToExcelOcr
       }
 
       if (stagedFiles.some((f) => !f.uploaded)) {
@@ -756,6 +772,8 @@ export function ToolConverterPage() {
       const outputExt = (
         config.id === 'pdf-to-word'
           ? 'docx'
+          : config.id === 'pdf-to-excel'
+          ? 'xlsx'
           : config.id === 'pdf-to-images'
           ? 'zip'
           : config.id === 'pdf-to-txt'
@@ -2208,6 +2226,47 @@ export function ToolConverterPage() {
                           type="checkbox"
                           checked={enableOcr}
                           onChange={(e) => setEnableOcr(e.target.checked)}
+                          className="sr-only peer"
+                        />
+                        <div className="w-11 h-6 bg-secondary peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+                      </label>
+                    </div>
+                  </div>
+                )}
+
+                {/* PDF to Excel Options */}
+                {config.id === 'pdf-to-excel' && (
+                  <div className="space-y-4 max-w-xl">
+                    <div className="p-3.5 rounded-xl border border-emerald-500/20 bg-emerald-500/5 text-emerald-300 text-xs flex items-start gap-2.5">
+                      <FileSpreadsheet className="h-4 w-4 shrink-0 text-emerald-400 mt-0.5" />
+                      <span>
+                        Intelligent table extraction engine detects bordered, borderless, and nested tables across all pages. Outputs structured XLSX with preserved numeric types, currency, dates, and percentages.
+                      </span>
+                    </div>
+                    <div className="flex items-center justify-between p-4 rounded-xl border border-indigo-500/20 bg-indigo-500/5">
+                      <div className="flex items-start gap-3">
+                        <div className="mt-0.5 rounded-lg bg-indigo-500/15 p-2 text-indigo-400 shrink-0">
+                          <Sparkles className="h-4 w-4" />
+                        </div>
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xs font-semibold text-foreground">
+                              Smart OCR for Scanned PDFs
+                            </span>
+                            <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold border ${pdfToExcelOcr ? 'bg-emerald-500/15 border-emerald-500/30 text-emerald-400' : 'bg-secondary border-border text-muted-foreground'}`}>
+                              {pdfToExcelOcr ? 'Active' : 'Disabled'}
+                            </span>
+                          </div>
+                          <p className="text-[11px] text-muted-foreground mt-1 leading-relaxed">
+                            Automatically detects scanned or image-based PDFs and runs Tesseract OCR to extract text, then reconstructs table grids from the recognized content.
+                          </p>
+                        </div>
+                      </div>
+                      <label className="relative inline-flex items-center cursor-pointer shrink-0 ml-4">
+                        <input
+                          type="checkbox"
+                          checked={pdfToExcelOcr}
+                          onChange={(e) => setPdfToExcelOcr(e.target.checked)}
                           className="sr-only peer"
                         />
                         <div className="w-11 h-6 bg-secondary peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>

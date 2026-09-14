@@ -58,6 +58,7 @@ const ALL_30_TOOLS: ToolSearchItem[] = [
   { id: 'word-to-pdf', name: 'Word to PDF (DOCX)', desc: 'Convert DOCX to standard PDF with pixel-perfect font layout.', category: 'Office', icon: FileText, badge: 'LibreOffice' },
   { id: 'pdf-to-word', name: 'PDF to Word', desc: 'Extract PDF documents into editable Word DOCX files with formatting.', category: 'Office', icon: FileText },
   { id: 'excel-to-pdf', name: 'Excel to PDF (XLSX)', desc: 'Convert spreadsheet sheets into publication-ready PDF tables.', category: 'Office', icon: FileSpreadsheet },
+  { id: 'pdf-to-excel', name: 'PDF to Excel (XLSX)', desc: 'Extract PDF tables and financial data into editable Excel spreadsheets.', category: 'Office', icon: FileSpreadsheet, badge: 'Smart Table' },
   { id: 'ppt-to-pdf', name: 'PowerPoint to PDF (PPTX)', desc: 'Turn PPTX slide decks into sharable, high-resolution PDF presentations.', category: 'Office', icon: Presentation },
 
   // Image Suite

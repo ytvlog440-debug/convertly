@@ -285,6 +285,7 @@ export const COMPARISONS_DATA: Record<string, CompetitorComparison> = {
     ],
     recommendedTools: [
       { id: 'pdf-to-word', name: 'PDF to Word', desc: 'Reconstruct PDF documents into editable Word files.' },
+      { id: 'pdf-to-excel', name: 'PDF to Excel', desc: 'Extract PDF tables and bank statements into editable Excel spreadsheets.' },
       { id: 'word-to-pdf', name: 'Word to PDF', desc: 'Convert Word documents to standardized vector PDF.' },
       { id: 'pdf-protect', name: 'Protect PDF', desc: 'Apply AES-256 password protection to confidential files.' }
     ],

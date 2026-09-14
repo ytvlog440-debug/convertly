@@ -101,6 +101,7 @@ export const USE_CASES_DATA: Record<string, AudienceUseCase> = {
     recommendedWorkflows: [
       { title: 'Compress Corporate Decks for Client Delivery', desc: 'Shrink 40MB quarterly decks and proposals down to under 10MB to guarantee delivery through corporate spam filters.', toolId: 'pdf-compress', toolName: 'Compress PDF' },
       { title: 'Merge Contracts, Scans & Exhibits', desc: 'Consolidate master service agreements, statement of work attachments, and signed signatures into a final closing binder.', toolId: 'pdf-merge', toolName: 'Merge PDF' },
+      { title: 'Extract Tabular Financial Data from Invoices', desc: 'Convert PDF invoices, purchase orders, and bank statements into editable Excel spreadsheets for accounting.', toolId: 'pdf-to-excel', toolName: 'PDF to Excel' },
       { title: 'Convert Financial Workbooks to Clean Reports', desc: 'Turn Excel spreadsheets into professionally paginated PDF reports for board meetings.', toolId: 'excel-to-pdf', toolName: 'Excel to PDF' },
       { title: 'Protect Intellectual Property & Bids', desc: 'Apply AES-256 encryption to commercial proposals prior to external vendor transmission.', toolId: 'pdf-protect', toolName: 'Protect PDF' }
     ],

@@ -277,10 +277,61 @@ export const PROBLEM_GUIDES_DATA: Record<string, ProblemGuide> = {
     ],
     recommendedToolId: 'excel-to-pdf',
     recommendedToolName: 'Excel to PDF Converter',
-    relatedGuides: ['how-to-convert-powerpoint-to-pdf', 'how-to-convert-pdf-to-word-without-losing-formatting'],
+    relatedGuides: ['how-to-extract-tables-from-pdf-to-excel', 'how-to-convert-powerpoint-to-pdf', 'how-to-convert-pdf-to-word-without-losing-formatting'],
     faqs: [
       { question: 'Will my Excel formulas be visible to clients in the PDF?', answer: 'No. The PDF displays only the computed numerical and text outputs; underlying formulas cannot be seen or tampered with.' },
       { question: 'Are charts and graphs included in the converted PDF?', answer: 'Yes! Bar charts, pie charts, and trendline graphs are rendered as crisp vector elements in the PDF.' }
+    ]
+  },
+
+  'how-to-extract-tables-from-pdf-to-excel': {
+    slug: 'how-to-extract-tables-from-pdf-to-excel',
+    title: 'How to Extract Tables from PDF to Excel (Without Reformatting)',
+    metaDescription: 'Extract tables, invoices, and bank statements from PDF to editable Excel (XLSX). Preserves numbers, formulas, dates, and column alignment with OCR.',
+    keywords: 'how to extract tables from pdf to excel, convert pdf table to excel, extract bank statement pdf to excel, invoice to spreadsheet, pdf to xlsx converter',
+    h1: 'How to Extract Tables from PDF to Excel (Without Messy Reformatting)',
+    category: 'Office',
+    readingTime: '6 min read',
+    summary: 'Copying and pasting tables from PDF into Excel often results in all columns dumped into a single cell, lost decimals, and broken row alignment. Learn how to cleanly extract tabular data into structured Excel spreadsheets.',
+    whyItFailsNormally: [
+      { problem: 'All Columns Pasted into a Single Cell', reason: 'PDFs do not store grid boundaries; copying text copies raw character strings separated by single spaces.' },
+      { problem: 'Numbers Formatted as Unusable Strings', reason: 'Currency symbols ($ € £), commas, and accounting negative parentheses cause Excel to treat numbers as non-calculable text.' },
+      { problem: 'Scanned Documents Produce No Selectable Text', reason: 'Photographed invoices or physical scans are stored as bitmap image layers with zero underlying text coordinates.' }
+    ],
+    howToSteps: [
+      {
+        step: 1,
+        title: 'Upload Your PDF with Tabular Data',
+        instruction: 'Drag and drop your PDF (invoice, financial report, or bank statement) into Convertly’s PDF to Excel converter.',
+        proTip: 'For scanned receipts or photos, verify the Smart OCR toggle is turned ON for optical text detection.'
+      },
+      {
+        step: 2,
+        title: 'Multi-Strategy Table Extraction Executes',
+        instruction: 'Convertly combines line-intersection detection and whitespace proximity heuristics to reconstruct columns and rows accurately.',
+        proTip: 'Even borderless tables without drawn vertical lines are segmented into proper columns automatically.'
+      },
+      {
+        step: 3,
+        title: 'Download Structured XLSX Spreadsheet',
+        instruction: 'Open the generated XLSX file in Microsoft Excel, Google Sheets, or Apple Numbers. All numbers and dates are ready for SUM formulas.',
+        proTip: 'Each page of your PDF is placed on a dedicated worksheet tab to preserve multi-page document organization.'
+      }
+    ],
+    technicalDeepDive: [
+      'The PDF specifications (ISO 32000) have no semantic concept of a table. Words are placed on pages using absolute (x, y) cartesian coordinates.',
+      'Convertly solves this with a hybrid extraction pipeline combining pdfplumber line geometry, PyMuPDF block positioning, and Tesseract OCR with spatial bounding boxes. It then runs type inferencing to cast strings into native Excel currency, percentages, integers, and floats.'
+    ],
+    troubleshootingMatrix: [
+      { issue: 'Numbers are stored as text and cannot be summed', remedy: 'Convertly auto-typesets numbers, but in Excel you can also use "Data > Text to Columns" to quickly reformat any stubborn string column.' },
+      { issue: 'Scanned invoice is blurry or missing characters', remedy: 'Ensure source scan resolution is at least 200–300 DPI with high contrast for optimal Tesseract OCR accuracy.' }
+    ],
+    recommendedToolId: 'pdf-to-excel',
+    recommendedToolName: 'PDF to Excel Converter',
+    relatedGuides: ['how-to-convert-excel-to-pdf', 'how-to-convert-pdf-to-word-without-losing-formatting'],
+    faqs: [
+      { question: 'Will I be able to run SUM and VLOOKUP formulas on the extracted data?', answer: 'Yes! Convertly converts numbers, currency values, and percentages into native Excel numeric types so formulas work immediately.' },
+      { question: 'Can I extract tables from bank statements and multi-page reports?', answer: 'Yes! Multi-page statements and complex borderless financial reports are automatically parsed and structured across organized sheet tabs.' }
     ]
   },
 

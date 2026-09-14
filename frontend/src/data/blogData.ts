@@ -178,7 +178,57 @@ export const BLOG_POSTS_DATA: Record<string, BlogPost> = {
     ],
     recommendedToolId: 'excel-to-pdf',
     recommendedToolName: 'Excel to PDF Converter',
-    relatedPostSlugs: ['how-to-fix-broken-formatting-in-pdf-to-word', 'powerpoint-to-pdf-handout-optimization']
+    relatedPostSlugs: ['how-to-extract-financial-tables-from-pdf-to-excel', 'how-to-fix-broken-formatting-in-pdf-to-word', 'powerpoint-to-pdf-handout-optimization']
+  },
+
+  'how-to-extract-financial-tables-from-pdf-to-excel': {
+    slug: 'how-to-extract-financial-tables-from-pdf-to-excel',
+    title: 'How to Extract Financial Tables from PDF to Excel (The Complete Engineering Guide)',
+    metaDescription: 'Discover the engineering behind PDF table extraction. Learn how hybrid spatial parsers, line geometry, and OCR reconstruct bank statements into live Excel XLSX models.',
+    keywords: 'extract financial tables from pdf to excel, pdf to excel engineering, bank statement table extraction, ocr table extraction, pdfplumber openpyxl',
+    h1: 'How to Extract Financial Tables from PDF to Excel: An Engineering Guide',
+    category: 'Excel Guides',
+    publishDate: 'September 2026',
+    readTime: '6 min read',
+    author: {
+      name: 'Sarah Lin, CPA',
+      role: 'Enterprise Financial Workflow Specialist',
+      avatarInitials: 'SL'
+    },
+    searchIntent: 'Informational',
+    lead: 'Financial analysts, auditors, and accountants waste thousands of hours every year retyping numbers from locked PDF balance sheets and bank statements. Here is how modern document engines automatically reconstruct tabular data into calculation-ready Excel workbooks.',
+    keyTakeaways: [
+      'PDFs lack semantic table models; words are positioned with absolute (x, y) coordinates.',
+      'Hybrid spatial clustering detects column boundaries even in borderless financial statements.',
+      'Built-in OCR handles scanned vendor invoices and physical receipts with coordinate bounding.',
+      'Numbers, currencies ($ € £), and accounting parentheses are parsed into active Excel formulas.'
+    ],
+    contentSections: [
+      {
+        heading: 'The Core Challenge: Why Copy-Pasting Tables Always Fails',
+        paragraphs: [
+          'Under the ISO 32000 specification, a PDF does not know what a table, row, or column is. It only knows drawing instructions: "place string at coordinate x=142.5, y=520.1".',
+          'When you highlight and copy text from a PDF reader, the clipboard receives a single linear stream of characters separated by arbitrary spaces. When pasted into Microsoft Excel or Google Sheets, all columns collapse into column A, or split irregularly across random rows.'
+        ]
+      },
+      {
+        heading: 'How Modern Table Extraction Engines Solve This',
+        paragraphs: [
+          'Enterprise extraction pipelines (such as Convertly’s pdfplumber and PyMuPDF engine) use line-intersection geometry to detect bordered gridlines, alongside whitespace clustering (text stream heuristics) to establish vertical column boundaries in borderless tables.',
+          'For scanned paper documents, Tesseract OCR is invoked with page segmentation mode 6 (--psm 6) to detect words at the cell level, allowing accurate spatial alignment.'
+        ]
+      },
+      {
+        heading: 'Preserving Data Types for Instant Modeling',
+        paragraphs: [
+          'A table is useless in Excel if numbers are stored as plain text strings. Convertly infers numeric types on the fly: stripping currency signs into format masks, converting percentages to decimal values, and converting accounting negatives like (1,234.56) into true negative floats.',
+          'The result is an OpenXML (.xlsx) file where SUM, AVERAGE, and VLOOKUP formulas work immediately upon opening.'
+        ]
+      }
+    ],
+    recommendedToolId: 'pdf-to-excel',
+    recommendedToolName: 'PDF to Excel Converter',
+    relatedPostSlugs: ['excel-to-pdf-best-practices-for-executive-reporting', 'the-definitive-guide-to-lossless-pdf-compression']
   },
 
   'powerpoint-to-pdf-handout-optimization': {

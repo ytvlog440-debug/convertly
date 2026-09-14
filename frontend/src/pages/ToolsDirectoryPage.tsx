@@ -70,7 +70,17 @@ const ALL_TOOLS = [
     color: 'text-emerald-600 bg-emerald-600/10',
     badge: 'Table Preserved'
   },
-  // 5. PowerPoint to PDF
+  // 5. PDF to Excel
+  {
+    id: 'pdf-to-excel',
+    name: 'PDF to Excel',
+    desc: 'Extract tables, invoices, and financial data from PDF into structured, editable Excel spreadsheets.',
+    category: 'office',
+    icon: FileSpreadsheet,
+    color: 'text-emerald-500 bg-emerald-500/10',
+    badge: 'Table Extraction'
+  },
+  // 6. PowerPoint to PDF
   {
     id: 'ppt-to-pdf',
     name: 'PowerPoint to PDF',

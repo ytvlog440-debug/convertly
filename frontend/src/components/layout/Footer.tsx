@@ -69,6 +69,7 @@ export function Footer() {
               <li><Link to="/tools/pdf-to-word" className="text-foreground/80 hover:text-indigo-400 transition-colors">PDF to Word</Link></li>
               <li><Link to="/tools/word-to-pdf" className="text-foreground/80 hover:text-indigo-400 transition-colors">Word to PDF</Link></li>
               <li><Link to="/tools/excel-to-pdf" className="text-foreground/80 hover:text-indigo-400 transition-colors">Excel to PDF</Link></li>
+              <li><Link to="/tools/pdf-to-excel" className="text-foreground/80 hover:text-indigo-400 transition-colors">PDF to Excel</Link></li>
               <li><Link to="/tools/ppt-to-pdf" className="text-foreground/80 hover:text-indigo-400 transition-colors">PowerPoint to PDF</Link></li>
               <li><Link to="/tools/pdf-to-txt" className="text-foreground/80 hover:text-indigo-400 transition-colors">PDF to Text</Link></li>
             </ul>

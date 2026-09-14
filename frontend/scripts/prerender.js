@@ -169,6 +169,26 @@ const TOOLS = [
     ],
   },
   {
+    id: 'pdf-to-excel',
+    name: 'PDF to Excel',
+    category: 'Office',
+    title: 'PDF to Excel Converter — Extract Tables & Spreadsheets Online Free',
+    description: 'Convert PDF to Excel XLSX online for free. Extract tables from invoices, bank statements, and reports to editable spreadsheets with Smart OCR and zero retention.',
+    keywords: 'pdf to excel, convert pdf to excel, pdf to xlsx, extract tables from pdf, bank statement to excel, invoice to excel, free pdf to excel, convertly',
+    badge: 'Smart Table Extraction & OCR',
+    summary: 'Extract tables, invoices, and financial reports from PDF into structured, editable Microsoft Excel (.xlsx) workbooks with preserved numbers and formulas.',
+    steps: [
+      { number: 1, title: 'Upload PDF Document', desc: 'Drag and drop your PDF with tabular data.' },
+      { number: 2, title: 'Configure Extraction & OCR', desc: 'Enable Smart OCR for scanned pages or photographed tables.' },
+      { number: 3, title: 'Process Conversion', desc: 'Our engine identifies table bounds and structures cells into XLSX.' },
+      { number: 4, title: 'Download Excel File', desc: 'Save your clean, formatted spreadsheet or transfer via QR code.' },
+    ],
+    faqs: [
+      { question: 'Will extracted numbers and currency work in Excel formulas?', answer: 'Yes, numeric values, percentages, and currencies are recognized and formatted as active numbers.' },
+      { question: 'Can I extract tables from scanned documents?', answer: 'Yes, our built-in OCR automatically detects scanned pages and reconstructs table grids.' },
+    ],
+  },
+  {
     id: 'ppt-to-pdf',
     name: 'PowerPoint to PDF',
     category: 'Office',
@@ -969,6 +989,7 @@ const GUIDE_PAGES = [
   { slug: 'how-to-merge-pdf-files', title: 'How to Merge Multiple PDF Files into One (Free Step-by-Step Guide)', desc: 'Combine multiple PDF documents into a single cohesive file online. Learn how to sequence pages, preserve bookmarks, and merge up to 20 files in seconds.' },
   { slug: 'how-to-split-pdf-pages', title: 'How to Split PDF Pages & Extract Ranges Online Free | Convertly', desc: 'Extract specific pages, chapters, or page ranges from any PDF file. Step-by-step instructions on separating single pages or breaking large documents down.' },
   { slug: 'how-to-convert-excel-to-pdf', title: 'How to Convert Excel to PDF Without Cutting Off Columns (Guide)', desc: 'Convert XLSX and XLS spreadsheets to beautifully paginated PDF documents. How to avoid split tables, cropped columns, and pagination issues.' },
+  { slug: 'how-to-extract-tables-from-pdf-to-excel', title: 'How to Extract Tables from PDF to Excel (Without Reformatting)', desc: 'Extract tables, invoices, and bank statements from PDF to editable Excel (XLSX). Preserves numbers, formulas, dates, and column alignment with OCR.' },
   { slug: 'how-to-convert-powerpoint-to-pdf', title: 'How to Convert PowerPoint to PDF (Slide Deck to Universal Handout)', desc: 'Convert PPTX and PPT presentation slide decks into universal PDF documents. Maintain slide typography, vector graphics, and speaker notes.' },
   { slug: 'how-to-convert-images-into-pdf', title: 'How to Convert Images into a Single PDF (JPG, PNG & WebP)', desc: 'Step-by-step guide to combining photos, screenshots, and graphic scans into a multi-page PDF document online for free.' },
 ]
@@ -998,6 +1019,7 @@ const BLOG_PAGES = [
   { slug: 'paperless-office-productivity-hacks', title: '10 Paperless Productivity Hacks to Automate Document Workflows', desc: 'Boost daily office efficiency with 10 actionable document hacks: instant QR transfers, multi-file merging, PDF page isolation, and Bates numbering.' },
   { slug: 'why-convertly-is-the-best-free-alternative-to-adobe-acrobat', title: 'Why Convertly Is the Best Free Alternative to Adobe Acrobat in 2026', desc: 'A direct comparison between Convertly and Adobe Acrobat. Compare annual subscription costs ($239+/yr), forced account logins, and web conversion speed.' },
   { slug: 'step-by-step-tutorial-redacting-confidential-data-from-pdf', title: 'Step-by-Step Tutorial: Redacting Confidential Data from PDF Documents', desc: 'Learn how to properly redact sensitive information from PDF files. Why drawing black rectangles fails and how to permanently purge confidential bytes.' },
+  { slug: 'how-to-extract-financial-tables-from-pdf-to-excel', title: 'Extracting Financial Tables from PDF to Excel: Complete Engineering Guide', desc: 'A deep technical guide to extracting tabular financial data from PDFs into clean Excel XLSX spreadsheets with smart data types and formulas.' },
 ]
 
 for (const post of BLOG_PAGES) {
@@ -1017,7 +1039,7 @@ for (const post of BLOG_PAGES) {
 const today = new Date().toISOString().split('T')[0]
 const flagshipToolIds = new Set([
   'pdf-to-word', 'word-to-pdf', 'pdf-merge', 'pdf-compress',
-  'images-to-pdf', 'excel-to-pdf', 'ppt-to-pdf'
+  'images-to-pdf', 'excel-to-pdf', 'ppt-to-pdf', 'pdf-to-excel'
 ])
 
 let sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n\n`

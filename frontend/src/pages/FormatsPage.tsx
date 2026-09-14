@@ -48,6 +48,7 @@ const FORMAT_SPECS: FormatSpec[] = [
       { name: 'Flatten Forms', toolId: 'pdf-flatten' },
       { name: 'Scrub Metadata', toolId: 'pdf-scrub-metadata' },
       { name: 'PDF to Text', toolId: 'pdf-to-txt' },
+      { name: 'PDF to Excel', toolId: 'pdf-to-excel' },
       { name: 'Grayscale PDF', toolId: 'pdf-grayscale' },
     ],
   },
@@ -77,6 +78,7 @@ const FORMAT_SPECS: FormatSpec[] = [
     color: 'text-emerald-500 bg-emerald-500/10 border-emerald-500/30',
     supportedConversions: [
       { name: 'Excel to PDF', toolId: 'excel-to-pdf' },
+      { name: 'PDF to Excel', toolId: 'pdf-to-excel' },
     ],
   },
   {
