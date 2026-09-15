@@ -87,11 +87,17 @@ async def execute_job_pipeline(job_id: str, tool_id: str, input_file_ids: List[s
                 job.output_file_id = output_file_id
                 job.status = JobStatus.COMPLETED
                 job.progress = 100
-                job.options = {**job.options, **result.metadata}
+                import json
+                try:
+                    clean_meta = json.loads(json.dumps(result.metadata, default=str))
+                except Exception:
+                    clean_meta = {}
+                job.options = {**(job.options or {}), **clean_meta}
                 await session.commit()
 
             except Exception as e:
                 logger.error(f"Job {job_id} failed: {e}", exc_info=True)
+                await session.rollback()
                 job.status = JobStatus.FAILED
                 job.error_message = str(e)
                 job.progress = 100
