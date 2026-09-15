@@ -703,40 +703,125 @@ def _build_xlsx(
     ) -> int:
         nonlocal total_rows_written
         curr_row = start_row
-        is_first = True
-        has_header = _is_likely_header(table[0], len(table))
+        if not table:
+            return curr_row
 
-        for row_data in table:
+        num_rows = len(table)
+        max_cols = max(len(r) for r in table) if table else 0
+        if max_cols == 0:
+            return curr_row
+
+        norm_table = [list(r) + [''] * (max_cols - len(r)) for r in table]
+
+        # 1. Detect Merged Cell Ranges (Colspan & Rowspan)
+        merges_to_apply: List[Tuple[int, int, int, int]] = []
+        merged_covered = set()
+
+        # A) Horizontal Spans in header rows
+        for r_idx in range(min(num_rows, 3)):
+            row_data = norm_table[r_idx]
+            skip_c = -1
+            for c_idx in range(max_cols):
+                if c_idx <= skip_c:
+                    continue
+                val = str(row_data[c_idx] or "").strip()
+                if val:
+                    consec_empty = 0
+                    lookahead = c_idx + 1
+                    while lookahead < max_cols and not str(norm_table[r_idx][lookahead] or "").strip():
+                        consec_empty += 1
+                        lookahead += 1
+
+                    if consec_empty > 0 and r_idx + 1 < num_rows:
+                        child_active = sum(
+                            1 for chk_c in range(c_idx, c_idx + consec_empty + 1)
+                            if str(norm_table[r_idx + 1][chk_c] or "").strip()
+                        )
+                        if child_active >= 2:
+                            r_start = curr_row + r_idx
+                            c_start = c_idx + 1
+                            r_end = curr_row + r_idx
+                            c_end = c_idx + consec_empty + 1
+                            merges_to_apply.append((r_start, c_start, r_end, c_end))
+                            for mc in range(c_start + 1, c_end + 1):
+                                merged_covered.add((r_start, mc))
+                            skip_c = c_idx + consec_empty
+
+        # B) Vertical Spans (e.g. Day spanning row 0 and row 1)
+        if num_rows >= 2:
+            for c_idx in range(max_cols):
+                val_r0 = str(norm_table[0][c_idx] or "").strip()
+                val_r1 = str(norm_table[1][c_idx] or "").strip()
+                if val_r0 and not val_r1:
+                    has_sibling = any(str(norm_table[1][sc] or "").strip() for sc in range(max_cols) if sc != c_idx)
+                    if has_sibling:
+                        r_start = curr_row
+                        c_start = c_idx + 1
+                        r_end = curr_row + 1
+                        c_end = c_idx + 1
+                        merges_to_apply.append((r_start, c_start, r_end, c_end))
+                        merged_covered.add((r_end, c_start))
+
+        # 2. Populate cells
+        has_header = _is_likely_header(norm_table[0], len(norm_table))
+
+        for r_idx, row_data in enumerate(norm_table):
+            excel_r = curr_row + r_idx
+            is_hdr_row = (r_idx == 0 and has_header) or (r_idx == 1 and has_header and len(norm_table) > 2)
+
             for col_idx, cell_value in enumerate(row_data):
-                cell = ws.cell(row=curr_row, column=col_idx + 1)
-                typed_val, num_fmt = detect_cell_type(cell_value)
-                cell.value = typed_val
+                excel_c = col_idx + 1
+                cell = ws.cell(row=excel_r, column=excel_c)
                 cell.border = thin_border
 
-                if num_fmt:
-                    cell.number_format = num_fmt
-
-                if is_first and has_header:
+                if is_hdr_row:
                     cell.font = header_font
                     cell.fill = header_fill
                     cell.alignment = header_alignment
                 else:
                     cell.font = normal_font
-                    # Apply semantic alignment
-                    if num_fmt and ('$' in num_fmt or '€' in num_fmt or '£' in num_fmt or '¥' in num_fmt or '0.00' in num_fmt or '%' in num_fmt):
-                        cell.alignment = num_alignment
-                    elif isinstance(typed_val, (int, float)):
-                        cell.alignment = num_alignment
-                    elif isinstance(typed_val, datetime) or (num_fmt and 'YYYY' in num_fmt):
-                        cell.alignment = date_alignment
-                    else:
-                        cell.alignment = text_alignment
 
-            is_first = False
-            curr_row += 1
+                typed_val, num_fmt = detect_cell_type(cell_value)
+                if num_fmt:
+                    cell.number_format = num_fmt
+
+                if (excel_r, excel_c) not in merged_covered:
+                    cell.value = typed_val
+                    if not is_hdr_row:
+                        if num_fmt and ('$' in num_fmt or '€' in num_fmt or '£' in num_fmt or '¥' in num_fmt or '0.00' in num_fmt or '%' in num_fmt):
+                            cell.alignment = num_alignment
+                        elif isinstance(typed_val, (int, float)):
+                            cell.alignment = num_alignment
+                        elif isinstance(typed_val, datetime) or (num_fmt and 'YYYY' in num_fmt):
+                            cell.alignment = date_alignment
+                        else:
+                            cell.alignment = text_alignment
+                else:
+                    cell.value = None
+
             total_rows_written += 1
 
-        return curr_row
+        # 3. Format complete borders and fill across all merged rectangles
+        for r_start, c_start, r_end, c_end in merges_to_apply:
+            for mr in range(r_start, r_end + 1):
+                for mc in range(c_start, c_end + 1):
+                    cell_in_box = ws.cell(row=mr, column=mc)
+                    cell_in_box.border = thin_border
+                    cell_in_box.fill = header_fill
+
+        # 4. Apply openpyxl ws.merge_cells
+        for r_start, c_start, r_end, c_end in merges_to_apply:
+            ws.merge_cells(
+                start_row=r_start,
+                start_column=c_start,
+                end_row=r_end,
+                end_column=c_end
+            )
+            top_left = ws.cell(row=r_start, column=c_start)
+            top_left.alignment = header_alignment
+
+        return curr_row + num_rows
+
 
     def auto_fit_columns(ws: openpyxl.worksheet.worksheet.Worksheet):
         for col_idx in range(1, (ws.max_column or 0) + 1):
@@ -829,7 +914,9 @@ def _build_xlsx(
         ws.cell(row=2, column=1, value="The PDF may contain only images, raw scanned graphics, or non-tabular content.")
         ws.column_dimensions['A'].width = 65
 
+    os.makedirs(os.path.dirname(os.path.abspath(output_path)), exist_ok=True)
     wb.save(output_path)
+
 
     return {
         "total_tables_extracted": total_tables,
@@ -931,9 +1018,12 @@ class PdfToExcelConverter(BaseConverter):
         options: Dict[str, Any]
     ) -> ConversionResult:
         self.validate_inputs(input_paths, options)
+        os.makedirs(output_dir, exist_ok=True)
         src_path = input_paths[0]
         out_filename = f"converted_{uuid.uuid4().hex[:8]}.xlsx"
         out_path = os.path.join(output_dir, out_filename)
+
+
 
         # ---------------------------------------------------------------
         # Stage 0: Enterprise High-Accuracy Document Processing Engine

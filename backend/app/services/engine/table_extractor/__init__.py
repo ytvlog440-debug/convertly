@@ -298,8 +298,26 @@ class EnterpriseTableExtractor:
 
         import json
         import dataclasses
+
+        class AttrDict(dict):
+            def __getattr__(self, item):
+                try:
+                    return self[item]
+                except KeyError:
+                    raise AttributeError(f"'AttrDict' object has no attribute '{item}'")
+            def __setattr__(self, key, value):
+                self[key] = value
+
+        def _to_attr_dict(obj):
+            if isinstance(obj, dict):
+                return AttrDict({k: _to_attr_dict(v) for k, v in obj.items()})
+            elif isinstance(obj, list):
+                return [_to_attr_dict(elem) for elem in obj]
+            return obj
+
         def _safe_serialize(val):
-            return json.loads(json.dumps(val, default=lambda o: o.value if hasattr(o, 'value') else (dataclasses.asdict(o) if dataclasses.is_dataclass(o) else str(o))))
+            raw = json.loads(json.dumps(val, default=lambda o: o.value if hasattr(o, 'value') else (dataclasses.asdict(o) if dataclasses.is_dataclass(o) else str(o))))
+            return _to_attr_dict(raw)
 
         return {
             "total_pages": total_pages,

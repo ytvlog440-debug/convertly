@@ -257,32 +257,271 @@ class CellReconstructor(BaseReconstructor):
         config: Optional[TableExtractorConfig] = None
     ) -> TableBlock:
         """
-        Discover merged cells (colspan and rowspan) where a cell spans across
-        multiple column or row coordinate intervals.
+        Discover merged cells (both horizontal colspan and vertical rowspan)
+        using cell bounding boxes, header spans, horizontal whitespace,
+        column intervals, vertical alignment, and text block dimensions.
         """
-        if not table.rows:
+        if not table.rows or len(table.rows) < 1:
             return table
 
         has_merged = False
+        num_rows = len(table.rows)
 
-        # Gather distinct global column boundaries across all rows
-        all_col_x0 = sorted({c.bbox[0] for r in table.rows for c in r.cells})
-        col_width_avg = 50.0
-        if len(all_col_x0) >= 2:
-            col_width_avg = (all_col_x0[-1] - all_col_x0[0]) / max(1, len(all_col_x0) - 1)
+        # 1. Establish canonical column intervals across the table
+        max_cols = max((len(r.cells) for r in table.rows), default=0)
+        if max_cols < 2:
+            return table
 
-        for row in table.rows:
-            for cell in row.cells:
-                w = cell.width
-                # If cell width is significantly wider than typical column width (>= 1.7x)
-                if w >= 1.7 * col_width_avg and len(row.cells) < table.col_count:
-                    est_colspan = max(1, round(w / col_width_avg))
-                    if est_colspan > 1:
-                        cell.colspan = est_colspan
+        col_x0_map: Dict[int, List[float]] = {j: [] for j in range(max_cols)}
+        col_x1_map: Dict[int, List[float]] = {j: [] for j in range(max_cols)}
+
+        for r in table.rows:
+            if len(r.cells) == max_cols:
+                for j, c in enumerate(r.cells):
+                    if c.width > 0:
+                        col_x0_map[j].append(c.bbox[0])
+                        col_x1_map[j].append(c.bbox[2])
+            else:
+                for c in r.cells:
+                    if 0 <= c.col_idx < max_cols and c.width > 0:
+                        col_x0_map[c.col_idx].append(c.bbox[0])
+                        col_x1_map[c.col_idx].append(c.bbox[2])
+
+        col_intervals: List[Tuple[float, float]] = []
+        for j in range(max_cols):
+            x0_list = col_x0_map[j]
+            x1_list = col_x1_map[j]
+            if x0_list and x1_list:
+                med_x0 = sorted(x0_list)[len(x0_list) // 2]
+                med_x1 = sorted(x1_list)[len(x1_list) // 2]
+                col_intervals.append((med_x0, max(med_x0 + 10.0, med_x1)))
+            else:
+                col_intervals.append((0.0, 0.0))
+
+        # Fill in missing intervals smoothly
+        for j in range(max_cols):
+            if col_intervals[j] == (0.0, 0.0):
+                prev_x1 = col_intervals[j - 1][1] if j > 0 and col_intervals[j - 1] != (0.0, 0.0) else (table.bbox[0] + j * 50.0)
+                col_intervals[j] = (prev_x1, prev_x1 + 50.0)
+
+        # Midpoint dividers between adjacent columns
+        col_dividers: List[float] = []
+        for j in range(max_cols - 1):
+            div = (col_intervals[j][1] + col_intervals[j + 1][0]) / 2.0
+            col_dividers.append(div)
+
+        # 2. Multi-Level Header & Section Partitioning
+        # When Row 0/1 are header rows with granular subheaders in child rows:
+        if num_rows >= 2:
+            for r_idx in range(min(num_rows - 1, 2)):
+                curr_r = table.rows[r_idx]
+                next_r = table.rows[r_idx + 1]
+                if not (curr_r.is_header or r_idx == 0):
+                    continue
+
+                curr_texts = [(c.text or "").strip() for c in curr_r.cells]
+                next_texts = [(c.text or "").strip() for c in next_r.cells]
+
+                # Identify vertical single-column headers (e.g. Day, Break)
+                # where current row has text and next row is empty/same
+                vertical_cols = set()
+                for c in range(min(len(curr_texts), len(next_texts))):
+                    t_curr = curr_texts[c]
+                    t_next = next_texts[c]
+                    if t_curr and (not t_next or t_curr.lower() == t_next.lower()):
+                        # Check if subsequent data rows have content in this column
+                        has_lower_data = any(
+                            (table.rows[dr].cells[c].text or "").strip()
+                            for dr in range(r_idx + 2, min(num_rows, r_idx + 4))
+                            if c < len(table.rows[dr].cells)
+                        ) if num_rows > r_idx + 2 else True
+                        if has_lower_data:
+                            vertical_cols.add(c)
+
+                # Partition non-vertical columns into horizontal sections
+                sections = []
+                sec_start = None
+                for c in range(max_cols):
+                    if c not in vertical_cols:
+                        if sec_start is None:
+                            sec_start = c
+                    else:
+                        if sec_start is not None:
+                            sections.append((sec_start, c - 1))
+                            sec_start = None
+                if sec_start is not None:
+                    sections.append((sec_start, max_cols - 1))
+
+                # For each horizontal section, map section headers
+                for s_start, s_end in sections:
+                    if s_end <= s_start:
+                        continue
+                    sec_span = s_end - s_start + 1
+                    # Look at non-empty cells in this section in curr_r
+                    active_in_sec = [
+                        (c_idx, curr_r.cells[c_idx])
+                        for c_idx in range(s_start, min(len(curr_r.cells), s_end + 1))
+                        if (curr_r.cells[c_idx].text or "").strip()
+                    ]
+
+                    # If exactly 1 header occupies this multi-column section (e.g. "Morning", "Replica")
+                    if len(active_in_sec) == 1:
+                        orig_col, active_c = active_in_sec[0]
+                        target_cell = curr_r.cells[s_start]
+                        if orig_col != s_start:
+                            target_cell.text = active_c.text
+                            target_cell.typed_value = active_c.typed_value
+                            target_cell.data_type = active_c.data_type
+                            active_c.text = ""
+                            active_c.typed_value = None
+
+                        target_cell.colspan = sec_span
+                        target_cell.bbox = (
+                            col_intervals[s_start][0],
+                            target_cell.bbox[1],
+                            col_intervals[s_end][1],
+                            target_cell.bbox[3]
+                        )
                         has_merged = True
+
+                        for clr_idx in range(s_start + 1, min(len(curr_r.cells), s_end + 1)):
+                            clr_c = curr_r.cells[clr_idx]
+                            if clr_idx != orig_col:
+                                clr_c.text = ""
+                                clr_c.typed_value = None
+                            clr_c.colspan = 1
+
+                # Apply vertical rowspans for identified vertical headers
+                for v_col in vertical_cols:
+                    if v_col < len(curr_r.cells):
+                        v_cell = curr_r.cells[v_col]
+                        v_cell.rowspan = 2
+                        has_merged = True
+                        if v_col < len(next_r.cells):
+                            next_r.cells[v_col].text = ""
+                            next_r.cells[v_col].typed_value = None
+
+        # 3. General Horizontal & Bounding Box Spans (for data rows and standalone headers)
+        for r_idx, row in enumerate(table.rows):
+            row_len = len(row.cells)
+            for c_idx, cell in enumerate(row.cells):
+                if row_len == max_cols:
+                    cell.col_idx = c_idx
+
+            skip_until = -1
+            for c_idx in range(row_len):
+                if c_idx <= skip_until:
+                    continue
+
+                cell = row.cells[c_idx]
+                curr_col = cell.col_idx
+                txt = (cell.text or "").strip()
+
+                if txt and cell.colspan == 1:
+                    span_by_bbox = 1
+                    for next_c in range(curr_col + 1, max_cols):
+                        div_val = col_dividers[next_c - 1]
+                        if cell.bbox[2] >= div_val + 4.0:
+                            span_by_bbox = next_c - curr_col + 1
+                        else:
+                            break
+
+                    span_by_whitespace = 1
+                    consec_empty = 0
+                    lookahead = c_idx + 1
+
+
+                    while lookahead < row_len:
+                        next_c = row.cells[lookahead]
+                        # Stop if column is already covered by a vertical merge from above
+                        is_vert_covered = any(
+                            table.rows[pr].cells[next_c.col_idx].rowspan > (r_idx - pr)
+                            for pr in range(r_idx)
+                            if next_c.col_idx < len(table.rows[pr].cells)
+                        )
+                        if not (next_c.text or "").strip() and not is_vert_covered:
+                            consec_empty += 1
+                            lookahead += 1
+                        else:
+                            break
+
+                    if consec_empty > 0:
+                        # Check if other rows possess data in these columns
+                        other_has_data = any(
+                            all((table.rows[chk_r].cells[ch_col].text or "").strip() for ch_col in (curr_col, curr_col + 1))
+                            for chk_r in range(num_rows)
+                            if chk_r != r_idx and curr_col + 1 < len(table.rows[chk_r].cells)
+                        )
+                        if other_has_data or row.is_header:
+                            span_by_whitespace = consec_empty + 1
+
+
+                    final_span = max(span_by_bbox, span_by_whitespace)
+                    if final_span > 1:
+                        cell.colspan = final_span
+                        has_merged = True
+                        skip_until = c_idx + final_span - 1
+                        end_col = min(max_cols - 1, curr_col + final_span - 1)
+                        cell.bbox = (
+                            cell.bbox[0],
+                            cell.bbox[1],
+                            max(cell.bbox[2], col_intervals[end_col][1]),
+                            cell.bbox[3]
+                        )
+                        for s_idx in range(c_idx + 1, min(row_len, c_idx + final_span)):
+                            spanned_c = row.cells[s_idx]
+                            spanned_c.text = ""
+                            spanned_c.typed_value = None
+                            spanned_c.colspan = 1
+
+        # 4. General Vertical Merge Detection (Rowspan for data rows)
+        for c_idx in range(max_cols):
+            r_idx = 0
+            while r_idx < num_rows:
+                row = table.rows[r_idx]
+                cell = next((c for c in row.cells if c.col_idx == c_idx), None)
+                if not cell:
+                    r_idx += 1
+                    continue
+
+                txt = (cell.text or "").strip()
+                if txt and cell.rowspan == 1:
+                    target_rowspan = 1
+                    lookahead_r = r_idx + 1
+
+                    while lookahead_r < num_rows:
+                        next_row = table.rows[lookahead_r]
+                        next_cell = next((c for c in next_row.cells if c.col_idx == c_idx), None)
+                        if not next_cell:
+                            break
+
+                        next_txt = (next_cell.text or "").strip()
+                        if not next_txt:
+                            sibling_has_data = any(
+                                (sc.text or "").strip() for sc in next_row.cells
+                                if sc.col_idx != c_idx
+                            )
+                            if sibling_has_data:
+                                if cell.bbox[3] >= next_row.bbox[1] + 2.0:
+                                    target_rowspan += 1
+                                    lookahead_r += 1
+                                    continue
+                        break
+
+                    if target_rowspan > 1:
+                        cell.rowspan = target_rowspan
+                        has_merged = True
+                        last_r = table.rows[r_idx + target_rowspan - 1]
+                        cell.bbox = (cell.bbox[0], cell.bbox[1], cell.bbox[2], max(cell.bbox[3], last_r.bbox[3]))
+                        r_idx += target_rowspan
+                        continue
+
+                r_idx += 1
 
         table.has_merged_cells = has_merged or table.has_merged_cells
         return table
+
+
 
     def detect_indentation_levels(
         self,

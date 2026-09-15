@@ -10,11 +10,13 @@ Features:
   6. Auto-fitting column widths with comfortable padding
 """
 
+import os
 import openpyxl
 from openpyxl.styles import Font, Alignment, PatternFill, Border, Side
 from openpyxl.utils import get_column_letter
 from typing import List, Dict, Any, Optional
 from datetime import datetime
+
 from app.services.engine.table_extractor.models import PageLayout, TableBlock, KeyValueBlock, TableCell
 
 
@@ -121,7 +123,9 @@ class ExcelDocumentWriter:
             ws.cell(row=2, column=1, value="The PDF may contain only graphics, forms without lines, or unformatted text.")
             ws.column_dimensions['A'].width = 65
 
+        os.makedirs(os.path.dirname(os.path.abspath(output_path)), exist_ok=True)
         wb.save(output_path)
+
 
         return {
             "total_tables_extracted": total_tables,
@@ -139,18 +143,32 @@ class ExcelDocumentWriter:
     ) -> int:
         """Writes rows and handles colspans/rowspans via ws.merge_cells."""
         curr_row = start_row
+        merges_to_apply = []
+        merged_covered = set()
 
-        for row in rows:
+        # Step 1: Discover all merged ranges and mark secondary cells as covered
+        for r_offset, row in enumerate(rows):
+            target_r = curr_row + r_offset
             for cell in row.cells:
-                target_r = curr_row
+                target_c = cell.col_idx + 1
+                if cell.colspan > 1 or cell.rowspan > 1:
+                    end_r = target_r + cell.rowspan - 1
+                    end_c = target_c + cell.colspan - 1
+                    is_hdr = cell.is_header or row.is_header
+                    merges_to_apply.append((target_r, target_c, end_r, end_c, is_hdr))
+                    for mr in range(target_r, end_r + 1):
+                        for mc in range(target_c, end_c + 1):
+                            if (mr, mc) != (target_r, target_c):
+                                merged_covered.add((mr, mc))
+
+        # Step 2: Populate values, fonts, fills, and alignments
+        for r_offset, row in enumerate(rows):
+            target_r = curr_row + r_offset
+            for cell in row.cells:
                 target_c = cell.col_idx + 1
 
                 c = ws.cell(row=target_r, column=target_c)
-                c.value = cell.typed_value if cell.typed_value is not None else cell.text
                 c.border = self.thin_border
-
-                if cell.format_code:
-                    c.number_format = cell.format_code
 
                 if cell.is_header or row.is_header:
                     c.font = self.header_font
@@ -169,20 +187,39 @@ class ExcelDocumentWriter:
                         else:
                             c.alignment = self.text_alignment
 
-                # Handle Merged Cells (colspan & rowspan)
-                if cell.colspan > 1 or cell.rowspan > 1:
-                    end_r = target_r + cell.rowspan - 1
-                    end_c = target_c + cell.colspan - 1
-                    ws.merge_cells(
-                        start_row=target_r,
-                        start_column=target_c,
-                        end_row=end_r,
-                        end_column=end_c
-                    )
+                if cell.format_code:
+                    c.number_format = cell.format_code
 
-            curr_row += 1
+                # Only write values into top-left origin cells
+                if (target_r, target_c) not in merged_covered:
+                    c.value = cell.typed_value if cell.typed_value is not None else cell.text
+                else:
+                    c.value = None
 
-        return curr_row
+        # Step 3: Format all cells within each merged range for complete borders & fill
+        for start_r, start_c, end_r, end_c, is_hdr in merges_to_apply:
+            for mr in range(start_r, end_r + 1):
+                for mc in range(start_c, end_c + 1):
+                    cell_in_box = ws.cell(row=mr, column=mc)
+                    cell_in_box.border = self.thin_border
+                    if is_hdr:
+                        cell_in_box.fill = self.header_fill
+
+        # Step 4: Apply openpyxl ws.merge_cells
+        for start_r, start_c, end_r, end_c, is_hdr in merges_to_apply:
+            ws.merge_cells(
+                start_row=start_r,
+                start_column=start_c,
+                end_row=end_r,
+                end_column=end_c
+            )
+            # Ensure text in spanning header is centered
+            top_left = ws.cell(row=start_r, column=start_c)
+            if is_hdr or end_c > start_c:
+                top_left.alignment = self.header_alignment
+
+        return curr_row + len(rows)
+
 
     def _render_key_value_block(
         self,

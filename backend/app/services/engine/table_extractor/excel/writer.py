@@ -176,18 +176,34 @@ class EnterpriseExcelWriter(BaseExcelWriter):
         excel_cell.border = SUBTLE_BORDER
 
     def _apply_merged_spans(self, ws: Any, table: TableBlock, start_row: int) -> None:
-        """Merges rectangular cell coordinate spans."""
+        """Merges rectangular cell coordinate spans with complete borders and centered text."""
         for r_offset, r in enumerate(table.rows):
             excel_r = start_row + r_offset
             for cell in r.cells:
                 if cell.colspan > 1 or cell.rowspan > 1:
                     target_c = cell.col_idx + 1
+                    end_r = excel_r + cell.rowspan - 1
+                    end_c = target_c + cell.colspan - 1
+                    is_hdr = cell.is_header or r.is_header
+
+                    # Ensure all cells inside merged rectangle receive consistent border and fill
+                    for mr in range(excel_r, end_r + 1):
+                        for mc in range(target_c, end_c + 1):
+                            cell_in_box = ws.cell(row=mr, column=mc)
+                            cell_in_box.border = SUBTLE_BORDER
+                            if is_hdr:
+                                cell_in_box.fill = HEADER_FILL
+
                     ws.merge_cells(
                         start_row=excel_r,
                         start_column=target_c,
-                        end_row=excel_r + cell.rowspan - 1,
-                        end_column=target_c + cell.colspan - 1,
+                        end_row=end_r,
+                        end_column=end_c,
                     )
+                    top_left = ws.cell(row=excel_r, column=target_c)
+                    if is_hdr or end_c > target_c:
+                        top_left.alignment = Alignment(horizontal="center", vertical="center", wrap_text=True)
+
 
     def _auto_fit_columns(self, ws: Any) -> None:
         """Calculates optimal column widths based on maximum cell content lengths."""

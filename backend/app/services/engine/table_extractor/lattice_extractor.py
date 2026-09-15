@@ -152,15 +152,18 @@ class LatticeTableExtractor:
         self,
         rows: List[TableRow],
         v_lines: List[Tuple[float, float, float, float]],
-        x_coords: List[float]
+        x_coords: List[float],
+        h_lines: Optional[List[Tuple[float, float, float, float]]] = None,
+        y_coords: Optional[List[float]] = None,
     ) -> Tuple[List[TableRow], bool]:
         """
-        Detects merged cells across columns by verifying the presence of separating vertical lines.
-        If no vertical line exists at x_boundary between row_i's cells, merges them.
+        Detects merged cells across columns (colspan) and rows (rowspan) by verifying
+        the presence of separating vertical and horizontal vector lines.
         """
         has_merged = False
         final_rows: List[TableRow] = []
 
+        # 1. Horizontal Merged Cells (Colspan)
         for row in rows:
             merged_cells: List[TableCell] = []
             skip_next = 0
@@ -203,5 +206,33 @@ class LatticeTableExtractor:
                 merged_cells.append(curr_cell)
 
             final_rows.append(TableRow(cells=merged_cells, row_idx=row.row_idx, bbox=row.bbox, is_header=row.is_header))
+
+        # 2. Vertical Merged Cells (Rowspan)
+        if h_lines and y_coords and len(y_coords) >= 2:
+            num_rows = len(final_rows)
+            for r_idx in range(num_rows - 1):
+                row = final_rows[r_idx]
+                next_row = final_rows[r_idx + 1]
+                boundary_y = y_coords[r_idx + 1] if r_idx + 1 < len(y_coords) else (row.bbox[3] + next_row.bbox[1]) / 2.0
+
+                for cell in row.cells:
+                    x_mid = (cell.bbox[0] + cell.bbox[2]) / 2.0
+                    has_h_divider = any(
+                        abs(hl[1] - boundary_y) <= self.snap_tolerance
+                        and hl[0] - self.snap_tolerance <= x_mid <= hl[2] + self.snap_tolerance
+                        for hl in h_lines
+                    )
+                    if not has_h_divider:
+                        matching_next = next((nc for nc in next_row.cells if nc.col_idx == cell.col_idx), None)
+                        if matching_next:
+                            cell.rowspan += 1
+                            cell.bbox = (cell.bbox[0], cell.bbox[1], cell.bbox[2], matching_next.bbox[3])
+                            if matching_next.text:
+                                cell.text = f"{cell.text} {matching_next.text}".strip()
+                                val, cat, fmt = infer_cell_data_type(cell.text)
+                                cell.typed_value = val
+                                cell.data_type = cat
+                                cell.format_code = fmt
+                            has_merged = True
 
         return final_rows, has_merged
