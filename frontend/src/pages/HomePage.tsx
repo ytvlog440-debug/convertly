@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useCallback } from 'react'
+import React, { useState, useMemo, useEffect, useCallback, useDeferredValue } from 'react'
 import { Link } from 'react-router-dom'
 import {
   FileText,
@@ -590,11 +590,12 @@ const ToolCard = React.memo(function ToolCard({ tool }: { tool: ToolItem }) {
 export function HomePage() {
   const [activeTab, setActiveTab] = useState<'All' | 'PDF' | 'Office' | 'Images'>('All')
   const [searchQuery, setSearchQuery] = useState('')
+  const deferredSearchQuery = useDeferredValue(searchQuery)
   const { data: health } = useHealth()
 
-  // Filter tools live based on category and search query
+  // Filter tools live based on category and search query using deferred value to keep main thread responsive
   const filteredTools = useMemo(() => {
-    const query = searchQuery.trim().toLowerCase()
+    const query = deferredSearchQuery.trim().toLowerCase()
     return TOOLS_CATALOG.filter((tool) => {
       const matchesCategory = activeTab === 'All' || tool.category === activeTab
       if (!matchesCategory) return false
@@ -608,7 +609,7 @@ export function HomePage() {
         (tool.badge && tool.badge.toLowerCase().includes(query))
       )
     })
-  }, [activeTab, searchQuery])
+  }, [activeTab, deferredSearchQuery])
 
   // Deterministic tools rendering: all items rendered directly without dynamic expansion shifts
   const displayedTools = filteredTools

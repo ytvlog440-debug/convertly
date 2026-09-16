@@ -798,29 +798,91 @@ function renderToolHtml(tool) {
 
   const fallbackBody = `
     <div id="root">
-      <div style="max-width: 900px; margin: 0 auto; padding: 2rem 1rem; font-family: system-ui, -apple-system, sans-serif;">
-        <header>
-          <nav aria-label="Breadcrumb">
-            <a href="/">Home</a> / <a href="/tools">Tools</a> / <span>${tool.name}</span>
-          </nav>
-          <h1 style="font-size: 2.25rem; font-weight: 800; margin-top: 1rem; margin-bottom: 0.5rem;">${tool.name}</h1>
-          <p style="font-size: 1.125rem; color: #64748b; line-height: 1.6;">${tool.summary}</p>
-        </header>
-        <section style="margin-top: 2rem;">
-          <h2>How to Convert Files with ${tool.name}</h2>
-          <ol style="line-height: 1.8; margin-top: 1rem;">
-            ${stepsList}
-          </ol>
-        </section>
-        <section style="margin-top: 2.5rem;">
-          <h2>Frequently Asked Questions (${tool.name})</h2>
-          <div style="margin-top: 1rem;">
-            ${faqsList}
+      <div class="flex min-h-screen flex-col bg-background text-foreground transition-colors duration-300">
+        <header class="sticky top-0 z-50 h-16 w-full border-b border-border/60 bg-background/80 backdrop-blur-xl">
+          <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center gap-2.5">
+              <a href="/" class="flex items-center gap-2.5">
+                <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-600 to-cyan-500 text-white shadow-md">
+                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="font-heading text-lg font-bold tracking-tight text-foreground">Convertly</span>
+                  <span class="rounded-md bg-indigo-500/10 px-1.5 py-0.2 text-[10px] font-bold text-indigo-400 border border-indigo-500/20">v2.0</span>
+                </div>
+              </a>
+            </div>
+            <div class="flex items-center gap-3">
+              <a href="/tools" class="rounded-xl border border-border/80 px-3.5 py-1.5 text-xs font-semibold text-muted-foreground hover:border-border hover:bg-card">All Tools</a>
+            </div>
           </div>
-        </section>
-        <footer style="margin-top: 3rem; border-top: 1px solid #e2e8f0; padding-top: 1.5rem; font-size: 0.875rem; color: #94a3b8;">
-          <p>Convertly V2 — Enterprise File Conversion Platform with Zero Data Retention. Encrypted with TLS 1.3.</p>
-        </footer>
+        </header>
+
+        <main class="flex-1">
+          <div id="tool-top" class="py-12 md:py-16">
+            <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+              <div class="mb-6 flex items-center justify-between">
+                <a href="/tools" class="inline-flex items-center gap-1.5 text-xs font-semibold text-muted-foreground hover:text-foreground">
+                  <svg class="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+                  Back to All Tools
+                </a>
+                <span class="inline-flex items-center gap-1 rounded-full border border-indigo-500/20 bg-indigo-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-indigo-400">
+                  <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
+                  Zero Retention (120m)
+                </span>
+              </div>
+
+              <div class="text-center max-w-2xl mx-auto mb-10">
+                <div class="mx-auto mb-4 flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-400 shadow-lg shadow-indigo-500/10">
+                  <svg class="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" x2="12" y1="3" y2="15"/></svg>
+                </div>
+                <h1 class="font-heading text-3xl sm:text-4xl font-extrabold text-foreground">${tool.name}</h1>
+                <p class="mt-2 text-sm text-muted-foreground leading-relaxed">${tool.summary}</p>
+              </div>
+
+              <div class="space-y-8">
+                <div class="space-y-3">
+                  <div class="w-full">
+                    <div class="relative flex flex-col items-center justify-center rounded-2xl border-2 border-dashed border-border/80 bg-card/40 p-10 text-center select-none min-h-[250px]">
+                      <div class="relative mb-4 flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-500">
+                        <svg class="h-8 w-8" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>
+                      </div>
+                      <p class="text-lg font-semibold text-foreground">Choose files or drag &amp; drop here</p>
+                      <p class="mt-1.5 text-xs text-muted-foreground font-medium">${tool.name} file (up to 100MB)</p>
+                      <div class="mt-5 inline-flex items-center gap-2 rounded-xl bg-secondary/80 px-4 py-2 text-xs font-semibold text-foreground shadow-sm">
+                        Browse Files
+                      </div>
+                    </div>
+                  </div>
+                  <div class="flex items-center justify-center">
+                    <button class="inline-flex items-center gap-2 rounded-xl border border-indigo-500/30 bg-indigo-500/10 px-4 py-2 text-xs font-semibold text-indigo-400">
+                      Try with Sample Document
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <article class="mt-20 pt-12 border-t border-border/60 space-y-16 text-foreground">
+                <section class="space-y-4">
+                  <div class="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3 py-1 text-xs font-semibold text-indigo-400">
+                    <span>How to Convert Files with ${tool.name}</span>
+                  </div>
+                  <h2 class="font-heading text-2xl sm:text-3xl font-bold tracking-tight text-foreground">How to Use ${tool.name}</h2>
+                  <ol class="space-y-3 leading-relaxed mt-4">
+                    ${stepsList}
+                  </ol>
+                </section>
+
+                <section class="space-y-6">
+                  <h2 class="font-heading text-xl sm:text-2xl font-bold tracking-tight text-foreground">Frequently Asked Questions (${tool.name})</h2>
+                  <div class="space-y-3 mt-4">
+                    ${faqsList}
+                  </div>
+                </section>
+              </article>
+            </div>
+          </div>
+        </main>
       </div>
     </div>
   `

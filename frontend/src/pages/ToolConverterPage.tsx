@@ -431,6 +431,7 @@ export function ToolConverterPage() {
   const [compressLevel, setCompressLevel] = useState<'recommended' | 'extreme' | 'basic'>('recommended')
   const [rotateAngle, setRotateAngle] = useState<90 | 180 | 270>(90)
   const [rotateScope, setRotateScope] = useState<'all' | 'odd' | 'even'>('all')
+  const [imageFlip, setImageFlip] = useState<'none' | 'horizontal' | 'vertical'>('none')
   const [splitRange, setSplitRange] = useState<string>('1-2')
   const [deletePagesInput, setDeletePagesInput] = useState<string>('1')
   const [extractPagesInput, setExtractPagesInput] = useState<string>('1')
@@ -686,7 +687,11 @@ export function ToolConverterPage() {
         options.level = compressLevel
       } else if (config.id === 'pdf-rotate' || config.id === 'image-rotate') {
         options.angle = rotateAngle
-        options.scope = rotateScope
+        if (config.id === 'pdf-rotate') {
+          options.scope = rotateScope
+        } else if (imageFlip !== 'none') {
+          options.flip = imageFlip
+        }
       } else if (config.id === 'pdf-split') {
         options.range = splitRange
       } else if (config.id === 'pdf-delete-pages') {
@@ -1284,7 +1289,7 @@ export function ToolConverterPage() {
                         <div className="truncate">
                           <div className="flex items-center gap-2">
                             <p className="font-semibold text-foreground truncate">{item.file.name}</p>
-                            {item.uploaded?.page_count !== undefined && (
+                            {item.uploaded?.page_count !== undefined && item.uploaded.page_count > 0 && (
                               <span className="rounded-md bg-indigo-500/10 px-1.5 py-0.5 text-[10px] font-mono font-semibold text-indigo-400 shrink-0">
                                 {item.uploaded.page_count} {item.uploaded.page_count === 1 ? 'page' : 'pages'}
                               </span>
@@ -1392,11 +1397,11 @@ export function ToolConverterPage() {
                 )}
 
                 {/* Rotate Options */}
-                {config.id === 'pdf-rotate' && (
+                {(config.id === 'pdf-rotate' || config.id === 'image-rotate') && (
                   <div className="space-y-4">
                     <div>
                       <span className="text-xs font-semibold text-muted-foreground block mb-2">Rotation Angle</span>
-                      <div className="flex gap-3">
+                      <div className="flex flex-wrap gap-3">
                         {[
                           { angle: 90, label: '90° Clockwise' },
                           { angle: 180, label: '180° Inverted' },
@@ -1404,6 +1409,7 @@ export function ToolConverterPage() {
                         ].map((item) => (
                           <button
                             key={item.angle}
+                            type="button"
                             onClick={() => setRotateAngle(item.angle as any)}
                             className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
                               rotateAngle === item.angle
@@ -1417,28 +1423,57 @@ export function ToolConverterPage() {
                       </div>
                     </div>
 
-                    <div>
-                      <span className="text-xs font-semibold text-muted-foreground block mb-2">Target Pages</span>
-                      <div className="flex gap-3">
-                        {[
-                          { id: 'all', label: 'All Pages' },
-                          { id: 'odd', label: 'Odd Pages Only' },
-                          { id: 'even', label: 'Even Pages Only' },
-                        ].map((item) => (
-                          <button
-                            key={item.id}
-                            onClick={() => setRotateScope(item.id as any)}
-                            className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
-                              rotateScope === item.id
-                                ? 'border-indigo-500 bg-indigo-500/10 text-indigo-400'
-                                : 'border-border bg-card/40 text-muted-foreground hover:text-foreground'
-                            }`}
-                          >
-                            {item.label}
-                          </button>
-                        ))}
+                    {config.id === 'image-rotate' && (
+                      <div>
+                        <span className="text-xs font-semibold text-muted-foreground block mb-2">Mirror Flip (Optional)</span>
+                        <div className="flex flex-wrap gap-3">
+                          {[
+                            { id: 'none', label: 'None (Standard)' },
+                            { id: 'horizontal', label: 'Horizontal Flip (Mirror)' },
+                            { id: 'vertical', label: 'Vertical Flip (Upside Down)' },
+                          ].map((item) => (
+                            <button
+                              key={item.id}
+                              type="button"
+                              onClick={() => setImageFlip(item.id as any)}
+                              className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
+                                imageFlip === item.id
+                                  ? 'border-indigo-500 bg-indigo-500/10 text-indigo-400'
+                                  : 'border-border bg-card/40 text-muted-foreground hover:text-foreground'
+                              }`}
+                            >
+                              {item.label}
+                            </button>
+                          ))}
+                        </div>
                       </div>
-                    </div>
+                    )}
+
+                    {config.id === 'pdf-rotate' && (
+                      <div>
+                        <span className="text-xs font-semibold text-muted-foreground block mb-2">Target Pages</span>
+                        <div className="flex flex-wrap gap-3">
+                          {[
+                            { id: 'all', label: 'All Pages' },
+                            { id: 'odd', label: 'Odd Pages Only' },
+                            { id: 'even', label: 'Even Pages Only' },
+                          ].map((item) => (
+                            <button
+                              key={item.id}
+                              type="button"
+                              onClick={() => setRotateScope(item.id as any)}
+                              className={`px-4 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer ${
+                                rotateScope === item.id
+                                  ? 'border-indigo-500 bg-indigo-500/10 text-indigo-400'
+                                  : 'border-border bg-card/40 text-muted-foreground hover:text-foreground'
+                              }`}
+                            >
+                              {item.label}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 )}
 
