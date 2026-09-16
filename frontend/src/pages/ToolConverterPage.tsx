@@ -986,8 +986,8 @@ export function ToolConverterPage() {
 
         {/* Tool Header */}
         <div className="text-center max-w-2xl mx-auto mb-10">
-          <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-400 shadow-lg shadow-indigo-500/10">
-            <Icon className="h-7 w-7" />
+          <div className="mx-auto mb-4 flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-400 shadow-lg shadow-indigo-500/10">
+            <Icon className="h-7 w-7 shrink-0" />
           </div>
           <h1 className="font-heading text-3xl sm:text-4xl font-extrabold text-foreground">
             {config.name}

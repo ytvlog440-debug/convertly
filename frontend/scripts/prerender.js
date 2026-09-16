@@ -849,13 +849,52 @@ function renderToolHtml(tool) {
   const schemaScript = `\n    <script id="convertly-schema-jsonld" type="application/ld+json">\n${JSON.stringify(schema, null, 2)}\n    </script>\n  </head>`
   html = html.replace('</head>', schemaScript)
 
-  // Inject initial fallback content into <div id="root"></div>
-  html = html.replace('<div id="root"></div>', fallbackBody.trim())
+  // Inject initial fallback content into <div id="root">
+  html = html.replace(/<div id="root">[\s\S]*?<\/body>/, `${fallbackBody.trim()}\n  </body>`)
 
   return html
 }
 
 console.log('🚀 Starting Convertly V2 Static Pre-rendering Engine...')
+
+// 0. Pre-render Root Homepage (dist/index.html) with critical LCP Header and Hero
+const homeFallbackBody = `
+    <div id="root">
+      <header class="sticky top-0 z-50 h-16 w-full border-b border-border/60 bg-background/80 backdrop-blur-xl">
+        <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+          <div class="flex items-center gap-2.5">
+            <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-600 to-cyan-500 text-white shadow-md">
+              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <span class="font-heading text-lg font-bold tracking-tight text-foreground">Convertly</span>
+              <span class="rounded-md bg-indigo-500/10 px-1.5 py-0.2 text-[10px] font-bold text-indigo-400 border border-indigo-500/20">v2.0</span>
+            </div>
+          </div>
+        </div>
+      </header>
+      <main class="flex-1">
+        <section class="relative pt-20 pb-12 md:pt-28 md:pb-20">
+          <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
+            <div class="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5 text-xs font-semibold text-indigo-400 mb-8 backdrop-blur-md">
+              <span>Fast, Free & Private File Conversion Engine</span>
+            </div>
+            <h1 class="font-heading text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-foreground leading-[1.1]">
+              Free Online File Converter <br class="hidden sm:inline" />
+              <span class="gradient-text">for PDF, Word, Excel, Images and More</span>
+            </h1>
+            <p class="mx-auto mt-6 max-w-2xl text-base sm:text-lg text-muted-foreground leading-relaxed">
+              Convert, compress, and edit PDF, Word, Excel, PowerPoint, and images with pixel-perfect output fidelity. Powered by native document engines with guaranteed zero data retention.
+            </p>
+          </div>
+        </section>
+      </main>
+    </div>
+`
+let homeHtml = template
+homeHtml = homeHtml.replace(/<div id="root">[\s\S]*?<\/body>/, `${homeFallbackBody.trim()}\n  </body>`)
+fs.writeFileSync(INDEX_PATH, homeHtml, 'utf-8')
+console.log('  ✓ Pre-rendered: / (Homepage Critical Hero LCP)')
 
 // 1. Generate Pre-rendered pages for all 30 tools
 for (const tool of TOOLS) {

@@ -13,8 +13,9 @@ function LegacyToolRedirect() {
 }
 
 
-// Route-level Code Splitting for Lighthouse Performance
-const HomePage = lazy(() => import('./pages/HomePage').then(m => ({ default: m.HomePage })))
+import { HomePage } from './pages/HomePage'
+
+// Route-level Code Splitting for secondary routes
 const ToolsDirectoryPage = lazy(() => import('./pages/ToolsDirectoryPage').then(m => ({ default: m.ToolsDirectoryPage })))
 const ToolConverterPage = lazy(() => import('./pages/ToolConverterPage').then(m => ({ default: m.ToolConverterPage })))
 const PrivacyPage = lazy(() => import('./pages/PrivacyPage').then(m => ({ default: m.PrivacyPage })))

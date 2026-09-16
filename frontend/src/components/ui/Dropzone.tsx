@@ -49,8 +49,8 @@ export function Dropzone({
       >
         <input {...getInputProps()} />
 
-        <div className="relative mb-4 flex h-16 w-16 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-500 transition-transform duration-300 group-hover:scale-110 group-hover:bg-indigo-500/20">
-          <UploadCloud className="h-8 w-8" />
+        <div className="relative mb-4 flex h-16 w-16 shrink-0 items-center justify-center rounded-2xl bg-indigo-500/10 text-indigo-500 transition-transform duration-300 group-hover:scale-110 group-hover:bg-indigo-500/20">
+          <UploadCloud className="h-8 w-8 shrink-0" />
         </div>
 
         <p className="text-lg font-semibold text-foreground">
@@ -62,7 +62,7 @@ export function Dropzone({
         </p>
 
         <div className="mt-5 inline-flex items-center gap-2 rounded-xl bg-secondary/80 px-4 py-2 text-xs font-semibold text-foreground shadow-sm group-hover:bg-indigo-600 group-hover:text-white transition-colors duration-200">
-          <File className="h-3.5 w-3.5" />
+          <File className="h-3.5 w-3.5 shrink-0" />
           Browse Files
         </div>
       </div>

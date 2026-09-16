@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useEffect, useRef, useCallback } from 'react'
+import React, { useState, useMemo, useEffect, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import {
   FileText,
@@ -516,60 +516,28 @@ const HOMEPAGE_SCHEMAS = [
 
 interface LazySectionProps {
   children: React.ReactNode
-  minHeight: number
+  minHeight?: number
   className?: string
   id?: string
   rootMargin?: string
 }
 
 /**
- * LazySection mounts children only when within rootMargin of the viewport.
- * Preserves background styling, borders, and minimum height before mount
- * to ensure ZERO layout shift (CLS: 0.000) while eliminating offscreen DOM nodes.
+ * Section container with native content-visibility: auto.
+ * Offscreen rendering is handled natively by the browser rendering engine
+ * with ZERO DOM insertion layout shift (CLS: 0.00).
  */
 const LazySection = React.memo(function LazySection({
   children,
-  minHeight,
   className,
   id,
-  rootMargin = '400px 0px'
 }: LazySectionProps) {
-  const [isVisible, setIsVisible] = useState(false)
-  const ref = useRef<HTMLElement>(null)
-
-  useEffect(() => {
-    if (isVisible) return
-
-    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
-      setIsVisible(true)
-      return
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-          observer.disconnect()
-        }
-      },
-      { rootMargin }
-    )
-
-    if (ref.current) {
-      observer.observe(ref.current)
-    }
-
-    return () => observer.disconnect()
-  }, [isVisible, rootMargin])
-
   return (
     <section
       id={id}
-      ref={ref}
-      className={className}
-      style={{ minHeight: isVisible ? undefined : `${minHeight}px` }}
+      className={className ? `${className} content-auto` : 'content-auto'}
     >
-      {isVisible ? children : null}
+      {children}
     </section>
   )
 })
@@ -593,11 +561,11 @@ const ToolCard = React.memo(function ToolCard({ tool }: { tool: ToolItem }) {
       <Card className="h-full flex flex-col justify-between group-hover:-translate-y-1 transition-all duration-300 hover:border-indigo-500/50 hover:shadow-lg hover:shadow-indigo-500/5">
         <div>
           <div className="flex items-start justify-between mb-4">
-            <div className={`flex h-11 w-11 items-center justify-center rounded-xl ${tool.color}`}>
-              <Icon className="h-5 w-5" />
+            <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${tool.color}`}>
+              <Icon className="h-5 w-5 shrink-0" />
             </div>
             {tool.badge && (
-              <Badge variant="default" className="text-[10px]">
+              <Badge variant="default" className="text-[10px] shrink-0">
                 {tool.badge}
               </Badge>
             )}
@@ -612,20 +580,16 @@ const ToolCard = React.memo(function ToolCard({ tool }: { tool: ToolItem }) {
 
         <div className="mt-5 pt-3 border-t border-border/40 flex items-center justify-between text-xs font-semibold text-indigo-400 opacity-80 group-hover:opacity-100">
           <span>Launch Converter</span>
-          <ArrowRight className="h-3.5 w-3.5 transition-transform group-hover:translate-x-1" />
+          <ArrowRight className="h-3.5 w-3.5 shrink-0 transition-transform group-hover:translate-x-1" />
         </div>
       </Card>
     </Link>
   )
 })
 
-const INITIAL_VISIBLE_TOOLS = 12
-
 export function HomePage() {
   const [activeTab, setActiveTab] = useState<'All' | 'PDF' | 'Office' | 'Images'>('All')
   const [searchQuery, setSearchQuery] = useState('')
-  const [visibleCount, setVisibleCount] = useState(INITIAL_VISIBLE_TOOLS)
-  const gridSentinelRef = useRef<HTMLDivElement>(null)
   const { data: health } = useHealth()
 
   // Filter tools live based on category and search query
@@ -646,41 +610,8 @@ export function HomePage() {
     })
   }, [activeTab, searchQuery])
 
-  // Active filter state check
-  const isFiltered = searchQuery.trim().length > 0 || activeTab !== 'All'
-
-  // Progressive tools rendering: render first 12 cards, mount remainder as user scrolls near fold
-  const displayedTools = useMemo(() => {
-    if (isFiltered || visibleCount >= filteredTools.length) {
-      return filteredTools
-    }
-    return filteredTools.slice(0, visibleCount)
-  }, [filteredTools, isFiltered, visibleCount])
-
-  // Sentinel observer to auto-expand tools grid seamlessly before user reaches bottom of row
-  useEffect(() => {
-    if (isFiltered || visibleCount >= filteredTools.length) return
-    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
-      setVisibleCount(filteredTools.length)
-      return
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisibleCount(filteredTools.length)
-          observer.disconnect()
-        }
-      },
-      { rootMargin: '300px 0px' }
-    )
-
-    if (gridSentinelRef.current) {
-      observer.observe(gridSentinelRef.current)
-    }
-
-    return () => observer.disconnect()
-  }, [isFiltered, visibleCount, filteredTools.length])
+  // Deterministic tools rendering: all items rendered directly without dynamic expansion shifts
+  const displayedTools = filteredTools
 
   // Debounced search tracking (minimum 2 characters to avoid noise)
   useEffect(() => {
@@ -785,19 +716,19 @@ export function HomePage() {
           {/* Trust Guarantees Strip */}
           <div className="mt-12 flex flex-wrap items-center justify-center gap-6 sm:gap-12 text-xs font-medium text-muted-foreground">
             <div className="flex items-center gap-2">
-              <Shield className="h-4 w-4 text-indigo-400" />
+              <Shield className="h-4 w-4 shrink-0 text-indigo-400" />
               <span>120-Min Auto Shredder</span>
             </div>
             <div className="flex items-center gap-2">
-              <Gauge className="h-4 w-4 text-cyan-400" />
+              <Gauge className="h-4 w-4 shrink-0 text-cyan-400" />
               <span>Sub-Second Fast Engines</span>
             </div>
             <div className="flex items-center gap-2">
-              <Lock className="h-4 w-4 text-emerald-400" />
+              <Lock className="h-4 w-4 shrink-0 text-emerald-400" />
               <span>Zero Document Retention</span>
             </div>
             <div className="flex items-center gap-2">
-              <Check className="h-4 w-4 text-emerald-400" />
+              <Check className="h-4 w-4 shrink-0 text-emerald-400" />
               <span>100% Free & No Watermarks</span>
             </div>
           </div>
@@ -863,9 +794,6 @@ export function HomePage() {
               {displayedTools.map((tool) => (
                 <ToolCard key={tool.id} tool={tool} />
               ))}
-              {!isFiltered && visibleCount < filteredTools.length && (
-                <div ref={gridSentinelRef} className="h-1 col-span-full" aria-hidden="true" />
-              )}
             </div>
           ) : (
             <div className="rounded-2xl border border-dashed border-border/80 bg-card/40 p-12 text-center">

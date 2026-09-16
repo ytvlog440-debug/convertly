@@ -13,7 +13,10 @@ export function Navbar() {
   const [isPaletteOpen, setIsPaletteOpen] = useState(false)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(false)
-  const [historyCount, setHistoryCount] = useState(0)
+  const [historyCount, setHistoryCount] = useState(() => {
+    if (typeof window === 'undefined') return 0
+    return getRecentConversions().length
+  })
   const { data: health, isLoading, isError } = useHealth()
   const location = useLocation()
 
@@ -56,7 +59,7 @@ export function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full border-b border-border/60 bg-background/80 backdrop-blur-xl transition-colors duration-300">
+      <header className="sticky top-0 z-50 h-16 w-full border-b border-border/60 bg-background/80 backdrop-blur-xl transition-colors duration-300">
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           
           {/* Logo */}
@@ -116,12 +119,12 @@ export function Navbar() {
             <button
               onClick={() => setIsDrawerOpen(true)}
               title="Recent file conversions"
-              className="flex items-center gap-1.5 rounded-xl border border-border/80 bg-card/60 px-2.5 py-1.5 text-xs font-medium text-muted-foreground hover:bg-secondary/60 hover:text-foreground transition-all cursor-pointer"
+              className="flex shrink-0 items-center gap-1.5 rounded-xl border border-border/80 bg-card/60 px-2.5 py-1.5 text-xs font-medium text-muted-foreground hover:bg-secondary/60 hover:text-foreground transition-all cursor-pointer"
             >
-              <History className="h-4 w-4" />
+              <History className="h-4 w-4 shrink-0" />
               <span className="hidden sm:inline text-[11px]">Recent</span>
               {historyCount > 0 && (
-                <span className="flex h-4 min-w-4 px-1 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white">
+                <span className="flex h-4 min-w-4 px-1 items-center justify-center rounded-full bg-indigo-600 text-[10px] font-bold text-white shrink-0">
                   {historyCount}
                 </span>
               )}
@@ -162,10 +165,10 @@ export function Navbar() {
             {/* Mobile hamburger button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden flex h-9 w-9 items-center justify-center rounded-xl border border-border/80 bg-card/60 text-muted-foreground hover:text-foreground"
+              className="md:hidden flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-border/80 bg-card/60 text-muted-foreground hover:text-foreground"
               aria-label="Toggle navigation menu"
           >
-            {mobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {mobileMenuOpen ? <X className="h-5 w-5 shrink-0" /> : <Menu className="h-5 w-5 shrink-0" />}
           </button>
         </div>
       </div>
