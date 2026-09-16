@@ -513,6 +513,10 @@ export function HomePage() {
   // Filter tools live based on category and search query using deferred value to keep main thread responsive
   const filteredTools = useMemo(() => {
     const query = deferredSearchQuery.trim().toLowerCase()
+    if (!query && activeTab === 'All') {
+      return TOOLS_CATALOG
+    }
+
     return TOOLS_CATALOG.filter((tool) => {
       const matchesCategory = activeTab === 'All' || tool.category === activeTab
       if (!matchesCategory) return false

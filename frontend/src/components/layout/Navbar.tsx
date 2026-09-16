@@ -14,10 +14,7 @@ export function Navbar() {
   const [isPaletteOpen, setIsPaletteOpen] = useState(false)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false)
   const [isShortcutsOpen, setIsShortcutsOpen] = useState(false)
-  const [historyCount, setHistoryCount] = useState(() => {
-    if (typeof window === 'undefined') return 0
-    return getRecentConversions().length
-  })
+  const [historyCount, setHistoryCount] = useState(0)
   const { data: health, isLoading, isError } = useHealth()
   const location = useLocation()
 
@@ -25,7 +22,15 @@ export function Navbar() {
     const updateCount = () => {
       setHistoryCount(getRecentConversions().length)
     }
-    updateCount()
+
+    // Read history count outside critical render path during browser idle
+    if (typeof window !== 'undefined') {
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(() => updateCount(), { timeout: 2000 })
+      } else {
+        setTimeout(updateCount, 1000)
+      }
+    }
 
     const handleTogglePalette = () => setIsPaletteOpen((prev) => !prev)
     const handleGlobalKeyDown = (e: KeyboardEvent) => {

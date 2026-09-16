@@ -101,12 +101,16 @@ export function SeoHead({
 }: SeoHeadProps) {
   React.useEffect(() => {
     // 1. Ensure HTML root language is set
-    document.documentElement.lang = 'en'
+    if (document.documentElement.lang !== 'en') {
+      document.documentElement.lang = 'en'
+    }
 
     // 2. Page Title
-    document.title = title
+    if (document.title !== title) {
+      document.title = title
+    }
 
-    // Helper to safely set, update, or deduplicate meta tags
+    // Helper to safely set, update, or deduplicate meta tags without redundant DOM writes
     const setMeta = (attributeName: 'name' | 'property', attributeValue: string, content: string) => {
       const existing = document.querySelectorAll(`meta[${attributeName}="${attributeValue}"]`)
       if (existing.length > 1) {
@@ -119,9 +123,13 @@ export function SeoHead({
       if (!el) {
         el = document.createElement('meta')
         el.setAttribute(attributeName, attributeValue)
+        el.setAttribute('content', content)
         document.head.appendChild(el)
+        return
       }
-      el.setAttribute('content', content)
+      if (el.getAttribute('content') !== content) {
+        el.setAttribute('content', content)
+      }
     }
 
     // 3. Absolute Canonical URL Normalization
@@ -130,9 +138,11 @@ export function SeoHead({
     if (!canonical) {
       canonical = document.createElement('link')
       canonical.setAttribute('rel', 'canonical')
+      canonical.setAttribute('href', cleanCanonical)
       document.head.appendChild(canonical)
+    } else if (canonical.getAttribute('href') !== cleanCanonical) {
+      canonical.setAttribute('href', cleanCanonical)
     }
-    canonical.setAttribute('href', cleanCanonical)
 
     // 4. Standard Directives & Metadata
     setMeta('name', 'description', description)
@@ -414,7 +424,10 @@ export function SeoHead({
       '@graph': graph,
     }
 
-    scriptTag.text = JSON.stringify(structuredDataPayload)
+    const payloadJson = JSON.stringify(structuredDataPayload)
+    if (scriptTag.text !== payloadJson) {
+      scriptTag.text = payloadJson
+    }
   }, [
     title,
     description,

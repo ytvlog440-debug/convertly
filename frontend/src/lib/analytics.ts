@@ -319,10 +319,6 @@ const queueOrExecute = (fn: () => void): void => {
     }
   } else {
     pendingEventsQueue.push(fn)
-    // If tracking was requested before bootstrap fired, accelerate bootstrap
-    if (isInitialized && !isBootstrapStarted) {
-      void bootstrapAnalytics()
-    }
   }
 }
 
