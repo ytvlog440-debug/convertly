@@ -1,11 +1,11 @@
 import { Suspense, lazy, useEffect } from 'react'
 import { BrowserRouter as Router, Routes, Route, Navigate, useParams } from 'react-router-dom'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { Navbar } from './components/layout/Navbar'
-import { Footer } from './components/layout/Footer'
 import { ScrollToTop } from './components/ScrollToTop'
 import { AnalyticsTracker } from './components/common/AnalyticsTracker'
 import { initClarity } from './lib/clarity'
+
+const Footer = lazy(() => import('./components/layout/Footer').then(m => ({ default: m.Footer })))
 
 function LegacyToolRedirect() {
   const { toolId } = useParams()
@@ -35,17 +35,7 @@ const BlogPostDetailPage = lazy(() => import('./pages/BlogPostDetailPage').then(
 const HtmlSitemapPage = lazy(() => import('./pages/HtmlSitemapPage').then(m => ({ default: m.HtmlSitemapPage })))
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage').then(m => ({ default: m.NotFoundPage })))
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      refetchOnMount: false,
-      refetchOnReconnect: false,
-      retry: false,
-      staleTime: 5 * 60 * 1000,
-    },
-  },
-})
+
 
 function RouteLoadingFallback() {
   return (
@@ -68,8 +58,7 @@ export function App() {
   }, [])
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <Router>
+    <Router>
         <AnalyticsTracker />
         <ScrollToTop />
         <div className="flex min-h-screen flex-col bg-background text-foreground transition-colors duration-300">
@@ -115,10 +104,11 @@ export function App() {
               </Routes>
             </Suspense>
           </main>
-          <Footer />
+          <Suspense fallback={null}>
+            <Footer />
+          </Suspense>
         </div>
       </Router>
-    </QueryClientProvider>
   )
 }
 

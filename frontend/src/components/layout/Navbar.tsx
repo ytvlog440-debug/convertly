@@ -1,12 +1,13 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, lazy, Suspense } from 'react'
 import { Link, useLocation } from 'react-router-dom'
 import { Layers, Menu, X, Search, History } from 'lucide-react'
 import { ThemeToggle } from './ThemeToggle'
 import { useHealth } from '../../hooks/useHealth'
-import { CommandPalette } from '../common/CommandPalette'
-import { RecentActivityDrawer } from '../common/RecentActivityDrawer'
-import { ShortcutsModal } from '../common/ShortcutsModal'
 import { getRecentConversions } from '../../lib/history'
+
+const CommandPalette = lazy(() => import('../common/CommandPalette').then(m => ({ default: m.CommandPalette })))
+const RecentActivityDrawer = lazy(() => import('../common/RecentActivityDrawer').then(m => ({ default: m.RecentActivityDrawer })))
+const ShortcutsModal = lazy(() => import('../common/ShortcutsModal').then(m => ({ default: m.ShortcutsModal })))
 
 export function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -196,10 +197,22 @@ export function Navbar() {
       )}
     </header>
 
-    {/* Global Command Palette, Recent Activity Drawer & Shortcuts Modal */}
-    <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} />
-    <RecentActivityDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
-    <ShortcutsModal isOpen={isShortcutsOpen} onClose={() => setIsShortcutsOpen(false)} />
+    {/* Global Command Palette, Recent Activity Drawer & Shortcuts Modal (on-demand lazy loaded) */}
+    {isPaletteOpen && (
+      <Suspense fallback={null}>
+        <CommandPalette isOpen={isPaletteOpen} onClose={() => setIsPaletteOpen(false)} />
+      </Suspense>
+    )}
+    {isDrawerOpen && (
+      <Suspense fallback={null}>
+        <RecentActivityDrawer isOpen={isDrawerOpen} onClose={() => setIsDrawerOpen(false)} />
+      </Suspense>
+    )}
+    {isShortcutsOpen && (
+      <Suspense fallback={null}>
+        <ShortcutsModal isOpen={isShortcutsOpen} onClose={() => setIsShortcutsOpen(false)} />
+      </Suspense>
+    )}
   </>
   )
 }

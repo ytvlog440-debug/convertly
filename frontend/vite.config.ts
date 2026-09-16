@@ -24,12 +24,26 @@ export default defineConfig({
     cssCodeSplit: true,
     rollupOptions: {
       output: {
-        manualChunks: {
-          'vendor-react': ['react', 'react-dom', 'react-router-dom'],
-          'vendor-query': ['@tanstack/react-query'],
-          'vendor-icons': ['lucide-react'],
-          'vendor-motion': ['framer-motion'],
-          'vendor-analytics': ['react-ga4'],
+        manualChunks(id) {
+          if (id.includes('node_modules')) {
+            if (
+              id.includes('react-dom') ||
+              id.includes('/react/') ||
+              id.includes('scheduler') ||
+              id.includes('react-router')
+            ) {
+              return 'vendor-react'
+            }
+            if (id.includes('lucide-react')) {
+              return 'vendor-icons'
+            }
+            if (id.includes('react-ga4')) {
+              return 'vendor-analytics'
+            }
+            if (id.includes('tailwind-merge') || id.includes('clsx')) {
+              return 'vendor-utils'
+            }
+          }
         },
       },
     },
