@@ -31,6 +31,8 @@ from app.core.ocr_guard import (
     get_process_rss_mb,
     log_ocr_memory,
     OCRTimeoutError,
+    is_near_blank_page,
+    extract_ocr_text_from_page,
 )
 from app.services.engine.table_extractor import EnterpriseTableExtractor
 from app.services.engine.table_extractor.config import TableExtractorConfig
@@ -337,4 +339,61 @@ async def test_end_to_end_multipage_scanned_pdf_conversion(tmp_path):
         assert result.output_path.endswith(".xlsx")
         assert result.metadata.get("total_pages_processed", 3) >= 1
         assert get_active_ocr_count() == 0
+
+
+def test_is_near_blank_page_detection():
+    """Verify that is_near_blank_page correctly differentiates blank scans from content pages."""
+    # 1. Blank page
+    doc_blank = fitz.open()
+    page_blank = doc_blank.new_page(width=612, height=792)
+    assert is_near_blank_page(page_blank) is True
+    doc_blank.close()
+
+    # 2. Content page with text
+    doc_content = fitz.open()
+    page_content = doc_content.new_page(width=612, height=792)
+    page_content.insert_text((72, 100), "This is a statement with rich transactions and valid content.")
+    assert is_near_blank_page(page_content) is False
+    doc_content.close()
+
+
+def test_extract_ocr_text_from_page_skips_blank_page():
+    """Verify that extract_ocr_text_from_page cleanly skips blank pages without running OCR."""
+    doc_blank = fitz.open()
+    page_blank = doc_blank.new_page(width=612, height=792)
+
+    with patch("pytesseract.image_to_string") as mock_ocr:
+        text = extract_ocr_text_from_page(page_blank, page_idx=1)
+        assert text == ""
+        # pytesseract must never be called on blank pages!
+        mock_ocr.assert_not_called()
+
+    doc_blank.close()
+
+
+@pytest.mark.asyncio
+async def test_pdf_to_word_scanned_conversion_with_shared_guard(tmp_path):
+    """Verify PdfToWordConverter processes scanned pages through shared OCR guard and cleans up."""
+    from app.services.engine.office import PdfToWordConverter
+    import docx
+
+    pdf_bytes = _create_scanned_image_pdf(pages=2)
+    pdf_file = tmp_path / "scanned_doc.pdf"
+    pdf_file.write_bytes(pdf_bytes)
+
+    converter = PdfToWordConverter()
+
+    with patch("app.core.ocr_guard.find_tesseract_bin", return_value="dummy_tesseract"), \
+         patch("pytesseract.image_to_string", return_value="Account Statement\nBalance $4,500.00"):
+        res = await converter.convert([str(pdf_file)], str(tmp_path), {})
+
+        assert os.path.exists(res.output_path)
+        assert res.output_path.endswith(".docx")
+        assert get_active_ocr_count() == 0
+
+        # Validate docx structure
+        doc = docx.Document(res.output_path)
+        doc_text = "\n".join(p.text for p in doc.paragraphs)
+        assert "Account Statement" in doc_text
+        assert "$4,500.00" in doc_text
 

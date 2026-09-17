@@ -544,31 +544,9 @@ class EnterpriseTableExtractor:
 
     def _is_near_blank_page(self, page: fitz.Page) -> bool:
         """
-        Ultra-fast (<2ms), conservative blank page detector for scanned documents.
-        Prevents expensive and futile OCR / CV deskewing on blank scanner sheets
-        while guaranteeing zero false positives on valid low-text statement pages.
+        Ultra-fast (<15ms), conservative blank page detector for scanned documents.
+        Delegates to shared app.core.ocr_guard.is_near_blank_page.
         """
-        import numpy as np
-        raw_text = page.get_text().strip()
-        if len(raw_text) >= 20:
-            return False
-
-        try:
-            pix = page.get_pixmap(dpi=72, colorspace=fitz.csGRAY, alpha=False)
-            arr = np.frombuffer(pix.samples, dtype=np.uint8).reshape((pix.height, pix.width))
-            del pix
-
-            my = max(1, int(arr.shape[0] * 0.05))
-            mx = max(1, int(arr.shape[1] * 0.05))
-            inner = arr[my:-my, mx:-mx]
-
-            dark_pixels = np.count_nonzero(inner < 180)
-            inner_dark_ratio = (dark_pixels / inner.size) * 100.0
-            del arr, inner
-
-            # Statement pages have > 5.0% - 7.5% dark pixels.
-            # Blank scan pages have < 0.10% dark pixels.
-            return inner_dark_ratio < 0.25
-        except Exception:
-            return False
+        from app.core.ocr_guard import is_near_blank_page
+        return is_near_blank_page(page)
 

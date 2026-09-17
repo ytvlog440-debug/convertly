@@ -24,19 +24,7 @@ def find_libreoffice_bin() -> Optional[str]:
     return None
 
 
-def find_tesseract_bin() -> Optional[str]:
-    """Find Tesseract OCR executable if installed in system PATH or standard directories."""
-    candidates = [
-        shutil.which("tesseract"),
-        r"C:\Program Files\Tesseract-OCR\tesseract.exe",
-        r"C:\Program Files (x86)\Tesseract-OCR\tesseract.exe",
-        "/usr/bin/tesseract",
-        "/usr/local/bin/tesseract",
-    ]
-    for c in candidates:
-        if c and os.path.isfile(c):
-            return c
-    return None
+from app.core.ocr_guard import find_tesseract_bin
 
 
 def run_libreoffice_conversion(input_path: str, output_dir: str, target_format: str = "pdf") -> str:
@@ -309,16 +297,17 @@ class PdfToWordConverter(BaseConverter):
                 if len(raw_page_text) > 40 and not force_ocr:
                     extracted_text = raw_page_text
                 elif has_pytess:
-                    import io
-                    import pytesseract
-                    from PIL import Image
+                    from app.core.ocr_guard import extract_ocr_text_from_page
 
-                    pix = page.get_pixmap(dpi=200)
-                    pil_img = Image.open(io.BytesIO(pix.tobytes("png")))
-                    try:
-                        extracted_text = pytesseract.image_to_string(pil_img, lang="eng")
-                    except Exception as ocr_err:
-                        logger.warning(f"OCR failed for page {page_idx + 1}: {ocr_err}")
+                    extracted_text = extract_ocr_text_from_page(
+                        page=page,
+                        dpi=200,
+                        lang="eng",
+                        job_id=f"word_{out_filename[:8]}",
+                        page_idx=page_idx,
+                        tesseract_cmd=tess_bin,
+                    )
+                    if not extracted_text:
                         extracted_text = raw_page_text
                 else:
                     extracted_text = raw_page_text

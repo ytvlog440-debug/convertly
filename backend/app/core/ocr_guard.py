@@ -7,10 +7,12 @@ deterministic resource tracking, and high-fidelity RSS memory logging.
 import os
 import sys
 import time
+import shutil
+import gc
 import threading
 import logging
 from contextlib import contextmanager
-from typing import Optional
+from typing import Optional, Any
 
 logger = logging.getLogger("convertly.ocr_guard")
 
@@ -175,3 +177,124 @@ def ocr_resource_guard(
         with _lock:
             _active_ocr_count = max(0, _active_ocr_count - 1)
         _semaphore.release()
+
+
+def find_tesseract_bin() -> Optional[str]:
+    """Find Tesseract OCR executable if installed in system PATH or standard directories."""
+    candidates = [
+        shutil.which("tesseract"),
+        r"C:\Program Files\Tesseract-OCR\tesseract.exe",
+        r"C:\Program Files (x86)\Tesseract-OCR\tesseract.exe",
+        "/usr/bin/tesseract",
+        "/usr/local/bin/tesseract",
+    ]
+    for c in candidates:
+        if c and os.path.isfile(c):
+            return c
+    return None
+
+
+def is_near_blank_page(page: Any, dark_threshold: int = 180, ratio_threshold: float = 0.25) -> bool:
+    """
+    Ultra-fast (<15ms), conservative blank page detector for scanned documents.
+    Shared across all conversion engines (Excel, Word, etc.).
+    Prevents expensive and futile OCR / CV deskewing on blank scanner sheets
+    while guaranteeing zero false positives on valid low-text statement pages.
+    """
+    try:
+        raw_text = page.get_text().strip() if hasattr(page, "get_text") else ""
+        if len(raw_text) >= 20:
+            return False
+
+        import fitz
+        import numpy as np
+
+        pix = page.get_pixmap(dpi=72, colorspace=fitz.csGRAY, alpha=False)
+        arr = np.frombuffer(pix.samples, dtype=np.uint8).reshape((pix.height, pix.width))
+        del pix
+
+        my = max(1, int(arr.shape[0] * 0.05))
+        mx = max(1, int(arr.shape[1] * 0.05))
+        inner = arr[my:-my, mx:-mx]
+
+        dark_pixels = np.count_nonzero(inner < dark_threshold)
+        inner_dark_ratio = (dark_pixels / inner.size) * 100.0
+        del arr, inner
+
+        # Statement pages have > 5.0% - 7.5% dark pixels.
+        # Blank scan pages have < 0.10% dark pixels.
+        return bool(inner_dark_ratio < ratio_threshold)
+    except Exception as e:
+        logger.debug(f"[OCR_GUARD] is_near_blank_page error: {e}")
+        return False
+
+
+def extract_ocr_text_from_page(
+    page: Any,
+    dpi: int = 200,
+    lang: str = "eng",
+    job_id: str = "ocr",
+    page_idx: int = -1,
+    tesseract_cmd: Optional[str] = None,
+    timeout: float = 60.0,
+) -> str:
+    """
+    Unified, memory-safe OCR text extractor for scanned PDF pages.
+    Shared across PDF-to-Word, PDF-to-Text, and fallback pipelines:
+    1. Reliably bypasses near-blank scanner pages (< 15ms) without rasterizing at high DPI.
+    2. Enforces global bounded OCR concurrency semaphore (MAX_CONCURRENT_OCR=1).
+    3. Reads pixel samples directly without intermediate PNG encoding or io.BytesIO overhead.
+    4. Deterministically releases PyMuPDF Pixmap and PIL Image in try/finally blocks.
+    5. Forces generational garbage collection between pages to stabilize process RSS.
+    """
+    if is_near_blank_page(page):
+        logger.info(f"[OCR_GUARD] Page {page_idx + 1} detected as empty/near-blank scan. Bypassing OCR.")
+        return ""
+
+    tess_bin = tesseract_cmd or find_tesseract_bin()
+    if not tess_bin:
+        logger.warning(f"[OCR_GUARD] Tesseract binary not found for page {page_idx + 1}. Bypassing OCR.")
+        return ""
+
+    import pytesseract
+    from PIL import Image
+
+    pytesseract.pytesseract.tesseract_cmd = tess_bin
+
+    pix = None
+    pil_img = None
+    extracted_text = ""
+
+    with ocr_resource_guard(job_id=job_id, page_idx=page_idx, engine="tesseract_text", timeout=timeout):
+        try:
+            log_ocr_memory(job_id=job_id, page_idx=page_idx, stage="before_rasterize", engine="tesseract_text")
+            pix = page.get_pixmap(dpi=dpi, alpha=False)
+            log_ocr_memory(job_id=job_id, page_idx=page_idx, stage="after_rasterize", engine="tesseract_text")
+
+            # Direct buffer conversion: no PNG encoding, no io.BytesIO duplicate buffers
+            pil_img = Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
+            # Immediately drop C-level pixmap pointer
+            del pix
+            pix = None
+
+            log_ocr_memory(job_id=job_id, page_idx=page_idx, stage="before_ocr", engine="tesseract_text")
+            extracted_text = pytesseract.image_to_string(pil_img, lang=lang, timeout=timeout)
+            log_ocr_memory(job_id=job_id, page_idx=page_idx, stage="after_ocr", engine="tesseract_text")
+        except Exception as ocr_err:
+            logger.warning(f"[OCR_GUARD] OCR failed on page {page_idx + 1}: {ocr_err}")
+            extracted_text = ""
+        finally:
+            if pil_img is not None:
+                try:
+                    pil_img.close()
+                except Exception:
+                    pass
+                del pil_img
+                pil_img = None
+            if pix is not None:
+                del pix
+                pix = None
+            gc.collect()
+            log_ocr_memory(job_id=job_id, page_idx=page_idx, stage="after_cleanup", engine="tesseract_text")
+
+    return extracted_text
