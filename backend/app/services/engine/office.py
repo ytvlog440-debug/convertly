@@ -1,4 +1,5 @@
 import os
+import gc
 import shutil
 import subprocess
 import uuid
@@ -261,10 +262,21 @@ class PdfToWordConverter(BaseConverter):
                 if os.path.exists(out_path):
                     test_doc = Document(out_path)
                     docx_text = "".join(p.text for p in test_doc.paragraphs).strip()
+                    del test_doc
                     if len(docx_text) >= 20:
                         converted_with_pdf2docx = True
+                    else:
+                        try:
+                            os.remove(out_path)
+                        except Exception:
+                            pass
             except Exception as e:
                 logger.warning(f"pdf2docx conversion failed or incomplete ({e}), falling back to OCR engine.")
+                if os.path.exists(out_path):
+                    try:
+                        os.remove(out_path)
+                    except Exception:
+                        pass
 
         # If pdf2docx failed, document is scanned, or produced an empty document without editable text
         if not converted_with_pdf2docx:
@@ -326,9 +338,23 @@ class PdfToWordConverter(BaseConverter):
                             if line_idx < len(lines) - 1:
                                 p.add_run("\n")
 
+                # Explicitly release per-page text and flush PyMuPDF C store
+                del extracted_text, blocks
+                try:
+                    fitz.TOOLS.store_shrink(100)
+                except Exception:
+                    pass
+                gc.collect()
+
             docx_out.save(out_path)
 
         doc.close()
+        del doc
+        try:
+            fitz.TOOLS.store_shrink(100)
+        except Exception:
+            pass
+        gc.collect()
 
         self.validate_output(out_path)
         validate_office_archive(out_path, "word/document.xml")

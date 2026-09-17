@@ -220,6 +220,10 @@ def is_near_blank_page(page: Any, dark_threshold: int = 180, ratio_threshold: fl
         dark_pixels = np.count_nonzero(inner < dark_threshold)
         inner_dark_ratio = (dark_pixels / inner.size) * 100.0
         del arr, inner
+        try:
+            fitz.TOOLS.store_shrink(100)
+        except Exception:
+            pass
 
         # Statement pages have > 5.0% - 7.5% dark pixels.
         # Blank scan pages have < 0.10% dark pixels.
@@ -294,6 +298,11 @@ def extract_ocr_text_from_page(
             if pix is not None:
                 del pix
                 pix = None
+            try:
+                import fitz
+                fitz.TOOLS.store_shrink(100)
+            except Exception:
+                pass
             gc.collect()
             log_ocr_memory(job_id=job_id, page_idx=page_idx, stage="after_cleanup", engine="tesseract_text")
 
