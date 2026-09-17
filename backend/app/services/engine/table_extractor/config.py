@@ -22,6 +22,7 @@ from .constants import (
     DEFAULT_MAX_WORKER_MEMORY_MB,
     DEFAULT_PER_PAGE_TIMEOUT_SEC,
     DEFAULT_MAX_PARALLEL_WORKERS,
+    DEFAULT_OCR_MAX_WORKERS,
 )
 
 
@@ -92,6 +93,7 @@ class MemoryConfig:
 class WorkerConfig:
     """Parallel execution and process pool orchestration."""
     max_workers: int = DEFAULT_MAX_PARALLEL_WORKERS
+    ocr_max_workers: int = DEFAULT_OCR_MAX_WORKERS
     timeout_seconds_per_page: int = DEFAULT_PER_PAGE_TIMEOUT_SEC
     use_multiprocessing: bool = False  # Threads by default to avoid process spawning overhead on Windows
 
@@ -157,6 +159,12 @@ class TableExtractorConfig:
                 cfg.workers.max_workers = max(1, int(os.environ["CONVERTLY_TABLE_MAX_WORKERS"]))
             except ValueError:
                 pass
+        ocr_worker_env = os.environ.get("CONVERTLY_TABLE_OCR_MAX_WORKERS") or os.environ.get("CONVERTLY_OCR_MAX_WORKERS")
+        if ocr_worker_env:
+            try:
+                cfg.workers.ocr_max_workers = max(1, int(ocr_worker_env))
+            except ValueError:
+                pass
         if "CONVERTLY_TABLE_STREAMING_PAGE_THRESHOLD" in os.environ:
             try:
                 cfg.memory.streaming_page_threshold = int(os.environ["CONVERTLY_TABLE_STREAMING_PAGE_THRESHOLD"])
@@ -202,5 +210,7 @@ class TableExtractorConfig:
             cfg.memory.streaming_page_threshold = int(options["streaming_page_threshold"])
         if "max_workers" in options:
             cfg.workers.max_workers = int(options["max_workers"])
+        if "ocr_max_workers" in options:
+            cfg.workers.ocr_max_workers = int(options["ocr_max_workers"])
 
         return cfg

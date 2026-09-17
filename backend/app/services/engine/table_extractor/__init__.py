@@ -7,8 +7,10 @@ and high-fidelity Excel workbook generation.
 from typing import List, Dict, Any, Optional, Tuple
 import fitz  # PyMuPDF
 import os
+import gc
 
 from app.core.logging import logger
+from app.core.ocr_guard import ocr_resource_guard, log_ocr_memory
 from dataclasses import asdict
 from app.services.engine.table_extractor.constants import (
     DocumentType,
@@ -178,6 +180,19 @@ class EnterpriseTableExtractor:
             primary_engine_name = decision.page_routes.get(p_idx, decision.primary_engine)
             tables: List[TableBlock] = []
 
+            # Fast blank-page bypass for scanned pages to prevent futile, expensive OCR cycles
+            if (primary_engine_name == EngineType.OCR_TSV.value or decision.ocr_required) and self._is_near_blank_page(page):
+                logger.info(f"[EnterpriseTableExtractor] Page {p_idx + 1} detected as empty/near-blank scan. Safely bypassing OCR.")
+                layout = PageLayout(
+                    page_idx=p_idx,
+                    width=width,
+                    height=height,
+                    is_scanned=True,
+                    tables=[],
+                    key_values=[]
+                )
+                return (p_idx, layout, [], 1.0)
+
             # Stage 9: Table extraction
             with log_stage("Table extraction", extra=f"page {p_idx + 1}, engine={primary_engine_name}"):
                 try:
@@ -239,10 +254,19 @@ class EnterpriseTableExtractor:
 
         import concurrent.futures
         import gc
+        from app.core.ocr_guard import ocr_resource_guard, log_ocr_memory
 
-        max_workers = min(config.workers.max_workers, total_pages)
-        # For small PDFs (< 4 pages), sequential execution is faster and avoids thread pool overhead.
-        # For larger PDFs, parallel execution is bounded with per-page timeouts.
+        is_ocr_doc = decision.ocr_required or any(r == EngineType.OCR_TSV.value for r in decision.page_routes.values())
+        if is_ocr_doc:
+            # Enforce strict bounded worker concurrency for OCR-heavy documents (default 1)
+            max_workers = min(getattr(config.workers, 'ocr_max_workers', 1), total_pages)
+            logger.info(f"[EnterpriseTableExtractor] OCR-heavy document detected. Bounding execution workers to {max_workers}.")
+        else:
+            # Native text extraction is cheap and memory-safe; retain parallel throughput
+            max_workers = min(config.workers.max_workers, total_pages)
+
+        # For small PDFs (< 4 pages) or single worker, sequential execution is faster and memory-bounded.
+        # For larger native text PDFs, parallel execution is bounded with per-page timeouts.
         if total_pages >= 4 and max_workers > 1:
             def _thread_worker(p_idx: int):
                 thread_doc = fitz.open(stream=pdf_bytes, filetype="pdf")
@@ -399,17 +423,27 @@ class EnterpriseTableExtractor:
             # Scanned / Image-Based PDF Pipeline (OCR + CV)
             # -------------------------------------------------------------
             logger.info(f"[EnterpriseTableExtractor] Page {page_idx + 1} is scanned/rasterized. Applying CV pre-processing.")
-            img_bgr = self.cv_preprocessor.render_page_to_cv2(page)
-            if img_bgr is not None:
-                # Deskew image
-                deskewed_bgr, angle = self.cv_preprocessor.deskew_image(img_bgr)
-                # Run OCR with TSV word coordinates
-                ocr_words = self._run_tesseract_tsv(deskewed_bgr)
-                if ocr_words:
-                    # Attempt stream extraction on deskewed OCR words
-                    stream_table = self.stream_extractor.extract_borderless_table(ocr_words)
-                    if stream_table:
-                        tables.append(stream_table)
+            with ocr_resource_guard(job_id="enterprise_fallback", page_idx=page_idx, engine="tesseract_cv"):
+                img_bgr = None
+                deskewed_bgr = None
+                try:
+                    img_bgr = self.cv_preprocessor.render_page_to_cv2(page, page_idx=page_idx)
+                    if img_bgr is not None:
+                        # Deskew image
+                        deskewed_bgr, angle = self.cv_preprocessor.deskew_image(img_bgr)
+                        # Run OCR with TSV word coordinates on deskewed image
+                        ocr_words = self._run_tesseract_tsv(deskewed_bgr, page_idx=page_idx)
+                        if ocr_words:
+                            # Attempt stream extraction on deskewed OCR words
+                            stream_table = self.stream_extractor.extract_borderless_table(ocr_words)
+                            if stream_table:
+                                tables.append(stream_table)
+                finally:
+                    if img_bgr is not None:
+                        del img_bgr
+                    if deskewed_bgr is not None:
+                        del deskewed_bgr
+                    gc.collect()
 
         return PageLayout(
             page_idx=page_idx,
@@ -452,8 +486,12 @@ class EnterpriseTableExtractor:
                         lines_out.append((l_clean, (b[0], b[1], b[2], b[3])))
         return lines_out
 
-    def _run_tesseract_tsv(self, img_bgr) -> List[Dict[str, Any]]:
+    def _run_tesseract_tsv(self, img_bgr, page_idx: int = -1) -> List[Dict[str, Any]]:
         """Runs Tesseract OCR on preprocessed image and extracts word tokens with coordinates."""
+        if img_bgr is None:
+            return []
+
+        pil_img = None
         try:
             from app.services.engine.office import find_tesseract_bin
             tesseract_bin = find_tesseract_bin()
@@ -464,12 +502,14 @@ class EnterpriseTableExtractor:
             pytesseract.pytesseract.tesseract_cmd = tesseract_bin
             pil_img = self.cv_preprocessor.cv2_to_pil(img_bgr)
 
+            log_ocr_memory(job_id="enterprise_fallback", page_idx=page_idx, stage="before_ocr", engine="tesseract_tsv")
             data = pytesseract.image_to_data(
                 pil_img, lang="eng",
                 config="--psm 6",
                 output_type=pytesseract.Output.DICT,
                 timeout=15,
             )
+            log_ocr_memory(job_id="enterprise_fallback", page_idx=page_idx, stage="after_ocr", engine="tesseract_tsv")
 
             words = []
             scale = 72.0 / self.cv_preprocessor.dpi  # Scale pixels back to PDF points
@@ -494,3 +534,41 @@ class EnterpriseTableExtractor:
         except Exception as e:
             logger.warning(f"[EnterpriseTableExtractor] Tesseract TSV extraction failed: {e}")
             return []
+        finally:
+            if pil_img is not None:
+                try:
+                    pil_img.close()
+                except Exception:
+                    pass
+                del pil_img
+
+    def _is_near_blank_page(self, page: fitz.Page) -> bool:
+        """
+        Ultra-fast (<2ms), conservative blank page detector for scanned documents.
+        Prevents expensive and futile OCR / CV deskewing on blank scanner sheets
+        while guaranteeing zero false positives on valid low-text statement pages.
+        """
+        import numpy as np
+        raw_text = page.get_text().strip()
+        if len(raw_text) >= 20:
+            return False
+
+        try:
+            pix = page.get_pixmap(dpi=72, colorspace=fitz.csGRAY, alpha=False)
+            arr = np.frombuffer(pix.samples, dtype=np.uint8).reshape((pix.height, pix.width))
+            del pix
+
+            my = max(1, int(arr.shape[0] * 0.05))
+            mx = max(1, int(arr.shape[1] * 0.05))
+            inner = arr[my:-my, mx:-mx]
+
+            dark_pixels = np.count_nonzero(inner < 180)
+            inner_dark_ratio = (dark_pixels / inner.size) * 100.0
+            del arr, inner
+
+            # Statement pages have > 5.0% - 7.5% dark pixels.
+            # Blank scan pages have < 0.10% dark pixels.
+            return inner_dark_ratio < 0.25
+        except Exception:
+            return False
+

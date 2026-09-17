@@ -100,11 +100,12 @@ PENALTY_FRAGMENTATION: float = 0.20
 # OCR & Image Processing Thresholds
 # ---------------------------------------------------------------------------
 
-DEFAULT_OCR_DPI: int = 300
-FALLBACK_HIGHRES_OCR_DPI: int = 400
-DEFAULT_OCR_PSM: int = 6           # Assume a single uniform block of text / table
+DEFAULT_OCR_DPI: int = 300             # Baseline configuration DPI
+STANDARD_OCR_DPI: int = 200            # Safe standard production DPI (memory-optimized)
+FALLBACK_HIGHRES_OCR_DPI: int = 300    # High-resolution adaptive retry for low-confidence pages
+DEFAULT_OCR_PSM: int = 6               # Assume a single uniform block of text / table
 DEFAULT_BINARIZATION_THRESH: int = 200
-MIN_OCR_CONFIDENCE: float = 25.0   # Tesseract confidence threshold (0-100)
+MIN_OCR_CONFIDENCE: float = 25.0       # Tesseract confidence threshold (0-100)
 SKEW_CORRECTION_MAX_ANGLE: float = 15.0  # Affine rotation limit (-15° to +15°)
 
 
@@ -113,8 +114,9 @@ SKEW_CORRECTION_MAX_ANGLE: float = 15.0  # Affine rotation limit (-15° to +15°
 # ---------------------------------------------------------------------------
 
 STREAMING_PAGE_THRESHOLD: int = 50   # Use write_only streaming mode if > 50 pages
-DEFAULT_MAX_WORKERS: int = 4
+DEFAULT_MAX_WORKERS: int = 4         # Native vector text parallelism
 DEFAULT_MAX_PARALLEL_WORKERS: int = 4
+DEFAULT_OCR_MAX_WORKERS: int = 1     # Strict bounded concurrency for memory-heavy OCR
 DEFAULT_MAX_WORKER_MEMORY_MB: int = 2048
 DEFAULT_PER_PAGE_TIMEOUT_SEC: int = 30
 MAX_COL_WIDTH_EXCEL: int = 60

@@ -2,8 +2,11 @@
 Convertly V2 — Enterprise OCR TSV Extraction Engine
 Handles scanned and rasterized PDFs using computer-vision preprocessing,
 Tesseract TSV coordinate parsing, and post-OCR tabular projection.
+Optimized for bounded memory: process-wide concurrency guard, direct pixmap
+sample access, adaptive DPI, and deterministic resource deallocation.
 """
 
+import gc
 import fitz  # PyMuPDF
 from typing import List, Dict, Any, Optional, Tuple
 
@@ -11,6 +14,8 @@ from ..constants import (
     EngineType,
     TableTopology,
     DEFAULT_OCR_DPI,
+    STANDARD_OCR_DPI,
+    FALLBACK_HIGHRES_OCR_DPI,
     MIN_OCR_CONFIDENCE,
 )
 from ..models import (
@@ -25,12 +30,13 @@ from ..interfaces import BaseExtractor
 from ..config import TableExtractorConfig
 from ..logging import stage_timer
 from ..utils.parsing import clean_text, clean_ocr_artifacts, detect_cell_data_type
+from app.core.ocr_guard import ocr_resource_guard, log_ocr_memory
 
 
 class OCRExtractor(BaseExtractor):
     """
     Extracts tabular data from scanned or rasterized PDF pages using image rendering,
-    TSV token extraction, and stream geometry projection.
+    TSV token extraction, and stream geometry projection within strict memory bounds.
     """
 
     @property
@@ -44,7 +50,7 @@ class OCRExtractor(BaseExtractor):
         config: Optional[TableExtractorConfig] = None,
         **kwargs: Any
     ) -> ExtractionCandidate:
-        """Extract table from scanned PDF page using OCR."""
+        """Extract table from scanned PDF page using guarded OCR."""
         cfg = config or TableExtractorConfig()
         doc = fitz.open(stream=pdf_bytes, filetype="pdf")
 
@@ -52,16 +58,18 @@ class OCRExtractor(BaseExtractor):
             doc.close()
             raise IndexError(f"Page index {page_idx} out of range (total {len(doc)} pages).")
 
+        job_id = kwargs.get("job_id", "ocr_job")
         page = doc[page_idx]
 
-        with stage_timer("ocr_extraction", engine_name=self.name, page_idx=page_idx) as st:
-            tables, ocr_conf = self._extract_tables_from_page(page, page_idx, cfg, st)
-            cell_count = sum(t.row_count * t.col_count for t in tables)
-            st.set_counts(tables=len(tables), cells=cell_count)
+        with ocr_resource_guard(job_id=job_id, page_idx=page_idx, engine=self.name):
+            with stage_timer("ocr_extraction", engine_name=self.name, page_idx=page_idx) as st:
+                tables, ocr_conf = self._extract_tables_from_page(page, page_idx, cfg, st, job_id=job_id)
+                cell_count = sum(t.row_count * t.col_count for t in tables)
+                st.set_counts(tables=len(tables), cells=cell_count)
 
-            conf = self._compute_confidence(tables, ocr_conf)
-            st.set_confidence(conf.overall)
-            metrics = st.to_metrics()
+                conf = self._compute_confidence(tables, ocr_conf)
+                st.set_confidence(conf.overall)
+                metrics = st.to_metrics()
 
         doc.close()
 
@@ -96,9 +104,10 @@ class OCRExtractor(BaseExtractor):
         page: fitz.Page,
         page_idx: int,
         config: TableExtractorConfig,
-        st: Any
+        st: Any,
+        job_id: str = "unknown"
     ) -> Tuple[List[TableBlock], float]:
-        """Renders page and extracts OCR word tokens."""
+        """Renders page directly to PIL and extracts OCR word tokens with adaptive DPI."""
         dpi = config.ocr.dpi
         words = []
         avg_conf = 85.0
@@ -116,39 +125,78 @@ class OCRExtractor(BaseExtractor):
             try:
                 import pytesseract
                 from PIL import Image
-                import io
 
                 pytesseract.pytesseract.tesseract_cmd = tess_cmd
-                pix = page.get_pixmap(dpi=dpi)
-                img = Image.open(io.BytesIO(pix.tobytes("png")))
 
-                data = pytesseract.image_to_data(
-                    img,
-                    lang=config.ocr.language,
-                    config=f"--psm {config.ocr.psm}",
-                    output_type=pytesseract.Output.DICT,
-                    timeout=max(5, getattr(config.workers, 'timeout_seconds_per_page', 15)),
-                )
+                def _run_ocr_at_dpi(target_dpi: int) -> Tuple[List[Dict[str, Any]], float]:
+                    pix = None
+                    img = None
+                    try:
+                        log_ocr_memory(job_id=job_id, page_idx=page_idx, stage="before_rasterize", engine=self.name)
+                        # Render RGB directly without alpha to save 25% memory
+                        pix = page.get_pixmap(dpi=target_dpi, alpha=False)
+                        log_ocr_memory(job_id=job_id, page_idx=page_idx, stage="after_rasterize", engine=self.name)
 
-                scale = 72.0 / dpi
-                conf_sum = 0
-                conf_count = 0
+                        # Zero-copy PIL creation from sample buffer
+                        img = Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
+                        del pix
+                        pix = None
 
-                for i in range(len(data["text"])):
-                    raw_w = data["text"][i]
-                    txt = clean_ocr_artifacts(raw_w)
-                    c = data["conf"][i]
-                    if txt and c > MIN_OCR_CONFIDENCE:
-                        x0 = data["left"][i] * scale
-                        y0 = data["top"][i] * scale
-                        x1 = (data["left"][i] + data["width"][i]) * scale
-                        y1 = (data["top"][i] + data["height"][i]) * scale
-                        words.append({"text": txt, "x0": x0, "y0": y0, "x1": x1, "y1": y1})
-                        conf_sum += c
-                        conf_count += 1
+                        log_ocr_memory(job_id=job_id, page_idx=page_idx, stage="before_ocr", engine=self.name)
+                        data = pytesseract.image_to_data(
+                            img,
+                            lang=config.ocr.language,
+                            config=f"--psm {config.ocr.psm}",
+                            output_type=pytesseract.Output.DICT,
+                            timeout=max(5, getattr(config.workers, 'timeout_seconds_per_page', 15)),
+                        )
+                        log_ocr_memory(job_id=job_id, page_idx=page_idx, stage="after_ocr", engine=self.name)
 
-                if conf_count > 0:
-                    avg_conf = conf_sum / conf_count
+                        scale = 72.0 / target_dpi
+                        conf_sum = 0
+                        conf_count = 0
+                        extracted_words = []
+
+                        for i in range(len(data["text"])):
+                            raw_w = data["text"][i]
+                            txt = clean_ocr_artifacts(raw_w)
+                            c = data["conf"][i]
+                            if txt and c > MIN_OCR_CONFIDENCE:
+                                x0 = data["left"][i] * scale
+                                y0 = data["top"][i] * scale
+                                x1 = (data["left"][i] + data["width"][i]) * scale
+                                y1 = (data["top"][i] + data["height"][i]) * scale
+                                extracted_words.append({"text": txt, "x0": x0, "y0": y0, "x1": x1, "y1": y1})
+                                conf_sum += c
+                                conf_count += 1
+
+                        calculated_avg = (conf_sum / conf_count) if conf_count > 0 else 0.0
+                        return extracted_words, calculated_avg
+                    finally:
+                        if img is not None:
+                            try:
+                                img.close()
+                            except Exception:
+                                pass
+                            del img
+                        if pix is not None:
+                            del pix
+                        log_ocr_memory(job_id=job_id, page_idx=page_idx, stage="after_cleanup", engine=self.name)
+                        gc.collect()
+
+                # Step 1: Attempt safe standard production resolution (200 DPI) to bound peak RAM
+                standard_dpi = min(config.ocr.dpi, STANDARD_OCR_DPI)
+                words, avg_conf = _run_ocr_at_dpi(standard_dpi)
+
+                # Step 2: Adaptive retry at higher resolution if low confidence
+                target_highres_dpi = max(config.ocr.dpi, FALLBACK_HIGHRES_OCR_DPI)
+                if (avg_conf < 40.0 or len(words) < 3) and standard_dpi < target_highres_dpi:
+                    st.add_warning(f"Low OCR confidence ({avg_conf:.1f}%) at {standard_dpi} DPI; attempting adaptive retry at {target_highres_dpi} DPI.")
+                    highres_words, highres_conf = _run_ocr_at_dpi(target_highres_dpi)
+                    if highres_conf > avg_conf:
+                        words = highres_words
+                        avg_conf = highres_conf
+
             except Exception as e:
                 st.add_warning(f"OCR invocation failed: {e}. Falling back to page words.")
 

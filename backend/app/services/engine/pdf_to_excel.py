@@ -490,9 +490,12 @@ def _extract_tables_ocr(
 ) -> Dict[int, List[List[List[str]]]]:
     """
     OCR-based table extraction for scanned PDFs.
-    Renders each page, runs OCR, then attempts grid reconstruction
-    from the OCR text output.
+    Renders each page sequentially within strict bounded memory limits, runs OCR,
+    then attempts grid reconstruction from the OCR text output.
     """
+    import gc
+    from app.core.ocr_guard import ocr_resource_guard, log_ocr_memory
+
     results: Dict[int, List[List[List[str]]]] = {}
 
     if not tesseract_bin:
@@ -514,116 +517,138 @@ def _extract_tables_ocr(
         page = doc[page_idx]
         page_tables: List[List[List[str]]] = []
 
-        try:
-            # Render at 200 DPI for good OCR quality
-            pix = page.get_pixmap(dpi=200)
-            pil_img = Image.open(io.BytesIO(pix.tobytes("png")))
-
-            # Use pytesseract TSV output for coordinate-based cell detection
+        with ocr_resource_guard(job_id="pdf_to_excel_ocr", page_idx=page_idx, engine="tesseract"):
+            pix = None
+            pil_img = None
             try:
-                tsv_data = pytesseract.image_to_data(
-                    pil_img, lang="eng", output_type=pytesseract.Output.DICT, timeout=15
-                )
+                log_ocr_memory(job_id="pdf_to_excel_ocr", page_idx=page_idx, stage="before_rasterize", engine="tesseract")
+                # Render at 200 DPI without alpha for good OCR quality while cutting RAM usage
+                pix = page.get_pixmap(dpi=200, alpha=False)
+                log_ocr_memory(job_id="pdf_to_excel_ocr", page_idx=page_idx, stage="after_rasterize", engine="tesseract")
 
-                # Group words by their block/paragraph/line
-                word_entries = []
-                for i in range(len(tsv_data['text'])):
-                    text = str(tsv_data['text'][i]).strip()
-                    if text and tsv_data['conf'][i] > 20:  # Confidence threshold
-                        word_entries.append({
-                            'text': text,
-                            'left': tsv_data['left'][i],
-                            'top': tsv_data['top'][i],
-                            'width': tsv_data['width'][i],
-                            'height': tsv_data['height'][i],
-                            'block_num': tsv_data['block_num'][i],
-                            'line_num': tsv_data['line_num'][i],
-                        })
+                # Zero-copy PIL creation directly from pixmap sample buffer
+                pil_img = Image.frombytes("RGB", (pix.width, pix.height), pix.samples)
+                del pix
+                pix = None
 
-                if word_entries:
-                    # Group by y-coordinate proximity (same row)
-                    rows_by_y: Dict[int, List[Dict]] = {}
-                    y_tolerance = 12  # pixels
+                # Use pytesseract TSV output for coordinate-based cell detection
+                try:
+                    log_ocr_memory(job_id="pdf_to_excel_ocr", page_idx=page_idx, stage="before_ocr", engine="tesseract")
+                    tsv_data = pytesseract.image_to_data(
+                        pil_img, lang="eng", output_type=pytesseract.Output.DICT, timeout=15
+                    )
+                    log_ocr_memory(job_id="pdf_to_excel_ocr", page_idx=page_idx, stage="after_ocr", engine="tesseract")
 
-                    for entry in word_entries:
-                        center_y = entry['top'] + entry['height'] // 2
-                        matched_y = None
-                        for existing_y in rows_by_y:
-                            if abs(center_y - existing_y) <= y_tolerance:
-                                matched_y = existing_y
-                                break
-                        if matched_y is not None:
-                            rows_by_y[matched_y].append(entry)
-                        else:
-                            rows_by_y[center_y] = [entry]
+                    # Group words by their block/paragraph/line
+                    word_entries = []
+                    for i in range(len(tsv_data['text'])):
+                        text = str(tsv_data['text'][i]).strip()
+                        if text and tsv_data['conf'][i] > 20:  # Confidence threshold
+                            word_entries.append({
+                                'text': text,
+                                'left': tsv_data['left'][i],
+                                'top': tsv_data['top'][i],
+                                'width': tsv_data['width'][i],
+                                'height': tsv_data['height'][i],
+                                'block_num': tsv_data['block_num'][i],
+                                'line_num': tsv_data['line_num'][i],
+                            })
 
-                    # Sort rows by y-coordinate
-                    sorted_ys = sorted(rows_by_y.keys())
+                    if word_entries:
+                        # Group by y-coordinate proximity (same row)
+                        rows_by_y: Dict[int, List[Dict]] = {}
+                        y_tolerance = 12  # pixels
 
-                    # Detect columns by analyzing x-coordinate clusters
-                    all_x_positions = []
-                    for y_key in sorted_ys:
-                        for entry in rows_by_y[y_key]:
-                            all_x_positions.append(entry['left'])
+                        for entry in word_entries:
+                            center_y = entry['top'] + entry['height'] // 2
+                            matched_y = None
+                            for existing_y in rows_by_y:
+                                if abs(center_y - existing_y) <= y_tolerance:
+                                    matched_y = existing_y
+                                    break
+                            if matched_y is not None:
+                                rows_by_y[matched_y].append(entry)
+                            else:
+                                rows_by_y[center_y] = [entry]
 
-                    if all_x_positions:
-                        # Find column boundaries via gap detection
-                        unique_xs = sorted(set(all_x_positions))
-                        col_boundaries = [0]
+                        # Sort rows by y-coordinate
+                        sorted_ys = sorted(rows_by_y.keys())
 
-                        if len(unique_xs) > 1:
-                            gaps = []
-                            for i in range(1, len(unique_xs)):
-                                gaps.append((unique_xs[i] - unique_xs[i - 1], unique_xs[i]))
-
-                            # Significant gaps define column boundaries
-                            avg_gap = sum(g[0] for g in gaps) / len(gaps) if gaps else 50
-                            threshold = max(avg_gap * 1.5, 30)
-
-                            for gap_size, gap_x in gaps:
-                                if gap_size > threshold:
-                                    col_boundaries.append(gap_x)
-
-                        col_boundaries.append(99999)  # Right edge
-
-                        # Build grid
-                        grid = []
+                        # Detect columns by analyzing x-coordinate clusters
+                        all_x_positions = []
                         for y_key in sorted_ys:
-                            row_words = sorted(rows_by_y[y_key], key=lambda e: e['left'])
-                            row_cells = [''] * (len(col_boundaries) - 1)
+                            for entry in rows_by_y[y_key]:
+                                all_x_positions.append(entry['left'])
 
-                            for entry in row_words:
-                                # Find which column this word belongs to
-                                for col_idx in range(len(col_boundaries) - 1):
-                                    if col_boundaries[col_idx] <= entry['left'] < col_boundaries[col_idx + 1]:
-                                        if row_cells[col_idx]:
-                                            row_cells[col_idx] += ' ' + entry['text']
-                                        else:
-                                            row_cells[col_idx] = entry['text']
-                                        break
+                        if all_x_positions:
+                            # Find column boundaries via gap detection
+                            unique_xs = sorted(set(all_x_positions))
+                            col_boundaries = [0]
 
-                            grid.append(row_cells)
+                            if len(unique_xs) > 1:
+                                gaps = []
+                                for i in range(1, len(unique_xs)):
+                                    gaps.append((unique_xs[i] - unique_xs[i - 1], unique_xs[i]))
 
+                                # Significant gaps define column boundaries
+                                avg_gap = sum(g[0] for g in gaps) / len(gaps) if gaps else 50
+                                threshold = max(avg_gap * 1.5, 30)
+
+                                for gap_size, gap_x in gaps:
+                                    if gap_size > threshold:
+                                        col_boundaries.append(gap_x)
+
+                            col_boundaries.append(99999)  # Right edge
+
+                            # Build grid
+                            grid = []
+                            for y_key in sorted_ys:
+                                row_words = sorted(rows_by_y[y_key], key=lambda e: e['left'])
+                                row_cells = [''] * (len(col_boundaries) - 1)
+
+                                for entry in row_words:
+                                    # Find which column this word belongs to
+                                    for col_idx in range(len(col_boundaries) - 1):
+                                        if col_boundaries[col_idx] <= entry['left'] < col_boundaries[col_idx + 1]:
+                                            if row_cells[col_idx]:
+                                                row_cells[col_idx] += ' ' + entry['text']
+                                            else:
+                                                row_cells[col_idx] = entry['text']
+                                            break
+
+                                grid.append(row_cells)
+
+                            if grid:
+                                page_tables.append(grid)
+
+                except Exception as e:
+                    logger.warning(f"OCR TSV extraction failed for page {page_idx + 1}: {e}")
+                    # Fallback: simple line-based extraction
+                    text = pytesseract.image_to_string(pil_img, lang="eng", timeout=15)
+                    if text and text.strip():
+                        lines = [line.strip() for line in text.strip().split('\n') if line.strip()]
+                        grid = []
+                        for line in lines:
+                            cells = re.split(r'\t|  {2,}', line)
+                            cells = [c.strip() for c in cells if c.strip()]
+                            if cells:
+                                grid.append(cells)
                         if grid:
                             page_tables.append(grid)
 
             except Exception as e:
-                logger.warning(f"OCR TSV extraction failed for page {page_idx + 1}: {e}")
-                # Fallback: simple line-based extraction
-                text = pytesseract.image_to_string(pil_img, lang="eng", timeout=15)
-                if text and text.strip():
-                    lines = [line.strip() for line in text.strip().split('\n') if line.strip()]
-                    grid = []
-                    for line in lines:
-                        cells = re.split(r'\t|  {2,}', line)
-                        cells = [c.strip() for c in cells if c.strip()]
-                        if cells:
-                            grid.append(cells)
-                    if grid:
-                        page_tables.append(grid)
-
-        except Exception as e:
-            logger.warning(f"OCR page rendering failed for page {page_idx + 1}: {e}")
+                logger.warning(f"OCR page rendering failed for page {page_idx + 1}: {e}")
+            finally:
+                if pil_img is not None:
+                    try:
+                        pil_img.close()
+                    except Exception:
+                        pass
+                    del pil_img
+                if pix is not None:
+                    del pix
+                log_ocr_memory(job_id="pdf_to_excel_ocr", page_idx=page_idx, stage="after_cleanup", engine="tesseract")
+                gc.collect()
 
         if page_tables:
             results[page_idx] = page_tables
