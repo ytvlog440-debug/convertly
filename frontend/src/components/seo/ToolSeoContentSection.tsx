@@ -57,7 +57,7 @@ export function ToolSeoContentSection({ content }: ToolSeoContentSectionProps) {
                 </span>
               </div>
               <p className="text-[11px] text-muted-foreground mt-0.5">
-                Technically reviewed by the Convertly Document Engineering Team • ISO 27001-Aligned • Zero-Retention Privacy SLA
+                Technically reviewed by the Convertly Document Engineering Team • Privacy-Focused Architecture
               </p>
             </div>
           </div>

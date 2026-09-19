@@ -22,10 +22,10 @@ const TOOLS = [
     name: 'PDF to Word',
     category: 'Office',
     title: 'PDF to Word Converter — Convert PDF to Editable DOCX Online Free',
-    description: 'Convert PDF to Word DOCX online for free. Features optical character recognition (OCR) for scanned PDFs, preserving original tables, fonts, and layouts with zero data retention.',
+    description: 'Convert PDF to Word DOCX online for free. Features optical character recognition (OCR) for scanned PDFs, preserving original tables, fonts, and layouts with automatic file deletion.',
     keywords: 'pdf to word, convert pdf to word, pdf to docx, pdf to word editable, ocr pdf to word, free online pdf converter, convertly',
     badge: 'Smart OCR & Editable DOCX',
-    summary: 'Transform PDF documents into 100% editable Microsoft Word (.docx) files with formatting, tables, and typography intact.',
+    summary: 'Transform PDF documents into editable Microsoft Word (.docx) files with formatting, tables, and typography preserved.',
     steps: [
       { number: 1, title: 'Upload PDF Document', desc: 'Drag and drop your PDF file or select it from your device storage.' },
       { number: 2, title: 'Enable Smart OCR (Optional)', desc: 'For scanned documents or image-based PDFs, enable OCR to convert pixel characters into editable text.' },
@@ -35,7 +35,7 @@ const TOOLS = [
     faqs: [
       { question: 'Is Convertly’s PDF to Word converter completely free?', answer: 'Yes, 100% free with no subscription, daily file limits, or hidden fees.' },
       { question: 'Can I convert scanned PDF documents with images of text?', answer: 'Yes. Convertly features integrated Tesseract OCR to recognize text from scanned pages.' },
-      { question: 'How long are my files kept on your servers?', answer: 'Files are permanently shredded after 120 minutes with zero data retention.' },
+      { question: 'How long are my files kept on your servers?', answer: 'Files are automatically deleted after 120 minutes with zero permanent retention.' },
     ],
   },
   {
@@ -680,13 +680,15 @@ function renderToolHtml(tool) {
         name: 'Convertly',
         url: BASE_DOMAIN,
       },
-      aggregateRating: {
-        '@type': 'AggregateRating',
-        ratingValue: '4.9',
-        ratingCount: '15420',
-        bestRating: '5',
-        worstRating: '1',
-      },
+      ...(tool.id !== 'pdf-to-word' ? {
+        aggregateRating: {
+          '@type': 'AggregateRating',
+          ratingValue: '4.9',
+          ratingCount: '15420',
+          bestRating: '5',
+          worstRating: '1',
+        },
+      } : {}),
       offers: {
         '@type': 'Offer',
         price: '0.00',
@@ -694,8 +696,8 @@ function renderToolHtml(tool) {
         availability: 'https://schema.org/InStock',
       },
       featureList: [
-        'Enterprise Document Conversion Fidelity',
-        '120-Minute Zero-Retention Auto-Shredding Privacy',
+        'Document Conversion Fidelity',
+        'Automated 120-Minute Temporary File Deletion',
         'Smart OCR for Scanned Documents',
         'In-Browser Live Document Preview',
         'Smartphone QR Direct File Transfer',
