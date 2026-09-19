@@ -255,8 +255,8 @@ export function SeoHead({
     const appName = toolName || (title.includes('—') ? title.split('—')[0].trim() : 'Convertly')
 
     if (determinedType === 'WebApplication') {
-      const isPdfToWord = cleanCanonical.endsWith('/tools/pdf-to-word') || toolName === 'PDF to Word'
-      const showRating = !hideAggregateRating && !isPdfToWord
+      const isRatingExcluded = cleanCanonical.endsWith('/tools/pdf-to-word') || toolName === 'PDF to Word' || cleanCanonical.endsWith('/tools/pdf-to-excel') || toolName === 'PDF to Excel'
+      const showRating = !hideAggregateRating && !isRatingExcluded
 
       graph.push({
         '@type': 'WebApplication',

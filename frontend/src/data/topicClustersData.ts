@@ -247,11 +247,7 @@ export function getContextualEcosystemLinks(toolId: string): ContextualEcosystem
       { slug: 'pdf-to-word-windows', title: 'PDF to Word Windows' },
       { slug: 'pdf-to-word-mac', title: 'PDF to Word Mac' }
     ],
-    'pdf-to-excel': [
-      { slug: 'pdf-to-word', title: 'PDF to Word Converter' },
-      { slug: 'compress-pdf-online', title: 'Compress PDF Online' },
-      { slug: 'convert-pdf-without-losing-formatting', title: 'Preserve Formatting Guide' }
-    ],
+    'pdf-to-excel': [],
     'word-to-pdf': [
       { slug: 'word-to-pdf', title: 'Word to PDF Online' },
       { slug: 'merge-pdf-online', title: 'Merge PDF Online' }

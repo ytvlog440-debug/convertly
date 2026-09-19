@@ -968,6 +968,7 @@ export function ToolConverterPage() {
         ]}
         faqs={seoContent.faqs}
         howToSteps={seoContent.steps}
+        hideAggregateRating={config.id === 'pdf-to-word' || config.id === 'pdf-to-excel'}
       />
 
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">

@@ -172,20 +172,66 @@ const TOOLS = [
     id: 'pdf-to-excel',
     name: 'PDF to Excel',
     category: 'Office',
-    title: 'PDF to Excel Converter — Extract Tables & Spreadsheets Online Free',
-    description: 'Convert PDF to Excel XLSX online for free. Extract tables from invoices, bank statements, and reports to editable spreadsheets with Smart OCR and zero retention.',
-    keywords: 'pdf to excel, convert pdf to excel, pdf to xlsx, extract tables from pdf, bank statement to excel, invoice to excel, free pdf to excel, convertly',
+    title: 'PDF to Excel Converter — Free Table & Spreadsheet Extraction | Convertly',
+    description: 'Convert PDF to Excel online free. Extract tables from invoices, bank statements, and financial reports to editable XLSX spreadsheets. Smart OCR for scanned PDFs.',
+    keywords: 'pdf to excel, convert pdf to excel, pdf to xlsx, extract pdf tables to excel, scanned pdf to excel, bank statement pdf to excel, pdf table extraction, invoice to excel, free pdf to excel converter, convertly',
     badge: 'Smart Table Extraction & OCR',
     summary: 'Extract tables, invoices, and financial reports from PDF into structured, editable Microsoft Excel (.xlsx) workbooks with preserved numbers and formulas.',
     steps: [
-      { number: 1, title: 'Upload PDF Document', desc: 'Drag and drop your PDF with tabular data.' },
-      { number: 2, title: 'Configure Extraction & OCR', desc: 'Enable Smart OCR for scanned pages or photographed tables.' },
-      { number: 3, title: 'Process Conversion', desc: 'Our engine identifies table bounds and structures cells into XLSX.' },
-      { number: 4, title: 'Download Excel File', desc: 'Save your clean, formatted spreadsheet or transfer via QR code.' },
+      { number: 1, title: 'Upload Your PDF Document', desc: 'Drag and drop your PDF into the upload zone above or browse from your computer or mobile device. Files up to 100MB are supported.' },
+      { number: 2, title: 'Configure Extraction & OCR Settings', desc: 'Enable Smart OCR if your document contains scanned pages or photographed tables. Select your desired spreadsheet preferences.' },
+      { number: 3, title: 'Click "Process File Now"', desc: 'Our engine analyzes table boundaries, aligns cell grids, detects data types, and generates your XLSX workbook.' },
+      { number: 4, title: 'Download Editable Excel Spreadsheet', desc: 'Download your formatted XLSX file directly to your device or scan the QR code to save it on your smartphone.' },
     ],
     faqs: [
-      { question: 'Will extracted numbers and currency work in Excel formulas?', answer: 'Yes, numeric values, percentages, and currencies are recognized and formatted as active numbers.' },
-      { question: 'Can I extract tables from scanned documents?', answer: 'Yes, our built-in OCR automatically detects scanned pages and reconstructs table grids.' },
+      {
+        question: 'Is Convertly’s PDF to Excel converter completely free?',
+        answer: 'Yes, Convertly is free to use with no subscription required and no watermarks added to your output spreadsheets.'
+      },
+      {
+        question: 'Will the extracted Excel file preserve numbers and formulas?',
+        answer: 'The engine identifies numeric values, currency symbols, percentages, and dates and formats them as standard Excel cell types. Because standard PDF files store computed visual text rather than underlying spreadsheet formulas, mathematical formulas (such as =SUM or =VLOOKUP) cannot be recovered from the PDF and must be added in Excel. Users should verify critical figures against the source document when preparing financial or tax statements.'
+      },
+      {
+        question: 'Can I convert scanned PDFs or photos of tables to Excel?',
+        answer: 'Yes. Convertly includes integrated Tesseract Optical Character Recognition (OCR). When the Smart OCR option is enabled, the engine recognizes scanned text from document images and maps detected cells into rows and columns.'
+      },
+      {
+        question: 'What version of Excel is the output compatible with?',
+        answer: 'Convertly produces modern Office Open XML (.xlsx) workbooks compatible with Microsoft Excel (2007 and newer, Microsoft 365), Google Sheets, Apple Numbers, LibreOffice Calc, and mobile spreadsheet apps.'
+      },
+      {
+        question: 'How are multi-page PDF documents handled?',
+        answer: 'Each page of your PDF is extracted into a dedicated worksheet tab named "Page 1", "Page 2", etc. For multi-page documents with matching column structures like bank statements or invoices, the engine also generates an "All Data (Consolidated)" master tab so you can analyze all transactions in one continuous table.'
+      },
+      {
+        question: 'Can I extract bank statements and credit card bills into Excel?',
+        answer: 'Yes. Bank statements, transaction ledgers, and credit card summaries are common use cases. The engine’s spatial heuristics help align columns in borderless transaction tables. For accounting reconciliation, verify extracted line items and totals against the source statement.'
+      },
+      {
+        question: 'What is the maximum PDF file size supported?',
+        answer: 'You can upload PDF documents up to 100MB in size, providing capacity for lengthy annual financial reports and multi-page statements.'
+      },
+      {
+        question: 'Are my confidential financial documents safe on Convertly?',
+        answer: 'Yes. Uploads and downloads are protected with TLS encryption in transit. Files reside in temporary server storage solely for conversion and download, and are automatically deleted after 120 minutes.'
+      },
+      {
+        question: 'Does Convertly use my data to train AI models?',
+        answer: 'No. Convertly never reads, indexes, shares, or uses your uploaded documents or financial data to train artificial intelligence or machine learning models.'
+      },
+      {
+        question: 'Can I convert PDF to Excel on my iPhone, iPad, or Android phone?',
+        answer: 'Yes. The converter runs directly in modern mobile web browsers. You can upload documents from mobile storage or cloud drives, and use QR transfer to download results directly to your phone.'
+      },
+      {
+        question: 'What happens if a table has no borders (borderless table)?',
+        answer: 'The extraction engine uses whitespace alignment and text-stream heuristics to detect column positions and group text into appropriate cells even when visible gridlines are absent.'
+      },
+      {
+        question: 'Can I convert my Excel spreadsheet back to PDF after editing?',
+        answer: 'Yes. Once you finish editing your spreadsheet in Excel or Google Sheets, you can use Convertly’s Excel to PDF tool to convert it back into a paginated PDF document.'
+      }
     ],
   },
   {
@@ -587,6 +633,10 @@ const TOOLS = [
 ]
 
 function getFullToolFaqs(tool) {
+  if (tool.id === 'pdf-to-excel' && tool.faqs && tool.faqs.length > 0) {
+    return tool.faqs
+  }
+
   const isImage = tool.category === 'Images'
   const isOffice = tool.category === 'Office'
   const baseFaqs = [
@@ -596,7 +646,7 @@ function getFullToolFaqs(tool) {
     },
     {
       question: `How long are my uploaded files stored on your servers?`,
-      answer: `Under our strict Zero-Retention Policy, all uploaded files and converted outputs are stored exclusively in temporary sandboxed storage and are permanently and irreversibly shredded after 120 minutes.`
+      answer: `Under our privacy policy, all uploaded files and converted outputs are stored in temporary server storage and are automatically deleted after 120 minutes.`
     },
     {
       question: `Will my file formatting, fonts, or image quality be lost?`,
@@ -680,7 +730,7 @@ function renderToolHtml(tool) {
         name: 'Convertly',
         url: BASE_DOMAIN,
       },
-      ...(tool.id !== 'pdf-to-word' ? {
+      ...(tool.id !== 'pdf-to-word' && tool.id !== 'pdf-to-excel' ? {
         aggregateRating: {
           '@type': 'AggregateRating',
           ratingValue: '4.9',

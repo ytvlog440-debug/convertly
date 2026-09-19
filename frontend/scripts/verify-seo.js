@@ -54,7 +54,7 @@ assert(fs.existsSync(ogImagePath), 'og-image.png exists in dist')
 // 4. Verify All 30 Tool Pages
 const TOOLS = [
   'pdf-to-word', 'word-to-pdf', 'pdf-merge', 'pdf-compress', 'pdf-split',
-  'pdf-rotate', 'images-to-pdf', 'excel-to-pdf', 'ppt-to-pdf', 'pdf-delete-pages',
+  'pdf-rotate', 'images-to-pdf', 'excel-to-pdf', 'pdf-to-excel', 'ppt-to-pdf', 'pdf-delete-pages',
   'pdf-extract-pages', 'pdf-reorder-pages', 'jpg-to-png', 'png-to-jpg', 'image-to-webp',
   'webp-to-image', 'pdf-to-images', 'image-resize', 'image-compress', 'image-crop',
   'image-rotate', 'pdf-protect', 'pdf-unlock', 'pdf-watermark', 'pdf-page-numbers',
