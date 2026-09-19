@@ -1,6 +1,11 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { BLOG_POSTS_DATA } from '../src/data/blogData.ts'
+import { PROBLEM_GUIDES_DATA } from '../src/data/guidesData.ts'
+import { COMPARISONS_DATA } from '../src/data/comparisonsData.ts'
+import { USE_CASES_DATA } from '../src/data/useCasesData.ts'
+import { EXPLICIT_PROGRAMMATIC_PAGES } from '../src/data/programmaticSeoData.ts'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -15,6 +20,17 @@ if (!fs.existsSync(INDEX_PATH)) {
 }
 
 const template = fs.readFileSync(INDEX_PATH, 'utf-8')
+
+function escapeHtml(str) {
+  if (!str) return ''
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;')
+}
+
 
 const TOOLS = [
   {
@@ -1021,19 +1037,1373 @@ for (const tool of TOOLS) {
   console.log(`  ✓ Pre-rendered: /tools/${tool.id}`)
 }
 
+// --- Helper functions for Rich Semantic Non-Tool Pre-rendering ---
+
+function renderPageTemplate({
+  title,
+  description,
+  keywords,
+  canonicalUrl,
+  ogType = 'website',
+  schema,
+  bodyContent
+}) {
+  const fallbackBody = `
+    <div id="root">
+      <div class="flex min-h-screen flex-col bg-background text-foreground transition-colors duration-300">
+        <header class="sticky top-0 z-50 h-16 w-full border-b border-border/60 bg-background/80 backdrop-blur-xl">
+          <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center gap-2.5">
+              <a href="/" class="flex items-center gap-2.5">
+                <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-600 to-cyan-500 text-white shadow-md">
+                  <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+                </div>
+                <div class="flex items-center gap-1.5">
+                  <span class="font-heading text-lg font-bold tracking-tight text-foreground">Convertly</span>
+                  <span class="rounded-md bg-indigo-500/10 px-1.5 py-0.2 text-[10px] font-bold text-indigo-400 border border-indigo-500/20">v2.0</span>
+                </div>
+              </a>
+            </div>
+            <div class="flex items-center gap-3">
+              <a href="/tools" class="rounded-xl border border-border/80 px-3.5 py-1.5 text-xs font-semibold text-muted-foreground hover:border-border hover:bg-card">All Tools</a>
+            </div>
+          </div>
+        </header>
+        <main class="flex-1">
+          ${bodyContent}
+        </main>
+      </div>
+    </div>
+  `
+
+  let html = template
+  if (title) {
+    html = html.replace(/<title>.*?<\/title>/, `<title>${title}</title>`)
+    html = html.replace(/<meta property="og:title" content=".*?" \/>/, `<meta property="og:title" content="${title.replace(/"/g, '&quot;')}" />`)
+    html = html.replace(/<meta name="twitter:title" content=".*?" \/>/, `<meta name="twitter:title" content="${title.replace(/"/g, '&quot;')}" />`)
+  }
+  if (description) {
+    html = html.replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${description.replace(/"/g, '&quot;')}" />`)
+    html = html.replace(/<meta property="og:description" content=".*?" \/>/, `<meta property="og:description" content="${description.replace(/"/g, '&quot;')}" />`)
+    html = html.replace(/<meta name="twitter:description" content=".*?" \/>/, `<meta name="twitter:description" content="${description.replace(/"/g, '&quot;')}" />`)
+  }
+  if (keywords) {
+    html = html.replace(/<meta name="keywords" content=".*?" \/>/, `<meta name="keywords" content="${keywords.replace(/"/g, '&quot;')}" />`)
+  }
+  if (canonicalUrl) {
+    html = html.replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${canonicalUrl}" />`)
+    html = html.replace(/<meta property="og:url" content=".*?" \/>/, `<meta property="og:url" content="${canonicalUrl}" />`)
+  }
+  if (ogType) {
+    html = html.replace(/<meta property="og:type" content=".*?" \/>/, `<meta property="og:type" content="${ogType}" />`)
+  }
+  if (schema) {
+    const schemaScript = `\n    <script id="convertly-schema-jsonld" type="application/ld+json">\n${JSON.stringify(schema, null, 2)}\n    </script>\n  </head>`
+    html = html.replace('</head>', schemaScript)
+  }
+  html = html.replace(/<div id="root">[\s\S]*?<\/body>/, `${fallbackBody.trim()}\n  </body>`)
+  return html
+}
+
+function renderToolsDirectoryHtml() {
+  const title = 'All 30 Document & Image Conversion Tools — Convertly'
+  const desc = 'Browse all 30 enterprise-grade document, PDF, Office, and image conversion tools on Convertly. Fast, free, and secure with zero retention.'
+  const canonicalUrl = `${BASE_DOMAIN}/tools`
+
+  const bodyContent = `
+    <div class="py-12 md:py-16">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-10">
+          <div class="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3.5 py-1 text-xs font-semibold text-indigo-400 mb-4">
+            <span>30 Enterprise Tools Available</span>
+          </div>
+          <h1 class="font-heading text-3xl sm:text-5xl font-extrabold text-foreground">
+            All Conversion Tools
+          </h1>
+          <p class="mt-3 text-sm sm:text-base text-muted-foreground">
+            Browse our full suite of privacy-preserving, enterprise document and media conversion tools.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          ${TOOLS.map(t => `
+            <div class="rounded-2xl border border-border/80 bg-card/60 p-6 flex flex-col justify-between hover:border-indigo-500/40 transition-all">
+              <div class="space-y-3">
+                <div class="flex items-center justify-between">
+                  <span class="rounded-lg bg-indigo-500/10 px-2.5 py-1 text-[11px] font-bold text-indigo-400 uppercase tracking-wider">${t.category}</span>
+                  ${t.badge ? `<span class="rounded-lg bg-secondary/80 px-2 py-0.5 text-[10px] font-semibold text-foreground">${t.badge}</span>` : ''}
+                </div>
+                <h2 class="text-lg font-bold text-foreground">${t.name}</h2>
+                <p class="text-xs text-muted-foreground leading-relaxed">${t.summary || t.description}</p>
+              </div>
+              <div class="mt-6 pt-4 border-t border-border/40">
+                <a href="/tools/${t.id}" class="inline-flex items-center gap-1.5 text-xs font-semibold text-indigo-400 hover:text-indigo-300">
+                  Open Tool →
+                </a>
+              </div>
+            </div>
+          `).join('\n')}
+        </div>
+      </div>
+    </div>
+  `
+
+  const schema = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_DOMAIN },
+        { '@type': 'ListItem', position: 2, name: 'Tools Directory', item: canonicalUrl }
+      ]
+    }
+  ]
+
+  return renderPageTemplate({
+    title,
+    description: desc,
+    keywords: 'conversion tools directory, free pdf converter, word to pdf, pdf to word, image to pdf, compress pdf, merge pdf',
+    canonicalUrl,
+    schema,
+    bodyContent
+  })
+}
+
+function renderBlogPostHtml(post) {
+  const canonicalUrl = `${BASE_DOMAIN}/blog/${post.slug}`
+  const title = `${post.title} | Convertly Blog`
+
+  const bodyContent = `
+    <article class="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-10 text-foreground">
+      <nav aria-label="Breadcrumbs" class="flex items-center gap-2 text-xs text-muted-foreground">
+        <a href="/" class="hover:text-foreground">Home</a>
+        <span>/</span>
+        <a href="/blog" class="hover:text-foreground">Blog</a>
+        <span>/</span>
+        <span class="text-foreground font-medium truncate">${post.h1}</span>
+      </nav>
+      <header class="space-y-4">
+        <div class="flex items-center gap-2 flex-wrap">
+          <span class="rounded-md bg-indigo-500/10 px-2 py-0.5 text-xs font-semibold text-indigo-400 border border-indigo-500/20">${post.category}</span>
+          <span class="text-xs text-muted-foreground">• ${post.readTime}</span>
+          <span class="text-xs text-muted-foreground">• ${post.publishDate}</span>
+        </div>
+        <h1 class="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground leading-tight">${post.h1}</h1>
+        <div class="flex items-center gap-3 pt-2 border-t border-b border-border/60 py-3">
+          <div class="flex h-10 w-10 items-center justify-center rounded-full bg-indigo-600 text-white font-bold text-xs">${post.author.avatarInitials}</div>
+          <div>
+            <p class="text-sm font-bold text-foreground">${post.author.name}</p>
+            <p class="text-xs text-muted-foreground">${post.author.role} • Convertly Research</p>
+          </div>
+        </div>
+      </header>
+      <p class="text-base sm:text-lg text-foreground/90 font-medium leading-relaxed">${post.lead}</p>
+      <div class="rounded-2xl p-6 border border-indigo-500/30 bg-indigo-500/5 space-y-3">
+        <h2 class="text-sm font-bold text-foreground">Key Editorial Takeaways</h2>
+        <ul class="space-y-2 text-xs sm:text-sm text-muted-foreground">
+          ${post.keyTakeaways.map(t => `<li class="flex items-start gap-2"><span class="text-emerald-400 shrink-0">✓</span><span>${t}</span></li>`).join('\n')}
+        </ul>
+      </div>
+      <div class="space-y-8 text-foreground/90">
+        ${post.contentSections.map(s => `
+          <section class="space-y-4">
+            <h2 class="font-heading text-xl sm:text-2xl font-bold tracking-tight text-foreground">${s.heading}</h2>
+            ${s.paragraphs.map(p => `<p class="text-sm sm:text-base leading-relaxed text-muted-foreground">${p}</p>`).join('\n')}
+            ${s.bulletPoints && s.bulletPoints.length ? `
+              <ul class="space-y-2 pl-4 text-xs sm:text-sm text-muted-foreground list-disc">
+                ${s.bulletPoints.map(bp => `<li>${bp}</li>`).join('\n')}
+              </ul>
+            ` : ''}
+          </section>
+        `).join('\n')}
+      </div>
+      <div class="rounded-2xl p-6 border border-indigo-500/40 bg-card/60 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <span class="text-xs font-bold text-indigo-400 uppercase">Try It In Action:</span>
+          <h3 class="text-base font-bold text-foreground">${post.recommendedToolName}</h3>
+          <p class="text-xs text-muted-foreground">Execute your workflow in seconds with zero data retention.</p>
+        </div>
+        <a href="/tools/${post.recommendedToolId}" class="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-semibold text-white hover:bg-indigo-500">Launch Tool Now</a>
+      </div>
+    </article>
+  `
+
+  const schema = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Article',
+      headline: post.h1,
+      description: post.metaDescription,
+      author: {
+        '@type': 'Person',
+        name: post.author.name,
+        jobTitle: post.author.role
+      },
+      publisher: {
+        '@type': 'Organization',
+        name: 'Convertly',
+        url: BASE_DOMAIN
+      },
+      datePublished: '2026-09-01',
+      dateModified: '2026-09-12',
+      mainEntityOfPage: canonicalUrl
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_DOMAIN },
+        { '@type': 'ListItem', position: 2, name: 'Blog', item: `${BASE_DOMAIN}/blog` },
+        { '@type': 'ListItem', position: 3, name: post.h1, item: canonicalUrl }
+      ]
+    }
+  ]
+
+  return renderPageTemplate({
+    title,
+    description: post.metaDescription,
+    keywords: post.keywords,
+    canonicalUrl,
+    ogType: 'article',
+    schema,
+    bodyContent
+  })
+}
+
+function renderGuideHtml(guide) {
+  const canonicalUrl = `${BASE_DOMAIN}/guides/${guide.slug}`
+
+  const bodyContent = `
+    <article class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-12 text-foreground">
+      <nav aria-label="Breadcrumbs" class="flex items-center gap-2 text-xs text-muted-foreground">
+        <a href="/" class="hover:text-foreground">Home</a>
+        <span>/</span>
+        <a href="/guides" class="hover:text-foreground">Guides</a>
+        <span>/</span>
+        <span class="text-foreground font-medium truncate">${guide.h1}</span>
+      </nav>
+      <header class="space-y-4">
+        <div class="flex items-center gap-2 flex-wrap">
+          <span class="rounded-md bg-indigo-500/10 px-2 py-0.5 text-xs font-semibold text-indigo-400 border border-indigo-500/20">${guide.category} Guide</span>
+          <span class="text-xs text-muted-foreground">• ${guide.readingTime}</span>
+        </div>
+        <h1 class="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">${guide.h1}</h1>
+        <p class="text-base sm:text-lg text-muted-foreground leading-relaxed">${guide.summary}</p>
+        <div class="pt-2">
+          <div class="rounded-2xl p-4 sm:p-5 border border-indigo-500/30 bg-indigo-500/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <span class="text-xs font-bold text-indigo-400">Recommended Converter Engine:</span>
+              <p class="text-sm font-semibold text-foreground">${guide.recommendedToolName}</p>
+            </div>
+            <a href="/tools/${guide.recommendedToolId}" class="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-semibold text-white hover:bg-indigo-500">Open Tool</a>
+          </div>
+        </div>
+      </header>
+      <section class="space-y-4">
+        <h2 class="text-xl font-bold tracking-tight text-foreground">Why Typical Online Converters Fail at This</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          ${guide.whyItFailsNormally.map((item, idx) => `
+            <div class="rounded-2xl p-5 border border-border/80 bg-card/40 space-y-2">
+              <span class="text-xs font-bold text-amber-400">Pitfall ${idx + 1}</span>
+              <h3 class="text-sm font-semibold text-foreground">${item.problem}</h3>
+              <p class="text-xs text-muted-foreground leading-relaxed">${item.reason}</p>
+            </div>
+          `).join('\n')}
+        </div>
+      </section>
+      <section class="space-y-6">
+        <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-foreground">Step-by-Step Action Plan</h2>
+        <div class="space-y-5">
+          ${guide.howToSteps.map(step => `
+            <div class="rounded-2xl p-6 border border-border/80 bg-card/50 space-y-3">
+              <div class="flex items-center gap-3">
+                <span class="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white text-sm font-bold">${step.step}</span>
+                <h3 class="text-base font-bold text-foreground">${step.title}</h3>
+              </div>
+              <p class="text-sm text-muted-foreground leading-relaxed pl-11">${step.instruction}</p>
+              ${step.proTip ? `<div class="ml-11 rounded-lg border border-indigo-500/20 bg-indigo-500/5 p-3 text-xs text-muted-foreground"><strong>Pro-Tip:</strong> ${step.proTip}</div>` : ''}
+            </div>
+          `).join('\n')}
+        </div>
+      </section>
+      <section class="space-y-4 rounded-2xl border border-border/80 bg-card/40 p-6 sm:p-8">
+        <h2 class="text-xl font-bold tracking-tight text-foreground">Technical Deep Dive</h2>
+        <div class="space-y-3 text-sm text-muted-foreground leading-relaxed">
+          ${guide.technicalDeepDive.map(p => `<p>${p}</p>`).join('\n')}
+        </div>
+      </section>
+      <section class="space-y-4">
+        <h2 class="text-xl font-bold tracking-tight text-foreground">Frequently Asked Questions</h2>
+        <div class="space-y-3">
+          ${guide.faqs.map(faq => `
+            <div class="rounded-2xl border border-border/80 bg-card/40 p-5 space-y-2">
+              <h3 class="text-sm font-semibold text-foreground">${faq.question}</h3>
+              <p class="text-xs text-muted-foreground leading-relaxed">${faq.answer}</p>
+            </div>
+          `).join('\n')}
+        </div>
+      </section>
+    </article>
+  `
+
+  const schema = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'HowTo',
+      name: guide.h1,
+      description: guide.summary,
+      step: guide.howToSteps.map(s => ({
+        '@type': 'HowToStep',
+        position: s.step,
+        name: s.title,
+        text: s.instruction
+      }))
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_DOMAIN },
+        { '@type': 'ListItem', position: 2, name: 'Guides', item: `${BASE_DOMAIN}/guides` },
+        { '@type': 'ListItem', position: 3, name: guide.h1, item: canonicalUrl }
+      ]
+    }
+  ]
+
+  if (guide.faqs && guide.faqs.length) {
+    schema.push({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: guide.faqs.map(f => ({
+        '@type': 'Question',
+        name: f.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: f.answer
+        }
+      }))
+    })
+  }
+
+  return renderPageTemplate({
+    title: guide.title,
+    description: guide.metaDescription,
+    keywords: guide.keywords,
+    canonicalUrl,
+    schema,
+    bodyContent
+  })
+}
+
+function renderComparisonHtml(comp) {
+  const canonicalUrl = `${BASE_DOMAIN}/compare/${comp.slug}`
+
+  const bodyContent = `
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-12 text-foreground">
+      <nav aria-label="Breadcrumbs" class="flex items-center gap-2 text-xs text-muted-foreground">
+        <a href="/" class="hover:text-foreground">Home</a>
+        <span>/</span>
+        <a href="/compare" class="hover:text-foreground">Comparisons</a>
+        <span>/</span>
+        <span class="text-foreground font-medium truncate">Convertly vs ${comp.competitorName}</span>
+      </nav>
+      <header class="space-y-4 text-center max-w-3xl mx-auto">
+        <div class="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3 py-1 text-xs font-semibold text-indigo-400">
+          <span>Factual Head-to-Head Analysis</span>
+        </div>
+        <h1 class="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">${comp.h1}</h1>
+        <p class="text-sm sm:text-base text-muted-foreground leading-relaxed">${comp.summary}</p>
+      </header>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="rounded-2xl p-6 border border-indigo-500/40 bg-card/60 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="rounded-md bg-indigo-600 text-white px-2.5 py-1 text-xs font-bold">Convertly</span>
+            <span class="text-xs text-emerald-400 font-semibold">100% Free Forever</span>
+          </div>
+          <div>
+            <span class="text-xs text-muted-foreground uppercase font-semibold">Pricing Model</span>
+            <p class="text-sm font-medium text-foreground">${comp.pricingModel.convertly}</p>
+          </div>
+          <div class="border-t border-border/40 pt-3">
+            <span class="text-xs text-muted-foreground uppercase font-semibold">Data Retention SLA</span>
+            <p class="text-xs text-muted-foreground">${comp.retentionPolicy.convertly}</p>
+          </div>
+        </div>
+        <div class="rounded-2xl p-6 border border-border/80 bg-card/40 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="rounded-md border border-border px-2.5 py-1 text-xs font-bold">${comp.competitorName}</span>
+            <span class="text-xs text-muted-foreground">${comp.competitorDomain}</span>
+          </div>
+          <div>
+            <span class="text-xs text-muted-foreground uppercase font-semibold">Pricing Model</span>
+            <p class="text-sm font-medium text-foreground">${comp.pricingModel.competitor}</p>
+          </div>
+          <div class="border-t border-border/40 pt-3">
+            <span class="text-xs text-muted-foreground uppercase font-semibold">Data Retention SLA</span>
+            <p class="text-xs text-muted-foreground">${comp.retentionPolicy.competitor}</p>
+          </div>
+        </div>
+      </div>
+      <section class="space-y-4">
+        <h2 class="text-xl font-bold tracking-tight text-foreground">Feature Matrix Comparison</h2>
+        <div class="overflow-x-auto rounded-xl border border-border/80 bg-card/50">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-border/60 bg-secondary/40 text-muted-foreground">
+                <th class="p-3.5 font-semibold">Feature</th>
+                <th class="p-3.5 font-semibold text-indigo-400">Convertly</th>
+                <th class="p-3.5 font-semibold">${comp.competitorName}</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y border-border/40">
+              ${comp.matrix.map(row => `
+                <tr>
+                  <td class="p-3.5 font-medium text-foreground">${row.feature}</td>
+                  <td class="p-3.5 text-foreground">${row.convertly}</td>
+                  <td class="p-3.5 text-muted-foreground">${row.competitor}</td>
+                </tr>
+              `).join('\n')}
+            </tbody>
+          </table>
+        </div>
+      </section>
+      <section class="space-y-4">
+        <h2 class="text-xl font-bold tracking-tight text-foreground">Frequently Asked Questions</h2>
+        <div class="space-y-3">
+          ${comp.faqs.map(faq => `
+            <div class="rounded-2xl border border-border/80 bg-card/40 p-5 space-y-2">
+              <h3 class="text-sm font-semibold text-foreground">${faq.question}</h3>
+              <p class="text-xs text-muted-foreground leading-relaxed">${faq.answer}</p>
+            </div>
+          `).join('\n')}
+        </div>
+      </section>
+    </div>
+  `
+
+  const schema = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_DOMAIN },
+        { '@type': 'ListItem', position: 2, name: 'Comparisons', item: `${BASE_DOMAIN}/compare` },
+        { '@type': 'ListItem', position: 3, name: `Convertly vs ${comp.competitorName}`, item: canonicalUrl }
+      ]
+    }
+  ]
+
+  if (comp.faqs && comp.faqs.length) {
+    schema.push({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: comp.faqs.map(f => ({
+        '@type': 'Question',
+        name: f.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: f.answer
+        }
+      }))
+    })
+  }
+
+  return renderPageTemplate({
+    title: comp.title,
+    description: comp.metaDescription,
+    keywords: `convertly vs ${comp.competitorName.toLowerCase()}, ${comp.competitorName.toLowerCase()} alternative, free pdf converter vs ${comp.competitorName.toLowerCase()}`,
+    canonicalUrl,
+    schema,
+    bodyContent
+  })
+}
+
+function renderUseCaseHtml(uc) {
+  const canonicalUrl = `${BASE_DOMAIN}/use-cases/${uc.slug}`
+
+  const bodyContent = `
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-12 text-foreground">
+      <nav aria-label="Breadcrumbs" class="flex items-center gap-2 text-xs text-muted-foreground">
+        <a href="/" class="hover:text-foreground">Home</a>
+        <span>/</span>
+        <a href="/use-cases" class="hover:text-foreground">Use Cases</a>
+        <span>/</span>
+        <span class="text-foreground font-medium truncate">${uc.targetAudience}</span>
+      </nav>
+      <header class="space-y-4 text-center max-w-3xl mx-auto">
+        <div class="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3 py-1 text-xs font-semibold text-indigo-400">
+          <span>Dedicated Workflow Guide</span>
+        </div>
+        <h1 class="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">${uc.h1}</h1>
+        <p class="text-sm sm:text-base text-muted-foreground leading-relaxed">${uc.summary}</p>
+      </header>
+      <section class="space-y-4">
+        <h2 class="text-xl font-bold tracking-tight text-foreground">Common Industry Challenges & How Convertly Solves Them</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          ${uc.keyPainPoints.map((pp, idx) => `
+            <div class="rounded-2xl p-5 border border-border/80 bg-card/40 space-y-2">
+              <span class="text-xs font-bold text-amber-400 uppercase tracking-wider block">Challenge ${idx + 1}</span>
+              <h3 class="text-sm font-semibold text-foreground">${pp.title}</h3>
+              <p class="text-xs text-muted-foreground leading-relaxed">${pp.desc}</p>
+            </div>
+          `).join('\n')}
+        </div>
+      </section>
+      <section class="space-y-4">
+        <h2 class="text-xl font-bold tracking-tight text-foreground">Recommended Tool Pipelines for ${uc.targetAudience}</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          ${uc.recommendedWorkflows.map(wf => `
+            <div class="rounded-2xl border border-border/80 bg-card/50 p-5 space-y-3">
+              <h3 class="text-sm font-bold text-foreground">${wf.title}</h3>
+              <p class="text-xs text-muted-foreground leading-relaxed">${wf.desc}</p>
+              <a href="/tools/${wf.toolId}" class="inline-flex items-center gap-1 text-xs font-semibold text-indigo-400 hover:text-indigo-300">
+                Open ${wf.toolName} →
+              </a>
+            </div>
+          `).join('\n')}
+        </div>
+      </section>
+      <section class="space-y-4">
+        <h2 class="text-xl font-bold tracking-tight text-foreground">Frequently Asked Questions</h2>
+        <div class="space-y-3">
+          ${uc.faqs.map(faq => `
+            <div class="rounded-2xl border border-border/80 bg-card/40 p-5 space-y-2">
+              <h3 class="text-sm font-semibold text-foreground">${faq.question}</h3>
+              <p class="text-xs text-muted-foreground leading-relaxed">${faq.answer}</p>
+            </div>
+          `).join('\n')}
+        </div>
+      </section>
+    </div>
+  `
+
+  const schema = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_DOMAIN },
+        { '@type': 'ListItem', position: 2, name: 'Use Cases', item: `${BASE_DOMAIN}/use-cases` },
+        { '@type': 'ListItem', position: 3, name: uc.targetAudience, item: canonicalUrl }
+      ]
+    }
+  ]
+
+  if (uc.faqs && uc.faqs.length) {
+    schema.push({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: uc.faqs.map(f => ({
+        '@type': 'Question',
+        name: f.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: f.answer
+        }
+      }))
+    })
+  }
+
+  return renderPageTemplate({
+    title: uc.title,
+    description: uc.metaDescription,
+    keywords: uc.keywords,
+    canonicalUrl,
+    schema,
+    bodyContent
+  })
+}
+
+function renderProgrammaticHtml(prog) {
+  const canonicalUrl = `${BASE_DOMAIN}/convert/${prog.slug}`
+
+  const bodyContent = `
+    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-12 text-foreground">
+      <nav aria-label="Breadcrumbs" class="flex items-center gap-2 text-xs text-muted-foreground">
+        <a href="/" class="hover:text-foreground">Home</a>
+        <span>/</span>
+        <a href="/tools" class="hover:text-foreground">Tools</a>
+        <span>/</span>
+        <span class="text-foreground font-medium truncate">${prog.h1}</span>
+      </nav>
+      <header class="space-y-4 text-center max-w-3xl mx-auto">
+        <div class="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3 py-1 text-xs font-semibold text-indigo-400">
+          <span>${prog.badge}</span>
+          <span class="text-muted-foreground">•</span>
+          <span class="text-[10px] text-emerald-400 uppercase tracking-wider">${prog.searchIntent}</span>
+        </div>
+        <h1 class="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">${prog.h1}</h1>
+        <p class="text-sm sm:text-base text-muted-foreground leading-relaxed">${prog.subheading}</p>
+        <div class="pt-6">
+          <div class="rounded-2xl p-6 sm:p-8 bg-card/60 border border-indigo-500/30 text-center space-y-4">
+            <h2 class="text-lg font-bold text-foreground">Launch ${prog.h1} Engine</h2>
+            <p class="text-xs text-muted-foreground">100% Free • No Account Registration • 120-Minute Automatic File Shredder</p>
+            <div class="flex justify-center">
+              <a href="/tools/${prog.toolId}" class="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-6 py-3 text-sm font-bold text-white hover:bg-indigo-500 shadow-lg shadow-indigo-500/25">
+                Proceed to ${prog.h1} Tool →
+              </a>
+            </div>
+          </div>
+        </div>
+      </header>
+      <section class="space-y-4">
+        <h2 class="text-xl font-bold tracking-tight text-foreground">Core Technical Capabilities</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+          ${prog.highlights.map(hl => `
+            <div class="rounded-2xl border border-border/80 bg-card/40 p-5 space-y-2">
+              <h3 class="text-sm font-semibold text-foreground">${hl.title}</h3>
+              <p class="text-xs text-muted-foreground leading-relaxed">${hl.desc}</p>
+            </div>
+          `).join('\n')}
+        </div>
+      </section>
+      <section class="space-y-4">
+        <h2 class="text-xl font-bold tracking-tight text-foreground">Step-by-Step Conversion Guide</h2>
+        <div class="space-y-3">
+          ${prog.stepGuide.map(s => `
+            <div class="rounded-2xl border border-border/80 bg-card/50 p-4 flex items-start gap-4">
+              <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white text-xs font-bold">${s.step}</span>
+              <div>
+                <h3 class="text-sm font-semibold text-foreground">${s.title}</h3>
+                <p class="text-xs text-muted-foreground leading-relaxed mt-1">${s.desc}</p>
+              </div>
+            </div>
+          `).join('\n')}
+        </div>
+      </section>
+      <section class="space-y-4">
+        <h2 class="text-xl font-bold tracking-tight text-foreground">Frequently Asked Questions</h2>
+        <div class="space-y-3">
+          ${prog.faqs.map(faq => `
+            <div class="rounded-2xl border border-border/80 bg-card/40 p-5 space-y-2">
+              <h3 class="text-sm font-semibold text-foreground">${faq.question}</h3>
+              <p class="text-xs text-muted-foreground leading-relaxed">${faq.answer}</p>
+            </div>
+          `).join('\n')}
+        </div>
+      </section>
+    </div>
+  `
+
+  const schema = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_DOMAIN },
+        { '@type': 'ListItem', position: 2, name: 'Tools', item: `${BASE_DOMAIN}/tools` },
+        { '@type': 'ListItem', position: 3, name: prog.h1, item: canonicalUrl }
+      ]
+    }
+  ]
+
+  if (prog.faqs && prog.faqs.length) {
+    schema.push({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: prog.faqs.map(f => ({
+        '@type': 'Question',
+        name: f.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: f.answer
+        }
+      }))
+    })
+  }
+
+  return renderPageTemplate({
+    title: prog.title,
+    description: prog.metaDescription,
+    keywords: prog.keywords,
+    canonicalUrl,
+    schema,
+    bodyContent
+  })
+}
+
+function renderPrivacyHtml() {
+  const canonicalUrl = `${BASE_DOMAIN}/privacy`
+  const title = 'Privacy Policy — 120-Minute Auto-Shredder Guarantee | Convertly'
+  const desc = 'Convertly Privacy Policy. Strict zero-retention guarantee, 120-minute automated file shredding, TLS 1.3 encryption, and GDPR compliance.'
+
+  const bodyContent = `
+    <div class="py-12 md:py-16 text-foreground">
+      <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+          <div class="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-semibold text-emerald-400 mb-4">
+            <span>Zero Permanent Retention</span>
+          </div>
+          <h1 class="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+            Privacy Policy & Data Protection
+          </h1>
+          <p class="mt-3 text-sm text-muted-foreground leading-relaxed">
+            At Convertly V2, your documents belong strictly to you. We engineered our platform from day one with a zero-knowledge, zero-retention architecture.
+          </p>
+          <p class="mt-1 text-xs text-muted-foreground">Effective Date: September 10, 2026 • Version 2.0</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          <div class="rounded-2xl p-6 border border-emerald-500/20 bg-card/60">
+            <h2 class="font-heading text-sm font-bold text-foreground">120-Minute TTL Shredder</h2>
+            <p class="mt-2 text-xs text-muted-foreground leading-relaxed">Every uploaded and converted file is assigned a strict 120-minute Time-To-Live. Our automated cleaner overwrites bytes and deletes all storage records.</p>
+          </div>
+          <div class="rounded-2xl p-6 border border-indigo-500/20 bg-card/60">
+            <h2 class="font-heading text-sm font-bold text-foreground">No File Inspection</h2>
+            <p class="mt-2 text-xs text-muted-foreground leading-relaxed">No humans, AI training crawlers, or third-party advertising brokers ever read or parse your document contents.</p>
+          </div>
+          <div class="rounded-2xl p-6 border border-cyan-500/20 bg-card/60">
+            <h2 class="font-heading text-sm font-bold text-foreground">Encrypted in Transit</h2>
+            <p class="mt-2 text-xs text-muted-foreground leading-relaxed">All communications between your web browser and our document engine are encrypted using industry-standard TLS 1.3.</p>
+          </div>
+        </div>
+        <div class="rounded-2xl p-8 sm:p-10 border border-border/80 bg-card/60 space-y-8 text-xs text-muted-foreground leading-relaxed">
+          <section>
+            <h2 class="font-heading text-base font-bold text-foreground mb-3">1. Information We Collect</h2>
+            <p>When using Convertly V2, you provide files solely for the purpose of executing the file transformation you have requested. We do not require account registration, email addresses, credit card details, or personal profile data.</p>
+          </section>
+          <section>
+            <h2 class="font-heading text-base font-bold text-foreground mb-3">2. Automated Document Shredding & Retention Policy</h2>
+            <p>All documents are stored in temporary, isolated directory structures with a maximum retention lifespan of exactly 120 minutes (2 hours). Our automated background cleaner removes all files and database records permanently.</p>
+          </section>
+          <section>
+            <h2 class="font-heading text-base font-bold text-foreground mb-3">3. Encryption & In-Transit Security Standards</h2>
+            <p>All data transmitted between your device and Convertly V2 is encrypted via TLS 1.3 with Perfect Forward Secrecy. Eavesdropping and data alteration are cryptographically prevented.</p>
+          </section>
+          <section>
+            <h2 class="font-heading text-base font-bold text-foreground mb-3">4. No Third-Party Commercial Tracking or AI Training</h2>
+            <p>We do not sell user data, utilize behavioral tracking cookies, or use customer documents to train artificial intelligence or machine learning models.</p>
+          </section>
+          <section>
+            <h2 class="font-heading text-base font-bold text-foreground mb-3">5. GDPR & Cross-Border Compliance</h2>
+            <p>Convertly V2 adheres to core GDPR privacy-by-design principles: data minimization, purpose limitation, and immediate storage limitation.</p>
+          </section>
+        </div>
+      </div>
+    </div>
+  `
+
+  const schema = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_DOMAIN },
+        { '@type': 'ListItem', position: 2, name: 'Privacy Policy', item: canonicalUrl }
+      ]
+    }
+  ]
+
+  return renderPageTemplate({ title, description: desc, canonicalUrl, schema, bodyContent })
+}
+
+function renderSecurityHtml() {
+  const canonicalUrl = `${BASE_DOMAIN}/security`
+  const title = 'Security Architecture & Defense-in-Depth | Convertly'
+  const desc = 'Learn how Convertly protects your confidential documents with TLS 1.3, sandboxed subprocesses, magic-byte inspection, and automated shredding.'
+
+  const bodyContent = `
+    <div class="py-12 md:py-16 text-foreground">
+      <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-10">
+          <div class="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3.5 py-1 text-xs font-semibold text-cyan-400 mb-4">
+            <span>Bank-Grade Architecture</span>
+          </div>
+          <h1 class="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+            Security Architecture & Defense
+          </h1>
+          <p class="mt-3 text-sm text-muted-foreground leading-relaxed">
+            Convertly V2 enforces multi-layered defense-in-depth security across every network request, file ingestion pipeline, and background transformation worker.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          <div class="rounded-2xl p-6 border border-border/80 bg-card/60">
+            <h2 class="font-heading text-sm font-bold text-foreground">Transport Layer Security (TLS 1.3)</h2>
+            <p class="mt-2 text-xs text-muted-foreground leading-relaxed">All browser-to-server traffic is mandated over TLS 1.3 with Perfect Forward Secrecy (PFS) and strict HSTS headers.</p>
+          </div>
+          <div class="rounded-2xl p-6 border border-border/80 bg-card/60">
+            <h2 class="font-heading text-sm font-bold text-foreground">Ephemeral Subprocess Sandboxing</h2>
+            <p class="mt-2 text-xs text-muted-foreground leading-relaxed">Document transformation drivers execute in strictly isolated ephemeral worker processes with capped CPU and memory limits.</p>
+          </div>
+          <div class="rounded-2xl p-6 border border-border/80 bg-card/60">
+            <h2 class="font-heading text-sm font-bold text-foreground">Automated Multi-Pass Shredding</h2>
+            <p class="mt-2 text-xs text-muted-foreground leading-relaxed">Worker cron jobs run every 10 minutes to wipe expired documents, unlinking files from disk and pruning database records.</p>
+          </div>
+          <div class="rounded-2xl p-6 border border-border/80 bg-card/60">
+            <h2 class="font-heading text-sm font-bold text-foreground">Strict Magic-Byte Inspection</h2>
+            <p class="mt-2 text-xs text-muted-foreground leading-relaxed">Every uploaded binary is inspected for authentic file headers before processing, preventing disguised executables and malicious payloads.</p>
+          </div>
+          <div class="rounded-2xl p-6 border border-border/80 bg-card/60">
+            <h2 class="font-heading text-sm font-bold text-foreground">Zero Analytics Leakage</h2>
+            <p class="mt-2 text-xs text-muted-foreground leading-relaxed">Document contents, filenames, and text streams are never logged to analytics or monitoring pipelines.</p>
+          </div>
+          <div class="rounded-2xl p-6 border border-border/80 bg-card/60">
+            <h2 class="font-heading text-sm font-bold text-foreground">Hardened Network Boundary</h2>
+            <p class="mt-2 text-xs text-muted-foreground leading-relaxed">Our infrastructure uses rate limiting, Cloudflare DDoS shielding, and automated firewall rules to prevent abuse.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `
+
+  const schema = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_DOMAIN },
+        { '@type': 'ListItem', position: 2, name: 'Security Architecture', item: canonicalUrl }
+      ]
+    }
+  ]
+
+  return renderPageTemplate({ title, description: desc, canonicalUrl, schema, bodyContent })
+}
+
+function renderTermsHtml() {
+  const canonicalUrl = `${BASE_DOMAIN}/terms`
+  const title = 'Terms of Service — Convertly V2 File Conversion'
+  const desc = 'Terms and conditions for utilizing Convertly online document and image conversion services.'
+
+  const bodyContent = `
+    <div class="py-12 md:py-16 text-foreground">
+      <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-2xl mx-auto mb-12">
+          <div class="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3.5 py-1 text-xs font-semibold text-indigo-400 mb-4">
+            <span>Clear & Fair Terms</span>
+          </div>
+          <h1 class="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+            Terms of Service
+          </h1>
+          <p class="mt-3 text-sm text-muted-foreground leading-relaxed">
+            Simple, transparent terms governing your use of Convertly V2's free file conversion infrastructure.
+          </p>
+          <p class="mt-1 text-xs text-muted-foreground">Last Updated: September 10, 2026 • Version 2.0</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+          <div class="rounded-2xl p-6 border border-border/80 bg-card/60">
+            <h2 class="font-heading text-sm font-bold text-foreground">100% User Ownership</h2>
+            <p class="mt-2 text-xs text-muted-foreground leading-relaxed">You retain full, unencumbered intellectual property rights over all files, text, and images you upload or convert.</p>
+          </div>
+          <div class="rounded-2xl p-6 border border-border/80 bg-card/60">
+            <h2 class="font-heading text-sm font-bold text-foreground">Free & Open Utility</h2>
+            <p class="mt-2 text-xs text-muted-foreground leading-relaxed">All 30 tools are provided free of charge for personal, academic, and commercial business workflows without watermarks.</p>
+          </div>
+          <div class="rounded-2xl p-6 border border-border/80 bg-card/60">
+            <h2 class="font-heading text-sm font-bold text-foreground">Responsible Fair Use</h2>
+            <p class="mt-2 text-xs text-muted-foreground leading-relaxed">Users agree not to exploit the conversion pipelines for automated scraping, illegal material distribution, or denial of service attacks.</p>
+          </div>
+        </div>
+        <div class="rounded-2xl p-8 sm:p-10 border border-border/80 bg-card/60 space-y-8 text-xs text-muted-foreground leading-relaxed">
+          <section>
+            <h2 class="font-heading text-base font-bold text-foreground mb-3">1. Acceptance of Terms</h2>
+            <p>By accessing or utilizing Convertly V2 services, you confirm your acceptance of these Terms of Service.</p>
+          </section>
+          <section>
+            <h2 class="font-heading text-base font-bold text-foreground mb-3">2. User Content & Intellectual Property</h2>
+            <p>Convertly V2 makes no claim of ownership over any files, images, or documents you process through our platform.</p>
+          </section>
+          <section>
+            <h2 class="font-heading text-base font-bold text-foreground mb-3">3. Permitted & Acceptable Use</h2>
+            <p>You agree to utilize Convertly V2 only for lawful purposes in compliance with all relevant international and local laws.</p>
+          </section>
+          <section>
+            <h2 class="font-heading text-base font-bold text-foreground mb-3">4. Disclaimer of Warranties</h2>
+            <p>The conversion service is provided on an "as-is" and "as-available" basis without warranties of any kind.</p>
+          </section>
+          <section>
+            <h2 class="font-heading text-base font-bold text-foreground mb-3">5. Limitation of Liability</h2>
+            <p>Convertly V2 and its operators shall not be liable for any indirect, incidental, or consequential damages resulting from service usage.</p>
+          </section>
+        </div>
+      </div>
+    </div>
+  `
+
+  const schema = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_DOMAIN },
+        { '@type': 'ListItem', position: 2, name: 'Terms of Service', item: canonicalUrl }
+      ]
+    }
+  ]
+
+  return renderPageTemplate({ title, description: desc, canonicalUrl, schema, bodyContent })
+}
+
+function renderDevelopersHtml() {
+  const canonicalUrl = `${BASE_DOMAIN}/developers`
+  const title = 'Developers API & Architecture — Convertly V2'
+  const desc = 'Explore the Convertly V2 REST API documentation, webhook integration guides, and document pipeline specs.'
+
+  const bodyContent = `
+    <div class="py-12 md:py-16 text-foreground">
+      <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+          <div class="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3.5 py-1 text-xs font-semibold text-indigo-400 mb-4">
+            <span>Developer Center</span>
+          </div>
+          <h1 class="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+            Convertly V2 REST API Reference
+          </h1>
+          <p class="mt-3 text-sm text-muted-foreground leading-relaxed">
+            Programmatically automate PDF transformations, high-fidelity Office conversions, and batch image processing with our high-throughput, asynchronous REST pipeline.
+          </p>
+        </div>
+        <div class="space-y-6">
+          <div class="rounded-2xl border border-border/80 bg-card/60 p-6 space-y-3">
+            <div class="flex items-center gap-2">
+              <span class="rounded bg-indigo-600 px-2 py-0.5 text-[11px] font-bold text-white">POST</span>
+              <code class="text-sm font-semibold text-foreground">/api/v1/files/upload</code>
+            </div>
+            <h2 class="text-base font-bold text-foreground">1. Ingest & Validate File</h2>
+            <p class="text-xs text-muted-foreground leading-relaxed">Upload a document or image with magic-byte validation and antivirus pre-scanning. Returns a unique file ID with 120-minute expiry.</p>
+          </div>
+          <div class="rounded-2xl border border-border/80 bg-card/60 p-6 space-y-3">
+            <div class="flex items-center gap-2">
+              <span class="rounded bg-indigo-600 px-2 py-0.5 text-[11px] font-bold text-white">POST</span>
+              <code class="text-sm font-semibold text-foreground">/api/v1/jobs</code>
+            </div>
+            <h2 class="text-base font-bold text-foreground">2. Dispatch Conversion Job</h2>
+            <p class="text-xs text-muted-foreground leading-relaxed">Submit a background conversion task with tool identifier and options. Returns a job tracking token.</p>
+          </div>
+          <div class="rounded-2xl border border-border/80 bg-card/60 p-6 space-y-3">
+            <div class="flex items-center gap-2">
+              <span class="rounded bg-emerald-600 px-2 py-0.5 text-[11px] font-bold text-white">GET</span>
+              <code class="text-sm font-semibold text-foreground">/api/v1/jobs/{job_id}</code>
+            </div>
+            <h2 class="text-base font-bold text-foreground">3. Poll Job Status</h2>
+            <p class="text-xs text-muted-foreground leading-relaxed">Poll background worker progress until status reaches "completed" or "failed". Execution typically concludes in under 1 second.</p>
+          </div>
+          <div class="rounded-2xl border border-border/80 bg-card/60 p-6 space-y-3">
+            <div class="flex items-center gap-2">
+              <span class="rounded bg-emerald-600 px-2 py-0.5 text-[11px] font-bold text-white">GET</span>
+              <code class="text-sm font-semibold text-foreground">/api/v1/files/{file_id}/download</code>
+            </div>
+            <h2 class="text-base font-bold text-foreground">4. Download Result</h2>
+            <p class="text-xs text-muted-foreground leading-relaxed">Streams the converted binary with safe Content-Disposition headers and anti-sniffing X-Content-Type-Options.</p>
+          </div>
+          <div class="rounded-2xl border border-border/80 bg-card/60 p-6 space-y-3">
+            <div class="flex items-center gap-2">
+              <span class="rounded bg-indigo-600 px-2 py-0.5 text-[11px] font-bold text-white">POST</span>
+              <code class="text-sm font-semibold text-foreground">/api/v1/files/inspect</code>
+            </div>
+            <h2 class="text-base font-bold text-foreground">5. Pre-Flight PDF Security & Privacy Audit</h2>
+            <p class="text-xs text-muted-foreground leading-relaxed">Inspects PDF byte dictionary for metadata trails, form widgets, embedded JavaScript hooks, and encryption layers.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `
+
+  const schema = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_DOMAIN },
+        { '@type': 'ListItem', position: 2, name: 'Developers API', item: canonicalUrl }
+      ]
+    }
+  ]
+
+  return renderPageTemplate({ title, description: desc, canonicalUrl, schema, bodyContent })
+}
+
+function renderFormatsHtml() {
+  const canonicalUrl = `${BASE_DOMAIN}/formats`
+  const title = 'Supported File Formats & MIME Type Specifications — Convertly'
+  const desc = 'Comprehensive technical specification guide covering all supported PDF, Microsoft Office, and raster image formats.'
+
+  const bodyContent = `
+    <div class="py-12 md:py-16 text-foreground">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+          <div class="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3.5 py-1 text-xs font-semibold text-cyan-400 mb-4">
+            <span>Format Standards & Engine Matrix</span>
+          </div>
+          <h1 class="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+            Supported File Formats & Binary Specifications
+          </h1>
+          <p class="mt-3 text-sm text-muted-foreground leading-relaxed">
+            Convertly V2 enforces strict binary magic-byte inspection before processing any uploaded document, blocking disguised executables and ensuring 100% format fidelity.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+          <div class="rounded-2xl p-6 border border-border/80 bg-card/80 space-y-3">
+            <span class="rounded bg-rose-500/10 text-rose-400 px-2 py-0.5 text-xs font-bold">PDF</span>
+            <h2 class="text-base font-bold text-foreground">Portable Document Format (.pdf)</h2>
+            <p class="text-xs text-muted-foreground leading-relaxed">MIME: application/pdf • Magic Bytes: 25 50 44 46 2D (%PDF-) • Engine: PyMuPDF v1.24 + pypdf v4.3</p>
+          </div>
+          <div class="rounded-2xl p-6 border border-border/80 bg-card/80 space-y-3">
+            <span class="rounded bg-blue-500/10 text-blue-400 px-2 py-0.5 text-xs font-bold">DOCX</span>
+            <h2 class="text-base font-bold text-foreground">Microsoft Word Document (.docx)</h2>
+            <p class="text-xs text-muted-foreground leading-relaxed">MIME: application/vnd.openxmlformats-officedocument.wordprocessingml.document • Engine: LibreOffice Headless v24.2 + pdf2docx</p>
+          </div>
+          <div class="rounded-2xl p-6 border border-border/80 bg-card/80 space-y-3">
+            <span class="rounded bg-blue-500/10 text-blue-400 px-2 py-0.5 text-xs font-bold">DOC</span>
+            <h2 class="text-base font-bold text-foreground">Legacy Microsoft Word Document (.doc)</h2>
+            <p class="text-xs text-muted-foreground leading-relaxed">MIME: application/msword • Engine: LibreOffice Headless v24.2</p>
+          </div>
+          <div class="rounded-2xl p-6 border border-border/80 bg-card/80 space-y-3">
+            <span class="rounded bg-emerald-500/10 text-emerald-400 px-2 py-0.5 text-xs font-bold">XLSX</span>
+            <h2 class="text-base font-bold text-foreground">Microsoft Excel Spreadsheet (.xlsx)</h2>
+            <p class="text-xs text-muted-foreground leading-relaxed">MIME: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet • Engine: LibreOffice Calc Headless + pdfplumber</p>
+          </div>
+          <div class="rounded-2xl p-6 border border-border/80 bg-card/80 space-y-3">
+            <span class="rounded bg-emerald-500/10 text-emerald-400 px-2 py-0.5 text-xs font-bold">XLS</span>
+            <h2 class="text-base font-bold text-foreground">Legacy Microsoft Excel Spreadsheet (.xls)</h2>
+            <p class="text-xs text-muted-foreground leading-relaxed">MIME: application/vnd.ms-excel • Engine: LibreOffice Calc Headless</p>
+          </div>
+          <div class="rounded-2xl p-6 border border-border/80 bg-card/80 space-y-3">
+            <span class="rounded bg-amber-500/10 text-amber-400 px-2 py-0.5 text-xs font-bold">PPTX</span>
+            <h2 class="text-base font-bold text-foreground">Microsoft PowerPoint Presentation (.pptx)</h2>
+            <p class="text-xs text-muted-foreground leading-relaxed">MIME: application/vnd.openxmlformats-officedocument.presentationml.presentation • Engine: LibreOffice Impress Headless</p>
+          </div>
+          <div class="rounded-2xl p-6 border border-border/80 bg-card/80 space-y-3">
+            <span class="rounded bg-amber-500/10 text-amber-400 px-2 py-0.5 text-xs font-bold">PPT</span>
+            <h2 class="text-base font-bold text-foreground">Legacy Microsoft PowerPoint Presentation (.ppt)</h2>
+            <p class="text-xs text-muted-foreground leading-relaxed">MIME: application/vnd.ms-powerpoint • Engine: LibreOffice Impress Headless</p>
+          </div>
+          <div class="rounded-2xl p-6 border border-purple-500/10 text-purple-400 px-2 py-0.5 text-xs font-bold">JPG</span>
+            <h2 class="text-base font-bold text-foreground">Joint Photographic Experts Group (.jpg, .jpeg)</h2>
+            <p class="text-xs text-muted-foreground leading-relaxed">MIME: image/jpeg • Magic Bytes: FF D8 FF • Engine: Pillow (PIL Fork) v10.4</p>
+          </div>
+          <div class="rounded-2xl p-6 border border-cyan-500/10 text-cyan-400 px-2 py-0.5 text-xs font-bold">PNG</span>
+            <h2 class="text-base font-bold text-foreground">Portable Network Graphics (.png)</h2>
+            <p class="text-xs text-muted-foreground leading-relaxed">MIME: image/png • Magic Bytes: 89 50 4E 47 • Engine: Pillow v10.4 + libpng</p>
+          </div>
+          <div class="rounded-2xl p-6 border border-teal-500/10 text-teal-400 px-2 py-0.5 text-xs font-bold">WEBP</span>
+            <h2 class="text-base font-bold text-foreground">Google WebP Image Format (.webp)</h2>
+            <p class="text-xs text-muted-foreground leading-relaxed">MIME: image/webp • Magic Bytes: RIFF....WEBP • Engine: Pillow v10.4 + libwebp</p>
+          </div>
+          <div class="rounded-2xl p-6 border border-orange-500/10 text-orange-400 px-2 py-0.5 text-xs font-bold">SVG</span>
+            <h2 class="text-base font-bold text-foreground">Scalable Vector Graphics (.svg)</h2>
+            <p class="text-xs text-muted-foreground leading-relaxed">MIME: image/svg+xml • Engine: CairoSVG v2.7 + PyMuPDF</p>
+          </div>
+          <div class="rounded-2xl p-6 border border-slate-500/10 text-slate-400 px-2 py-0.5 text-xs font-bold">TXT</span>
+            <h2 class="text-base font-bold text-foreground">Plain Text Document (.txt)</h2>
+            <p class="text-xs text-muted-foreground leading-relaxed">MIME: text/plain • Engine: Native Python UTF-8 Stream Parser</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  `
+
+  const schema = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_DOMAIN },
+        { '@type': 'ListItem', position: 2, name: 'Supported Formats', item: canonicalUrl }
+      ]
+    }
+  ]
+
+  return renderPageTemplate({ title, description: desc, canonicalUrl, schema, bodyContent })
+}
+
+function renderCompareHubHtml() {
+  const canonicalUrl = `${BASE_DOMAIN}/compare`
+  const title = 'Convertly vs Competitors (2026) — Comprehensive PDF & Tool Comparisons'
+  const desc = 'Factual side-by-side comparisons of Convertly against Smallpdf, iLovePDF, PDF24, Adobe Acrobat, and FreeConvert.'
+
+  const bodyContent = `
+    <div class="py-12 md:py-16 text-foreground">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+          <div class="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3.5 py-1 text-xs font-semibold text-primary mb-4">
+            <span>Side-by-Side Architectural Analysis</span>
+          </div>
+          <h1 class="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+            Convertly vs Alternative PDF & File Converters
+          </h1>
+          <p class="mt-3 text-sm text-muted-foreground leading-relaxed">
+            Factual engineering evaluations comparing privacy guarantees, file size limits, rate constraints, and feature sets across top online document suites.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          ${Object.values(COMPARISONS_DATA).map(comp => `
+            <a href="/compare/${comp.slug}" class="block rounded-2xl p-6 border border-border/80 bg-card/80 hover:border-primary/50 transition-colors">
+              <span class="rounded bg-primary/10 text-primary px-2 py-0.5 text-xs font-semibold">Comparison</span>
+              <h2 class="mt-3 text-lg font-bold text-foreground hover:text-primary transition-colors">${escapeHtml(comp.title)}</h2>
+              <p class="mt-2 text-xs text-muted-foreground leading-relaxed">${escapeHtml(comp.summary)}</p>
+              <div class="mt-4 text-xs font-medium text-primary flex items-center gap-1">Read full comparison &rarr;</div>
+            </a>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `
+
+  const schema = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_DOMAIN },
+        { '@type': 'ListItem', position: 2, name: 'Comparisons', item: canonicalUrl }
+      ]
+    }
+  ]
+
+  return renderPageTemplate({ title, description: desc, canonicalUrl, schema, bodyContent })
+}
+
+function renderUseCasesHubHtml() {
+  const canonicalUrl = `${BASE_DOMAIN}/use-cases`
+  const title = 'Document Solutions by Industry & Profession — Convertly Use Cases'
+  const desc = 'Tailored PDF and document workflows for Students, Teachers, Businesses, Lawyers, HR, Freelancers, and Designers.'
+
+  const bodyContent = `
+    <div class="py-12 md:py-16 text-foreground">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+          <div class="inline-flex items-center gap-2 rounded-full border border-violet-500/30 bg-violet-500/10 px-3.5 py-1 text-xs font-semibold text-violet-400 mb-4">
+            <span>Specialized Document Pipelines</span>
+          </div>
+          <h1 class="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+            Tailored Document Workflows for Every Role & Industry
+          </h1>
+          <p class="mt-3 text-sm text-muted-foreground leading-relaxed">
+            Discover how different professions leverage zero-retention document processing to maintain privacy, automate file conversions, and streamline high-volume paperwork.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          ${Object.values(USE_CASES_DATA).map(uc => `
+            <a href="/use-cases/${uc.slug}" class="block rounded-2xl p-6 border border-border/80 bg-card/80 hover:border-violet-500/50 transition-colors">
+              <span class="rounded bg-violet-500/10 text-violet-400 px-2 py-0.5 text-xs font-semibold">${escapeHtml(uc.targetAudience)}</span>
+              <h2 class="mt-3 text-lg font-bold text-foreground hover:text-violet-400 transition-colors">${escapeHtml(uc.title)}</h2>
+              <p class="mt-2 text-xs text-muted-foreground leading-relaxed">${escapeHtml(uc.description)}</p>
+              <div class="mt-4 text-xs font-medium text-violet-400 flex items-center gap-1">Explore workflow &rarr;</div>
+            </a>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `
+
+  const schema = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_DOMAIN },
+        { '@type': 'ListItem', position: 2, name: 'Use Cases', item: canonicalUrl }
+      ]
+    }
+  ]
+
+  return renderPageTemplate({ title, description: desc, canonicalUrl, schema, bodyContent })
+}
+
+function renderGuidesHubHtml() {
+  const canonicalUrl = `${BASE_DOMAIN}/guides`
+  const title = 'Problem Solving Guides & PDF Tutorials (2026) — Convertly'
+  const desc = 'Comprehensive technical guides on solving PDF formatting, compression, page splitting, merging, and conversion issues.'
+
+  const bodyContent = `
+    <div class="py-12 md:py-16 text-foreground">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+          <div class="inline-flex items-center gap-2 rounded-full border border-amber-500/30 bg-amber-500/10 px-3.5 py-1 text-xs font-semibold text-amber-400 mb-4">
+            <span>Tutorials & Problem Solvers</span>
+          </div>
+          <h1 class="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+            Problem-Solving Guides & PDF Tutorials
+          </h1>
+          <p class="mt-3 text-sm text-muted-foreground leading-relaxed">
+            Step-by-step walkthroughs to troubleshoot damaged PDFs, preserve layout formatting, extract data, and optimize files for strict submission portals.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          ${Object.values(PROBLEM_GUIDES_DATA).map(g => `
+            <a href="/guides/${g.slug}" class="block rounded-2xl p-6 border border-border/80 bg-card/80 hover:border-amber-500/50 transition-colors">
+              <div class="flex items-center justify-between text-xs text-muted-foreground mb-2">
+                <span class="rounded bg-amber-500/10 text-amber-400 px-2 py-0.5 font-semibold">${escapeHtml(g.category || 'Guide')}</span>
+                <span>${escapeHtml(g.readingTime || '5 min read')}</span>
+              </div>
+              <h2 class="mt-1 text-lg font-bold text-foreground hover:text-amber-400 transition-colors">${escapeHtml(g.title)}</h2>
+              <p class="mt-2 text-xs text-muted-foreground leading-relaxed">${escapeHtml(g.description)}</p>
+              <div class="mt-4 text-xs font-medium text-amber-400 flex items-center gap-1">Read tutorial &rarr;</div>
+            </a>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `
+
+  const schema = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_DOMAIN },
+        { '@type': 'ListItem', position: 2, name: 'Guides', item: canonicalUrl }
+      ]
+    }
+  ]
+
+  return renderPageTemplate({ title, description: desc, canonicalUrl, schema, bodyContent })
+}
+
+function renderBlogHubHtml() {
+  const canonicalUrl = `${BASE_DOMAIN}/blog`
+  const title = 'Convertly Engineering Blog — Deep Dives in PDF, Office & Image Optimization'
+  const desc = 'Explore technical tutorials, format breakdowns, zero-retention security research, and productivity guides.'
+
+  const bodyContent = `
+    <div class="py-12 md:py-16 text-foreground">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center max-w-3xl mx-auto mb-12">
+          <div class="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-semibold text-emerald-400 mb-4">
+            <span>Engineering & Research</span>
+          </div>
+          <h1 class="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+            Engineering Insights, File Formats & Productivity Deep Dives
+          </h1>
+          <p class="mt-3 text-sm text-muted-foreground leading-relaxed">
+            In-depth technical articles covering rasterization algorithms, headless rendering pipelines, zero-retention privacy standards, and document optimization best practices.
+          </p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          ${Object.values(BLOG_POSTS_DATA).map(post => `
+            <a href="/blog/${post.slug}" class="block rounded-2xl p-6 border border-border/80 bg-card/80 hover:border-emerald-500/50 transition-colors">
+              <div class="flex items-center justify-between text-xs text-muted-foreground mb-2">
+                <span class="rounded bg-emerald-500/10 text-emerald-400 px-2 py-0.5 font-semibold">${escapeHtml(post.category)}</span>
+                <span>${escapeHtml(post.readTime)}</span>
+              </div>
+              <h2 class="mt-1 text-lg font-bold text-foreground hover:text-emerald-400 transition-colors">${escapeHtml(post.title)}</h2>
+              <p class="mt-2 text-xs text-muted-foreground leading-relaxed">${escapeHtml(post.excerpt)}</p>
+              <div class="mt-4 text-xs font-medium text-emerald-400 flex items-center gap-1">Read article &rarr;</div>
+            </a>
+          `).join('')}
+        </div>
+      </div>
+    </div>
+  `
+
+  const schema = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_DOMAIN },
+        { '@type': 'ListItem', position: 2, name: 'Blog', item: canonicalUrl }
+      ]
+    }
+  ]
+
+  return renderPageTemplate({ title, description: desc, canonicalUrl, schema, bodyContent })
+}
+
+function renderSitemapHubHtml() {
+  const canonicalUrl = `${BASE_DOMAIN}/sitemap`
+  const title = 'HTML Sitemap & Complete Entity Index — Convertly'
+  const desc = 'Comprehensive index of all Convertly conversion tools, landing pages, competitor comparisons, and guides.'
+
+  const bodyContent = `
+    <div class="py-12 md:py-16 text-foreground">
+      <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 space-y-12">
+        <div class="text-center max-w-3xl mx-auto mb-8">
+          <h1 class="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+            Convertly HTML Sitemap & Complete Index
+          </h1>
+          <p class="mt-3 text-sm text-muted-foreground leading-relaxed">
+            Full directory of all tools, format specifications, engineering guides, and comparison pages available on the Convertly platform.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div class="rounded-2xl p-6 border border-border/80 bg-card/80 space-y-3">
+            <h2 class="text-lg font-bold text-foreground border-b border-border/60 pb-2">Document Tools</h2>
+            <ul class="space-y-1.5 text-xs text-muted-foreground">
+              ${TOOLS.map(t => `<li><a href="${t.canonicalPath}" class="hover:text-primary transition-colors">${escapeHtml(t.name)}</a></li>`).join('')}
+            </ul>
+          </div>
+
+          <div class="rounded-2xl p-6 border border-border/80 bg-card/80 space-y-3">
+            <h2 class="text-lg font-bold text-foreground border-b border-border/60 pb-2">Problem Solving Guides</h2>
+            <ul class="space-y-1.5 text-xs text-muted-foreground">
+              ${Object.values(PROBLEM_GUIDES_DATA).map(g => `<li><a href="/guides/${g.slug}" class="hover:text-primary transition-colors">${escapeHtml(g.title)}</a></li>`).join('')}
+            </ul>
+          </div>
+
+          <div class="rounded-2xl p-6 border border-border/80 bg-card/80 space-y-3">
+            <h2 class="text-lg font-bold text-foreground border-b border-border/60 pb-2">Competitor Comparisons</h2>
+            <ul class="space-y-1.5 text-xs text-muted-foreground">
+              ${Object.values(COMPARISONS_DATA).map(c => `<li><a href="/compare/${c.slug}" class="hover:text-primary transition-colors">${escapeHtml(c.title)}</a></li>`).join('')}
+            </ul>
+          </div>
+
+          <div class="rounded-2xl p-6 border border-border/80 bg-card/80 space-y-3">
+            <h2 class="text-lg font-bold text-foreground border-b border-border/60 pb-2">Industry Use Cases</h2>
+            <ul class="space-y-1.5 text-xs text-muted-foreground">
+              ${Object.values(USE_CASES_DATA).map(u => `<li><a href="/use-cases/${u.slug}" class="hover:text-primary transition-colors">${escapeHtml(u.title)}</a></li>`).join('')}
+            </ul>
+          </div>
+
+          <div class="rounded-2xl p-6 border border-border/80 bg-card/80 space-y-3">
+            <h2 class="text-lg font-bold text-foreground border-b border-border/60 pb-2">Engineering Blog</h2>
+            <ul class="space-y-1.5 text-xs text-muted-foreground">
+              ${Object.values(BLOG_POSTS_DATA).map(p => `<li><a href="/blog/${p.slug}" class="hover:text-primary transition-colors">${escapeHtml(p.title)}</a></li>`).join('')}
+            </ul>
+          </div>
+
+          <div class="rounded-2xl p-6 border border-border/80 bg-card/80 space-y-3">
+            <h2 class="text-lg font-bold text-foreground border-b border-border/60 pb-2">Platform & Legal</h2>
+            <ul class="space-y-1.5 text-xs text-muted-foreground">
+              <li><a href="/privacy" class="hover:text-primary transition-colors">Privacy Policy</a></li>
+              <li><a href="/security" class="hover:text-primary transition-colors">Security Architecture</a></li>
+              <li><a href="/terms" class="hover:text-primary transition-colors">Terms of Service</a></li>
+              <li><a href="/developers" class="hover:text-primary transition-colors">Developers & API</a></li>
+              <li><a href="/formats" class="hover:text-primary transition-colors">File Format Specifications</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  `
+
+  const schema = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_DOMAIN },
+        { '@type': 'ListItem', position: 2, name: 'Sitemap', item: canonicalUrl }
+      ]
+    }
+  ]
+
+  return renderPageTemplate({ title, description: desc, canonicalUrl, schema, bodyContent })
+}
+
 // 2. Generate /tools directory page
 const toolsDir = path.join(DIST_DIR, 'tools')
 if (!fs.existsSync(toolsDir)) {
   fs.mkdirSync(toolsDir, { recursive: true })
 }
-let toolsPageHtml = template
-toolsPageHtml = toolsPageHtml.replace(/<title>.*?<\/title>/, `<title>All 30 Document & Image Conversion Tools — Convertly</title>`)
-toolsPageHtml = toolsPageHtml.replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="Browse all 30 enterprise-grade document, PDF, Office, and image conversion tools on Convertly. Fast, free, and secure with zero retention." />`)
-toolsPageHtml = toolsPageHtml.replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${BASE_DOMAIN}/tools" />`)
+const toolsPageHtml = renderToolsDirectoryHtml()
 fs.writeFileSync(path.join(toolsDir, 'index.html'), toolsPageHtml, 'utf-8')
 console.log(`  ✓ Pre-rendered: /tools`)
 
 // 3. Generate static landing directories for core hubs, specifications & legal
+const CORE_PAGE_RENDERERS = {
+  privacy: renderPrivacyHtml,
+  security: renderSecurityHtml,
+  terms: renderTermsHtml,
+  developers: renderDevelopersHtml,
+  formats: renderFormatsHtml,
+  compare: renderCompareHubHtml,
+  'use-cases': renderUseCasesHubHtml,
+  guides: renderGuidesHubHtml,
+  blog: renderBlogHubHtml,
+  sitemap: renderSitemapHubHtml,
+}
+
 const CORE_PAGES = [
   { slug: 'privacy', title: 'Privacy Policy — 120-Minute Auto-Shredder Guarantee | Convertly', desc: 'Convertly Privacy Policy. Strict zero-retention guarantee, 120-minute automated file shredding, TLS 1.3 encryption, and GDPR compliance.' },
   { slug: 'security', title: 'Security Architecture & Defense-in-Depth | Convertly', desc: 'Learn how Convertly protects your confidential documents with TLS 1.3, sandboxed subprocesses, magic-byte inspection, and automated shredding.' },
@@ -1052,138 +2422,68 @@ for (const page of CORE_PAGES) {
   if (!fs.existsSync(pageDir)) {
     fs.mkdirSync(pageDir, { recursive: true })
   }
-  let pageHtml = template
-  pageHtml = pageHtml.replace(/<title>.*?<\/title>/, `<title>${page.title}</title>`)
-  pageHtml = pageHtml.replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${page.desc}" />`)
-  pageHtml = pageHtml.replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${BASE_DOMAIN}/${page.slug}" />`)
+  const renderer = CORE_PAGE_RENDERERS[page.slug]
+  const pageHtml = renderer ? renderer() : template
   fs.writeFileSync(path.join(pageDir, 'index.html'), pageHtml, 'utf-8')
   console.log(`  ✓ Pre-rendered: /${page.slug}`)
 }
 
 // 4. Pre-render Programmatic SEO Landing Pages
-const PROGRAMMATIC_PAGES = [
-  { slug: 'pdf-to-word', title: 'PDF to Word Converter — Convert PDF to DOCX Free | Convertly', desc: 'Convert PDF to editable Word DOCX online for free. Preserves layout, tables, fonts, and inline graphics with built-in optical character recognition (OCR).' },
-  { slug: 'pdf-to-word-online', title: 'PDF to Word Online — Convert PDF to DOCX in Web Browser | Convertly', desc: 'Convert PDF to Word online directly in your browser. No desktop software installation required. Fast, private, secure, and completely free.' },
-  { slug: 'pdf-to-word-free', title: 'Free PDF to Word Converter — 100% Free DOCX Output | Convertly', desc: 'Convert PDF to Word free online. No hidden trial limitations, no daily file limits, no registration, and no intrusive watermarks.' },
-  { slug: 'pdf-to-word-windows', title: 'PDF to Word for Windows 11 & 10 — Fast Web Converter | Convertly', desc: 'Convert PDF to Word on Windows 11, 10, and 8. Compatible with Microsoft Edge, Chrome, and Firefox. Generates native DOCX for Microsoft Word.' },
-  { slug: 'pdf-to-word-mac', title: 'PDF to Word for Mac — Convert PDF to DOCX on macOS | Convertly', desc: 'Convert PDF to Word on Apple Mac (macOS Sonoma, Ventura, Monterey). Compatible with Apple Silicon M1/M2/M3/M4 and Intel Macs with Safari support.' },
-  { slug: 'pdf-to-word-mobile', title: 'PDF to Word on Mobile — Convert PDF to DOCX on iPhone & Android', desc: 'Convert PDF to Word on mobile devices. Touch-optimized converter for iPhone, iPad, and Android phones. Direct QR code transfer included.' },
-  { slug: 'word-to-pdf', title: 'Word to PDF Online — Convert DOCX & DOC to PDF Free | Convertly', desc: 'Convert Microsoft Word DOCX and DOC files into print-ready PDF documents online for free. Preserves exact fonts, margins, vector tables, and headers.' },
-  { slug: 'merge-pdf-online', title: 'Merge PDF Online — Combine Multiple PDF Files Free | Convertly', desc: 'Combine and merge multiple PDF documents into a single organized file online for free. Drag and drop to reorder pages with zero data retention.' },
-  { slug: 'compress-pdf-online', title: 'Compress PDF Online — Reduce PDF File Size Free | Convertly', desc: 'Reduce PDF file size online while maintaining crisp text and sharp image quality. Perfect for email attachments and portal uploads. 100% free.' },
-  { slug: 'convert-pdf-without-losing-formatting', title: 'Convert PDF Without Losing Formatting — 100% Layout Preservation', desc: 'Convert PDF to Word without losing formatting, tables, font styles, or margins. Advanced structural synthesis ensures pixel-accurate editable documents.' },
-  { slug: 'convert-jpg-to-png', title: 'Convert JPG to PNG Online — Lossless Raster Image Conversion', desc: 'Convert JPG images to lossless PNG format online for free. Support high bit-depth and transparency preparation with zero compression artifacts.' },
-  { slug: 'convert-image-to-pdf', title: 'Convert Image to PDF Online — Combine JPG, PNG & WebP into PDF', desc: 'Convert JPG, PNG, and WebP images into a single professional PDF document online for free. Clean page margins and orientation with zero data retention.' },
-]
-
+const PROGRAMMATIC_PAGES = Object.values(EXPLICIT_PROGRAMMATIC_PAGES)
 for (const prog of PROGRAMMATIC_PAGES) {
   const pageDir = path.join(DIST_DIR, 'convert', prog.slug)
   if (!fs.existsSync(pageDir)) {
     fs.mkdirSync(pageDir, { recursive: true })
   }
-  let progHtml = template
-  progHtml = progHtml.replace(/<title>.*?<\/title>/, `<title>${prog.title}</title>`)
-  progHtml = progHtml.replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${prog.desc}" />`)
-  progHtml = progHtml.replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${BASE_DOMAIN}/convert/${prog.slug}" />`)
+  const progHtml = renderProgrammaticHtml(prog)
   fs.writeFileSync(path.join(pageDir, 'index.html'), progHtml, 'utf-8')
   console.log(`  ✓ Pre-rendered: /convert/${prog.slug}`)
 }
 
 // 5. Pre-render Competitor Comparison Pages
-const COMPARISON_PAGES = [
-  { slug: 'convertly-vs-smallpdf', title: 'Convertly vs Smallpdf Comparison (2026) — Features, Limits & Pricing', desc: 'Unbiased factual comparison between Convertly and Smallpdf. Compare free tier file limits, OCR accuracy, privacy retention SLAs, and pricing models.' },
-  { slug: 'convertly-vs-ilovepdf', title: 'Convertly vs iLovePDF Comparison (2026) — Limits, Ads & Security', desc: 'Detailed technical comparison between Convertly and iLovePDF. Compare advertising density, file size limits, API availability, and processing speeds.' },
-  { slug: 'convertly-vs-pdf24', title: 'Convertly vs PDF24 Comparison (2026) — Performance, UI & Speed', desc: 'Objective comparison between Convertly and PDF24 Tools. Compare UI design, mobile responsiveness, processing speeds, and document security.' },
-  { slug: 'convertly-vs-adobe-acrobat', title: 'Convertly vs Adobe Acrobat Online (2026) — Free vs Enterprise Suite', desc: 'Compare Convertly and Adobe Acrobat Online. Weigh Adobe’s proprietary rendering and subscription fees against Convertly’s free cloud converter.' },
-  { slug: 'convertly-vs-freeconvert', title: 'Convertly vs FreeConvert Comparison (2026) — Conversion Limits & Privacy', desc: 'Compare Convertly and FreeConvert. Analyze conversion minutes, maximum file sizes, queue wait times, advertising levels, and privacy guarantees.' },
-]
-
+const COMPARISON_PAGES = Object.values(COMPARISONS_DATA)
 for (const comp of COMPARISON_PAGES) {
   const pageDir = path.join(DIST_DIR, 'compare', comp.slug)
   if (!fs.existsSync(pageDir)) {
     fs.mkdirSync(pageDir, { recursive: true })
   }
-  let compHtml = template
-  compHtml = compHtml.replace(/<title>.*?<\/title>/, `<title>${comp.title}</title>`)
-  compHtml = compHtml.replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${comp.desc}" />`)
-  compHtml = compHtml.replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${BASE_DOMAIN}/compare/${comp.slug}" />`)
+  const compHtml = renderComparisonHtml(comp)
   fs.writeFileSync(path.join(pageDir, 'index.html'), compHtml, 'utf-8')
   console.log(`  ✓ Pre-rendered: /compare/${comp.slug}`)
 }
 
 // 6. Pre-render Industry & Persona Use Case Pages
-const USE_CASE_PAGES = [
-  { slug: 'students', title: 'Best PDF Converter for Students (100% Free & Unlimited) | Convertly', desc: 'Free, unlimited PDF and document tools for college and university students. Convert research papers, merge assignments, compress thesis PDFs, and extract lecture notes.' },
-  { slug: 'teachers', title: 'Best PDF Converter for Teachers & Educators (Free) | Convertly', desc: 'Free document conversion suite for teachers, professors, and educators. Create printable worksheets, merge grading packets, and convert slides to handouts.' },
-  { slug: 'businesses', title: 'Best PDF Converter for Small Businesses & Enterprises | Convertly', desc: 'Secure, fast, and 100% free document converter for businesses and startups. Convert invoices, merge contracts, optimize reports for email, and protect sensitive IP.' },
-  { slug: 'lawyers', title: 'Best PDF Converter for Lawyers & Legal Counsel (Secure & Private)', desc: 'Strictly private, zero-retention PDF tools for lawyers, paralegals, and legal firms. Redact sensitive disclosures, merge case exhibits, and prepare court filings.' },
-  { slug: 'hr', title: 'Best PDF Converter for HR & People Operations | Convertly', desc: 'Streamline onboarding packets, payroll records, and employee contracts with secure, free PDF tools. Convert Word resumes, merge benefit packets, and protect PII.' },
-  { slug: 'freelancers', title: 'Best PDF Converter for Freelancers & Contractors | Convertly', desc: 'Free, professional document conversion suite for freelancers and solo contractors. Convert invoices to PDF, merge project deliverables, and compress client proposals.' },
-  { slug: 'designers', title: 'Best Image & PDF Converter for Designers & Creatives | Convertly', desc: 'High-fidelity image and PDF conversion suite for UI/UX and graphic designers. Convert WebP, PNG, and JPG, compress vector PDFs, and export design portfolios.' },
-]
-
+const USE_CASE_PAGES = Object.values(USE_CASES_DATA)
 for (const uc of USE_CASE_PAGES) {
   const pageDir = path.join(DIST_DIR, 'use-cases', uc.slug)
   if (!fs.existsSync(pageDir)) {
     fs.mkdirSync(pageDir, { recursive: true })
   }
-  let ucHtml = template
-  ucHtml = ucHtml.replace(/<title>.*?<\/title>/, `<title>${uc.title}</title>`)
-  ucHtml = ucHtml.replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${uc.desc}" />`)
-  ucHtml = ucHtml.replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${BASE_DOMAIN}/use-cases/${uc.slug}" />`)
+  const ucHtml = renderUseCaseHtml(uc)
   fs.writeFileSync(path.join(pageDir, 'index.html'), ucHtml, 'utf-8')
   console.log(`  ✓ Pre-rendered: /use-cases/${uc.slug}`)
 }
 
 // 7. Pre-render Problem Solving Guides
-const GUIDE_PAGES = [
-  { slug: 'how-to-convert-pdf-to-word-without-losing-formatting', title: 'How to Convert PDF to Word Without Losing Formatting (2026 Guide)', desc: 'Step-by-step guide to converting complex PDF documents into editable Microsoft Word DOCX files while preserving exact tables, margins, fonts, and layouts.' },
-  { slug: 'how-to-compress-pdf-without-losing-quality', title: 'How to Compress PDF Without Losing Quality (Email & Portal Ready)', desc: 'Learn how to reduce large PDF file sizes by up to 90% while keeping vector text mathematically crisp and images sharp. Full technical walkthrough.' },
-  { slug: 'how-to-merge-pdf-files', title: 'How to Merge Multiple PDF Files into One (Free Step-by-Step Guide)', desc: 'Combine multiple PDF documents into a single cohesive file online. Learn how to sequence pages, preserve bookmarks, and merge up to 20 files in seconds.' },
-  { slug: 'how-to-split-pdf-pages', title: 'How to Split PDF Pages & Extract Ranges Online Free | Convertly', desc: 'Extract specific pages, chapters, or page ranges from any PDF file. Step-by-step instructions on separating single pages or breaking large documents down.' },
-  { slug: 'how-to-convert-excel-to-pdf', title: 'How to Convert Excel to PDF Without Cutting Off Columns (Guide)', desc: 'Convert XLSX and XLS spreadsheets to beautifully paginated PDF documents. How to avoid split tables, cropped columns, and pagination issues.' },
-  { slug: 'how-to-extract-tables-from-pdf-to-excel', title: 'How to Extract Tables from PDF to Excel (Without Reformatting)', desc: 'Extract tables, invoices, and bank statements from PDF to editable Excel (XLSX). Preserves numbers, formulas, dates, and column alignment with OCR.' },
-  { slug: 'how-to-convert-powerpoint-to-pdf', title: 'How to Convert PowerPoint to PDF (Slide Deck to Universal Handout)', desc: 'Convert PPTX and PPT presentation slide decks into universal PDF documents. Maintain slide typography, vector graphics, and speaker notes.' },
-  { slug: 'how-to-convert-images-into-pdf', title: 'How to Convert Images into a Single PDF (JPG, PNG & WebP)', desc: 'Step-by-step guide to combining photos, screenshots, and graphic scans into a multi-page PDF document online for free.' },
-]
-
+const GUIDE_PAGES = Object.values(PROBLEM_GUIDES_DATA)
 for (const guide of GUIDE_PAGES) {
   const pageDir = path.join(DIST_DIR, 'guides', guide.slug)
   if (!fs.existsSync(pageDir)) {
     fs.mkdirSync(pageDir, { recursive: true })
   }
-  let guideHtml = template
-  guideHtml = guideHtml.replace(/<title>.*?<\/title>/, `<title>${guide.title}</title>`)
-  guideHtml = guideHtml.replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${guide.desc}" />`)
-  guideHtml = guideHtml.replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${BASE_DOMAIN}/guides/${guide.slug}" />`)
+  const guideHtml = renderGuideHtml(guide)
   fs.writeFileSync(path.join(pageDir, 'index.html'), guideHtml, 'utf-8')
   console.log(`  ✓ Pre-rendered: /guides/${guide.slug}`)
 }
 
 // 8. Pre-render Engineering Blog Articles
-const BLOG_PAGES = [
-  { slug: 'the-definitive-guide-to-lossless-pdf-compression', title: 'The Definitive Guide to Lossless PDF Compression: Behind the Code', desc: 'Discover how modern compression engines reduce PDF file size by 80% without degrading visual vector sharpness or font typography.' },
-  { slug: 'how-to-fix-broken-formatting-in-pdf-to-word', title: 'How to Fix Broken Formatting When Converting PDF to Word DOCX', desc: 'Solve misaligned tables, jumping text frames, and broken font styles when exporting PDF documents to editable Microsoft Word.' },
-  { slug: 'excel-to-pdf-best-practices-for-executive-reporting', title: 'Excel to PDF Best Practices: Creating Board-Ready Financial Reports', desc: 'How to convert Microsoft Excel spreadsheets to clean, presentation-ready PDF reports without awkward column splits or distorted gridlines.' },
-  { slug: 'powerpoint-to-pdf-handout-optimization', title: 'PowerPoint to PDF: Creating Crisp Slide Handouts for High-Stakes Pitches', desc: 'Transform slide decks into universal PDF presentation handouts. Prevent missing corporate fonts and format shifts across presentation hardware.' },
-  { slug: 'next-gen-image-formats-webp-vs-png-vs-jpg', title: 'WebP vs PNG vs JPG: Modern Image Format Selection Guide (2026)', desc: 'A technical deep-dive into Google WebP, PNG, and JPEG. Learn which format to choose for Core Web Vitals, transparency, and photography compression.' },
-  { slug: 'zero-retention-architecture-in-modern-file-converters', title: 'Zero-Retention Architecture: Protecting Document Privacy in the Cloud', desc: 'How Convertly protects sensitive user documents with TLS 1.3 encryption, isolated worker containers, and automated 120-minute file shredding.' },
-  { slug: 'security-defense-in-depth-document-pipeline', title: 'Security Defense-in-Depth: Sandboxing Untrusted Document Pipelines', desc: 'A technical analysis of document processing vulnerabilities (Buffer Overflows, Ghostscript CVEs) and how defense-in-depth sandboxing mitigates them.' },
-  { slug: 'paperless-office-productivity-hacks', title: '10 Paperless Productivity Hacks to Automate Document Workflows', desc: 'Boost daily office efficiency with 10 actionable document hacks: instant QR transfers, multi-file merging, PDF page isolation, and Bates numbering.' },
-  { slug: 'why-convertly-is-the-best-free-alternative-to-adobe-acrobat', title: 'Why Convertly Is the Best Free Alternative to Adobe Acrobat in 2026', desc: 'A direct comparison between Convertly and Adobe Acrobat. Compare annual subscription costs ($239+/yr), forced account logins, and web conversion speed.' },
-  { slug: 'step-by-step-tutorial-redacting-confidential-data-from-pdf', title: 'Step-by-Step Tutorial: Redacting Confidential Data from PDF Documents', desc: 'Learn how to properly redact sensitive information from PDF files. Why drawing black rectangles fails and how to permanently purge confidential bytes.' },
-  { slug: 'how-to-extract-financial-tables-from-pdf-to-excel', title: 'Extracting Financial Tables from PDF to Excel: Complete Engineering Guide', desc: 'A deep technical guide to extracting tabular financial data from PDFs into clean Excel XLSX spreadsheets with smart data types and formulas.' },
-]
-
+const BLOG_PAGES = Object.values(BLOG_POSTS_DATA)
 for (const post of BLOG_PAGES) {
   const pageDir = path.join(DIST_DIR, 'blog', post.slug)
   if (!fs.existsSync(pageDir)) {
     fs.mkdirSync(pageDir, { recursive: true })
   }
-  let postHtml = template
-  postHtml = postHtml.replace(/<title>.*?<\/title>/, `<title>${post.title} | Convertly Blog</title>`)
-  postHtml = postHtml.replace(/<meta name="description" content=".*?" \/>/, `<meta name="description" content="${post.desc}" />`)
-  postHtml = postHtml.replace(/<link rel="canonical" href=".*?" \/>/, `<link rel="canonical" href="${BASE_DOMAIN}/blog/${post.slug}" />`)
+  const postHtml = renderBlogPostHtml(post)
   fs.writeFileSync(path.join(pageDir, 'index.html'), postHtml, 'utf-8')
   console.log(`  ✓ Pre-rendered: /blog/${post.slug}`)
 }
