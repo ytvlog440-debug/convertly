@@ -33,7 +33,6 @@ export interface SeoHeadProps {
   noindex?: boolean
   ogImage?: string
   ogType?: 'website' | 'article'
-  hideAggregateRating?: boolean
 }
 
 const BASE_DOMAIN = 'https://convertlytools.xyz'
@@ -99,7 +98,6 @@ export function SeoHead({
   noindex = false,
   ogImage = DEFAULT_OG_IMAGE,
   ogType = 'website',
-  hideAggregateRating = false,
 }: SeoHeadProps) {
   React.useEffect(() => {
     // 1. Ensure HTML root language is set
@@ -255,9 +253,6 @@ export function SeoHead({
     const appName = toolName || (title.includes('—') ? title.split('—')[0].trim() : 'Convertly')
 
     if (determinedType === 'WebApplication') {
-      const isRatingExcluded = cleanCanonical.endsWith('/tools/pdf-to-word') || toolName === 'PDF to Word' || cleanCanonical.endsWith('/tools/pdf-to-excel') || toolName === 'PDF to Excel'
-      const showRating = !hideAggregateRating && !isRatingExcluded
-
       graph.push({
         '@type': 'WebApplication',
         '@id': `${cleanCanonical}/#app`,
@@ -278,15 +273,6 @@ export function SeoHead({
         publisher: {
           '@id': `${BASE_DOMAIN}/#organization`,
         },
-        ...(showRating ? {
-          aggregateRating: {
-            '@type': 'AggregateRating',
-            ratingValue: '4.9',
-            ratingCount: '15420',
-            bestRating: '5',
-            worstRating: '1',
-          },
-        } : {}),
         offers: {
           '@type': 'Offer',
           price: '0.00',
@@ -449,7 +435,6 @@ export function SeoHead({
     noindex,
     ogImage,
     ogType,
-    hideAggregateRating,
   ])
 
   return null

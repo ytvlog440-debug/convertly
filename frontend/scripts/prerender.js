@@ -746,15 +746,6 @@ function renderToolHtml(tool) {
         name: 'Convertly',
         url: BASE_DOMAIN,
       },
-      ...(tool.id !== 'pdf-to-word' && tool.id !== 'pdf-to-excel' ? {
-        aggregateRating: {
-          '@type': 'AggregateRating',
-          ratingValue: '4.9',
-          ratingCount: '15420',
-          bestRating: '5',
-          worstRating: '1',
-        },
-      } : {}),
       offers: {
         '@type': 'Offer',
         price: '0.00',

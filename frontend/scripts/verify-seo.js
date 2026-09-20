@@ -193,6 +193,51 @@ for (const slug of BLOG_SLUGS) {
   }
 }
 
+// 11. Regression Check: Zero Unsupported AggregateRating or Review Structured Data
+function getAllHtmlFiles(dir) {
+  let results = []
+  const list = fs.readdirSync(dir)
+  for (const file of list) {
+    const filePath = path.join(dir, file)
+    const stat = fs.statSync(filePath)
+    if (stat && stat.isDirectory()) {
+      results = results.concat(getAllHtmlFiles(filePath))
+    } else if (file.endsWith('.html')) {
+      results.push(filePath)
+    }
+  }
+  return results
+}
+
+const allHtmlFiles = getAllHtmlFiles(DIST_DIR)
+assert(allHtmlFiles.length >= 80, `Found ${allHtmlFiles.length} generated HTML files in dist to scan for schema regression`)
+
+let aggregateRatingFound = 0
+let ratingCountFound = 0
+let reviewCountFound = 0
+
+for (const file of allHtmlFiles) {
+  const content = fs.readFileSync(file, 'utf-8')
+  const relPath = path.relative(DIST_DIR, file)
+
+  if (content.includes('"@type":"AggregateRating"') || content.includes('"@type": "AggregateRating"')) {
+    aggregateRatingFound++
+    console.error(`  ❌ Unsupported AggregateRating found in ${relPath}`)
+  }
+  if (content.includes('ratingCount')) {
+    ratingCountFound++
+    console.error(`  ❌ Unsupported ratingCount found in ${relPath}`)
+  }
+  if (content.includes('reviewCount')) {
+    reviewCountFound++
+    console.error(`  ❌ Unsupported reviewCount found in ${relPath}`)
+  }
+}
+
+assert(aggregateRatingFound === 0, `Zero AggregateRating schema occurrences across dist (found ${aggregateRatingFound})`)
+assert(ratingCountFound === 0, `Zero ratingCount occurrences across dist (found ${ratingCountFound})`)
+assert(reviewCountFound === 0, `Zero reviewCount occurrences across dist (found ${reviewCountFound})`)
+
 console.log(`\nTechnical SEO Audit Results:`)
 console.log(`  Passed assertions: ${passed}`)
 console.log(`  Failed assertions: ${failed}`)
