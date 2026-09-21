@@ -19,11 +19,14 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
   </React.StrictMode>,
 )
 
-// Register PWA Service Worker in production/supporting environments
-if ('serviceWorker' in navigator && process.env.NODE_ENV !== 'test') {
+// Clean up legacy service workers if any were registered previously
+if ('serviceWorker' in navigator && typeof window !== 'undefined') {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch((err) => {
-      console.warn('Service worker registration failed:', err)
-    })
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      for (const registration of registrations) {
+        registration.unregister().catch(() => {})
+      }
+    }).catch(() => {})
   })
 }
+

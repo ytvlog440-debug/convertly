@@ -60,19 +60,40 @@ app.add_middleware(
 @app.middleware("http")
 async def security_and_rate_limit_middleware(request: Request, call_next):
     """Enforces sliding-window rate limits and injects strict security headers."""
-    # Check rate limit on mutation endpoints
-    if request.url.path.startswith("/api/v1/files/upload") or request.url.path.startswith("/api/v1/jobs"):
-        from app.core.security import rate_limiter
-        client_ip = request.client.host if request.client else "unknown"
-        if not rate_limiter.is_allowed(client_ip):
+    from app.core.security import get_trusted_client_ip, mutation_rate_limiter, polling_rate_limiter
+
+    path = request.url.path
+    method = request.method
+    is_mutation = method in ("POST", "PUT", "DELETE", "PATCH")
+
+    # 1. Mutation rate limit: upload and job creation
+    if path.startswith("/api/v1/files/upload") or (path == "/api/v1/jobs" and is_mutation):
+        client_ip = get_trusted_client_ip(request)
+        if not mutation_rate_limiter.is_allowed(client_ip):
             return JSONResponse(
                 status_code=429,
                 content={
                     "type": "https://convertlytools.xyz/errors/rate_limit_exceeded",
                     "title": "Rate Limit Exceeded",
                     "status": 429,
-                    "detail": "Too many requests. Please slow down and try again in a moment."
-                }
+                    "detail": "Too many conversion or upload requests. Please slow down and try again in a moment.",
+                },
+                headers={"Retry-After": "60"},
+            )
+
+    # 2. Polling rate limit: job status checking (protects against aggressive polling DoS)
+    elif path.startswith("/api/v1/jobs/") and method == "GET":
+        client_ip = get_trusted_client_ip(request)
+        if not polling_rate_limiter.is_allowed(client_ip):
+            return JSONResponse(
+                status_code=429,
+                content={
+                    "type": "https://convertlytools.xyz/errors/rate_limit_exceeded",
+                    "title": "Rate Limit Exceeded",
+                    "status": 429,
+                    "detail": "Excessive status polling detected. Please slow down.",
+                },
+                headers={"Retry-After": "60"},
             )
 
     response = await call_next(request)

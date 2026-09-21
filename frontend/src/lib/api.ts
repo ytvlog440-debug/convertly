@@ -184,21 +184,97 @@ export async function createJob(
   return body.data
 }
 
+export class PollingError extends Error {
+  status?: number
+  isNetworkError: boolean
+  isInvalidJson: boolean
+  isNotFound: boolean
+  isRateLimited: boolean
+  isServerError: boolean
+  isPermanentClientError: boolean
+
+  constructor(
+    message: string,
+    options: {
+      status?: number
+      isNetworkError?: boolean
+      isInvalidJson?: boolean
+      isNotFound?: boolean
+      isRateLimited?: boolean
+      isServerError?: boolean
+      isPermanentClientError?: boolean
+    } = {}
+  ) {
+    super(message)
+    this.name = 'PollingError'
+    this.status = options.status
+    this.isNetworkError = !!options.isNetworkError
+    this.isInvalidJson = !!options.isInvalidJson
+    this.isNotFound = !!options.isNotFound
+    this.isRateLimited = !!options.isRateLimited
+    this.isServerError = !!options.isServerError
+    this.isPermanentClientError = !!options.isPermanentClientError
+  }
+}
+
 export async function fetchJob(jobId: string): Promise<ConversionJob> {
-  // Deduplicate concurrent polling calls for the exact same jobId
-  return fetchWithDeduplication<ConversionJob>(
-    `job-${jobId}`,
-    async (signal) => {
-      const res = await fetch(`${API_BASE}/jobs/${jobId}`, { signal })
-      if (!res.ok) {
-        throw new Error(`Failed to fetch job status: ${res.statusText}`)
+  const url = `${API_BASE}/jobs/${jobId}`
+  let res: Response
+  try {
+    res = await fetch(url)
+  } catch (err: unknown) {
+    const errorMsg = err instanceof Error ? err.message : 'Network connection failed'
+    throw new PollingError(errorMsg, { isNetworkError: true })
+  }
+
+  const contentType = res.headers.get('content-type') || ''
+
+  if (!res.ok) {
+    let detail = ''
+    if (contentType.includes('application/json')) {
+      try {
+        const errJson = await res.json()
+        detail = errJson?.detail || errJson?.message || ''
+      } catch {
+        // Ignore json parse error on error response
       }
-      const body: ApiResponse<ConversionJob> = await res.json()
-      return body.data
-    },
-    0, // Do not cache completed poll state in memory
-    10000
-  )
+    }
+    const message = detail || `Failed to fetch job status: HTTP ${res.status} ${res.statusText || ''}`.trim()
+    const isClientError = res.status >= 400 && res.status < 500 && res.status !== 429
+    throw new PollingError(message, {
+      status: res.status,
+      isNotFound: res.status === 404,
+      isRateLimited: res.status === 429,
+      isServerError: res.status >= 500,
+      isPermanentClientError: isClientError,
+    })
+  }
+
+  if (contentType.includes('text/html')) {
+    throw new PollingError('Received unexpected HTML response instead of JSON from API endpoint.', {
+      status: res.status,
+      isInvalidJson: true,
+    })
+  }
+
+  let body: ApiResponse<ConversionJob>
+  try {
+    body = await res.json()
+  } catch {
+    throw new PollingError('Malformed JSON payload received from status endpoint.', {
+      status: res.status,
+      isInvalidJson: true,
+    })
+  }
+
+  if (!body || !body.data) {
+    throw new PollingError('Job response payload is missing required data field.', {
+      status: res.status,
+      isInvalidJson: true,
+    })
+  }
+
+  return body.data
 }
 
 export function getDownloadUrl(fileId: string): string {

@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { useParams, Link, useNavigate, useLocation } from 'react-router-dom'
 import {
   FileText,
@@ -39,7 +39,7 @@ import { Card, CardTitle } from '../components/ui/Card'
 import { Button } from '../components/ui/Button'
 import { Progress } from '../components/ui/Progress'
 import { SeoHead } from '../components/shared/SeoHead'
-import { uploadFile, createJob, fetchJob, getDownloadUrl, type UploadedFile, type ConversionJob } from '../lib/api'
+import { uploadFile, createJob, fetchJob, getDownloadUrl, PollingError, type UploadedFile, type ConversionJob } from '../lib/api'
 import { formatBytes } from '../lib/utils'
 import { addRecentConversion } from '../lib/history'
 import { generateSampleFiles } from '../lib/samples'
@@ -426,6 +426,13 @@ export function ToolConverterPage() {
   const [isPreviewOpen, setIsPreviewOpen] = useState<boolean>(false)
   const [previewCustomFile, setPreviewCustomFile] = useState<{ url: string; filename: string } | null>(null)
   const [isLinkCopied, setIsLinkCopied] = useState<boolean>(false)
+  const activePollCancelRef = useRef<(() => void) | null>(null)
+
+  useEffect(() => {
+    return () => {
+      activePollCancelRef.current?.()
+    }
+  }, [])
 
   // Tool specific options
   const [compressLevel, setCompressLevel] = useState<'recommended' | 'extreme' | 'basic'>('recommended')
@@ -800,13 +807,53 @@ export function ToolConverterPage() {
       const createdJob = await createJob(config.id, inputIds, options)
       setJob(createdJob)
 
-      // Poll until completion
-      const pollInterval = setInterval(async () => {
+      // Resilient polling loop with transient failure tolerance and diagnostic logging
+      const MAX_CONSECUTIVE_FAILURES = 5
+      const MAX_POLL_DURATION_MS = 180000 // 3 minutes max duration
+      let consecutiveFailures = 0
+      let isCancelled = false
+
+      activePollCancelRef.current?.()
+      activePollCancelRef.current = () => {
+        isCancelled = true
+      }
+
+      const pollStep = async () => {
+        if (isCancelled) return
+
+        const elapsedMs = Date.now() - conversionStartTime
+        if (elapsedMs > MAX_POLL_DURATION_MS) {
+          setIsProcessing(false)
+          const timeoutMsg = 'Conversion timed out. Please try again with a smaller file or different format.'
+          setError(timeoutMsg)
+          console.warn('[Convertly Diagnostics - Poll Timeout]', {
+            jobId: createdJob.id,
+            elapsedSeconds: (elapsedMs / 1000).toFixed(1),
+          })
+          trackToolConversionFinished({
+            tool_name: config.name,
+            input_format: inputExt,
+            output_format: outputExt,
+            file_size: totalBytes,
+            conversion_time: Number((elapsedMs / 1000).toFixed(2)),
+            success: false,
+            error_message: timeoutMsg,
+          })
+          trackErrorOccurred({
+            error_message: timeoutMsg,
+            tool_name: config.name,
+          })
+          return
+        }
+
         try {
           const current = await fetchJob(createdJob.id)
+          if (isCancelled) return
+
+          consecutiveFailures = 0 // Reset counter upon receiving valid status
           setJob(current)
+
           if (current.status === 'completed' || current.status === 'failed') {
-            clearInterval(pollInterval)
             setIsProcessing(false)
             const durationSeconds = Number(((Date.now() - conversionStartTime) / 1000).toFixed(2))
 
@@ -869,28 +916,76 @@ export function ToolConverterPage() {
                 timestamp: Date.now(),
               })
             }
+            return
           }
-        } catch {
-          clearInterval(pollInterval)
-          setIsProcessing(false)
-          const durationSeconds = Number(((Date.now() - conversionStartTime) / 1000).toFixed(2))
-          const pollErrMsg = 'Failed to poll conversion status.'
-          setError(pollErrMsg)
-          trackToolConversionFinished({
-            tool_name: config.name,
-            input_format: inputExt,
-            output_format: outputExt,
-            file_size: totalBytes,
-            conversion_time: durationSeconds,
-            success: false,
-            error_message: pollErrMsg,
+
+          // Schedule next poll step
+          setTimeout(pollStep, 800)
+        } catch (pollErr: unknown) {
+          if (isCancelled) return
+
+          consecutiveFailures++
+          let isFatal = false
+          let diagnosticCategory = 'UNKNOWN'
+          let userDisplayError = 'Failed to poll conversion status.'
+
+          if (pollErr instanceof PollingError) {
+            if (pollErr.isNotFound) {
+              diagnosticCategory = 'JOB_NOT_FOUND'
+              userDisplayError = 'Conversion job was not found or expired on the server.'
+            } else if (pollErr.isPermanentClientError) {
+              diagnosticCategory = 'CLIENT_ERROR'
+              userDisplayError = pollErr.message || 'Invalid conversion status request.'
+              isFatal = true
+            } else if (pollErr.isRateLimited) {
+              diagnosticCategory = 'RATE_LIMITED'
+              userDisplayError = 'Conversion engine is currently busy. Please wait a moment.'
+            } else if (pollErr.isNetworkError) {
+              diagnosticCategory = 'NETWORK_FAILURE'
+              userDisplayError = 'Network connection interrupted while checking conversion status.'
+            } else if (pollErr.isInvalidJson) {
+              diagnosticCategory = 'INVALID_JSON'
+              userDisplayError = 'Unexpected server response while checking conversion.'
+            } else if (pollErr.isServerError) {
+              diagnosticCategory = 'SERVER_ERROR'
+              userDisplayError = 'Conversion server temporarily unavailable.'
+            }
+          }
+
+          console.warn(`[Convertly Diagnostics] Poll attempt failed (${consecutiveFailures}/${MAX_CONSECUTIVE_FAILURES})`, {
+            jobId: createdJob.id,
+            category: diagnosticCategory,
+            status: pollErr instanceof PollingError ? pollErr.status : undefined,
+            message: pollErr instanceof Error ? pollErr.message : String(pollErr),
           })
-          trackErrorOccurred({
-            error_message: pollErrMsg,
-            tool_name: config.name,
-          })
+
+          if (isFatal || consecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
+            setIsProcessing(false)
+            const durationSeconds = Number(((Date.now() - conversionStartTime) / 1000).toFixed(2))
+            setError(userDisplayError)
+            trackToolConversionFinished({
+              tool_name: config.name,
+              input_format: inputExt,
+              output_format: outputExt,
+              file_size: totalBytes,
+              conversion_time: durationSeconds,
+              success: false,
+              error_message: userDisplayError,
+            })
+            trackErrorOccurred({
+              error_message: userDisplayError,
+              tool_name: config.name,
+            })
+            return
+          }
+
+          // Backoff slightly on transient failure and retry
+          setTimeout(pollStep, 1500)
         }
-      }, 700)
+      }
+
+      // Kick off initial poll step
+      setTimeout(pollStep, 700)
     } catch (err: unknown) {
       setIsProcessing(false)
       const errorMsg = err instanceof Error ? err.message : 'Job execution failed.'
@@ -909,6 +1004,7 @@ export function ToolConverterPage() {
   }
 
   const resetAll = () => {
+    activePollCancelRef.current?.()
     setStagedFiles([])
     setJob(null)
     setError(null)
