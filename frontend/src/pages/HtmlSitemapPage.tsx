@@ -6,13 +6,11 @@ import {
   Users,
   BookOpen,
   Sparkles,
-  Terminal,
   ArrowRight
 } from 'lucide-react'
 import { Card } from '../components/ui/Card'
 import { Badge } from '../components/ui/Badge'
 import { SeoHead } from '../components/shared/SeoHead'
-import { EXPLICIT_PROGRAMMATIC_PAGES } from '../data/programmaticSeoData'
 import { COMPARISONS_DATA } from '../data/comparisonsData'
 import { USE_CASES_DATA } from '../data/useCasesData'
 import { PROBLEM_GUIDES_DATA } from '../data/guidesData'
@@ -21,7 +19,6 @@ import { TOOL_ACTION_ANCHORS } from '../data/toolSeoContent'
 
 export function HtmlSitemapPage() {
   const tools = Object.entries(TOOL_ACTION_ANCHORS)
-  const programmaticPages = Object.values(EXPLICIT_PROGRAMMATIC_PAGES)
   const comparisons = Object.values(COMPARISONS_DATA)
   const useCases = Object.values(USE_CASES_DATA)
   const guides = Object.values(PROBLEM_GUIDES_DATA)
@@ -45,7 +42,7 @@ export function HtmlSitemapPage() {
     <div className="relative min-h-screen py-10 sm:py-16">
       <SeoHead
         title="HTML Sitemap & Complete Entity Index — Convertly"
-        description="Comprehensive index of all Convertly conversion tools, programmatic landing pages, competitor comparisons, audience use cases, guides, and engineering articles."
+        description="Comprehensive index of all Convertly conversion tools, competitor comparisons, audience use cases, guides, and engineering articles."
         keywords="convertly sitemap, all tools index, pdf converter directory, site structure"
         canonicalUrl="https://convertlytools.xyz/sitemap"
         pageType="CollectionPage"
@@ -75,7 +72,7 @@ export function HtmlSitemapPage() {
           </h1>
 
           <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-            Direct navigational access to all 30 conversion tools, programmatic landing pages, competitor teardowns, industry use cases, problem-solving guides, and blog articles.
+            Direct navigational access to all 30 conversion tools, competitor teardowns, industry use cases, problem-solving guides, and blog articles.
           </p>
         </header>
 
@@ -121,27 +118,7 @@ export function HtmlSitemapPage() {
             </ul>
           </Card>
 
-          {/* 3. Programmatic SEO Landing Pages */}
-          <Card className="p-6 border border-border/80 bg-card/40 space-y-4">
-            <div className="flex items-center gap-2 pb-2 border-b border-border/40">
-              <Terminal className="h-5 w-5 text-indigo-400" />
-              <h2 className="text-sm font-bold text-foreground uppercase tracking-wider">
-                High-Intent Landing Pages ({programmaticPages.length})
-              </h2>
-            </div>
-            <ul className="space-y-2 text-xs max-h-[420px] overflow-y-auto pr-2">
-              {programmaticPages.map((page) => (
-                <li key={page.slug}>
-                  <Link to={`/convert/${page.slug}`} className="text-foreground/80 hover:text-indigo-400 transition-colors flex items-center gap-1.5">
-                    <ArrowRight className="h-3 w-3 text-muted-foreground shrink-0" />
-                    <span className="truncate">{page.h1}</span>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </Card>
-
-          {/* 4. Competitor Comparisons */}
+          {/* 3. Competitor Comparisons */}
           <Card className="p-6 border border-border/80 bg-card/40 space-y-4">
             <div className="flex items-center gap-2 pb-2 border-b border-border/40">
               <Scale className="h-5 w-5 text-indigo-400" />
@@ -161,7 +138,7 @@ export function HtmlSitemapPage() {
             </ul>
           </Card>
 
-          {/* 5. Audience Use Cases */}
+          {/* 4. Audience Use Cases */}
           <Card className="p-6 border border-border/80 bg-card/40 space-y-4">
             <div className="flex items-center gap-2 pb-2 border-b border-border/40">
               <Users className="h-5 w-5 text-indigo-400" />
@@ -181,7 +158,7 @@ export function HtmlSitemapPage() {
             </ul>
           </Card>
 
-          {/* 6. Problem Solving Guides */}
+          {/* 5. Problem Solving Guides */}
           <Card className="p-6 border border-border/80 bg-card/40 space-y-4">
             <div className="flex items-center gap-2 pb-2 border-b border-border/40">
               <BookOpen className="h-5 w-5 text-indigo-400" />
@@ -201,7 +178,7 @@ export function HtmlSitemapPage() {
             </ul>
           </Card>
 
-          {/* 7. Engineering Blog Articles */}
+          {/* 6. Engineering Blog Articles */}
           <Card className="p-6 border border-border/80 bg-card/40 space-y-4 md:col-span-2 lg:col-span-3">
             <div className="flex items-center gap-2 pb-2 border-b border-border/40">
               <FileText className="h-5 w-5 text-indigo-400" />

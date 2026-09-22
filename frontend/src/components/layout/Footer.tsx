@@ -99,7 +99,7 @@ export function Footer() {
               <li><Link to="/use-cases" className="text-foreground/80 hover:text-indigo-400 transition-colors">Industry Solutions</Link></li>
               <li><Link to="/blog" className="text-foreground/80 hover:text-indigo-400 transition-colors">Engineering Blog</Link></li>
               <li><Link to="/sitemap" className="text-foreground/80 hover:text-indigo-400 transition-colors">HTML Sitemap Index</Link></li>
-              <li><Link to="/convert/pdf-to-word-online" className="text-foreground/80 hover:text-indigo-400 transition-colors">PDF to Word Online</Link></li>
+              <li><Link to="/tools/pdf-to-word" className="text-foreground/80 hover:text-indigo-400 transition-colors">PDF to Word Online</Link></li>
             </ul>
           </div>
 

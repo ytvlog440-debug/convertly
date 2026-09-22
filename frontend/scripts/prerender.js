@@ -5,7 +5,6 @@ import { BLOG_POSTS_DATA } from '../src/data/blogData.ts'
 import { PROBLEM_GUIDES_DATA } from '../src/data/guidesData.ts'
 import { COMPARISONS_DATA } from '../src/data/comparisonsData.ts'
 import { USE_CASES_DATA } from '../src/data/useCasesData.ts'
-import { EXPLICIT_PROGRAMMATIC_PAGES } from '../src/data/programmaticSeoData.ts'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -1604,114 +1603,6 @@ function renderUseCaseHtml(uc) {
   })
 }
 
-function renderProgrammaticHtml(prog) {
-  const canonicalUrl = `${BASE_DOMAIN}/convert/${prog.slug}`
-
-  const bodyContent = `
-    <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 py-10 sm:py-16 space-y-12 text-foreground">
-      <nav aria-label="Breadcrumbs" class="flex items-center gap-2 text-xs text-muted-foreground">
-        <a href="/" class="hover:text-foreground">Home</a>
-        <span>/</span>
-        <a href="/tools" class="hover:text-foreground">Tools</a>
-        <span>/</span>
-        <span class="text-foreground font-medium truncate">${prog.h1}</span>
-      </nav>
-      <header class="space-y-4 text-center max-w-3xl mx-auto">
-        <div class="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3 py-1 text-xs font-semibold text-indigo-400">
-          <span>${prog.badge}</span>
-          <span class="text-muted-foreground">•</span>
-          <span class="text-[10px] text-emerald-400 uppercase tracking-wider">${prog.searchIntent}</span>
-        </div>
-        <h1 class="font-heading text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-foreground">${prog.h1}</h1>
-        <p class="text-sm sm:text-base text-muted-foreground leading-relaxed">${prog.subheading}</p>
-        <div class="pt-6">
-          <div class="rounded-2xl p-6 sm:p-8 bg-card/60 border border-indigo-500/30 text-center space-y-4">
-            <h2 class="text-lg font-bold text-foreground">Launch ${prog.h1} Engine</h2>
-            <p class="text-xs text-muted-foreground">100% Free • No Account Registration • 120-Minute Automatic File Shredder</p>
-            <div class="flex justify-center">
-              <a href="/tools/${prog.toolId}" class="inline-flex items-center gap-2 rounded-xl bg-indigo-600 px-6 py-3 text-sm font-bold text-white hover:bg-indigo-500 shadow-lg shadow-indigo-500/25">
-                Proceed to ${prog.h1} Tool →
-              </a>
-            </div>
-          </div>
-        </div>
-      </header>
-      <section class="space-y-4">
-        <h2 class="text-xl font-bold tracking-tight text-foreground">Core Technical Capabilities</h2>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-          ${prog.highlights.map(hl => `
-            <div class="rounded-2xl border border-border/80 bg-card/40 p-5 space-y-2">
-              <h3 class="text-sm font-semibold text-foreground">${hl.title}</h3>
-              <p class="text-xs text-muted-foreground leading-relaxed">${hl.desc}</p>
-            </div>
-          `).join('\n')}
-        </div>
-      </section>
-      <section class="space-y-4">
-        <h2 class="text-xl font-bold tracking-tight text-foreground">Step-by-Step Conversion Guide</h2>
-        <div class="space-y-3">
-          ${prog.stepGuide.map(s => `
-            <div class="rounded-2xl border border-border/80 bg-card/50 p-4 flex items-start gap-4">
-              <span class="flex h-7 w-7 shrink-0 items-center justify-center rounded-xl bg-indigo-600 text-white text-xs font-bold">${s.step}</span>
-              <div>
-                <h3 class="text-sm font-semibold text-foreground">${s.title}</h3>
-                <p class="text-xs text-muted-foreground leading-relaxed mt-1">${s.desc}</p>
-              </div>
-            </div>
-          `).join('\n')}
-        </div>
-      </section>
-      <section class="space-y-4">
-        <h2 class="text-xl font-bold tracking-tight text-foreground">Frequently Asked Questions</h2>
-        <div class="space-y-3">
-          ${prog.faqs.map(faq => `
-            <div class="rounded-2xl border border-border/80 bg-card/40 p-5 space-y-2">
-              <h3 class="text-sm font-semibold text-foreground">${faq.question}</h3>
-              <p class="text-xs text-muted-foreground leading-relaxed">${faq.answer}</p>
-            </div>
-          `).join('\n')}
-        </div>
-      </section>
-    </div>
-  `
-
-  const schema = [
-    {
-      '@context': 'https://schema.org',
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home', item: BASE_DOMAIN },
-        { '@type': 'ListItem', position: 2, name: 'Tools', item: `${BASE_DOMAIN}/tools` },
-        { '@type': 'ListItem', position: 3, name: prog.h1, item: canonicalUrl }
-      ]
-    }
-  ]
-
-  if (prog.faqs && prog.faqs.length) {
-    schema.push({
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      mainEntity: prog.faqs.map(f => ({
-        '@type': 'Question',
-        name: f.question,
-        acceptedAnswer: {
-          '@type': 'Answer',
-          text: f.answer
-        }
-      }))
-    })
-  }
-
-  return renderPageTemplate({
-    title: prog.title,
-    description: prog.metaDescription,
-    keywords: prog.keywords,
-    canonicalUrl,
-    schema,
-    bodyContent
-  })
-}
-
 function renderPrivacyHtml() {
   const canonicalUrl = `${BASE_DOMAIN}/privacy`
   const title = 'Privacy Policy — 120-Minute Auto-Shredder Guarantee | Convertly'
@@ -2419,19 +2310,13 @@ for (const page of CORE_PAGES) {
   console.log(`  ✓ Pre-rendered: /${page.slug}`)
 }
 
-// 4. Pre-render Programmatic SEO Landing Pages
-const PROGRAMMATIC_PAGES = Object.values(EXPLICIT_PROGRAMMATIC_PAGES)
-for (const prog of PROGRAMMATIC_PAGES) {
-  const pageDir = path.join(DIST_DIR, 'convert', prog.slug)
-  if (!fs.existsSync(pageDir)) {
-    fs.mkdirSync(pageDir, { recursive: true })
-  }
-  const progHtml = renderProgrammaticHtml(prog)
-  fs.writeFileSync(path.join(pageDir, 'index.html'), progHtml, 'utf-8')
-  console.log(`  ✓ Pre-rendered: /convert/${prog.slug}`)
+// Clean up legacy /convert directory from dist if present
+const convertDistDir = path.join(DIST_DIR, 'convert')
+if (fs.existsSync(convertDistDir)) {
+  fs.rmSync(convertDistDir, { recursive: true, force: true })
 }
 
-// 5. Pre-render Competitor Comparison Pages
+// 4. Pre-render Competitor Comparison Pages
 const COMPARISON_PAGES = Object.values(COMPARISONS_DATA)
 for (const comp of COMPARISON_PAGES) {
   const pageDir = path.join(DIST_DIR, 'compare', comp.slug)
@@ -2443,7 +2328,7 @@ for (const comp of COMPARISON_PAGES) {
   console.log(`  ✓ Pre-rendered: /compare/${comp.slug}`)
 }
 
-// 6. Pre-render Industry & Persona Use Case Pages
+// 5. Pre-render Industry & Persona Use Case Pages
 const USE_CASE_PAGES = Object.values(USE_CASES_DATA)
 for (const uc of USE_CASE_PAGES) {
   const pageDir = path.join(DIST_DIR, 'use-cases', uc.slug)
@@ -2455,7 +2340,7 @@ for (const uc of USE_CASE_PAGES) {
   console.log(`  ✓ Pre-rendered: /use-cases/${uc.slug}`)
 }
 
-// 7. Pre-render Problem Solving Guides
+// 6. Pre-render Problem Solving Guides
 const GUIDE_PAGES = Object.values(PROBLEM_GUIDES_DATA)
 for (const guide of GUIDE_PAGES) {
   const pageDir = path.join(DIST_DIR, 'guides', guide.slug)
@@ -2505,37 +2390,31 @@ for (const tool of TOOLS) {
   sitemapXml += `  <url><loc>${BASE_DOMAIN}/tools/${tool.id}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>${priority}</priority></url>\n`
 }
 
-// C. Programmatic Landing Pages
-sitemapXml += `\n  <!-- Programmatic SEO Landing Pages (${PROGRAMMATIC_PAGES.length} URLs) -->\n`
-for (const prog of PROGRAMMATIC_PAGES) {
-  sitemapXml += `  <url><loc>${BASE_DOMAIN}/convert/${prog.slug}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>\n`
-}
-
-// D. Competitor Comparisons
+// C. Competitor Comparisons
 sitemapXml += `\n  <!-- Competitor Comparisons (${COMPARISON_PAGES.length} URLs) -->\n`
 for (const comp of COMPARISON_PAGES) {
   sitemapXml += `  <url><loc>${BASE_DOMAIN}/compare/${comp.slug}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>\n`
 }
 
-// E. Industry & Persona Use Cases
+// D. Industry & Persona Use Cases
 sitemapXml += `\n  <!-- Industry Use Cases (${USE_CASE_PAGES.length} URLs) -->\n`
 for (const uc of USE_CASE_PAGES) {
   sitemapXml += `  <url><loc>${BASE_DOMAIN}/use-cases/${uc.slug}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>\n`
 }
 
-// F. Problem Solving Guides
+// E. Problem Solving Guides
 sitemapXml += `\n  <!-- Problem Solving Guides (${GUIDE_PAGES.length} URLs) -->\n`
 for (const guide of GUIDE_PAGES) {
   sitemapXml += `  <url><loc>${BASE_DOMAIN}/guides/${guide.slug}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.85</priority></url>\n`
 }
 
-// G. Engineering Blog Articles
+// F. Engineering Blog Articles
 sitemapXml += `\n  <!-- Engineering Blog Articles (${BLOG_PAGES.length} URLs) -->\n`
 for (const post of BLOG_PAGES) {
   sitemapXml += `  <url><loc>${BASE_DOMAIN}/blog/${post.slug}</loc><lastmod>${today}</lastmod><changefreq>weekly</changefreq><priority>0.75</priority></url>\n`
 }
 
-// H. Core Technical & Legal Specifications
+// G. Core Technical & Legal Specifications
 sitemapXml += `\n  <!-- Core Technical & Legal Specifications -->\n`
 const pagePriorities = {
   formats: '0.7',
@@ -2562,7 +2441,6 @@ const totalUrls =
   2 + // / and /tools
   5 + // 5 hubs
   TOOLS.length +
-  PROGRAMMATIC_PAGES.length +
   COMPARISON_PAGES.length +
   USE_CASE_PAGES.length +
   GUIDE_PAGES.length +

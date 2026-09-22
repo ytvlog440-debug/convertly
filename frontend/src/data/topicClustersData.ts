@@ -134,7 +134,6 @@ export interface ContextualEcosystemLinks {
   guides: { slug: string; title: string }[]
   comparisons: { slug: string; title: string }[]
   useCases: { slug: string; title: string }[]
-  programmatic: { slug: string; title: string }[]
 }
 
 export function getContextualEcosystemLinks(toolId: string): ContextualEcosystemLinks {
@@ -240,50 +239,9 @@ export function getContextualEcosystemLinks(toolId: string): ContextualEcosystem
     { slug: 'lawyers', title: 'For Lawyers & Legal Counsel' }
   ]
 
-  const progMap: Record<string, { slug: string; title: string }[]> = {
-    'pdf-to-word': [
-      { slug: 'pdf-to-word-online', title: 'PDF to Word Online' },
-      { slug: 'pdf-to-word-free', title: 'Free PDF to Word' },
-      { slug: 'pdf-to-word-windows', title: 'PDF to Word Windows' },
-      { slug: 'pdf-to-word-mac', title: 'PDF to Word Mac' }
-    ],
-    'pdf-to-excel': [],
-    'word-to-pdf': [
-      { slug: 'word-to-pdf', title: 'Word to PDF Online' },
-      { slug: 'merge-pdf-online', title: 'Merge PDF Online' }
-    ],
-    'pdf-merge': [
-      { slug: 'merge-pdf-online', title: 'Merge PDF Online' },
-      { slug: 'compress-pdf-online', title: 'Compress PDF Online' }
-    ],
-    'pdf-compress': [
-      { slug: 'compress-pdf-online', title: 'Compress PDF Online' },
-      { slug: 'convert-pdf-without-losing-formatting', title: 'Preserve Formatting Guide' }
-    ],
-    'jpg-to-png': [
-      { slug: 'convert-jpg-to-png', title: 'Convert JPG to PNG Online' },
-      { slug: 'convert-image-to-pdf', title: 'Convert Image to PDF' }
-    ],
-    'png-to-jpg': [
-      { slug: 'convert-jpg-to-png', title: 'Convert JPG to PNG Online' },
-      { slug: 'convert-image-to-pdf', title: 'Convert Image to PDF' }
-    ],
-    'images-to-pdf': [
-      { slug: 'convert-image-to-pdf', title: 'Convert Image to PDF Online' },
-      { slug: 'merge-pdf-online', title: 'Merge PDF Online' }
-    ]
-  }
-
-  const defaultProg = [
-    { slug: 'pdf-to-word-online', title: 'PDF to Word Online' },
-    { slug: 'merge-pdf-online', title: 'Merge PDF Online' },
-    { slug: 'compress-pdf-online', title: 'Compress PDF Online' }
-  ]
-
   return {
     guides: guideMap[toolId] || defaultGuides,
     comparisons,
-    useCases: useCaseMap[toolId] || defaultUseCases,
-    programmatic: progMap[toolId] || defaultProg
+    useCases: useCaseMap[toolId] || defaultUseCases
   }
 }

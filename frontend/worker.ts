@@ -5,6 +5,21 @@ export interface Env {
   BACKEND_API_URL?: string
 }
 
+export const CONVERT_REDIRECTS: Record<string, string> = {
+  '/convert/pdf-to-word': '/tools/pdf-to-word',
+  '/convert/pdf-to-word-online': '/tools/pdf-to-word',
+  '/convert/pdf-to-word-free': '/tools/pdf-to-word',
+  '/convert/pdf-to-word-windows': '/tools/pdf-to-word',
+  '/convert/pdf-to-word-mac': '/tools/pdf-to-word',
+  '/convert/pdf-to-word-mobile': '/tools/pdf-to-word',
+  '/convert/word-to-pdf': '/tools/word-to-pdf',
+  '/convert/merge-pdf-online': '/tools/pdf-merge',
+  '/convert/compress-pdf-online': '/tools/pdf-compress',
+  '/convert/convert-pdf-without-losing-formatting': '/guides/how-to-convert-pdf-to-word-without-losing-formatting',
+  '/convert/convert-jpg-to-png': '/tools/jpg-to-png',
+  '/convert/convert-image-to-pdf': '/tools/images-to-pdf',
+}
+
 const BACKEND_BASE_URL = 'https://convertly-production-285a.up.railway.app'
 
 export default {
@@ -90,13 +105,28 @@ export default {
       return assetRes
     }
 
-    // 4. Serve static assets directly (including pre-rendered HTML routes, favicon, robots.txt, etc.)
+    // 4. SEO 301 Permanent Redirects: Consolidate legacy /convert/* landing pages
+    // Redirects occur BEFORE env.ASSETS.fetch(), SPA fallback, and React routing
+    const cleanPath = pathname.length > 1 && pathname.endsWith('/') ? pathname.slice(0, -1) : pathname
+    const redirectTarget = CONVERT_REDIRECTS[cleanPath.toLowerCase()]
+    if (redirectTarget) {
+      const destinationUrl = new URL(`${redirectTarget}${url.search}`, request.url)
+      return new Response(null, {
+        status: 301,
+        headers: {
+          Location: destinationUrl.toString(),
+          'Cache-Control': 'public, max-age=31536000, immutable',
+        },
+      })
+    }
+
+    // 5. Serve static assets directly (including pre-rendered HTML routes, favicon, robots.txt, etc.)
     const staticResponse = await env.ASSETS.fetch(request)
     if (staticResponse.status !== 404) {
       return staticResponse
     }
 
-    // 5. SPA fallback for legitimate client-side React routes
+    // 6. SPA fallback for legitimate client-side React routes
     // Do NOT fall back for missing files with extensions (.css, .js, .png, etc.) or non-GET requests
     if (request.method !== 'GET' && request.method !== 'HEAD') {
       return new Response('Method Not Allowed', { status: 405 })

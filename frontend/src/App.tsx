@@ -23,7 +23,6 @@ const TermsPage = lazy(() => import('./pages/TermsPage').then(m => ({ default: m
 const SecurityPage = lazy(() => import('./pages/SecurityPage').then(m => ({ default: m.SecurityPage })))
 const DevelopersPage = lazy(() => import('./pages/DevelopersPage').then(m => ({ default: m.DevelopersPage })))
 const FormatsPage = lazy(() => import('./pages/FormatsPage').then(m => ({ default: m.FormatsPage })))
-const ProgrammaticLandingPage = lazy(() => import('./pages/ProgrammaticLandingPage').then(m => ({ default: m.ProgrammaticLandingPage })))
 const ComparisonsIndexPage = lazy(() => import('./pages/ComparisonsIndexPage').then(m => ({ default: m.ComparisonsIndexPage })))
 const ComparisonDetailPage = lazy(() => import('./pages/ComparisonDetailPage').then(m => ({ default: m.ComparisonDetailPage })))
 const UseCasesIndexPage = lazy(() => import('./pages/UseCasesIndexPage').then(m => ({ default: m.UseCasesIndexPage })))
@@ -71,9 +70,6 @@ export function App() {
                 <Route path="/tools/:toolId" element={<ToolConverterPage />} />
                 <Route path="/tool/:toolId" element={<LegacyToolRedirect />} />
                 
-                {/* Programmatic High-Intent SEO Landing Pages */}
-                <Route path="/convert/:slug" element={<ProgrammaticLandingPage />} />
-
                 {/* Head-to-Head Comparison Suite */}
                 <Route path="/compare" element={<ComparisonsIndexPage />} />
                 <Route path="/compare/:slug" element={<ComparisonDetailPage />} />

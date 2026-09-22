@@ -556,7 +556,7 @@ export function ToolSeoContentSection({ content }: ToolSeoContentSectionProps) {
           Related Guides & Industry Workflows for {content.name}
         </h2>
         
-        <div className={`grid grid-cols-1 sm:grid-cols-2 ${ecosystemLinks.programmatic && ecosystemLinks.programmatic.length > 0 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'} gap-4`}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {/* Guides */}
           <div className="rounded-xl border border-border/70 bg-card/40 p-4 space-y-2">
             <span className="text-[11px] font-bold text-indigo-400 uppercase tracking-wider block">
@@ -607,25 +607,6 @@ export function ToolSeoContentSection({ content }: ToolSeoContentSectionProps) {
               ))}
             </ul>
           </div>
-
-          {/* High-Intent Variations */}
-          {ecosystemLinks.programmatic && ecosystemLinks.programmatic.length > 0 && (
-            <div className="rounded-xl border border-border/70 bg-card/40 p-4 space-y-2">
-              <span className="text-[11px] font-bold text-indigo-400 uppercase tracking-wider block">
-                Targeted Variations
-              </span>
-              <ul className="space-y-1.5 text-xs">
-                {ecosystemLinks.programmatic.map(p => (
-                  <li key={p.slug}>
-                    <Link to={`/convert/${p.slug}`} className="text-foreground/80 hover:text-indigo-400 transition-colors flex items-center gap-1">
-                      <ArrowRight className="h-3 w-3 text-muted-foreground shrink-0" />
-                      <span className="truncate">{p.title}</span>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
         </div>
       </section>
 
