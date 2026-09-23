@@ -1,3 +1,4 @@
+import asyncio
 from contextlib import asynccontextmanager
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
@@ -8,6 +9,7 @@ from app.core.logging import setup_logging, logger
 from app.core.errors import ConvertlyException, convertly_exception_handler
 from app.db.session import init_db
 from app.api.v1.router import api_router
+from app.services.cleaner import run_periodic_cleanup_loop
 
 
 @asynccontextmanager
@@ -17,9 +19,24 @@ async def lifespan(app: FastAPI):
     logger.info("Initializing Convertly V2 Backend Services...")
     await init_db()
     logger.info("Database schemas initialized.")
+
+    # Start periodic file retention cleaner
+    cleanup_stop_event = asyncio.Event()
+    cleanup_task = asyncio.create_task(run_periodic_cleanup_loop(stop_event=cleanup_stop_event))
+    app.state.cleanup_task = cleanup_task
+    app.state.cleanup_stop_event = cleanup_stop_event
+
     yield
+
     # Shutdown
-    logger.info("Shutting down Convertly V2 Backend gracefully.")
+    logger.info("Shutting down Convertly V2 Backend gracefully...")
+    cleanup_stop_event.set()
+    cleanup_task.cancel()
+    try:
+        await cleanup_task
+    except asyncio.CancelledError:
+        pass
+    logger.info("Convertly V2 Backend shutdown complete.")
 
 
 app = FastAPI(

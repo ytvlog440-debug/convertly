@@ -58,6 +58,13 @@ class S3R2StorageService(BaseStorageService):
     async def delete_file(self, storage_key: str) -> bool:
         try:
             self.s3_client.delete_object(Bucket=self.bucket, Key=storage_key)
+            # Clean up local cache if previously downloaded
+            cached_path = os.path.join(tempfile.gettempdir(), "convertly_cache", os.path.basename(storage_key))
+            if os.path.exists(cached_path):
+                try:
+                    os.unlink(cached_path)
+                except Exception:
+                    pass
             return True
         except ClientError:
             return False

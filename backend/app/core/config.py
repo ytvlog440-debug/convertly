@@ -40,6 +40,7 @@ class Settings(BaseSettings):
     MAX_UPLOAD_SIZE_MB: int = 100
     FILE_RETENTION_MINUTES: int = 120
     RATE_LIMIT_PER_MINUTE: int = 60
+    CLEANUP_INTERVAL_SECONDS: int = 600
 
     model_config = SettingsConfigDict(
         env_file=".env",
