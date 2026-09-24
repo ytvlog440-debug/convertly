@@ -96,7 +96,7 @@ export async function generateSampleFiles(toolId: string): Promise<File[]> {
   // Fallback text / general sample
   const textBlob = new Blob(
     [
-      `Convertly V2 Enterprise File Platform\n\nThis is an automated sample document generated for verifying conversion workflows.\nTool ID: ${toolId}\nTimestamp: ${new Date().toISOString()}\nZero-retention policy: All documents shredded within 120 minutes.`,
+      `Convertly V2 Enterprise File Platform\n\nThis is an automated sample document generated for verifying conversion workflows.\nTool ID: ${toolId}\nTimestamp: ${new Date().toISOString()}\nRetention policy: All documents automatically deleted within 120 minutes.`,
     ],
     { type: 'text/plain' }
   )
@@ -117,7 +117,7 @@ BT
 (${cleanTitle}) Tj
 0 -40 Td
 /F1 12 Tf
-(Certified Free Online Conversion | 120-min Privacy Shredder) Tj
+(Free Online Conversion | 120-Minute Retention) Tj
 ET
 endstream endobj
 5 0 obj << /Type /Font /Subtype /Type1 /BaseFont /Helvetica >> endobj

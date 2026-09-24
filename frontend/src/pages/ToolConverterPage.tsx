@@ -299,7 +299,7 @@ const TOOL_CONFIGS: Record<string, ToolConfig> = {
   'pdf-protect': {
     id: 'pdf-protect',
     name: 'Protect PDF',
-    desc: 'Encrypt your PDF with bank-grade AES-256 password protection and permissions.',
+    desc: 'Encrypt your PDF with standard AES-256 password protection and permissions.',
     category: 'PDF',
     icon: Lock,
     badge: 'AES-256',
@@ -368,7 +368,7 @@ const TOOL_CONFIGS: Record<string, ToolConfig> = {
     desc: 'Strip all hidden author info, creation tools, timestamps, and XMP payloads before sharing.',
     category: 'PDF',
     icon: ShieldCheck,
-    badge: 'HIPAA & GDPR',
+    badge: 'Privacy Sanitized',
     acceptTypes: { 'application/pdf': ['.pdf'] },
     maxFiles: 1,
     color: 'text-emerald-500 bg-emerald-500/10'
@@ -1080,7 +1080,7 @@ export function ToolConverterPage() {
 
           <div className="flex items-center gap-2">
             <span className="inline-flex items-center gap-1 rounded-full border border-indigo-500/20 bg-indigo-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-indigo-400">
-              <ShieldCheck className="h-3 w-3" /> Zero Retention (120m)
+              <ShieldCheck className="h-3 w-3" /> 120-Min Retention
             </span>
           </div>
         </div>
@@ -1123,7 +1123,7 @@ export function ToolConverterPage() {
               Conversion Completed Successfully!
             </h2>
             <p className="mt-1 text-xs text-muted-foreground">
-              Your verified file is ready for download. It will be permanently shredded in 120 minutes.
+              Your verified file is ready for download. It will be automatically deleted in 120 minutes.
             </p>
 
             {/* Metrics Breakdown if available */}
@@ -2014,7 +2014,7 @@ export function ToolConverterPage() {
                   <div className="space-y-4 max-w-md">
                     <div className="p-3.5 rounded-xl border border-rose-500/20 bg-rose-500/5 text-rose-300 text-xs flex items-center gap-2.5">
                       <Lock className="h-4 w-4 shrink-0 text-rose-400" />
-                      <span>Secured with military-grade AES-256 bit document encryption.</span>
+                      <span>Secured with standard AES-256 bit document encryption.</span>
                     </div>
                     <div>
                       <label className="text-xs font-semibold text-foreground block mb-1.5">Document Password</label>
@@ -2305,7 +2305,7 @@ export function ToolConverterPage() {
                   <div className="p-4 rounded-xl border border-emerald-500/20 bg-emerald-500/5 text-emerald-300 text-xs flex items-center gap-3 max-w-lg">
                     <ShieldCheck className="h-5 w-5 shrink-0 text-emerald-400" />
                     <span>
-                      All hidden metadata (Author, Creation Tool, Subject, Keywords, XMP streams, and embedded thumbnails) will be permanently sanitized for strict GDPR and HIPAA compliance.
+                      All hidden metadata (Author, Creation Tool, Subject, Keywords, XMP streams, and embedded thumbnails) will be permanently sanitized to protect document privacy.
                     </span>
                   </div>
                 )}

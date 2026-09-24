@@ -127,7 +127,7 @@ export function SecurityInspector() {
               {isLoading ? 'Analyzing PDF binary structure...' : 'Click or drag PDF document to inspect'}
             </p>
             <p className="text-xs text-muted-foreground mt-1">
-              Evaluated with real-time server PyMuPDF binary engine • Zero persistent storage
+              Evaluated with real-time server PyMuPDF binary engine • 120-Minute Temporary File Retention
             </p>
           </div>
 

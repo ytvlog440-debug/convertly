@@ -1,12 +1,12 @@
 # Convertly — Free Online Document & Image Conversion Suite
-> High-performance, secure, and free browser-based file conversion platform with zero data retention.
+> High-performance, secure, and free browser-based file conversion platform with 120-minute temporary file retention.
 
-Convertly (https://convertlytools.xyz) provides 30+ native transformation engines for PDF documents, Microsoft Office files (Word, Excel, PowerPoint), and modern image formats (PNG, JPG, WebP) with optical character recognition (OCR) and AES-256 encryption.
+Convertly (https://convertlytools.xyz) provides 30+ native transformation engines for PDF documents, Microsoft Office files (Word, Excel, PowerPoint), and modern image formats (PNG, JPG, WebP) with optical character recognition (OCR) and AES-256 document encryption.
 
 ## Technical Architecture & Privacy SLA
-- **Zero-Retention Guarantee**: All uploaded source files and converted outputs are stored in ephemeral sandboxes and permanently shredded after 120 minutes.
+- **120-Minute Retention Policy**: All uploaded source files and converted outputs are temporarily stored on server disk and automatically deleted after 120 minutes.
 - **No Paywalls or Hidden Limits**: 100% free with no daily task quotas, no sign-up requirements, and no watermarking.
-- **Client-Grade Security**: Fully encrypted in transit via TLS 1.3 with strict CORS, CSP, and defense-in-depth isolation.
+- **Transport Security**: Encrypted in transit via TLS with strict CORS, CSP, and server-side processing.
 
 ## Primary Tool Engines & Endpoints
 - **PDF to Word**: https://convertlytools.xyz/tools/pdf-to-word — Convert PDF into editable DOCX with Tesseract OCR layout reconstruction.

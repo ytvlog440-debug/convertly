@@ -39,7 +39,7 @@ export const USE_CASES_DATA: Record<string, AudienceUseCase> = {
       { title: 'Extract Specific Chapters', desc: 'Split out individual syllabus readings or study guide sections from massive 500-page course packets.', toolId: 'pdf-extract-pages', toolName: 'Extract PDF Pages' }
     ],
     complianceAndSecurity: [
-      { title: 'FERPA Student Privacy Standards', desc: 'Convertly never retains student research or term papers. Files are shredded after 120 minutes with zero data harvesting.' },
+      { title: 'Student Privacy Standards', desc: 'Convertly never retains student research or term papers indefinitely. Files are automatically deleted after 120 minutes with zero data harvesting.' },
       { title: 'Zero Account Tracking', desc: 'No personal email or university credentials required to convert files.' }
     ],
     expertTips: [
@@ -72,8 +72,8 @@ export const USE_CASES_DATA: Record<string, AudienceUseCase> = {
       { title: 'Remove Answer Keys from Student Packets', desc: 'Delete answer key pages from textbook packets before distributing to students.', toolId: 'pdf-delete-pages', toolName: 'Delete PDF Pages' }
     ],
     complianceAndSecurity: [
-      { title: 'Classroom Privacy & COPPA Compliance', desc: 'We do not collect student or teacher personal information, ensuring complete classroom safety.' },
-      { title: '120-Minute Auto-Shredding', desc: 'Lesson plans and student grading records are automatically purged after 120 minutes.' }
+      { title: 'Classroom Privacy Standards', desc: 'We do not collect student or teacher personal information, prioritizing classroom privacy.' },
+      { title: '120-Minute Temporary Retention', desc: 'Lesson plans and teaching materials are automatically deleted from active storage after 120 minutes.' }
     ],
     expertTips: [
       'Use the Grayscale tool before sending multi-page handouts to your school’s high-volume xerox machine to cut printing costs.',
@@ -106,7 +106,7 @@ export const USE_CASES_DATA: Record<string, AudienceUseCase> = {
       { title: 'Protect Intellectual Property & Bids', desc: 'Apply AES-256 encryption to commercial proposals prior to external vendor transmission.', toolId: 'pdf-protect', toolName: 'Protect PDF' }
     ],
     complianceAndSecurity: [
-      { title: 'GDPR Article 17 Compliant', desc: 'Automated 120-minute server shredder ensures full compliance with European privacy standards.' },
+      { title: 'Privacy-Focused File Processing', desc: 'Automated 120-minute temporary file retention ensures prompt removal from active server storage.' },
       { title: 'Zero AI Training SLA', desc: 'Your proprietary business figures, customer lists, and strategic documents are never used for AI model training.' }
     ],
     expertTips: [
@@ -114,7 +114,7 @@ export const USE_CASES_DATA: Record<string, AudienceUseCase> = {
       'Flatten interactive PDF forms before sending to clients to ensure their responses cannot be accidentally cleared or tampered with.'
     ],
     faqs: [
-      { question: 'How does Convertly protect our confidential financial data?', answer: 'Data is protected via TLS 1.3 encryption in transit, processed in isolated memory containers, and irreversibly shredded from disks after 120 minutes.' },
+      { question: 'How does Convertly protect our confidential financial data?', answer: 'Data is protected via TLS encryption in transit, processed via automated server-side pipelines, and deleted from active storage after 120 minutes.' },
       { question: 'Can our team use Convertly without creating corporate accounts?', answer: 'Yes! Convertly is completely stateless. Team members can convert files instantly with zero onboarding or account setup.' }
     ]
   },
@@ -122,11 +122,11 @@ export const USE_CASES_DATA: Record<string, AudienceUseCase> = {
   lawyers: {
     slug: 'lawyers',
     title: 'Best PDF Converter for Lawyers & Legal Counsel (Secure & Private)',
-    metaDescription: 'Strictly private, zero-retention PDF tools for lawyers, paralegals, and legal firms. Redact sensitive disclosures, merge case exhibits, and prepare court filings.',
+    metaDescription: 'Strictly private, temporary-retention PDF tools for lawyers, paralegals, and legal firms. Redact sensitive disclosures, merge case exhibits, and prepare court filings.',
     keywords: 'pdf converter for lawyers, legal pdf tools, redact pdf attorney, court filing pdf tools, secure pdf for law firms',
     h1: 'Confidential PDF & Document Tools for Lawyers',
     targetAudience: 'Attorneys, Legal Counsel, Paralegals & Law Firms',
-    summary: 'Attorneys operate under strict ethical duties of client confidentiality and court electronic filing specifications. Convertly provides an isolated, zero-retention pipeline tailored for legal preparation.',
+    summary: 'Attorneys handle sensitive client disclosures and court electronic filings. Convertly provides an automated, temporary-retention pipeline tailored for legal document preparation.',
     keyPainPoints: [
       { title: 'Attorney-Client Privilege Protection', desc: 'Uploading discovery documents to public web converters that store files indefinitely violates legal ethics rules.' },
       { title: 'Strict Court E-Filing Size & Formatting Rules', desc: 'Federal (CM/ECF) and state court portals enforce rigid file size ceilings and reject misaligned pages.' },
@@ -139,15 +139,15 @@ export const USE_CASES_DATA: Record<string, AudienceUseCase> = {
       { title: 'Compress Briefs for CM/ECF Upload', desc: 'Reduce extensive appellate briefs and appendix files to meet court electronic filing file size thresholds.', toolId: 'pdf-compress', toolName: 'Compress PDF' }
     ],
     complianceAndSecurity: [
-      { title: 'Zero-Retention Ethics Standard', desc: 'Documents are processed in memory sandboxes and shredded after 120 minutes, preserving attorney-client confidentiality.' },
-      { title: '256-Bit Cryptographic Isolation', desc: 'Military-grade encryption protects all document streams against third-party interception.' }
+      { title: 'Temporary Retention Standards', desc: 'Documents are processed via automated server tasks and deleted after 120 minutes, preventing persistent storage of client records.' },
+      { title: 'TLS Transport Encryption', desc: 'Modern encryption protects all document streams against third-party interception in transit.' }
     ],
     expertTips: [
       'Always use Flatten PDF on signed affidavits and settlement documents so form fields and signatures become an immutable part of the background layer.',
       'Scrub metadata from draft contracts prior to sending redlines to opposing counsel to ensure negotiations remain private.'
     ],
     faqs: [
-      { question: 'Does Convertly inspect or index documents processed by law firms?', answer: 'Never. Convertly has zero access to your file contents. All processing is automated via native binaries and shredded within 120 minutes.' },
+      { question: 'Does Convertly inspect or index documents processed by law firms?', answer: 'Never. Convertly has zero access to your file contents. All processing is automated via native binaries and deleted from active storage after 120 minutes.' },
       { question: 'Does Convertly’s redaction tool genuinely remove text or just draw a black box?', answer: 'Convertly permanently removes the underlying vector text and glyph paths from the PDF stream, ensuring words cannot be copied or uncovered.' }
     ]
   },
@@ -172,7 +172,7 @@ export const USE_CASES_DATA: Record<string, AudienceUseCase> = {
       { title: 'Extract Standalone Benefits Summaries', desc: 'Pull out relevant health benefit pages from 100-page policy manuals to share with candidates.', toolId: 'pdf-extract-pages', toolName: 'Extract PDF Pages' }
     ],
     complianceAndSecurity: [
-      { title: 'Strict Employee PII Safeguards', desc: 'Convertly’s 120-minute automatic file shredder ensures employee personal information is never stored indefinitely.' },
+      { title: 'Employee Data Protection', desc: 'Convertly’s 120-minute temporary retention ensures employee personal information is never stored indefinitely.' },
       { title: 'No Account Data Required', desc: 'Process employment documentation securely without entering corporate employee records.' }
     ],
     expertTips: [
@@ -180,7 +180,7 @@ export const USE_CASES_DATA: Record<string, AudienceUseCase> = {
       'Use PDF Password Protect when transmitting W-2 tax forms or severance documentation over email.'
     ],
     faqs: [
-      { question: 'Is Convertly compliant with privacy guidelines for employee records?', answer: 'Yes. With automated 120-minute file shredding and TLS 1.3 transport encryption, Convertly provides rigorous protection for sensitive HR documentation.' },
+      { question: 'Is Convertly designed for privacy with employee records?', answer: 'Yes. With automated 120-minute file deletion and TLS transport encryption, Convertly provides privacy-conscious handling for sensitive HR documentation.' },
       { question: 'Can I combine smartphone photo scans of ID cards with PDF forms?', answer: 'Yes! Use Images to PDF to turn smartphone photos into clean PDF pages, then merge them with your onboarding documents.' }
     ]
   },
@@ -239,7 +239,7 @@ export const USE_CASES_DATA: Record<string, AudienceUseCase> = {
     ],
     complianceAndSecurity: [
       { title: 'Preserved Color Spaces & Metadata', desc: 'Native Pillow and PyMuPDF engines retain sRGB profiles and alpha channel transparencies.' },
-      { title: 'Private Unreleased Client Assets', desc: 'Pre-launch branding and product designs are safeguarded by 120-minute automated server shredding.' }
+      { title: 'Private Unreleased Client Assets', desc: 'Pre-launch branding and product designs are safeguarded by 120-minute automated file deletion.' }
     ],
     expertTips: [
       'When preparing web mockups, convert heavy hero assets to WebP using Image to WebP to achieve 90+ Google PageSpeed ratings.',

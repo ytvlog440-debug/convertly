@@ -153,7 +153,7 @@ export function BlogPostDetailPage() {
           <div className="space-y-1">
             <span className="text-xs font-bold text-indigo-400 uppercase tracking-wider">Try It In Action:</span>
             <h3 className="text-base font-bold text-foreground">{post.recommendedToolName}</h3>
-            <p className="text-xs text-muted-foreground">Execute your workflow in seconds with zero data retention.</p>
+            <p className="text-xs text-muted-foreground">Execute your workflow in seconds with 120-minute temporary file retention.</p>
           </div>
           <Link
             to={`/tools/${post.recommendedToolId}`}

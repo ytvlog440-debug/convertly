@@ -87,7 +87,7 @@ export function RecentActivityDrawer({ isOpen, onClose }: RecentActivityDrawerPr
           {/* Retention Privacy Notice */}
           <div className="my-4 p-3 rounded-xl border border-indigo-500/20 bg-indigo-500/5 flex items-center gap-2.5 text-xs text-indigo-300">
             <ShieldCheck className="h-4 w-4 shrink-0 text-indigo-400" />
-            <span>Files auto-shred permanently after 120 minutes of inactivity.</span>
+            <span>Files are automatically deleted after 120 minutes.</span>
           </div>
 
           {/* List of conversions */}

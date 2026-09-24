@@ -111,7 +111,7 @@ const HOME_FAQS = [
   },
   {
     question: "Are my uploaded documents private and secure?",
-    answer: "User privacy is fundamental to our architecture. Files are processed in isolated, transient containerized environments with TLS 1.3 encryption in transit and AES-256 encryption at rest. All uploaded and converted files are automatically shredded and permanently erased after 120 minutes."
+    answer: "User privacy is fundamental to our architecture. Files are processed with TLS transport encryption in transit and stored temporarily on active server storage. All uploaded and converted files are automatically deleted after 120 minutes."
   },
   {
     question: "Does Convertly preserve formatting when converting Word, Excel, and PowerPoint to PDF?",
@@ -170,10 +170,10 @@ export function HomeSecondaryContent({ tools }: HomeSecondaryContentProps) {
               </div>
               <h3 className="text-base font-bold text-foreground">100% Privacy by Design</h3>
               <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                All document transformation runs in transient container RAM. Files are automatically shredded and permanently wiped after 120 minutes with zero tracking or AI model training.
+                Automated server-side file processing. Files are automatically deleted from active server storage after 120 minutes with zero tracking or AI model training.
               </p>
               <div className="mt-4 pt-3 border-t border-border/40 text-[11px] font-medium text-emerald-400 flex items-center gap-1.5">
-                <Check className="h-3.5 w-3.5" /> Zero Document Retention
+                <Check className="h-3.5 w-3.5" /> 120-Minute Temporary File Retention
               </div>
             </Card>
 
@@ -399,7 +399,7 @@ export function HomeSecondaryContent({ tools }: HomeSecondaryContentProps) {
                     <Check className="h-3 w-3" />
                   </div>
                   <div>
-                    <strong className="text-foreground">Automated 120-Minute Storage Shredder:</strong> All uploaded files and converted outputs are automatically purged with zero possibility of recovery.
+                    <strong className="text-foreground">Automated 120-Minute File Deletion:</strong> All uploaded files and converted outputs are automatically removed from active server storage after 120 minutes.
                   </div>
                 </div>
 
@@ -408,7 +408,7 @@ export function HomeSecondaryContent({ tools }: HomeSecondaryContentProps) {
                     <Check className="h-3 w-3" />
                   </div>
                   <div>
-                    <strong className="text-foreground">TLS 1.3 Transport & AES-256 at Rest:</strong> Military-grade cryptographic standards guard every byte against interception.
+                    <strong className="text-foreground">HTTPS/TLS Transport Security:</strong> Modern cryptographic standards protect every byte against interception in transit.
                   </div>
                 </div>
 
@@ -434,7 +434,7 @@ export function HomeSecondaryContent({ tools }: HomeSecondaryContentProps) {
                   to="/privacy"
                   className="text-xs font-semibold text-muted-foreground hover:text-foreground transition-colors"
                 >
-                  Privacy Policy & GDPR Compliance →
+                  Privacy Policy & Data Protection →
                 </Link>
               </div>
             </div>
@@ -455,12 +455,12 @@ export function HomeSecondaryContent({ tools }: HomeSecondaryContentProps) {
 
                 <div className="mt-4 font-mono text-xs space-y-2 text-muted-foreground">
                   <p className="text-indigo-400">{'>'} convertly.security.enforce_policy()</p>
-                  <p className="pl-3 text-foreground/80">✓ Memory_Isolation: True (Docker cgroups sandbox)</p>
-                  <p className="pl-3 text-foreground/80">✓ Shredder_Timer: 120_MIN_TTL_ENFORCED</p>
+                  <p className="pl-3 text-foreground/80">✓ Server_Side_Isolation: True</p>
+                  <p className="pl-3 text-foreground/80">✓ Retention_Timer: 120_MIN_TTL_ENFORCED</p>
                   <p className="pl-3 text-foreground/80">✓ Metadata_Scrubber: Enabled</p>
                   <p className="pl-3 text-foreground/80">✓ ThirdParty_Telemetry: 0_DISABLED</p>
                   <p className="pl-3 text-foreground/80">✓ Client_Download_Auth: One-time tokenized</p>
-                  <p className="text-emerald-400">{'>'} Status: Operational | Ready for HIPAA/GDPR workflows</p>
+                  <p className="text-emerald-400">{'>'} Status: Operational | Designed for Temporary Document Processing</p>
                 </div>
               </Card>
             </div>

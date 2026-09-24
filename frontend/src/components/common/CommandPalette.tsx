@@ -46,13 +46,13 @@ const ALL_30_TOOLS: ToolSearchItem[] = [
   { id: 'pdf-grayscale', name: 'PDF to Grayscale', desc: 'Convert color PDF documents into black & white to optimize print costs.', category: 'PDF', icon: Layers, badge: 'Ink Saver' },
 
   // Security & Privacy
-  { id: 'pdf-protect', name: 'Protect PDF', desc: 'Encrypt your PDF with bank-grade AES-256 password protection.', category: 'Security', icon: Lock, badge: 'AES-256' },
+  { id: 'pdf-protect', name: 'Protect PDF', desc: 'Encrypt your PDF with standard AES-256 password protection.', category: 'Security', icon: Lock, badge: 'AES-256' },
   { id: 'pdf-unlock', name: 'Unlock PDF', desc: 'Remove password protection from an authenticated PDF.', category: 'Security', icon: Unlock, badge: 'Decrypt' },
   { id: 'pdf-watermark', name: 'Watermark PDF', desc: 'Stamp custom text watermarks across all pages with opacity & rotation.', category: 'Security', icon: Stamp, badge: 'Stamp' },
   { id: 'pdf-page-numbers', name: 'Page Numbers', desc: 'Add customizable page numbers and vector typography.', category: 'Security', icon: Hash, badge: 'Vector' },
   { id: 'pdf-redact', name: 'Redact PDF', desc: 'Permanently blackout and sanitize sensitive keywords, names, and numbers.', category: 'Security', icon: EyeOff, badge: 'Irreversible' },
   { id: 'pdf-flatten', name: 'Flatten PDF', desc: 'Bake form fields and comments into permanent static page content.', category: 'Security', icon: Layers, badge: 'Anti-Tamper' },
-  { id: 'pdf-scrub-metadata', name: 'Scrub Metadata', desc: 'Strip all hidden author info, creation tools, and XMP payloads.', category: 'Security', icon: ShieldCheck, badge: 'GDPR Clean' },
+  { id: 'pdf-scrub-metadata', name: 'Scrub Metadata', desc: 'Strip all hidden author info, creation tools, and XMP payloads.', category: 'Security', icon: ShieldCheck, badge: 'Privacy Clean' },
 
   // Office Suite
   { id: 'word-to-pdf', name: 'Word to PDF (DOCX)', desc: 'Convert DOCX to standard PDF with pixel-perfect font layout.', category: 'Office', icon: FileText, badge: 'LibreOffice' },

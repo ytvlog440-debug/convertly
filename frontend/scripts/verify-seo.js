@@ -316,6 +316,43 @@ const swReq = new Request('https://convertlytools.xyz/sw.js')
 const swRes = await worker.fetch(swReq, mockEnv)
 assert(swRes.status === 404, `/sw.js returns 404, not 301`)
 
+// 14. Verify Factual Compliance & Security Claims Across dist HTML
+const forbiddenTerms = [
+  { name: 'ISO 27001 / ISO/IEC 27001', pattern: /ISO[\s\/-]?27001|ISO\/IEC\s*27001/i },
+  { name: 'SOC 2 / SOC 2 Type II', pattern: /SOC\s*2/i },
+  { name: 'HIPAA', pattern: /HIPAA/i },
+  { name: 'FERPA', pattern: /FERPA/i },
+  { name: 'AES-256 at rest / platform encryption', pattern: /AES-256\s+(encryption\s+)?at\s+rest|encrypted\s+at\s+rest/i },
+  { name: 'End-to-End Encryption / E2EE / zero-knowledge', pattern: /End-to-End\s+Encryption|\bE2EE\b|zero-knowledge/i },
+  { name: 'Cryptographic / multi-pass shredding / zero-byte wiping', pattern: /cryptographic(ally)?\s+shred|multi-pass\s+shred|multi-pass\s+deletion|zero-byte\s+wip/i },
+  { name: 'Zero Data Retention / Zero Retention Guarantee', pattern: /Zero\s+Data\s+Retention|Zero\s+Retention\s+Guarantee/i },
+  { name: 'Memory-only / files never touch disk / never persisted to disk / zero disk', pattern: /memory-only|never\s+touch\s+disk|never\s+persisted\s+to\s+disk|never\s+written\s+to\s+disk|zero\s+disk|RAM-only/i },
+  { name: 'Unverified isolation (isolated server environments / sandboxed processing / containerized processing)', pattern: /isolated\s+server\s+environments|isolated\s+processing|sandboxed\s+processing|containerized\s+processing|dedicated\s+isolated\s+workers/i },
+  { name: 'Antivirus pre-scanning', pattern: /antivirus\s+pre-scanning/i },
+  { name: 'Bank-Grade / Military-Grade Architecture / Security', pattern: /Bank-Grade\s+Architecture|Military-Grade\s+Security|Military-Grade\s+Privacy/i },
+  { name: 'Manual file deletion after download', pattern: /delete\s+them\s+manually/i },
+]
+
+for (const rule of forbiddenTerms) {
+  let ruleFound = 0
+  for (const file of allHtmlFiles) {
+    const content = fs.readFileSync(file, 'utf-8')
+    const relPath = path.relative(DIST_DIR, file)
+    if (rule.pattern.test(content)) {
+      ruleFound++
+      console.error(`  ❌ Forbidden term [${rule.name}] found in ${relPath}`)
+    }
+  }
+  assert(ruleFound === 0, `Zero occurrences of [${rule.name}] across dist HTML (found ${ruleFound})`)
+}
+
+// Ensure legitimate AES-256 document encryption IS preserved on PDF Protect
+const pdfProtectHtmlPath = path.join(DIST_DIR, 'tools', 'pdf-protect', 'index.html')
+if (fs.existsSync(pdfProtectHtmlPath)) {
+  const protectHtml = fs.readFileSync(pdfProtectHtmlPath, 'utf-8')
+  assert(protectHtml.includes('AES-256'), 'PDF Protect page legitimately preserves AES-256 document encryption capability')
+}
+
 console.log(`\nTechnical SEO Audit Results:`)
 console.log(`  Passed assertions: ${passed}`)
 console.log(`  Failed assertions: ${failed}`)

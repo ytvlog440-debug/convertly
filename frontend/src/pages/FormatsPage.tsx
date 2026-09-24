@@ -322,7 +322,7 @@ export function FormatsPage() {
             <div>
               <h2 className="text-sm font-bold text-foreground">Need a custom enterprise format?</h2>
               <p className="text-xs text-muted-foreground">
-                Our ephemeral worker architecture supports custom plug-in converters for TIFF, EPUB, SVG, and PostScript.
+                Our server conversion pipeline supports custom plug-in converters for TIFF, EPUB, SVG, and PostScript.
               </p>
             </div>
           </div>

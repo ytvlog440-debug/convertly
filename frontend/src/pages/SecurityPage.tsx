@@ -8,7 +8,7 @@ export function SecurityPage() {
     <div className="py-12 md:py-16">
       <SeoHead
         title="Security Architecture & Trust | Convertly"
-        description="Comprehensive technical overview of Convertly's multi-tier security architecture, sandbox isolation, TLS 1.3 encryption, and automated multi-pass shredder."
+        description="Comprehensive technical overview of Convertly's multi-tier security architecture, server-side processing, TLS transport encryption, and automated 120-minute file deletion."
         canonicalUrl="https://convertlytools.xyz/security"
         breadcrumbs={[
           { name: 'Home', item: 'https://convertlytools.xyz' },
@@ -21,7 +21,7 @@ export function SecurityPage() {
         <div className="text-center max-w-2xl mx-auto mb-10">
           <div className="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3.5 py-1 text-xs font-semibold text-cyan-400 mb-4">
             <Shield className="h-3.5 w-3.5" />
-            <span>Bank-Grade Architecture</span>
+            <span>Security-Focused Architecture</span>
           </div>
           <h1 className="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
             Security Architecture & Defense
@@ -41,9 +41,9 @@ export function SecurityPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-500/10 text-cyan-400 mb-4">
               <Lock className="h-5 w-5" />
             </div>
-            <h3 className="font-heading text-sm font-bold text-foreground">Transport Layer Security (TLS 1.3)</h3>
+            <h3 className="font-heading text-sm font-bold text-foreground">Transport Layer Security (TLS)</h3>
             <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-              All browser-to-server traffic is mandated over TLS 1.3 with Perfect Forward Secrecy (PFS) and strict HSTS headers. Man-in-the-middle sniffing is cryptographically prevented.
+              All browser-to-server traffic is encrypted in transit over HTTPS/TLS with Perfect Forward Secrecy (PFS) and strict HSTS headers. Man-in-the-middle sniffing is cryptographically prevented.
             </p>
           </Card>
 
@@ -51,9 +51,9 @@ export function SecurityPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-400 mb-4">
               <Cpu className="h-5 w-5" />
             </div>
-            <h3 className="font-heading text-sm font-bold text-foreground">Ephemeral Subprocess Sandboxing</h3>
+            <h3 className="font-heading text-sm font-bold text-foreground">Server-Side Document Processing</h3>
             <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-              Document transformation drivers (PyMuPDF, pypdf, Pillow, pdf2docx) execute in strictly isolated ephemeral worker processes with capped CPU and memory limits.
+              Document transformation drivers (PyMuPDF, pypdf, Pillow, pdf2docx) execute in automated background conversion tasks with strict file-type validation.
             </p>
           </Card>
 
@@ -71,9 +71,9 @@ export function SecurityPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-rose-500/10 text-rose-400 mb-4">
               <Trash2 className="h-5 w-5" />
             </div>
-            <h3 className="font-heading text-sm font-bold text-foreground">Automated 120-Minute Shredder</h3>
+            <h3 className="font-heading text-sm font-bold text-foreground">Automated 120-Minute File Deletion</h3>
             <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-              Our asynchronous cleaner daemon scans storage every 10 minutes. Any file older than 120 minutes is overwritten with zero bytes, unlinked, and purged from the database.
+              Our asynchronous cleanup service scans active storage approximately every 10 minutes. Expired files are unlinked from server storage, with downloads blocked immediately upon expiration.
             </p>
           </Card>
         </div>

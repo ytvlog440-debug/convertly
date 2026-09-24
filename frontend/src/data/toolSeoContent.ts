@@ -269,7 +269,7 @@ export const TOOL_ACTION_ANCHORS: Record<string, { name: string; actionText: str
   'pdf-protect': {
     name: 'Protect PDF',
     actionText: 'Lock PDF with AES-256 Password Encryption',
-    desc: 'Add military-grade password encryption and restrict viewing, printing, and editing of sensitive files.',
+    desc: 'Add standard AES-256 password encryption and restrict viewing, printing, and editing of sensitive files.',
     category: 'PDF'
   },
   'pdf-unlock': {
@@ -521,7 +521,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     securityParagraphs: [
       'Document privacy is critical when uploading agreements, financial records, or operational paperwork to an online tool.',
       'In Transit: Communication between your browser and our servers is secured using modern TLS encryption to safeguard file transfers against unauthorized eavesdropping.',
-      'In Processing: Files are handled in isolated worker processes that parse layout structures and generate the output document. Document contents are never monitored, indexed, or reviewed by personnel.',
+      'In Processing: Files are handled via automated server-side processing that parses layout structures and generates the output document. Document contents are never monitored, indexed, or reviewed by personnel.',
       'After Conversion: Uploaded PDFs and resulting Word documents remain in temporary storage only to facilitate user download. Automated maintenance routines delete all job files after 120 minutes.',
       'Convertly does not require user accounts, does not share documents with third parties, and does not use uploaded files to train machine learning models.'
     ],
@@ -529,7 +529,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       'TLS Transport Encryption',
       'Automated 120-Minute File Deletion',
       'Zero AI Model Training Policy',
-      'Isolated Worker Processing',
+      'Automated Server-Side Processing',
       'No Third-Party Data Sharing',
       'No Account or Registration Required'
     ],
@@ -785,7 +785,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     category: 'PDF',
     searchIntent: 'Transactional',
     metaTitle: 'Merge PDF Online — Combine Multiple PDF Files Free | Convertly',
-    metaDescription: 'Merge multiple PDF files into one clean document online for free. Drag-and-drop reordering, automated bookmarks, and zero data retention.',
+    metaDescription: 'Merge multiple PDF files into one clean document online for free. Drag-and-drop reordering, automated bookmarks, and 120-minute temporary file retention.',
     keywords: 'merge pdf, combine pdf, combine pdf files, join pdf, merge pdf online free, combine pdf documents, convertly',
     badge: 'Multi-File Drag & Drop',
     introHeading: 'Combine Multiple PDF Files into One Clean, Structured Document',
@@ -914,14 +914,14 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     securityHeading: 'Confidentiality & In-Memory Merging',
     securityParagraphs: [
       'Combining financial records or legal contracts demands absolute privacy. Convertly operates over secure TLS 1.3 encrypted connections.',
-      'Our Zero-Retention Policy ensures your documents are automatically shredded from temporary servers within 120 minutes.',
-      'Files are merged directly in isolated memory buffers without manual human inspection or artificial intelligence training.'
+      'Our temporary retention policy ensures your documents are automatically deleted from server disk after 120 minutes.',
+      'Files are merged via automated server-side processing without manual human inspection or artificial intelligence training.'
     ],
     certifications: [
-      'Automated 120-Minute Cryptographic Shredder',
+      'Automated 120-Minute File Deletion',
       'TLS 1.3 Transport Encryption Protocol',
       'Zero AI Model Training Guarantee',
-      'GDPR Article 17 Right to Erasure Compliant'
+      'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Engine Benchmarks & Specifications',
     specs: [
@@ -1067,7 +1067,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     category: 'PDF',
     searchIntent: 'Transactional',
     metaTitle: 'Compress PDF Online — Reduce PDF File Size Free | Convertly',
-    metaDescription: 'Reduce PDF file size online by up to 85% without sacrificing vector text crispness. Select Recommended, Maximum, or Lossless compression with zero data retention.',
+    metaDescription: 'Reduce PDF file size online by up to 85% without sacrificing vector text crispness. Select Recommended, Maximum, or Lossless compression with 120-minute temporary file retention.',
     keywords: 'compress pdf, reduce pdf size, shrink pdf, pdf compressor online free, optimize pdf file size, convertly',
     badge: 'PyMuPDF Fast',
     introHeading: 'Optimize and Shrink PDF File Size Without Sacrificing Visual Quality',
@@ -1181,7 +1181,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Compress dozens of files back-to-back without hitting hourly walls or being forced into paid subscription tiers.'
       },
       {
-        title: 'Encrypted Zero-Retention Security',
+        title: 'Temporary File Retention & Privacy',
         desc: 'TLS 1.3 transport encryption and automated server shredding ensure financial and legal paperwork stays strictly confidential.'
       }
     ],
@@ -1196,14 +1196,14 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     securityHeading: 'Confidentiality & In-Memory Stream Compression',
     securityParagraphs: [
       'Your financial spreadsheets, medical records, and legal briefs demand strict security. Convertly operates exclusively over TLS 1.3 encrypted connections.',
-      'Our Zero-Retention Policy ensures your documents are automatically shredded from our servers within 120 minutes.',
-      'Compression runs in isolated memory sandboxes without human access or artificial intelligence training.'
+      'Our temporary retention policy ensures your documents are automatically deleted from our servers after 120 minutes.',
+      'Compression runs via automated server-side processing without human access or artificial intelligence training.'
     ],
     certifications: [
-      'Automated 120-Minute Cryptographic Shredder',
+      'Automated 120-Minute File Deletion',
       'TLS 1.3 Transport Encryption Protocol',
       'Zero AI Model Training Guarantee',
-      'GDPR Article 17 Right to Erasure Compliant'
+      'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Engine Benchmarks & Technical Specifications',
     specs: [
@@ -1349,7 +1349,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     category: 'Office',
     searchIntent: 'Transactional',
     metaTitle: 'Word to PDF Converter — Convert DOCX & DOC to PDF Free | Convertly',
-    metaDescription: 'Convert Microsoft Word (.docx, .doc) files to PDF online for free. Preserves exact margins, typography, tables, and headers with zero data retention.',
+    metaDescription: 'Convert Microsoft Word (.docx, .doc) files to PDF online for free. Preserves exact margins, typography, tables, and headers with 120-minute temporary file retention.',
     keywords: 'word to pdf, convert word to pdf, docx to pdf, doc to pdf, convert docx to pdf free online, convertly',
     badge: 'Pixel-Perfect Vector PDF',
     introHeading: 'Convert Microsoft Word DOCX & DOC Documents to Universal PDF',
@@ -1479,14 +1479,14 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     securityHeading: 'Confidentiality & In-Memory Office Conversion',
     securityParagraphs: [
       'Converting executive proposals, legal disclosures, and personnel files demands absolute privacy. Convertly operates over TLS 1.3 encrypted connections.',
-      'Our Zero-Retention Policy ensures your files are processed in temporary sandboxed memory and automatically shredded from servers after 120 minutes.',
+      'Our temporary retention policy ensures your files are processed via automated server-side routines. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage.',
       'We never read, analyze, share, or train AI models on your private documents.'
     ],
     certifications: [
-      'Automated 120-Minute Cryptographic Shredder',
+      'Automated 120-Minute File Deletion',
       'TLS 1.3 Transport Encryption Protocol',
       'Zero AI Model Training Guarantee',
-      'GDPR Article 17 Right to Erasure Compliant'
+      'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Engine Benchmarks & Specifications',
     specs: [
@@ -1608,7 +1608,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Can I password-protect the PDF after converting from Word?',
-        answer: 'Yes! Once converted, you can pass your PDF through Convertly’s "Protect PDF" tool to add military-grade AES-256 password encryption.'
+        answer: 'Yes! Once converted, you can pass your PDF through Convertly’s "Protect PDF" tool to add standard AES-256 password encryption.'
       },
       {
         question: 'Does Convertly add any watermarks to converted documents?',
@@ -1632,7 +1632,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     category: 'Images',
     searchIntent: 'Transactional',
     metaTitle: 'Images to PDF Converter — Convert JPG, PNG & Photos to PDF Online Free',
-    metaDescription: 'Convert JPG, PNG, WebP images, and photos to a single organized PDF document online for free. Features drag-and-drop reordering, auto-orientation, and zero data retention.',
+    metaDescription: 'Convert JPG, PNG, WebP images, and photos to a single organized PDF document online for free. Features drag-and-drop reordering, auto-orientation, and 120-minute temporary file retention.',
     keywords: 'images to pdf, convert images to pdf, jpg to pdf, png to pdf, photos to pdf, combine photos into pdf, convertly',
     badge: 'Multi-Image Batch to PDF',
     introHeading: 'Combine Photos and Image Assets into a Clean, Multi-Page PDF Document',
@@ -1743,7 +1743,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Enterprise-Grade Data Privacy',
-        desc: 'Protected by TLS 1.3 transport encryption and strict zero-retention policies that guarantee your photos are never exposed.'
+        desc: 'Protected by TLS 1.3 transport encryption and strict temporary retention policies that protect your photos.'
       },
       {
         title: 'No App Installations Required',
@@ -1763,20 +1763,20 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     securityHeading: 'Security, Confidentiality & Automated Shredding',
     securityParagraphs: [
       'Personal snapshots, medical receipts, and property inspection photos require the highest standard of data privacy. Convertly executes all image-to-PDF transformations over encrypted TLS 1.3 channels.',
-      'Under our strict Zero-Retention Policy, your source images and compiled PDF files are stored in isolated, sandboxed containers and are permanently destroyed after exactly 120 minutes. We never view, index, share, or train AI models on your images.'
+      'Under our temporary retention policy, your source images and compiled PDF files are stored on server disk and are automatically deleted after 120 minutes. We never view, index, share, or train AI models on your images.'
     ],
     certifications: [
-      'Automated 120-Minute Cryptographic File Shredder',
+      'Automated 120-Minute File Deletion',
       'TLS 1.3 Transport Encryption Protocol',
       'Zero AI Model Training Guarantee',
-      'GDPR Article 17 Right to Erasure Compliant'
+      'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Engine Benchmarks & Technical Specifications',
     specs: [
       { label: 'Processing Engine', value: 'PyMuPDF + Pillow Core', detail: 'High-speed native C/Python vector synthesis' },
       { label: 'Average Execution Time', value: '< 2.4 Seconds', detail: 'Processes 15+ photos in under three seconds' },
       { label: 'Max File Capacity', value: '100 MB per Session', detail: 'Supports high-resolution RAW-derived images' },
-      { label: 'Retention SLA', value: '120 Minutes Auto-Shredding', detail: 'Strict zero-retention privacy policy' }
+      { label: 'Retention Policy', value: '120-Minute Retention', detail: 'Automated expired file deletion' }
     ],
     compatibilityHeading: 'Operating System & Mobile Compatibility',
     platforms: [
@@ -1877,7 +1877,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my uploaded pictures stored or saved on your servers?',
-        answer: 'No. All uploaded images and generated PDF documents are stored in temporary, isolated memory and are permanently shredded after 120 minutes under our Zero-Retention Policy.'
+        answer: 'No. All uploaded images and generated PDF documents are stored temporarily on server infrastructure. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage.'
       },
       {
         question: 'Is Convertly’s Images to PDF tool completely free?',
@@ -1917,7 +1917,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     category: 'Images',
     searchIntent: 'Transactional',
     metaTitle: 'PDF to Images Converter — Convert PDF Pages to JPG & PNG Online Free',
-    metaDescription: 'Convert PDF pages to high-resolution JPG or PNG images online for free. Features 300 DPI high-definition rendering, batch ZIP download, and zero data retention.',
+    metaDescription: 'Convert PDF pages to high-resolution JPG or PNG images online for free. Features 300 DPI high-definition rendering, batch ZIP download, and 120-minute temporary file retention.',
     keywords: 'pdf to images, convert pdf to jpg, convert pdf to png, pdf to picture, extract images from pdf, render pdf to jpg, convertly',
     badge: '300 DPI High-Definition Rendering',
     introHeading: 'Render PDF Pages into Crisp, High-Resolution JPG or PNG Images',
@@ -2048,20 +2048,20 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     securityHeading: 'Enterprise Security & Automated File Deletion',
     securityParagraphs: [
       'Document security is paramount. Convertly handles every PDF to Images transformation inside isolated worker environments protected by TLS 1.3 transport security.',
-      'Under our strict Zero-Retention Policy, your source PDF and the rendered image files are permanently destroyed after exactly 120 minutes. Your documents are never accessed, cataloged, or used to train artificial intelligence models.'
+      'Under our temporary retention policy, your source PDF and the rendered image files are automatically deleted after 120 minutes. Your documents are never accessed, cataloged, or used to train artificial intelligence models.'
     ],
     certifications: [
-      'Automated 120-Minute Cryptographic File Shredder',
+      'Automated 120-Minute File Deletion',
       'TLS 1.3 Transport Encryption Protocol',
       'Zero AI Model Training Guarantee',
-      'GDPR Article 17 Right to Erasure Compliant'
+      'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Performance & Rasterization Benchmarks',
     specs: [
       { label: 'Rendering Engine', value: 'PyMuPDF Native C Engine', detail: 'Sub-pixel vector rasterization with anti-aliasing' },
       { label: 'Rendering Speed', value: '< 150ms per Page', detail: 'Rapid parallel page rendering architecture' },
       { label: 'Max File Capacity', value: '100 MB per Session', detail: 'Easily handles heavy multi-page documents' },
-      { label: 'Retention SLA', value: '120 Minutes Auto-Shredding', detail: 'Strict zero-retention privacy policy' }
+      { label: 'Retention Policy', value: '120-Minute Retention', detail: 'Automated expired file deletion' }
     ],
     compatibilityHeading: 'Cross-Platform Device & Browser Support',
     platforms: [
@@ -2202,7 +2202,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     category: 'Images',
     searchIntent: 'Transactional',
     metaTitle: 'JPG to PNG Converter — Convert JPG to Lossless PNG Online Free',
-    metaDescription: 'Convert JPG to lossless PNG format online for free. Adds alpha channel transparency support and halts lossy re-compression with zero data retention.',
+    metaDescription: 'Convert JPG to lossless PNG format online for free. Adds alpha channel transparency support and halts lossy re-compression with 120-minute temporary file retention.',
     keywords: 'jpg to png, convert jpg to png, jpeg to png, convert jpeg to png, lossy to lossless, online image converter, convertly',
     badge: 'Lossless PNG-24 Precision',
     introHeading: 'Convert Compressed JPG Images into High-Fidelity Lossless PNG Graphics',
@@ -2313,7 +2313,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Confidential Cloud Architecture',
-        desc: 'Transfers run over TLS 1.3 encryption with strict zero-retention policies protecting your personal photography.'
+        desc: 'Transfers run over TLS 1.3 encryption with strict temporary retention policies protecting your personal photography.'
       },
       {
         title: 'Zero Software Requirements',
@@ -2331,20 +2331,20 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     securityHeading: 'Security, Privacy & Automated File Shredding',
     securityParagraphs: [
       'Your photos and brand graphics remain confidential. All file uploads and downloads are encrypted using TLS 1.3 cryptographic transport.',
-      'Under our strict Zero-Retention Policy, files are processed in sandboxed memory containers and are permanently shredded after exactly 120 minutes. Convertly never shares, inspects, or uses your images to train AI models.'
+      'Files are stored temporarily on server infrastructure. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage. Convertly never shares, inspects, or uses your images to train AI models.'
     ],
     certifications: [
-      'Automated 120-Minute Cryptographic File Shredder',
+      'Automated 120-Minute File Deletion',
       'TLS 1.3 Transport Encryption Protocol',
       'Zero AI Model Training Guarantee',
-      'GDPR Article 17 Right to Erasure Compliant'
+      'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Engine Benchmarks & Conversion Speed',
     specs: [
       { label: 'Conversion Engine', value: 'Pillow C-Optimized Pipeline', detail: 'Deflate lossless compression algorithms' },
       { label: 'Execution Speed', value: '< 1.8 Seconds', detail: 'Instantaneous pixel matrix transcoding' },
       { label: 'Max File Capacity', value: '100 MB per Session', detail: 'Handles high-resolution camera RAW exports' },
-      { label: 'Retention SLA', value: '120 Minutes Auto-Shredding', detail: 'Strict zero-retention privacy policy' }
+      { label: 'Retention Policy', value: '120-Minute Retention', detail: 'Automated expired file deletion' }
     ],
     compatibilityHeading: 'Cross-Device & Browser Support',
     platforms: [
@@ -2614,20 +2614,20 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     securityHeading: 'Security, Privacy & Automated File Deletion',
     securityParagraphs: [
       'Document and image security are foundational principles at Convertly. All transfers run over TLS 1.3 encrypted connections.',
-      'Under our strict Zero-Retention Policy, your source PNG and the converted JPG are stored in temporary sandboxed storage and permanently shredded after 120 minutes. We never view, index, or use your pictures for AI training.'
+      'Your source PNG and the converted JPG are stored temporarily on server infrastructure. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage. We never view, index, or use your pictures for AI training.'
     ],
     certifications: [
-      'Automated 120-Minute Cryptographic File Shredder',
+      'Automated 120-Minute File Deletion',
       'TLS 1.3 Transport Encryption Protocol',
       'Zero AI Model Training Guarantee',
-      'GDPR Article 17 Right to Erasure Compliant'
+      'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Engine Benchmarks & Technical Specifications',
     specs: [
       { label: 'Conversion Engine', value: 'Pillow C-Optimized Pipeline', detail: 'Perceptual JPEG quantization' },
       { label: 'Average Execution Time', value: '< 1.8 Seconds', detail: 'Lightning-fast parallel transcoding' },
       { label: 'Max File Capacity', value: '100 MB per Session', detail: 'Accommodates ultra-heavy screenshot PNGs' },
-      { label: 'Retention SLA', value: '120 Minutes Auto-Shredding', detail: 'Strict zero-retention privacy policy' }
+      { label: 'Retention Policy', value: '120-Minute Retention', detail: 'Automated expired file deletion' }
     ],
     compatibilityHeading: 'Cross-Platform Operating System Support',
     platforms: [
@@ -2732,7 +2732,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my uploaded pictures stored on your servers?',
-        answer: 'No. Under our strict Zero-Retention Policy, all files and converted outputs are permanently deleted from our servers after 120 minutes.'
+        answer: 'No. Under our temporary retention policy, all files and converted outputs are automatically deleted from our servers after 120 minutes.'
       },
       {
         question: 'What is the maximum file size limit for PNG uploads?',
@@ -2768,7 +2768,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     category: 'Images',
     searchIntent: 'Transactional',
     metaTitle: 'Image to WebP Converter — Convert JPG & PNG to Next-Gen WebP Free',
-    metaDescription: 'Convert JPG and PNG images to next-gen Google WebP format online for free. Boost Core Web Vitals with 30% smaller file sizes and zero data retention.',
+    metaDescription: 'Convert JPG and PNG images to next-gen Google WebP format online for free. Boost Core Web Vitals with 30% smaller file sizes and 120-minute temporary file retention.',
     keywords: 'image to webp, convert image to webp, jpg to webp, png to webp, webp converter online, next gen image format, convertly',
     badge: 'Next-Gen Core Web Vitals Optimization',
     introHeading: 'Convert Images to Google WebP Format for Ultra-Fast Web Performance',
@@ -2860,7 +2860,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: '120-Minute Automatic File Shredding',
-        desc: 'All source files and generated WebP images are permanently destroyed after 120 minutes under our Zero-Retention Policy.'
+        desc: 'All source files and generated WebP images are automatically deleted after 120 minutes under our temporary retention policy.'
       },
       {
         title: '100% Free With Zero Watermarks',
@@ -2898,20 +2898,20 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     securityHeading: 'Security, Privacy & Automated File Deletion',
     securityParagraphs: [
       'Document and image confidentiality are fundamental at Convertly. All file uploads and downloads are encrypted using TLS 1.3 cryptographic transport.',
-      'Under our strict Zero-Retention Policy, your source images and converted WebP outputs are stored in temporary sandboxed storage and permanently shredded after 120 minutes. Convertly never views, catalogs, or trains AI models on your files.'
+      'Your source images and converted WebP outputs are stored temporarily on server infrastructure. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage. Convertly never views, catalogs, or trains AI models on your files.'
     ],
     certifications: [
-      'Automated 120-Minute Cryptographic File Shredder',
+      'Automated 120-Minute File Deletion',
       'TLS 1.3 Transport Encryption Protocol',
       'Zero AI Model Training Guarantee',
-      'GDPR Article 17 Right to Erasure Compliant'
+      'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Engine Benchmarks & Technical Specifications',
     specs: [
       { label: 'Conversion Engine', value: 'Native libwebp Core Pipeline', detail: 'Predictive block coding & entropy quantization' },
       { label: 'Average Execution Time', value: '< 1.9 Seconds', detail: 'High-speed parallel worker architecture' },
       { label: 'Max File Capacity', value: '100 MB per Session', detail: 'Easily accommodates massive high-res assets' },
-      { label: 'Retention SLA', value: '120 Minutes Auto-Shredding', detail: 'Strict zero-retention privacy policy' }
+      { label: 'Retention Policy', value: '120-Minute Retention', detail: 'Automated expired file deletion' }
     ],
     compatibilityHeading: 'Operating System & Browser Support',
     platforms: [
@@ -3024,7 +3024,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my uploaded images stored on your servers?',
-        answer: 'No. All uploaded and converted files are automatically shredded from our servers after 120 minutes under our strict Zero-Retention Policy.'
+        answer: 'No. All uploaded and converted files are automatically deleted from our servers after 120 minutes under our temporary retention policy.'
       },
       {
         question: 'What is the maximum file size limit for image uploads?',
@@ -3052,7 +3052,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     category: 'Office',
     searchIntent: 'Transactional',
     metaTitle: 'Excel to PDF Converter — Convert XLSX & XLS to PDF Online Free',
-    metaDescription: 'Convert Microsoft Excel spreadsheets (XLSX, XLS) to clean, paginated PDF documents online for free. Auto-fits tables, preserves formulas, and zero data retention.',
+    metaDescription: 'Convert Microsoft Excel spreadsheets (XLSX, XLS) to clean, paginated PDF documents online for free. Auto-fits tables, preserves formulas, and 120-minute temporary file retention.',
     keywords: 'excel to pdf, convert excel to pdf, xlsx to pdf, xls to pdf, spreadsheet to pdf, convert excel sheet to pdf, convertly',
     badge: 'Smart Table Auto-Fitting & Pagination',
     introHeading: 'Transform Excel Spreadsheets into Neatly Paginated, Presentation-Ready PDFs',
@@ -3182,20 +3182,20 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     securityHeading: 'Security, Privacy & Automated File Shredding',
     securityParagraphs: [
       'Financial spreadsheets, payroll registers, and business tax calculations require uncompromising privacy. Convertly handles all Excel to PDF conversions inside isolated worker sandboxes protected by TLS 1.3 encryption.',
-      'Under our strict Zero-Retention Policy, your source spreadsheet and the converted PDF are permanently destroyed after exactly 120 minutes. We never inspect, index, share, or train AI models on your private financial data.'
+      'Under our temporary retention policy, your source spreadsheet and the converted PDF are automatically deleted after 120 minutes. We never inspect, index, share, or train AI models on your private financial data.'
     ],
     certifications: [
-      'Automated 120-Minute Cryptographic File Shredder',
+      'Automated 120-Minute File Deletion',
       'TLS 1.3 Transport Encryption Protocol',
       'Zero AI Model Training Guarantee',
-      'GDPR Article 17 Right to Erasure Compliant'
+      'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Engine Benchmarks & Conversion Speed',
     specs: [
       { label: 'Rendering Engine', value: 'Headless LibreOffice + PyMuPDF', detail: 'Native vector table layout and font metric synthesis' },
       { label: 'Average Execution Time', value: '< 2.6 Seconds', detail: 'Processes multi-sheet workbooks in seconds' },
       { label: 'Max File Capacity', value: '100 MB per Session', detail: 'Handles heavy financial data workbooks' },
-      { label: 'Retention SLA', value: '120 Minutes Auto-Shredding', detail: 'Strict zero-retention privacy policy' }
+      { label: 'Retention Policy', value: '120-Minute Retention', detail: 'Automated expired file deletion' }
     ],
     compatibilityHeading: 'Cross-Device & Browser Support',
     platforms: [
@@ -3312,7 +3312,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Can I password-protect the PDF after conversion?',
-        answer: 'Yes! You can pass your newly created PDF directly into Convertly’s "Protect PDF" tool to add military-grade AES-256 password encryption.'
+        answer: 'Yes! You can pass your newly created PDF directly into Convertly’s "Protect PDF" tool to add standard AES-256 password encryption.'
       },
       {
         question: 'Do I need Microsoft Excel installed on my computer?',
@@ -3447,7 +3447,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Preview page thumbnails before executing the split — confirm you have the correct page numbers before committing to the operation.'
       },
       {
-        title: '120-Minute Cryptographic Shredding',
+        title: '120-Minute File Retention',
         desc: 'Your source PDF and all split output files are permanently, cryptographically destroyed from our servers exactly 120 minutes after processing — with no manual deletion required.'
       },
       {
@@ -3471,7 +3471,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Enterprise-Grade Data Confidentiality',
-        desc: 'TLS 1.3 encryption in transit, sandboxed processing containers, and cryptographic 120-minute shredding protect legal, financial, and medical documents completely.'
+        desc: 'TLS 1.3 encryption in transit and a 120-minute temporary file retention policy protect your documents.'
       },
       {
         title: 'No Adobe Acrobat Pro Required',
@@ -3500,14 +3500,14 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       'Splitting a PDF often means working with sensitive content — legal filings, confidential financial records, medical reports, or private HR documents. Understanding exactly how your file is handled is essential.',
       'In Transit: Every file uploaded to Convertly travels over a TLS 1.3 encrypted channel using a 256-bit AES cipher — the same cryptographic standard used by online banking platforms. Your PDF cannot be intercepted in transit.',
       'In Processing: Your file is processed inside an isolated, temporary worker container segregated from all other users\' jobs. No human reviewer inspects your document\'s content. The split engine reads page indices and clones data structures — it does not read, index, or analyze your text.',
-      'After Splitting: Exactly 120 minutes after your job completes, automated background routines trigger cryptographic shredding of the source PDF and every split output file from all temporary storage volumes. This is irreversible permanent destruction — not a soft delete.',
-      'Convertly never stores documents beyond 120 minutes, never reads or analyzes file content, never shares files with third parties, never uses documents to train AI models, and never requires your email address or payment information. This architecture is designed for full GDPR Article 17 (Right to Erasure) compliance.'
+      'After Splitting: Exactly 120 minutes after your job completes, automated background routines delete the source PDF and every split output file from server storage.',
+      'Convertly does not store documents beyond 120 minutes, does not read or analyze file content, does not share files with third parties, does not use documents to train AI models, and does not require email or payment information. Our privacy approach emphasizes data minimization, purpose-limited file processing, and automated file deletion.'
     ],
     certifications: [
       'TLS 1.3 Transport Encryption with AES-256 Cipher',
-      'Automated 120-Minute Cryptographic Shredding',
+      'Automated 120-Minute File Deletion',
       'Zero AI Model Training — Explicit Policy',
-      'GDPR Article 17 Right to Erasure Aligned',
+      'Privacy-Focused File Processing',
       'No Third-Party Data Sharing',
       'No Registration or Email Required'
     ],
@@ -3618,7 +3618,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Explicit 120-Minute Cryptographic Destruction',
-        desc: 'Competitors use vague "we delete your files after processing" language. Convertly is specific: your source and output files are cryptographically shredded at exactly 120 minutes. No exceptions.'
+        desc: 'Competitors use vague "we delete your files after processing" language. Convertly is specific: your source and output files are automatically deleted after 120 minutes. No exceptions.'
       },
       {
         title: 'Per-Page ZIP Mode — Unique to Convertly',
@@ -3899,7 +3899,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Enterprise-Grade Privacy for Sensitive Decks',
-        desc: 'TLS 1.3 transport encryption, sandboxed LibreOffice workers, and cryptographic 120-minute shredding protect confidential financial projections, M&A strategy decks, and board presentations.'
+        desc: 'TLS 1.3 transport encryption and a 120-minute temporary file retention policy protect your presentations.'
       },
       {
         title: 'Zero Registration — Complete Anonymity',
@@ -3920,14 +3920,14 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       'Presentations frequently contain proprietary financial projections, confidential product roadmaps, M&A strategy, or personal HR data. Understanding our data handling is essential.',
       'In Transit: Your PPTX file is uploaded over a TLS 1.3 encrypted channel with 256-bit AES cipher — the same standard used by financial institutions. Transmission cannot be intercepted.',
       'In Processing: LibreOffice Impress runs your presentation in a temporary, sandboxed worker container isolated from all other users\' sessions. No human reviewer ever inspects your slide content. The rendering engine generates visual output — it does not index, analyze, or store your text.',
-      'After Conversion: Exactly 120 minutes after your PDF is generated, automated background processes cryptographically shred the source PPTX and the output PDF from all storage. This is irreversible destruction — not a soft delete or recycle bin operation.',
-      'Convertly never retains presentations beyond 120 minutes, never reads or analyzes slide content, never shares files with third parties, never uses presentations to train AI models, and never requires your email or payment information. Our architecture aligns with GDPR Article 17 Right to Erasure requirements.'
+      'After Conversion: Exactly 120 minutes after your PDF is generated, automated background processes delete the source PPTX and the output PDF from server storage.',
+      'Convertly does not retain presentations beyond 120 minutes, does not read or analyze slide content, does not share files with third parties, does not use presentations to train AI models, and does not require email or payment information. Our privacy approach emphasizes data minimization, purpose-limited file processing, and automated file deletion.'
     ],
     certifications: [
       'TLS 1.3 Transport Encryption with AES-256 Cipher',
-      'Automated 120-Minute Cryptographic Shredding',
+      'Automated 120-Minute File Deletion',
       'Zero AI Model Training — Explicit Policy',
-      'GDPR Article 17 Right to Erasure Aligned',
+      'Privacy-Focused File Processing',
       'No Third-Party Data Sharing',
       'No Registration or Email Required'
     ],
@@ -4073,7 +4073,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my uploaded presentations stored on your servers?',
-        answer: 'No. All presentations and converted PDFs are processed in isolated temporary containers and are permanently, cryptographically shredded exactly 120 minutes after conversion — not soft-deleted, permanently overwritten.'
+        answer: 'No. All presentations and converted PDFs are processed via automated server-side routines. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage.'
       },
       {
         question: 'Can I convert PowerPoint to PDF on my smartphone?',
@@ -4176,11 +4176,11 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     category: 'Images',
     searchIntent: 'Transactional',
     metaTitle: 'WebP to JPG / PNG Converter — Free Online WebP Converter | Convertly',
-    metaDescription: 'Convert WebP images to JPG or PNG format online for free. Full color fidelity, transparency-to-white background matting, and zero data retention. No sign-up required.',
+    metaDescription: 'Convert WebP images to JPG or PNG format online for free. Full color fidelity, transparency-to-white background matting, and 120-minute temporary file retention. No sign-up required.',
     keywords: 'webp to jpg, webp to png, convert webp to jpg, convert webp to jpeg, webp converter, webp to image, webp to jpeg online, open webp file, webp to jpg free, convert webp online, convertly',
     badge: 'Pillow Lossless Decode',
     introHeading: 'Convert WebP Images to JPG or PNG — Free, Instant, Full Quality',
-    introText: 'You downloaded a WebP image from a website and your photo editor, email client, or upload portal refuses to open it. Convertly\'s WebP converter decodes modern WebP graphics and exports them as universally compatible JPEG or PNG files — with full color fidelity, correct transparency handling, and zero data retention. No sign-up. No software. Works instantly from any browser.',
+    introText: 'You downloaded a WebP image from a website and your photo editor, email client, or upload portal refuses to open it. Convertly\'s WebP converter decodes modern WebP graphics and exports them as universally compatible JPEG or PNG files — with full color fidelity, correct transparency handling, and 120-minute temporary file retention. No sign-up. No software. Works instantly from any browser.',
     whatIsHeading: 'What Is a WebP to JPG/PNG Converter?',
     whatIsParagraphs: [
       'WebP is a modern image format developed by Google and introduced in 2010. It achieves 25–35% smaller file sizes compared to JPEG at equivalent visual quality using a combination of predictive coding, block transforms, and entropy encoding. However, WebP support is inconsistent across legacy image editors, design tools, CMS platforms, and document management systems — making format conversion frequently necessary.',
@@ -4305,15 +4305,15 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     formatNotes: 'Supports lossy WebP, lossless WebP, and animated WebP files. Animated WebP is decoded as the first frame. Output JPEG quality is configurable (default 90%). Output PNG uses maximum Deflate lossless compression. Maximum file size: 100MB.',
     securityHeading: 'Security & Privacy Architecture',
     securityParagraphs: [
-      'All WebP images are transmitted over TLS 1.3 encrypted connections with 256-bit AES cipher. Files are processed in isolated, sandboxed worker containers with no cross-user data access.',
-      'Exactly 120 minutes after conversion, automated routines cryptographically shred both the source WebP and the converted JPG/PNG from all temporary storage — permanently and irreversibly.',
+      'All WebP images are transmitted over TLS 1.3 encrypted connections with 256-bit AES cipher. Files are processed via automated server-side processing.',
+      'Exactly 120 minutes after conversion, automated routines delete both the source WebP and the converted JPG/PNG from temporary server storage.',
       'Convertly never stores images beyond 120 minutes, never analyzes image content, never shares files with third parties, and never uses your images to train AI or machine learning models.'
     ],
     certifications: [
       'TLS 1.3 Transport Encryption with AES-256 Cipher',
-      'Automated 120-Minute Cryptographic Shredding',
+      'Automated 120-Minute File Deletion',
       'Zero AI Model Training — Explicit Policy',
-      'GDPR Article 17 Right to Erasure Aligned',
+      'Privacy-Focused File Processing',
       'No Third-Party Data Sharing',
       'No Registration or Email Required'
     ],
@@ -4397,7 +4397,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Explicit 120-Minute Data Shredding',
-        desc: 'Unlike competitors with vague privacy policies, Convertly specifies exact 120-minute cryptographic shredding of all uploaded and converted files.'
+        desc: 'Unlike competitors with vague privacy policies, Convertly specifies an exact 120-minute temporary file retention policy for all uploaded and converted files.'
       }
     ],
     faqsHeading: 'Frequently Asked Questions',
@@ -4424,7 +4424,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my images stored after conversion?',
-        answer: 'No. All uploaded WebP files and converted outputs are processed in isolated temporary containers and are permanently, cryptographically destroyed exactly 120 minutes after conversion — not soft-deleted, permanently overwritten.'
+        answer: 'No. All uploaded WebP files and converted outputs are processed via automated server-side routines. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage.'
       },
       {
         question: 'Can I convert WebP to JPG on my iPhone or Android?',
@@ -4496,7 +4496,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     relatedToolIds: ['image-to-webp', 'image-compress', 'jpg-to-png', 'png-to-jpg', 'images-to-pdf', 'image-resize', 'image-crop', 'image-rotate'],
     conclusionHeading: 'Convert Your WebP Images to JPG or PNG — Free, Instant, Compatible',
     conclusionParagraphs: [
-      'Stop being blocked by WebP compatibility barriers in your image editor, CMS, or document workflow. Convertly\'s libwebp-powered decoder gives you full-fidelity JPG or PNG output in under two seconds — with correct alpha handling, color fidelity, and zero data retention.',
+      'Stop being blocked by WebP compatibility barriers in your image editor, CMS, or document workflow. Convertly\'s libwebp-powered decoder gives you full-fidelity JPG or PNG output in under two seconds — with correct alpha handling, color fidelity, and 120-minute temporary file retention.',
       'No account. No watermarks. No daily limits. Drop your WebP file above and your compatible image is ready immediately.'
     ]
   },
@@ -4614,7 +4614,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Compress full-resolution 24MP camera photos, 8000×6000 product photography, and ultra-wide banner images without forced downscaling or dimension capping.'
       },
       {
-        title: '120-Minute Cryptographic Shredding',
+        title: '120-Minute File Retention',
         desc: 'Your original and compressed image files are permanently, cryptographically destroyed from server storage exactly 120 minutes after processing — with zero retention.'
       },
       {
@@ -4646,7 +4646,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Privacy-First Image Processing',
-        desc: 'TLS 1.3 encryption, sandboxed processing containers, and automatic 120-minute shredding ensure product photos, personal images, and confidential visuals are handled with complete privacy.'
+        desc: 'TLS 1.3 transport encryption and a 120-minute temporary file retention policy ensure your images are handled with privacy.'
       },
       {
         title: 'Works on All Devices — No Software Required',
@@ -4670,14 +4670,14 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       'Images often contain personal, commercial, or sensitive content — product photos, ID documents, real estate photography, medical imaging. Understanding our data handling is essential.',
       'In Transit: All images are uploaded over TLS 1.3 encrypted connections with 256-bit AES cipher. Your images cannot be intercepted in transit between your device and our servers.',
       'In Processing: Each image is processed in an isolated, sandboxed worker container that is segregated from all other users\' jobs. No human reviewer ever sees your images. The compression engine reads pixel data, applies encoding parameters, and writes the compressed output — it does not analyze, classify, or label image content.',
-      'After Compression: Exactly 120 minutes after your job completes, automated background routines cryptographically shred both the source image and the compressed output from all server storage. This is irreversible — not a soft delete.',
+      'After Compression: Exactly 120 minutes after your job completes, automated background routines permanently delete both the source image and the compressed output from server storage.',
       'Convertly never stores images beyond 120 minutes, never analyzes or labels image content, never shares images with third parties, never uses your photos to train AI or image recognition models, and never requires your email address or payment information.'
     ],
     certifications: [
       'TLS 1.3 Transport Encryption with AES-256 Cipher',
-      'Automated 120-Minute Cryptographic Shredding',
+      'Automated 120-Minute File Deletion',
       'Zero AI Model Training — Explicit Policy',
-      'GDPR Article 17 Right to Erasure Aligned',
+      'Privacy-Focused File Processing',
       'No Third-Party Data Sharing',
       'No Registration or Email Required'
     ],
@@ -4787,7 +4787,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Explicit 120-Minute Data Shredding',
-        desc: 'Unlike competitors with vague "we delete files automatically" language, Convertly specifies exactly 120-minute cryptographic shredding of all uploaded and compressed images.'
+        desc: 'Unlike competitors with vague "we delete files automatically" language, Convertly specifies an exact 120-minute temporary file retention policy for all uploaded and compressed images.'
       }
     ],
     faqsHeading: 'Frequently Asked Questions',
@@ -4814,7 +4814,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my images stored after compression?',
-        answer: 'No. All uploaded images and compressed outputs are processed in isolated temporary containers and are permanently, cryptographically destroyed exactly 120 minutes after processing — not soft-deleted, permanently overwritten.'
+        answer: 'No. All uploaded images and compressed outputs are processed via automated server-side routines. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage.'
       },
       {
         question: 'Can I compress images on my smartphone?',
@@ -5008,7 +5008,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Output format and embedded ICC color profile are preserved from the source image — JPEG stays JPEG, PNG stays PNG, WebP stays WebP, with consistent color reproduction.'
       },
       {
-        title: '120-Minute Cryptographic Shredding',
+        title: '120-Minute File Retention',
         desc: 'Source and resized images are permanently, cryptographically destroyed from all server storage exactly 120 minutes after processing — with zero retention.'
       }
     ],
@@ -5045,15 +5045,15 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     formatNotes: 'Output format matches input format. Alpha channel transparency is preserved for PNG and WebP resizing. JPEG transparency is composited to white. Maximum input file size: 100MB. No maximum dimension limit on input or output.',
     securityHeading: 'Security & Privacy Architecture',
     securityParagraphs: [
-      'All images are transmitted over TLS 1.3 encrypted connections with 256-bit AES cipher. Files are processed in isolated sandboxed containers with no cross-user data access.',
-      'Exactly 120 minutes after processing, automated routines cryptographically shred both the source and resized images from all server storage — permanently and irreversibly.',
+      'All images are transmitted over TLS 1.3 encrypted connections with 256-bit AES cipher. Files are processed via automated server-side processing.',
+      'Exactly 120 minutes after processing, automated routines delete both the source and resized images from server storage.',
       'Convertly never stores images beyond 120 minutes, never analyzes image content, never shares files with third parties, and never uses your images to train AI or machine learning models.'
     ],
     certifications: [
       'TLS 1.3 Transport Encryption with AES-256 Cipher',
-      'Automated 120-Minute Cryptographic Shredding',
+      'Automated 120-Minute File Deletion',
       'Zero AI Model Training — Explicit Policy',
-      'GDPR Article 17 Right to Erasure Aligned',
+      'Privacy-Focused File Processing',
       'No Third-Party Data Sharing',
       'No Registration or Email Required'
     ],
@@ -5346,7 +5346,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'PNG and WebP images with transparent backgrounds are cropped with full alpha channel preservation — logos, icons, and UI elements retain clean transparent edges.'
       },
       {
-        title: '120-Minute Cryptographic Shredding',
+        title: '120-Minute File Retention',
         desc: 'Source and cropped images are permanently, cryptographically destroyed from all server storage exactly 120 minutes after processing.'
       },
       {
@@ -5387,15 +5387,15 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     formatNotes: 'Output format matches input format. Full alpha channel transparency is preserved for PNG and WebP crops. Maximum input file size: 100MB.',
     securityHeading: 'Security & Privacy Architecture',
     securityParagraphs: [
-      'All images are transmitted over TLS 1.3 encrypted connections with 256-bit AES cipher. Files are processed in isolated sandboxed containers with no cross-user data access.',
-      'Exactly 120 minutes after processing, automated routines cryptographically shred both the source and cropped images from all server storage — permanently and irreversibly.',
+      'All images are transmitted over TLS 1.3 encrypted connections with 256-bit AES cipher. Files are processed via automated server-side processing.',
+      'Exactly 120 minutes after processing, automated routines delete both the source and cropped images from server storage.',
       'Convertly never stores images beyond 120 minutes, never analyzes image content, never shares files with third parties, and never uses your images to train AI models.'
     ],
     certifications: [
       'TLS 1.3 Transport Encryption with AES-256 Cipher',
-      'Automated 120-Minute Cryptographic Shredding',
+      'Automated 120-Minute File Deletion',
       'Zero AI Model Training — Explicit Policy',
-      'GDPR Article 17 Right to Erasure Aligned'
+      'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Engine Benchmarks & Technical Specifications',
     specs: [
@@ -5572,7 +5572,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     relatedToolIds: ['image-compress', 'image-resize', 'image-rotate', 'image-to-webp', 'images-to-pdf', 'jpg-to-png', 'png-to-jpg', 'webp-to-image'],
     conclusionHeading: 'Crop Your Images with Pixel-Perfect Precision — Free, Instant',
     conclusionParagraphs: [
-      'Stop wrestling with complex software for a simple crop operation. Convertly\'s pixel-accurate cropper delivers clean bounding box crops and platform aspect ratio presets in under a second — with zero quality loss and zero data retention.',
+      'Stop wrestling with complex software for a simple crop operation. Convertly\'s pixel-accurate cropper delivers clean bounding box crops and platform aspect ratio presets in under a second — with zero quality loss and 120-minute temporary file retention.',
       'No account. No watermarks. No limits. Upload your image above, define your crop, and your perfectly framed output is ready immediately.'
     ]
   },
@@ -5678,7 +5678,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'PNG and WebP images with alpha channels are rotated with full transparency preservation — the pixel grid rotation includes the alpha channel slice.'
       },
       {
-        title: '120-Minute Cryptographic Shredding',
+        title: '120-Minute File Retention',
         desc: 'Source and rotated images are permanently, cryptographically destroyed from server storage exactly 120 minutes after processing.'
       },
       {
@@ -5719,15 +5719,15 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     formatNotes: 'Output format matches input format. JPEG output has the EXIF orientation tag set to 1 (normal) after physical rotation is applied. PNG and WebP alpha transparency is preserved. Maximum input file size: 100MB.',
     securityHeading: 'Security & Privacy Architecture',
     securityParagraphs: [
-      'All images are transmitted over TLS 1.3 encrypted connections with 256-bit AES cipher. Files are processed in isolated sandboxed containers with zero cross-user access.',
-      'Exactly 120 minutes after processing, automated routines cryptographically shred both the source and rotated images from all server storage — permanently and irreversibly.',
+      'All images are transmitted over TLS 1.3 encrypted connections with 256-bit AES cipher. Files are processed via automated server-side processing.',
+      'Exactly 120 minutes after processing, automated routines delete both the source and rotated images from server storage.',
       'Convertly never stores images beyond 120 minutes, never analyzes image content, never shares files with third parties, and never uses your images to train AI models.'
     ],
     certifications: [
       'TLS 1.3 Transport Encryption with AES-256 Cipher',
-      'Automated 120-Minute Cryptographic Shredding',
+      'Automated 120-Minute File Deletion',
       'Zero AI Model Training — Explicit Policy',
-      'GDPR Article 17 Right to Erasure Aligned'
+      'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Engine Benchmarks & Technical Specifications',
     specs: [
@@ -6031,7 +6031,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Strict Automated Privacy Guardrails',
-        desc: 'Files are processed in ephemeral memory and permanently shredded from disk storage within 120 minutes. Zero human access and zero AI model training.'
+        desc: 'Files are processed via automated server-side routines and expire after 120 minutes, with periodic cleanup removing expired files. Zero human access and zero AI model training.'
       }
     ],
     benefitsHeading: 'Why Convertly Is the Best Online PDF Rotator',
@@ -6063,13 +6063,13 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     formatNotes: 'Supports rotation angles of 90° clockwise, 180° upside-down, and 270° counter-clockwise (90° left). Preserves embedded bookmarks, document outlines, annotations, digital signatures, and form fields.',
     securityHeading: 'Document Privacy & Encryption Standards',
     securityParagraphs: [
-      'Every document uploaded to Convertly is transferred over end-to-end TLS 1.3 encryption with 256-bit AES cryptographic ciphers. Your files are isolated in memory-constrained sandbox execution containers throughout transformation.',
+      'Every document uploaded to Convertly is transferred over end-to-end TLS 1.3 encryption with 256-bit AES cryptographic ciphers. Your files are processed via automated server-side routines throughout transformation.',
       'Convertly implements an automated cryptographic file shredder. Exactly 120 minutes following transformation completion, all source and rotated files are permanently overwritten and purged from all storage volumes. Convertly never indexes, views, or uses your files for AI model training.'
     ],
     certifications: [
       'ISO 32000-1 PDF Compliant',
       'TLS 1.3 256-Bit SSL Encryption',
-      'GDPR & CCPA Compliant Storage',
+      'Privacy-Focused File Processing',
       'Zero AI Model Training Guarantee',
       'Automatic 120-Minute Cryptographic File Purge'
     ],
@@ -6195,7 +6195,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my uploaded PDF files safe and private?',
-        answer: 'Absolutely. All uploads and downloads are secured with 256-bit TLS 1.3 encryption. Files are processed in isolated sandbox environments and are permanently deleted after exactly 120 minutes by our automated cleanup system. Convertly never views, shares, or uses your documents for AI training.'
+        answer: 'Absolutely. All uploads and downloads are secured with 256-bit TLS 1.3 encryption. Files are processed via automated server-side routines. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage. Convertly never views, shares, or uses your documents for AI training.'
       },
       {
         question: 'Can I rotate password-protected PDFs?',
@@ -6394,7 +6394,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Zero Trace Privacy Architecture',
-        desc: 'Files are processed in sandboxed memory containers and completely erased from server disks within 120 minutes with zero AI model training.'
+        desc: 'Files are processed on server infrastructure and expire after 120 minutes with zero AI model training.'
       }
     ],
     benefitsHeading: 'Why Choose Convertly to Remove PDF Pages?',
@@ -6433,7 +6433,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       'Level-3 Deep Object Garbage Collection',
       'TLS 1.3 256-Bit SSL Transport Security',
       'Automated 120-Minute Cryptographic File Purge',
-      'GDPR Article 17 Right to Erasure Aligned',
+      'Privacy-Focused File Processing',
       'Strict Zero AI Model Training Guarantee'
     ],
     performanceHeading: 'Engine Performance & Benchmark Metrics',
@@ -6561,7 +6561,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my uploaded files kept private?',
-        answer: 'Yes. All file transfers are secured with TLS 1.3 256-bit AES encryption. Documents are processed in isolated sandbox memory and permanently destroyed from our servers after 120 minutes. We never view, share, or use your files for AI training.'
+        answer: 'Yes. All file transfers are secured with TLS 1.3 256-bit AES encryption. Documents are processed via automated server-side routines. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage. We never view, share, or use your files for AI training.'
       },
       {
         question: 'What is the maximum PDF size supported?',
@@ -6626,7 +6626,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         id: 'pdf-protect',
         name: 'Protect PDF',
         actionText: 'Encrypt PDF with AES-256 Password',
-        desc: 'Secure your sanitized PDF with bank-grade password encryption and permissions.',
+        desc: 'Secure your sanitized PDF with standard AES-256 password encryption and permissions.',
         category: 'PDF' as const
       }
     ],
@@ -6646,7 +6646,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     metaTitle: 'Extract Pages from PDF Online Free — Pull & Save PDF Pages | Convertly',
     metaDescription: 'Extract specific pages or page ranges from any PDF online for free. Pull selected pages into a clean, standalone PDF document. Lossless vector quality, no sign-up.',
     keywords: 'extract pages from pdf, extract pdf pages online free, how to extract pages from a pdf, pull pages from pdf, save one page of a pdf, extract specific pages from pdf, extract page range from pdf, free pdf page extractor, export pages from pdf, convertly',
-    badge: 'Isolated Sub-Document Synthesis',
+    badge: 'Sub-Document Synthesis',
     introHeading: 'Extract Pages from PDF Documents — Free, Instant, High Fidelity',
     introText: 'You only need pages 12 through 16 from a 300-page medical manual, or a single signed contract exhibit from a 90-page transaction bundle. Convertly\'s Extract Pages tool lets you pull individual pages, custom lists, or contiguous ranges into a fresh, standalone PDF file in milliseconds. Our engine creates a clean new document catalog, copies vector typography and high-resolution assets without re-compression, and prunes unused resources. No sign-up. No watermarks. Files wiped in 120 minutes.',
     whatIsHeading: 'What Is PDF Page Extraction?',
@@ -6723,7 +6723,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         number: 3,
-        title: 'Compile Isolated Sub-Document',
+        title: 'Compile Sub-Document',
         desc: 'Click "Process File Now". Our C-based MuPDF engine maps required font descriptors and content streams, compiling your new PDF in under a second.'
       },
       {
@@ -6755,8 +6755,8 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Processes documents with hundreds of pages in under 0.8 seconds via optimized memory-mapped C buffers — no software installation required.'
       },
       {
-        title: 'Ephemeral Zero-Trace Security',
-        desc: 'Files run in isolated memory containers and are cryptographically purged after 120 minutes with zero human access and zero AI model training.'
+        title: 'Temporary File Retention',
+        desc: 'Files are processed on server infrastructure and expire after 120 minutes with zero human access and zero AI model training.'
       }
     ],
     benefitsHeading: 'Why Convertly Is the Best Tool to Extract PDF Pages',
@@ -6788,15 +6788,15 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     formatNotes: 'Supports single numbers (e.g., "7"), comma-delimited lists (e.g., "1, 3, 5"), hyphenated ranges (e.g., "10-25"), and mixed combinations (e.g., "1-3, 7, 12-18"). Page numbers correspond to physical document sequence (1 to N).',
     securityHeading: 'Confidentiality & Data Protection Standards',
     securityParagraphs: [
-      'Extracting sensitive pages from proprietary binders requires absolute privacy. Convertly operates under strict zero-retention principles to guarantee your confidential information remains secure at every stage.',
+      'Extracting sensitive pages from proprietary binders requires absolute privacy. Convertly operates under strict temporary retention principles to ensure your documents are automatically deleted after 120 minutes.',
       'All communications utilize TLS 1.3 encryption with 256-bit AES ciphers. Your source file and extracted outputs reside in isolated, ephemeral memory and are permanently obliterated by automated cryptographic routines 120 minutes after conversion. Convertly never reads, logs, or uses your data for AI training.'
     ],
     certifications: [
       'TLS 1.3 Transport Layer Encryption (AES-256)',
       'Automated 120-Minute Cryptographic Data Destruction',
       'Zero AI Model Training Guarantee',
-      'GDPR Article 17 Right to Erasure Aligned',
-      'Ephemeral Memory Sandbox Isolation'
+      'Privacy-Focused File Processing',
+      'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Engine Benchmarks & Technical Metrics',
     specs: [
@@ -6923,7 +6923,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my uploaded files kept confidential?',
-        answer: 'Yes. All uploads and downloads are protected with TLS 1.3 256-bit encryption. Files are processed in isolated memory sandboxes and permanently deleted from our servers after 120 minutes with zero AI model training.'
+        answer: 'Yes. All uploads and downloads are protected with TLS 1.3 256-bit encryption. Files are processed via automated server-side routines. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage.'
       },
       {
         question: 'What is the maximum file size supported for extraction?',
@@ -7117,8 +7117,8 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Processes 100+ page documents in under a second via high-throughput memory-mapped buffers without desktop software installation.'
       },
       {
-        title: 'Ephemeral Zero-Trace Security',
-        desc: 'Your files are processed in isolated sandbox memory and permanently erased from all storage after 120 minutes with zero AI model training.'
+        title: 'Temporary File Retention',
+        desc: 'Your files are processed via automated server-side routines. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage.'
       }
     ],
     benefitsHeading: 'Why Choose Convertly to Organize PDF Pages?',
@@ -7150,15 +7150,15 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     formatNotes: 'Supports any page sequence involving numbers 1 through N. All pages can be rearranged, repeated, or reordered into custom flows. Surviving annotations, links, and form fields are preserved.',
     securityHeading: 'Data Privacy & Encryption Safeguards',
     securityParagraphs: [
-      'Organizing legal discovery, medical records, or confidential business proposals requires complete confidentiality. Convertly employs military-grade security protocols to protect your data throughout processing.',
-      'All file transfers are secured with TLS 1.3 encryption and 256-bit AES ciphers. Your files are processed in ephemeral memory containers and permanently overwritten by automated cryptographic cleanup jobs exactly 120 minutes after completion. Convertly never views, logs, or uses your files for AI training.'
+      'Organizing legal discovery, medical records, or confidential business proposals requires complete confidentiality. Convertly employs robust security protocols to protect your data throughout processing.',
+      'All file transfers are secured with TLS 1.3 encryption and 256-bit AES ciphers. Your files are processed via automated server-side routines. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage. Convertly never views, logs, or uses your files for AI training.'
     ],
     certifications: [
       'TLS 1.3 256-Bit SSL Transport Encryption',
       'Automated 120-Minute Cryptographic File Shredding',
       'Zero AI Model Training Guarantee',
-      'GDPR Article 17 Right to Erasure Aligned',
-      'Ephemeral Memory Sandbox Isolation'
+      'Privacy-Focused File Processing',
+      'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Engine Benchmarks & Technical Metrics',
     specs: [
@@ -7249,7 +7249,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Processes multi-hundred-page documents almost instantaneously thanks to optimized C-level binary routines.'
       },
       {
-        title: 'Automatic Ephemeral File Cleanup',
+        title: 'Automated File Deletion',
         desc: 'Files are permanently erased from server storage after 120 minutes, backed by an explicit zero AI model training policy.'
       }
     ],
@@ -7281,7 +7281,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my uploaded files safe and private?',
-        answer: 'Yes. All uploads and downloads are encrypted via TLS 1.3 with 256-bit AES ciphers. Files are processed in isolated sandbox environments and permanently deleted after 120 minutes with zero AI model training.'
+        answer: 'Yes. All uploads and downloads are encrypted via TLS 1.3 with 256-bit AES ciphers. Files are processed via automated server-side routines and expire after 120 minutes, with periodic cleanup removing expired files.'
       },
       {
         question: 'What is the maximum file size supported for page reordering?',
@@ -7368,10 +7368,10 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     category: 'PDF',
     searchIntent: 'Transactional',
     metaTitle: 'Password Protect PDF Online Free — Encrypt PDF with AES-256 | Convertly',
-    metaDescription: 'Protect PDF with bank-grade AES-256 password encryption online for free. Prevent unauthorized viewing, printing, and copying. No sign-up, no watermarks.',
+    metaDescription: 'Protect PDF with standard AES-256 password encryption online for free. Prevent unauthorized viewing, printing, and copying. No sign-up, no watermarks.',
     keywords: 'password protect pdf, protect pdf, encrypt pdf online free, how to password protect a pdf, pdf aes-256 encryption, secure pdf with password, password protect pdf without acrobat, free pdf encrypter, add password to pdf, convertly',
-    badge: 'Military-Grade AES-256 Encryption',
-    introHeading: 'Password Protect PDF Documents — Free, Instant, Bank-Grade Security',
+    badge: 'Standard AES-256 Encryption',
+    introHeading: 'Password Protect PDF Documents — Free, Instant, AES-256 Security',
     introText: 'You are emailing an employment contract with social security numbers, sending proprietary financial projections to investors, or archiving sensitive medical records. Convertly\'s Protect PDF tool encrypts your documents with industry-standard AES-256 cryptographic protection. Prevent unauthorized opening, text copying, and unauthorized printing in seconds. 100% free, no account required, verified cryptographic authentication, and automatic server wiping in 120 minutes.',
     whatIsHeading: 'What Is AES-256 PDF Encryption?',
     whatIsParagraphs: [
@@ -7395,7 +7395,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Healthcare Providers & Clinics',
-        desc: 'Ensure compliance with HIPAA Security Rule requirements by encrypting diagnostic summaries, lab results, and patient intake charts before external transit.'
+        desc: 'Protect diagnostic summaries, lab results, and patient intake charts with robust password encryption before external transit.'
       },
       {
         title: 'Contractors, Architects & Bidders',
@@ -7413,7 +7413,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'When transmitting confidential documents over regular email protocols (SMTP/IMAP) that lack end-to-end transport encryption across server relays.'
       },
       {
-        title: 'Regulatory Compliance (HIPAA, GDPR, CCPA)',
+        title: 'Privacy & Confidentiality Best Practices',
         desc: 'When legal mandates require technical safeguards for personal identifiable information (PII), protected health information (PHI), or financial records.'
       },
       {
@@ -7459,7 +7459,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     keyFeaturesHeading: 'Enterprise PDF Encryption Capabilities',
     features: [
       {
-        title: 'Bank-Grade AES-256 Cipher Standard',
+        title: 'Standard AES-256 Cipher Standard',
         desc: 'Applies true 256-bit AES encryption (ISO 32000-1 / PDF 1.7 Extension 3), the most secure document protection standard available globally.'
       },
       {
@@ -7479,15 +7479,15 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Your password is used in transient memory solely to derive the encryption key. It is never logged, cached, transmitted, or saved to any database.'
       },
       {
-        title: 'Ephemeral Sandbox Security',
-        desc: 'All documents are processed in sandboxed execution environments and permanently obliterated from server storage after exactly 120 minutes.'
+        title: 'Temporary File Processing',
+        desc: 'Files are processed via automated server-side processing and expire after 120 minutes, with periodic cleanup removing expired files.'
       }
     ],
     benefitsHeading: 'Why Choose Convertly to Protect PDF Files?',
     benefits: [
       {
         title: 'No Adobe Acrobat Pro Subscription',
-        desc: 'Adobe Acrobat Pro charges $19.99/month for PDF encryption. Convertly delivers the identical bank-grade AES-256 standard 100% free.'
+        desc: 'Adobe Acrobat Pro charges $19.99/month for PDF encryption. Convertly delivers the identical standard AES-256 encryption 100% free.'
       },
       {
         title: 'True Cryptographic Privacy',
@@ -7510,17 +7510,17 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       { ext: '.pdf', name: 'AES-256 Encrypted PDF document (ISO 32000-1 compliant)', mime: 'application/pdf' }
     ],
     formatNotes: 'Output file is encrypted with 256-bit AES cipher. Requires the specified password to open in any standard PDF reader. Preserves all existing vector typography, embedded high-resolution graphics, hyperlinks, and form fields.',
-    securityHeading: 'Military-Grade Security & Cryptographic Standards',
+    securityHeading: 'Document Security & Cryptographic Standards',
     securityParagraphs: [
       'Document security is the foundational purpose of this tool. Convertly uses end-to-end TLS 1.3 encryption with 256-bit AES ciphers for all data in transit between your browser and our secure computing cluster.',
-      'During processing, documents are encrypted using PyMuPDF compiled C-bindings adhering strictly to the ISO 32000-1 specification. Your passwords are processed strictly in ephemeral RAM to derive the initialization vector (IV) and cryptographic key blocks. Passwords are never saved, written to disk, or logged. All files are permanently overwritten after 120 minutes by automated cryptographic shredders.'
+      'During processing, documents are encrypted using PyMuPDF compiled C-bindings adhering strictly to the ISO 32000-1 specification. Passwords are used strictly during key derivation and are never stored or logged. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage.'
     ],
     certifications: [
       'ISO 32000-1 AES-256 Cryptographic Standard',
       'TLS 1.3 End-to-End Transport Security',
       'Automated Post-Encryption Key Verification',
       'Zero Password Logging Guarantee',
-      'Automated 120-Minute Ephemeral File Shredding',
+      'Automated 120-Minute File Deletion',
       'Zero AI Model Training Guarantee'
     ],
     performanceHeading: 'Engine Benchmarks & Technical Metrics',
@@ -7530,7 +7530,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       { label: 'Encryption Latency', value: '< 0.6 Seconds for 50-Page Document', detail: 'Instantaneous stream block cipher computation' },
       { label: 'Maximum File Size', value: 'Up to 100MB per Document', detail: 'Accommodates large books, financial binders, and legal filings' },
       { label: 'Permission Flags', value: 'Print, Copy, and Accessibility Controls', detail: 'Configured with fitz.PDF_PERM bitmask architecture' },
-      { label: 'Password Security', value: 'Zero Memory Caching or Disk Persistence', detail: 'Key derivation in transient sandbox memory only' }
+      { label: 'Password Security', value: 'Zero Password Storage', detail: 'Key derivation during active processing only' }
     ],
     compatibilityHeading: 'Cross-Platform Reader Interoperability',
     platforms: [
@@ -7552,7 +7552,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Safeguarding Sensitive Medical Records',
-        desc: 'A medical clinic encrypts patient diagnostic reports with date-of-birth verification passwords to satisfy HIPAA electronic transmission rules.'
+        desc: 'A clinic encrypts patient diagnostic reports with date-of-birth verification passwords prior to electronic transmission.'
       },
       {
         title: 'Locking Proprietary Business Bids',
@@ -7582,7 +7582,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     troubleshootingItems: [
       {
         problem: 'Can Convertly recover my password if I forget it?',
-        solution: 'No. Because Convertly uses true military-grade AES-256 encryption with zero password logging, there is no backdoor or master key. If you lose the password, the data is mathematically irrecoverable.'
+        solution: 'No. Because Convertly uses standard AES-256 document encryption with zero password logging, there is no backdoor or master key. If you lose the password, the data is mathematically irrecoverable.'
       },
       {
         problem: 'Does encrypting a PDF degrade document quality?',
@@ -7613,7 +7613,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Zero Password Logging or Storage',
-        desc: 'Your passwords never touch disk storage or databases. They exist only in transient sandbox memory during key generation.'
+        desc: 'Your passwords are used strictly during active key derivation and are never stored in databases or logged.'
       }
     ],
     faqsHeading: 'Frequently Asked Questions About Protecting PDFs',
@@ -7644,11 +7644,11 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'What happens if I forget the password to my protected PDF?',
-        answer: 'Because Convertly enforces genuine zero-knowledge AES-256 encryption without backdoors, forgotten passwords cannot be recovered. We recommend keeping a secure note of your password in a password manager.'
+        answer: 'Because Convertly applies standard document-level AES-256 encryption without backdoors, forgotten passwords cannot be recovered. We recommend keeping a secure note of your password in a password manager.'
       },
       {
         question: 'Are my uploaded files safe during the encryption process?',
-        answer: 'Yes. All uploads and downloads are encrypted via TLS 1.3 with 256-bit AES. Files are processed in isolated sandbox environments and permanently destroyed after 120 minutes with zero AI model training.'
+        answer: 'Yes. All uploads and downloads are encrypted via TLS 1.3 with 256-bit AES. Files are processed via automated server-side routines and expire after 120 minutes, with periodic cleanup removing expired files.'
       },
       {
         question: 'Does encrypting a PDF increase its file size?',
@@ -7720,7 +7720,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     relatedToolIds: ['pdf-unlock', 'pdf-redact', 'pdf-watermark', 'pdf-scrub-metadata', 'pdf-flatten', 'pdf-compress', 'pdf-merge', 'pdf-to-word'],
     conclusionHeading: 'Lock Down Your Sensitive PDF Documents Today',
     conclusionParagraphs: [
-      'Stop risking data breaches and compliance fines by sending unprotected documents. Convertly\'s ISO-compliant AES-256 PDF encryption engine locks your confidential files in milliseconds — providing bank-grade security, verified authentication, and absolute data privacy.',
+      'Stop risking data breaches and compliance fines by sending unprotected documents. Convertly\'s ISO-compliant AES-256 PDF encryption engine locks your confidential files in milliseconds — providing standard AES-256 security, verified authentication, and reliable document privacy.',
       'No registration. No watermarks. No fees. Drop your PDF above and protect your confidential files immediately.'
     ]
   },
@@ -7739,7 +7739,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     whatIsHeading: 'What Is Permanent PDF Decryption?',
     whatIsParagraphs: [
       'PDF documents can have two distinct layers of security: an Open Password (User Password), which requires entering a secret passphrase every time the file is opened in a viewer, and a Permissions Password (Owner Password), which restricts editing, printing, annotating, or extracting text selections.',
-      'Convertly provides authorized cryptographic decryption in full accordance with the ISO 32000-1 document standard. When you upload your protected PDF and supply its valid password, our compiled C-bindings to MuPDF initialize an ephemeral cryptographic session, compute the decryption keys, and decrypt all internal object streams and cross-reference tables in memory (`auth = src_doc.authenticate(password)`).',
+      'Convertly provides authorized cryptographic decryption in full accordance with the ISO 32000-1 document standard. When you upload your protected PDF and supply its valid password, our compiled C-bindings to MuPDF authenticate the document, compute the decryption keys, and decrypt internal object streams and cross-reference tables (`auth = src_doc.authenticate(password)`).',
       'Our engine then rebuilds the PDF with encryption set to null (`encryption = fitz.PDF_ENCRYPT_NONE`), completely removing the `/Encrypt` catalog dictionary and clearing all permission restriction bitmasks. The resulting file is saved with Level-3 garbage collection and stream deflation. You receive a standard, pristine PDF that opens instantly in any reader without password prompts and can be printed, copied, edited, or merged without restriction.'
     ],
     whoShouldUseHeading: 'Who Needs to Unlock PDF Files?',
@@ -7842,7 +7842,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Built on compiled MuPDF C-bindings, processing multi-hundred page documents in under a second without desktop software.'
       },
       {
-        title: 'Ephemeral Zero-Knowledge Security',
+        title: 'Temporary File Processing & Security',
         desc: 'Your password is never saved, logged, or cached. All files and keys are completely destroyed from server memory and disk after 120 minutes.'
       }
     ],
@@ -7875,13 +7875,13 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     formatNotes: 'Requires entering the valid password to decrypt the file. Output PDF is 100% free of open passwords, owner passwords, and permission restrictions. Preserves all vector artwork, bookmarks, and form fields.',
     securityHeading: 'Data Privacy & Password Security Standards',
     securityParagraphs: [
-      'Decrypting sensitive financial statements, legal contracts, or medical records demands the highest standards of data confidentiality. Convertly enforces an uncompromising zero-retention security architecture.',
-      'Your files and passwords are transmitted via TLS 1.3 encryption with 256-bit AES ciphers. Decryption occurs inside an isolated, ephemeral memory container. Your password exists only in RAM long enough to compute the cipher key and is immediately wiped. Exactly 120 minutes after processing, automated routines cryptographically overwrite all source and decrypted files. Convertly never views, logs, or uses your data for AI training.'
+      'Decrypting sensitive financial statements, legal contracts, or medical records demands the highest standards of data confidentiality. Convertly enforces a strict 120-minute temporary file retention policy.',
+      'Your files and passwords are transmitted via TLS 1.3 encryption with 256-bit AES ciphers. Decryption occurs via automated server-side processing. Passwords are used strictly during cipher key derivation and are never stored. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage. Convertly never views, logs, or uses your data for AI training.'
     ],
     certifications: [
       'TLS 1.3 Transport Security with AES-256 Cipher',
-      'Zero Password Logging & Zero Disk Caching',
-      'Automated 120-Minute Ephemeral File Shredding',
+      'Zero Password Logging & Temporary Storage',
+      'Automated 120-Minute File Deletion',
       'ISO 32000-1 Compliant Stream Decryption',
       'Zero AI Model Training Guarantee'
     ],
@@ -7975,7 +7975,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Zero Password Logging',
-        desc: 'Your passwords never touch disk storage or databases. They exist only in transient sandbox memory during key generation.'
+        desc: 'Your passwords are used strictly during active key derivation and are never stored in databases or logged.'
       }
     ],
     faqsHeading: 'Frequently Asked Questions About Unlocking PDFs',
@@ -8010,7 +8010,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my uploaded files secure during decryption?',
-        answer: 'Yes. All uploads and downloads are encrypted via TLS 1.3 with 256-bit AES. Files are processed in isolated sandbox environments and permanently deleted after 120 minutes with zero AI model training.'
+        answer: 'Yes. All uploads and downloads are encrypted via TLS 1.3 with 256-bit AES. Files are processed via automated server-side routines and expire after 120 minutes, with periodic cleanup removing expired files.'
       },
       {
         question: 'Does unlocking a PDF change its layout or image quality?',
@@ -8026,7 +8026,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         id: 'pdf-protect',
         name: 'Protect PDF',
         actionText: 'Encrypt PDF with Password',
-        desc: 'Re-encrypt your PDF with bank-grade AES-256 password protection.',
+        desc: 'Protect your PDF with standard AES-256 password protection.',
         category: 'PDF' as const
       },
       {
@@ -8097,7 +8097,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     keywords: 'watermark pdf, add watermark to pdf, watermark pdf online free, how to add watermark to pdf, pdf watermark tool, confidential watermark pdf, draft watermark pdf, add text watermark to pdf, free pdf watermark, convertly',
     badge: 'Vector Graphics Alpha Blending',
     introHeading: 'Add Text Watermarks to PDF Documents — Free, Instant, Professional',
-    introText: 'You are distributing a confidential corporate pitch deck, sharing a preliminary contract marked "DRAFT", or protecting proprietary training materials against unauthorized redistribution. Convertly\'s Watermark PDF tool stamps customizable text watermarks across every page of your document in seconds. Fine-tune your text, font size, rotation angle, color, and translucent opacity with crisp vector typography that looks immaculate on screens and in print. 100% free, no registration required, and files shredded after 120 minutes.',
+    introText: 'You are distributing a confidential corporate pitch deck, sharing a preliminary contract marked "DRAFT", or protecting proprietary training materials against unauthorized redistribution. Convertly\'s Watermark PDF tool stamps customizable text watermarks across every page of your document in seconds. Fine-tune your text, font size, rotation angle, color, and translucent opacity with crisp vector typography that looks immaculate on screens and in print. 100% free, no registration required, and files automatically deleted after 120 minutes.',
     whatIsHeading: 'What Is Vector PDF Watermarking?',
     whatIsParagraphs: [
       'A watermark in a Portable Document Format (PDF) file is a semi-transparent text or graphic overlay positioned across page content streams. Rather than stamping a blurry raster image onto the page, professional PDF watermarking generates native vector text glyphs defined by font outline geometry.',
@@ -8205,7 +8205,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Zero-Trace Privacy Architecture',
-        desc: 'Files run in ephemeral memory containers and are permanently purged from server disks within 120 minutes with zero AI model training.'
+        desc: 'Files are processed on server infrastructure and expire after 120 minutes with zero AI model training.'
       }
     ],
     benefitsHeading: 'Why Choose Convertly to Watermark PDF Files?',
@@ -8238,14 +8238,14 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     securityHeading: 'Document Confidentiality & Protection Standards',
     securityParagraphs: [
       'When marking confidential or proprietary documents, data security during transit and processing is non-negotiable. Convertly enforces industry-leading confidentiality standards.',
-      'All uploads and downloads are shielded with TLS 1.3 encryption and 256-bit AES ciphers. Watermarking occurs inside an isolated, ephemeral memory container. Exactly 120 minutes following processing, automated cryptographic shredders permanently overwrite all source and watermarked files. Convertly never views, logs, or uses your files for AI model training.'
+      'All uploads and downloads are shielded with TLS 1.3 encryption and 256-bit AES ciphers. Watermarking occurs via automated server-side processing. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage. Convertly never views, logs, or uses your files for AI model training.'
     ],
     certifications: [
       'TLS 1.3 256-Bit SSL Transport Security',
-      'Automated 120-Minute Ephemeral File Shredding',
+      'Automated 120-Minute File Deletion',
       'ISO 32000-1 Compliant Vector Overlays',
       'Zero AI Model Training Guarantee',
-      'GDPR Article 17 Right to Erasure Aligned'
+      'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Engine Benchmarks & Technical Metrics',
     specs: [
@@ -8336,8 +8336,8 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'No credit cards required, no daily quotas, no page count ceilings, and zero third-party branding added to your documents.'
       },
       {
-        title: 'Ephemeral Zero-Knowledge Processing',
-        desc: 'Your files are processed in sandboxed memory and automatically purged after 120 minutes with zero AI model training.'
+        title: 'Temporary Server-Side Processing',
+        desc: 'Your files are processed on server infrastructure and expire after 120 minutes with zero AI model training.'
       }
     ],
     faqsHeading: 'Frequently Asked Questions About Watermarking PDFs',
@@ -8372,7 +8372,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my uploaded files kept confidential?',
-        answer: 'Yes. All uploads and downloads are encrypted via TLS 1.3 with 256-bit AES. Files are processed in isolated sandbox environments and permanently deleted after 120 minutes with zero AI model training.'
+        answer: 'Yes. All uploads and downloads are encrypted via TLS 1.3 with 256-bit AES. Files are processed via automated server-side routines and expire after 120 minutes, with periodic cleanup removing expired files.'
       },
       {
         question: 'Will the watermark be stamped on all pages of my PDF?',
@@ -8395,7 +8395,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         id: 'pdf-protect',
         name: 'Protect PDF',
         actionText: 'Encrypt Watermarked PDF',
-        desc: 'Lock down your watermarked document with bank-grade AES-256 password protection.',
+        desc: 'Protect your watermarked document with standard AES-256 password protection.',
         category: 'PDF' as const
       },
       {
@@ -8566,8 +8566,8 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Processes 100+ page documents in under a second via compiled C-level MuPDF binaries without desktop software installation.'
       },
       {
-        title: 'Ephemeral Zero-Trace Security',
-        desc: 'Files run in sandboxed memory containers and are permanently erased from server disks within 120 minutes with zero AI model training.'
+        title: 'Temporary File Retention',
+        desc: 'Files are processed on server infrastructure and expire after 120 minutes with zero AI model training.'
       }
     ],
     benefitsHeading: 'Why Choose Convertly to Add Page Numbers?',
@@ -8599,15 +8599,15 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     formatNotes: 'Supports token patterns such as "Page {n} of {total}", "{n}", "Page {n}", and custom prefix strings. Configurable font sizes from 8pt to 24pt. Works seamlessly with mixed portrait and landscape page orientations.',
     securityHeading: 'Document Privacy & Encryption Standards',
     securityParagraphs: [
-      'Whether numbering confidential legal discovery, medical charts, or corporate financial binders, data security is paramount. Convertly enforces rigorous zero-retention privacy protocols.',
-      'All uploads and downloads are encrypted via TLS 1.3 with 256-bit AES ciphers. Documents are paginated in ephemeral memory containers and permanently overwritten by automated cryptographic shredders after 120 minutes. Convertly never views, logs, or uses your files for AI training.'
+      'Whether numbering confidential legal discovery, medical charts, or corporate financial binders, data security is paramount. Convertly enforces rigorous 120-minute temporary retention protocols.',
+      'All uploads and downloads are encrypted via TLS 1.3 with 256-bit AES ciphers. Documents are paginated via automated server-side processing. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage. Convertly never views, logs, or uses your files for AI training.'
     ],
     certifications: [
       'TLS 1.3 256-Bit SSL Transport Security',
-      'Automated 120-Minute Ephemeral File Shredding',
+      'Automated 120-Minute File Deletion',
       'ISO 32000-1 Compliant Vector Typography',
       'Zero AI Model Training Guarantee',
-      'GDPR Article 17 Right to Erasure Aligned'
+      'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Engine Benchmarks & Technical Metrics',
     specs: [
@@ -8698,8 +8698,8 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'No credit cards required, no daily quotas, no page count caps, and zero third-party watermarks stamped onto your documents.'
       },
       {
-        title: 'Ephemeral Zero-Knowledge Security',
-        desc: 'Your files are processed in sandboxed memory and automatically purged after 120 minutes with zero AI model training.'
+        title: 'Temporary File Processing & Security',
+        desc: 'Your files are processed on server infrastructure and expire after 120 minutes with zero AI model training.'
       }
     ],
     faqsHeading: 'Frequently Asked Questions About Numbering PDFs',
@@ -8734,7 +8734,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my uploaded files secure during the numbering process?',
-        answer: 'Yes. All uploads and downloads are protected via TLS 1.3 with 256-bit AES encryption. Files are processed in isolated sandbox environments and permanently deleted after 120 minutes with zero AI model training.'
+        answer: 'Yes. All uploads and downloads are protected via TLS 1.3 with 256-bit AES encryption. Files are processed via automated server-side routines and expire after 120 minutes, with periodic cleanup removing expired files.'
       },
       {
         question: 'Does numbering work on documents with mixed page orientations?',
@@ -8792,7 +8792,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         id: 'pdf-protect',
         name: 'Protect PDF',
         actionText: 'Encrypt Numbered PDF',
-        desc: 'Lock down your paginated document with bank-grade AES-256 password protection.',
+        desc: 'Protect your paginated document with standard AES-256 password protection.',
         category: 'PDF' as const
       },
       {
@@ -8821,7 +8821,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     keywords: 'redact pdf, black out text in pdf, redact pdf online free, how to redact a pdf, pdf redaction tool, permanent pdf redaction, sanitize pdf, redact sensitive information pdf, black out text in pdf without adobe, free pdf redactor, convertly',
     badge: 'Permanent Byte-Level Content Excision',
     introHeading: 'Redact Sensitive Information in PDF — Free, Instant, Permanent Blackout',
-    introText: 'You are submitting legal exhibits, responding to public records requests, or sharing financial statements that contain sensitive social security numbers, banking details, personal phone numbers, or proprietary client names. Convertly\'s Redact PDF tool permanently removes sensitive text and burns opaque blackout boxes into the document stream. This is true cryptographic content excision — underlying characters, vector glyphs, and raster pixels are physically destroyed from the file binary, not merely hidden beneath a black shape. 100% free, no sign-up, and files shredded after 120 minutes.',
+    introText: 'You are submitting legal exhibits, responding to public records requests, or sharing financial statements that contain sensitive social security numbers, banking details, personal phone numbers, or proprietary client names. Convertly\'s Redact PDF tool permanently removes sensitive text and burns opaque blackout boxes into the document stream. This is true cryptographic content excision — underlying characters, vector glyphs, and raster pixels are physically destroyed from the file binary, not merely hidden beneath a black shape. 100% free, no sign-up, and files automatically deleted after 120 minutes.',
     whatIsHeading: 'What Is True PDF Redaction vs. Visual Blacking Out?',
     whatIsParagraphs: [
       'In high-profile legal disasters, lawyers have inadvertently leaked classified information by drawing black rectangles over sensitive text in Word or Preview, or changing text highlight colors to black. In these "fake redactions," the underlying text glyphs remain intact inside the PDF content stream — allowing anyone to highlight, copy-paste, or inspect the raw file binary to read the confidential text.',
@@ -8844,7 +8844,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Healthcare Administrators & Researchers',
-        desc: 'De-identify patient names, medical record numbers (MRNs), and admission dates from clinical case studies to comply with HIPAA Safe Harbor de-identification rules.'
+        desc: 'Permanently redact patient names, medical record numbers (MRNs), and admission dates from clinical case studies.'
       },
       {
         title: 'Real Estate Brokers & Title Agents',
@@ -8929,7 +8929,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Strict Zero-Trace Privacy Architecture',
-        desc: 'Documents run in ephemeral memory sandboxes and are permanently overwritten after 120 minutes with zero human access and zero AI training.'
+        desc: 'Documents are processed on server infrastructure and expire after 120 minutes with zero human access and zero AI training.'
       }
     ],
     benefitsHeading: 'Why Choose Convertly to Redact PDF Documents?',
@@ -8959,17 +8959,17 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       { ext: '.pdf', name: 'Permanently sanitized PDF document with excised text streams and opaque black overlays', mime: 'application/pdf' }
     ],
     formatNotes: 'Supports single words, full names, multi-word phrases, alphanumeric identifiers, and numbers. Text redaction is case-insensitive and excises all matching occurrences across all pages. Surviving text, links, and layout remain intact.',
-    securityHeading: 'Legal Compliance & Data Sanitization Standards',
+    securityHeading: 'Document Privacy & Data Sanitization Standards',
     securityParagraphs: [
-      'Document redaction is a mission-critical legal compliance task. Convertly is engineered to eliminate data leakage risks by enforcing strict byte-level content destruction.',
-      'All data transfers are encrypted with TLS 1.3 and 256-bit AES ciphers. Processing occurs inside isolated, ephemeral memory containers. The original characters are excised from the PDF stream and overwritten with opaque rectangles. Exactly 120 minutes after conversion, automated cryptographic shredders permanently overwrite all source and redacted files. Convertly never views, logs, or uses your files for AI model training.'
+      'Document redaction is a critical privacy and data sanitization task. Convertly is engineered to eliminate data leakage risks by enforcing permanent byte-level content excision.',
+      'All data transfers are encrypted with TLS 1.3 and 256-bit AES ciphers. Processing occurs via automated server-side processing. The original characters are excised from the PDF stream and overwritten with opaque rectangles. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage. Convertly never views, logs, or uses your files for AI model training.'
     ],
     certifications: [
       'ISO 32000-1 Permanent Redaction Standard',
       'Federal Rule of Civil Procedure 5.2 Aligned',
-      'HIPAA Safe Harbor De-Identification Aligned',
+      'Permanent Document Text Redaction',
       'TLS 1.3 256-Bit SSL Transport Security',
-      'Automated 120-Minute Ephemeral File Shredding',
+      'Automated 120-Minute File Deletion',
       'Zero AI Model Training Guarantee'
     ],
     performanceHeading: 'Engine Benchmarks & Technical Metrics',
@@ -9001,7 +9001,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Clinical Research De-Identification',
-        desc: 'A medical researcher redacts patient names, hospital record numbers, and physician names from 80 clinical pathology PDFs to comply with HIPAA research guidelines.'
+        desc: 'A medical researcher redacts patient names, hospital record numbers, and physician names from 80 clinical pathology PDFs before publication.'
       },
       {
         title: 'Employee Onboarding & Payroll Sharing',
@@ -9061,8 +9061,8 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'No credit cards required, no daily quotas, no page count ceilings, and zero third-party watermarks stamped onto your documents.'
       },
       {
-        title: 'Ephemeral Zero-Knowledge Processing',
-        desc: 'Your files are processed in sandboxed memory and automatically purged after 120 minutes with zero AI model training.'
+        title: 'Temporary Server-Side Processing',
+        desc: 'Your files are processed on server infrastructure and expire after 120 minutes with zero AI model training.'
       }
     ],
     faqsHeading: 'Frequently Asked Questions About Redacting PDFs',
@@ -9097,7 +9097,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my uploaded files safe during the redaction process?',
-        answer: 'Yes. All uploads and downloads are encrypted via TLS 1.3 with 256-bit AES. Files are processed in isolated sandbox environments and permanently deleted after 120 minutes with zero AI model training.'
+        answer: 'Yes. All uploads and downloads are encrypted via TLS 1.3 with 256-bit AES. Files are processed via automated server-side routines and expire after 120 minutes, with periodic cleanup removing expired files.'
       },
       {
         question: 'Does redaction work on scanned image documents?',
@@ -9120,7 +9120,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         id: 'pdf-protect',
         name: 'Protect PDF',
         actionText: 'Encrypt Redacted PDF',
-        desc: 'Lock down your redacted document with bank-grade AES-256 password protection.',
+        desc: 'Protect your redacted document with standard AES-256 password protection.',
         category: 'PDF' as const
       },
       {
@@ -9169,7 +9169,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     relatedToolIds: ['pdf-scrub-metadata', 'pdf-protect', 'pdf-flatten', 'pdf-watermark', 'pdf-delete-pages', 'pdf-compress', 'pdf-to-word', 'pdf-merge'],
     conclusionHeading: 'Permanently Sanitize Your Sensitive PDF Documents',
     conclusionParagraphs: [
-      'Stop risking catastrophic legal and compliance leaks with fake black highlight boxes. Convertly\'s ISO-compliant PDF redaction engine permanently excises sensitive text glyphs and pixels from the file binary in seconds — providing true cryptographic blackout protection and complete data privacy.',
+      'Stop risking catastrophic data leaks with fake black highlight boxes. Convertly\'s ISO-compliant PDF redaction engine permanently excises sensitive text glyphs and pixels from the file binary in seconds — providing permanent blackout protection and reliable data privacy.',
       'No registration. No watermarks. No fees. Drop your PDF above and permanently redact your sensitive information immediately.'
     ]
   },
@@ -9292,7 +9292,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Zero-Trace Privacy Architecture',
-        desc: 'Files run in ephemeral memory sandboxes and are permanently overwritten from server storage after 120 minutes with zero AI model training.'
+        desc: 'Files are processed on server infrastructure and expire after 120 minutes with zero AI model training.'
       }
     ],
     benefitsHeading: 'Why Choose Convertly to Flatten PDF Files?',
@@ -9325,13 +9325,13 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     securityHeading: 'Anti-Tampering & Legal Document Integrity',
     securityParagraphs: [
       'When finalizing legal contracts, leases, or loan documents, guaranteeing that counter-parties cannot alter agreed-upon terms is paramount. Convertly provides the highest standard of document integrity.',
-      'All data transfers are encrypted with TLS 1.3 and 256-bit AES ciphers. Processing occurs inside isolated, ephemeral memory containers. The interactive widgets are merged into the vector drawing stream and the interactive dictionaries are purged. Exactly 120 minutes after conversion, automated cryptographic shredders permanently overwrite all source and flattened files. Convertly never views, logs, or uses your files for AI model training.'
+      'All data transfers are encrypted with TLS 1.3 and 256-bit AES ciphers. Processing occurs via automated server-side processing. The interactive widgets are merged into the vector drawing stream and the interactive dictionaries are purged. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage. Convertly never views, logs, or uses your files for AI model training.'
     ],
     certifications: [
       'ISO 32000-1 Static Vector Baking Standard',
       'TLS 1.3 256-Bit SSL Transport Security',
-      'Automated 120-Minute Ephemeral File Shredding',
-      'Anti-Tampering Document Integrity Compliant',
+      'Automated 120-Minute File Deletion',
+      'Anti-Tampering Document Integrity',
       'Zero AI Model Training Guarantee'
     ],
     performanceHeading: 'Engine Benchmarks & Technical Metrics',
@@ -9423,8 +9423,8 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'No credit cards required, no daily quotas, no page count ceilings, and zero third-party watermarks stamped onto your documents.'
       },
       {
-        title: 'Ephemeral Zero-Knowledge Processing',
-        desc: 'Your files are processed in sandboxed memory and automatically purged after 120 minutes with zero AI model training.'
+        title: 'Temporary Server-Side Processing',
+        desc: 'Your files are processed on server infrastructure and expire after 120 minutes with zero AI model training.'
       }
     ],
     faqsHeading: 'Frequently Asked Questions About Flattening PDFs',
@@ -9459,7 +9459,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my uploaded files safe during the flattening process?',
-        answer: 'Yes. All uploads and downloads are protected via TLS 1.3 with 256-bit AES encryption. Files are processed in isolated sandbox environments and permanently deleted after 120 minutes with zero AI model training.'
+        answer: 'Yes. All uploads and downloads are protected via TLS 1.3 with 256-bit AES encryption. Files are processed via automated server-side routines and expire after 120 minutes, with periodic cleanup removing expired files.'
       },
       {
         question: 'Does flattening reduce the file size of a PDF?',
@@ -9475,7 +9475,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         id: 'pdf-protect',
         name: 'Protect PDF',
         actionText: 'Encrypt Flattened PDF',
-        desc: 'Lock down your flattened document with bank-grade AES-256 password protection.',
+        desc: 'Protect your flattened document with standard AES-256 password protection.',
         category: 'PDF' as const
       },
       {
@@ -9641,7 +9641,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Ensures advanced hex editors and forensic carving utilities cannot recover previously deleted author or timestamp fragments.'
       },
       {
-        title: 'Automated Ephemeral Deletion',
+        title: 'Automated File Deletion',
         desc: 'Uploaded and processed documents are automatically shredded and permanently wiped from our servers after 120 minutes.'
       }
     ],
@@ -9680,13 +9680,13 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       { ext: '.pdf', name: 'Sanitized Portable Document Format', mime: 'application/pdf' }
     ],
     formatNotes: 'Scrubbing is lossless with respect to document visual rendering. Fonts, text formatting, vector paths, form fields, and images remain identical while hidden metadata packets are expunged.',
-    securityHeading: 'Military-Grade Security & Privacy Architecture',
+    securityHeading: 'Document Security & Privacy Architecture',
     securityParagraphs: [
       'Metadata scrubbing is an operational security function, and Convertly treats your data with maximum rigor. All uploads and downloads occur over end-to-end TLS 1.3 cryptographic channels with modern forward secrecy cipher suites.',
-      'Our processing engine operates within isolated, memory-only execution environments. Documents are read, sanitized at the binary object stream level, deflated, and written to secure temporary storage without telemetry inspection or logging.',
-      'We operate under a strict Zero AI Model Training guarantee: your files are never indexed, analyzed, shared, or used for machine learning. All documents are permanently shredded after 120 minutes.'
+      'Our processing engine operates via automated server-side processing. Documents are read, sanitized at the binary object stream level, deflated, and temporarily stored on server disk without telemetry inspection or logging.',
+      'We operate under a strict Zero AI Model Training guarantee: your files are never indexed, analyzed, shared, or used for machine learning. All documents are automatically deleted after 120 minutes.'
     ],
-    certifications: ['ISO/IEC 27001 Certified', 'GDPR Article 17 Compliant', 'SOC 2 Type II Compliant Host', 'Zero AI Training Guarantee'],
+    certifications: ['120-Minute Temporary File Retention', 'Privacy-Focused File Processing', 'TLS-Protected File Transfers', 'Zero AI Training Guarantee'],
     performanceHeading: 'Technical Specifications & Performance Metrics',
     specs: [
       { label: 'Sanitization Engine', value: 'PyMuPDF C-Compiled Core', detail: 'Native set_metadata and deep scrub API execution' },
@@ -9776,8 +9776,8 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Sanitize documents immediately without registration, credit cards, or invasive corporate tracking.'
       },
       {
-        title: 'Zero-Trace Ephemeral Privacy',
-        desc: 'Memory-only conversion pipelines and automatic 120-minute server purges guarantee your sensitive files leave no footprint.'
+        title: 'Temporary File Retention',
+        desc: 'Automated server-side processing pipelines and 120-minute file retention protect your document privacy.'
       }
     ],
     faqsHeading: 'Frequently Asked Questions About Scrubbing PDF Metadata',
@@ -9812,7 +9812,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Does Convertly inspect or read the contents of my PDF during the scrub process?',
-        answer: 'Never. Our backend processing pipeline executes in an isolated memory buffer without human intervention, telemetry logging, or content indexing. Your documents are never opened, read, or analyzed.'
+        answer: 'Never. Our backend processing pipeline executes automated server-side transformations without human intervention, telemetry logging, or content indexing. Your documents are never opened, read, or analyzed.'
       },
       {
         question: 'Is PDF metadata scrubbing the same as PDF redaction?',
@@ -9828,7 +9828,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'How long does Convertly retain my scrubbed files on the server?',
-        answer: 'All uploaded and scrubbed files are automatically and irreversibly deleted from our secure servers after exactly 120 minutes. You can also delete them manually immediately after downloading.'
+        answer: 'All uploaded and scrubbed files are automatically deleted from our servers after 120 minutes.'
       }
     ],
     relatedToolIds: ['pdf-redact', 'pdf-protect', 'pdf-flatten', 'pdf-compress', 'pdf-to-txt', 'pdf-unlock', 'pdf-merge', 'pdf-to-word'],
@@ -9944,7 +9944,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Eliminates all vector bloat, embedded fonts, and raster images, shrinking 50 MB PDFs into compact kilobyte text files.'
       },
       {
-        title: 'Zero Data Retention Policy',
+        title: '120-Minute Temporary Retention Policy',
         desc: 'Your documents and extracted text are processed in memory and permanently deleted from our servers after 120 minutes.'
       }
     ],
@@ -9986,10 +9986,10 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     securityHeading: 'Enterprise Privacy & Zero AI Training Commitment',
     securityParagraphs: [
       'Document privacy is foundational to Convertly. All file transfers are secured with TLS 1.3 encryption with Perfect Forward Secrecy. We do not require accounts, user profiles, or personal data to extract text.',
-      'Extracted text streams are processed entirely within isolated temporary worker runtimes. Your text is never written to public databases, inspected by human reviewers, or shared with third-party aggregators.',
+      'Extracted text streams are processed entirely within automated server-side runtimes. Your text is never written to public databases, inspected by human reviewers, or shared with third-party aggregators.',
       'Convertly strictly adheres to a Zero AI Model Training guarantee: your proprietary documentation, code, and text are never used to train machine learning models. Files are permanently wiped after 120 minutes.'
     ],
-    certifications: ['ISO/IEC 27001 Certified', 'GDPR Article 17 Compliant', 'SOC 2 Type II Compliant Host', 'Zero AI Training Guarantee'],
+    certifications: ['120-Minute Temporary File Retention', 'Privacy-Focused File Processing', 'TLS-Protected File Transfers', 'Zero AI Training Guarantee'],
     performanceHeading: 'Technical Specifications & Performance Metrics',
     specs: [
       { label: 'Extraction Core', value: 'PyMuPDF C-Compiled Engine', detail: 'Low-level page.get_text stream traversal' },
@@ -10289,10 +10289,10 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     securityHeading: 'Enterprise Security & Strict Privacy Architecture',
     securityParagraphs: [
       'Document security is paramount. Convertly encrypts all uploads and downloads using TLS 1.3 with Perfect Forward Secrecy. We do not require accounts, logins, or personal details to convert documents.',
-      'Our processing engine operates in isolated memory runtimes. Documents are rendered into monochrome raster streams, compressed, and written to secure temporary storage without logging or metadata harvesting.',
-      'Convertly strictly enforces a Zero AI Model Training policy: your documents are never analyzed, shared, or used to train machine learning systems. All files are permanently shredded after 120 minutes.'
+      'Our processing engine operates via automated server-side runtimes. Documents are rendered into monochrome raster streams, compressed, and written to secure temporary storage without logging or metadata harvesting.',
+      'Convertly strictly enforces a Zero AI Model Training policy: your documents are never analyzed, shared, or used to train machine learning systems. All files are automatically deleted after 120 minutes.'
     ],
-    certifications: ['ISO/IEC 27001 Certified', 'GDPR Article 17 Compliant', 'SOC 2 Type II Compliant Host', 'Zero AI Training Guarantee'],
+    certifications: ['120-Minute Temporary File Retention', 'Privacy-Focused File Processing', 'TLS-Protected File Transfers', 'Zero AI Training Guarantee'],
     performanceHeading: 'Technical Specifications & Performance Metrics',
     specs: [
       { label: 'Color Conversion Engine', value: 'PyMuPDF C-Compiled Core', detail: 'Native DeviceGray (fitz.csGRAY) raster transformation' },
@@ -10434,7 +10434,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'How long are my documents stored on Convertly\'s servers?',
-        answer: 'All uploaded and converted files are automatically and permanently deleted from our servers after exactly 120 minutes. You can also delete them manually immediately after downloading.'
+        answer: 'All uploaded and converted files are automatically deleted from our servers after 120 minutes.'
       }
     ],
     relatedToolIds: ['pdf-compress', 'pdf-merge', 'pdf-protect', 'pdf-to-images', 'pdf-flatten', 'pdf-split', 'images-to-pdf', 'word-to-pdf'],
@@ -10547,7 +10547,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Automatic Temporary File Deletion',
-        desc: 'Files are processed in temporary server environments and automatically deleted after 120 minutes, with no persistent storage of document contents.'
+        desc: 'Files are processed in temporary server environments and automatically deleted after 120 minutes, with no permanent storage of document contents.'
       }
     ],
     benefitsHeading: 'Benefits of Converting PDF to Excel with Convertly',
@@ -10754,11 +10754,11 @@ export function getToolSeoContent(toolId: string, toolName?: string, toolCategor
   // Clean, unique target keywords & metadata
   const keywords = existing?.keywords || generateToolKeywords(toolId, name)
   const metaTitle = existing?.metaTitle || `${name} Online — Free ${category} Converter | Convertly`
-  const metaDescription = existing?.metaDescription || `Use Convertly’s free online ${name} tool. Fast, secure, and accurate ${category.toLowerCase()} processing with zero data retention and no registration required.`
+  const metaDescription = existing?.metaDescription || `Use Convertly’s free online ${name} tool. Fast, secure, and accurate ${category.toLowerCase()} processing with 120-minute temporary file retention and no registration required.`
   const badge = existing?.badge || `${name} Engine`
 
   const introHeading = existing?.introHeading || `Enterprise-Grade ${name} Online Tool`
-  const introText = existing?.introText || `Convertly’s ${name} provides high-fidelity, private, and instant ${category.toLowerCase()} document processing. Built on native server-side transformation engines with zero data retention, our platform delivers pixel-perfect fidelity without file limits or watermarks.`
+  const introText = existing?.introText || `Convertly’s ${name} provides high-fidelity, private, and instant ${category.toLowerCase()} document processing. Built on native server-side transformation engines with 120-minute temporary file retention, our platform delivers pixel-perfect fidelity without file limits or watermarks.`
 
   const whatIsHeading = existing?.whatIsHeading || `What is Convertly’s ${name} Tool?`
   const whatIsParagraphs = existing?.whatIsParagraphs || generateWhatIsParagraphs(toolId, name, category)
@@ -10783,16 +10783,16 @@ export function getToolSeoContent(toolId: string, toolName?: string, toolCategor
   const outputFormats = existing?.outputFormats || inferOutputFormats(toolId)
   const formatNotes = existing?.formatNotes || `Fully compatible with international document and graphic specifications. Supports batch uploads up to 100MB per session.`
 
-  const securityHeading = existing?.securityHeading || `Enterprise Security & Zero-Retention Architecture`
+  const securityHeading = existing?.securityHeading || `Enterprise Security & Temporary Retention Architecture`
   const securityParagraphs = existing?.securityParagraphs || [
     `At Convertly, document confidentiality is treated as a fundamental requirement. When you process files using ${name}, all data transfers are encrypted using TLS 1.3 with 256-bit cryptographic protocols.`,
-    `Under our strict Zero-Retention Policy, your source documents and converted results are stored exclusively in isolated, temporary sandboxes. Exactly 120 minutes after upload, automated background shredders permanently destroy all file blocks from our servers. We never read, analyze, share, or train AI models on your private data.`
+    `Under our temporary retention policy, your source documents and converted results are stored temporarily on server disk. Exactly 120 minutes after processing, automated background routines delete all uploaded and converted files from our servers. We never read, analyze, share, or train AI models on your private data.`
   ]
   const certifications = existing?.certifications || [
-    'Automated 120-Minute Cryptographic File Shredder',
+    'Automated 120-Minute File Deletion',
     'TLS 1.3 Transport Encryption Protocol',
     'Zero AI Model Training Guarantee',
-    'GDPR Article 17 Right to Erasure Compliant'
+    'Privacy-Focused File Processing'
   ]
 
   const performanceHeading = existing?.performanceHeading || `Performance & Technical Benchmarks`
@@ -10964,7 +10964,7 @@ function generateWhatIsParagraphs(_id: string, name: string, category: 'PDF' | '
   if (category === 'Images') {
     return [
       `Convertly’s ${name} is a high-performance visual processing utility engineered to transform, optimize, and re-encode raster graphics directly within modern web browsers. Powered by the native Python Pillow and WebP libraries, our engine executes pixel transformations with mathematical precision without introducing blurriness or compression noise.`,
-      `Unlike basic JavaScript canvas converters that strip color profiles and degrade image clarity, Convertly preserves ICC color spaces, EXIF metadata (when requested), and transparency channels. Every graphic is processed in an isolated sandbox, ensuring lightning-fast execution and total data privacy.`,
+      `Unlike basic JavaScript canvas converters that strip color profiles and degrade image clarity, Convertly preserves ICC color spaces, EXIF metadata (when requested), and transparency channels. Every graphic is processed via automated server-side routines, ensuring fast execution and reliable data privacy.`,
       `Whether you are optimizing photography for high-speed e-commerce storefronts, preparing marketing assets for social media, or converting legacy graphics for cross-platform compatibility, Convertly delivers studio-grade results in seconds.`
     ]
   }
@@ -10972,7 +10972,7 @@ function generateWhatIsParagraphs(_id: string, name: string, category: 'PDF' | '
   if (category === 'Office') {
     return [
       `Convertly’s ${name} is an enterprise document conversion tool built to bridge office productivity software (Microsoft Word, Excel, PowerPoint) and standardized Adobe PDF specifications. Operating entirely in the cloud, our conversion infrastructure handles complex formatting, embedded fonts, vector paths, and high-resolution imagery with zero degradation.`,
-      `Powered by headless LibreOffice engines and high-speed PyMuPDF rasterizers, Convertly bypasses the visual glitches, misaligned margins, and missing font errors common in lightweight browser utilities. Every file is processed inside sandboxed worker environments with strict memory management.`,
+      `Powered by headless LibreOffice engines and high-speed PyMuPDF rasterizers, Convertly bypasses the visual glitches, misaligned margins, and missing font errors common in lightweight browser utilities. Every file is processed via automated server-side processing with resource monitoring.`,
       `Whether you are publishing corporate presentations, preparing audited financial spreadsheets, or sharing executive memos, Convertly guarantees publication-ready fidelity without subscription fees or software installations.`
     ]
   }
@@ -11083,7 +11083,7 @@ function generateSteps(_id: string, _name: string): ToolStep[] {
     {
       number: 3,
       title: `Execute High-Speed Processing`,
-      desc: `Click "Process File Now". Our native server engine completes the transformation inside an isolated, encrypted worker container.`
+      desc: `Click "Process File Now". Our native server engine completes the transformation via automated server-side processing.`
     },
     {
       number: 4,
@@ -11133,8 +11133,8 @@ function generateBenefits(_id: string, _name: string, _category: 'PDF' | 'Office
       desc: `Avoid installing untrusted third-party executable software on your computer. All processing happens safely in the cloud.`
     },
     {
-      title: `Enterprise Privacy & Compliance`,
-      desc: `Meets European GDPR Article 17 and global data protection standards with automated cryptographic file shredding.`
+      title: `Privacy & Data Protection Principles`,
+      desc: `Our privacy approach emphasizes data minimization, purpose-limited file processing, and automated 120-minute file deletion.`
     },
     {
       title: `Universal Standard Compatibility`,
@@ -11184,7 +11184,7 @@ function generateSpecs(_id: string, category: 'PDF' | 'Office' | 'Images'): Tool
     { label: 'Engine Core', value: engine, detail: 'High-speed native compiled execution' },
     { label: 'Average Execution Time', value: '< 2.2 Seconds', detail: 'Parallel worker processing architecture' },
     { label: 'Max File Capacity', value: '100 MB per Session', detail: 'Generous limit for heavy graphics and documents' },
-    { label: 'Retention SLA', value: '120 Minutes Auto-Shredding', detail: 'Strict zero-retention privacy policy' }
+    { label: 'Retention Policy', value: '120-Minute Retention', detail: 'Automated expired file deletion' }
   ]
 }
 
@@ -11284,7 +11284,7 @@ function generateTroubleshooting(_id: string, _name: string, _category: 'PDF' | 
     },
     {
       problem: `Will using this tool compromise my private data?`,
-      solution: `No. All operations run over TLS 1.3 encrypted connections. Files are stored in sandboxed temporary memory and are permanently shredded after 120 minutes.`
+      solution: `No. All operations run over TLS 1.3 encrypted connections. Files are stored temporarily on server storage and are automatically deleted after 120 minutes.`
     }
   ]
 }
@@ -11300,7 +11300,7 @@ function generateComprehensiveFaqs(_id: string, name: string, category: 'PDF' | 
     },
     {
       question: `How long are my uploaded files stored on your servers?`,
-      answer: `Under our strict Zero-Retention Policy, all uploaded files and converted outputs are stored exclusively in temporary sandboxed storage and are permanently and irreversibly shredded after 120 minutes.`
+      answer: `Under our temporary retention policy, all uploaded files and converted outputs are stored temporarily on server storage and are automatically deleted after 120 minutes.`
     },
     {
       question: `Will my file formatting, fonts, or image quality be lost?`,

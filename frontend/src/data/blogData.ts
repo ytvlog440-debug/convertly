@@ -309,10 +309,10 @@ export const BLOG_POSTS_DATA: Record<string, BlogPost> = {
 
   'zero-retention-architecture-in-modern-file-converters': {
     slug: 'zero-retention-architecture-in-modern-file-converters',
-    title: 'Zero-Retention Architecture: Protecting Document Privacy in the Cloud',
-    metaDescription: 'How Convertly protects sensitive user documents with TLS 1.3 encryption, isolated worker containers, and automated 120-minute file shredding.',
-    keywords: 'zero retention file converter, pdf converter privacy, gdpr compliant document conversion, automated file shredding',
-    h1: 'Zero-Retention Architecture in Modern File Converters',
+    title: 'Temporary Retention Architecture: Protecting Document Privacy in the Cloud',
+    metaDescription: 'How Convertly protects sensitive user documents with TLS encryption, automated server-side processing, and 120-minute temporary file retention.',
+    keywords: 'temporary file retention converter, pdf converter privacy, privacy-conscious document conversion, automated file deletion',
+    h1: 'Temporary Retention Architecture in Modern File Converters',
     category: 'Privacy',
     publishDate: 'September 2026',
     readTime: '7 min read',
@@ -322,11 +322,11 @@ export const BLOG_POSTS_DATA: Record<string, BlogPost> = {
       avatarInitials: 'AD'
     },
     searchIntent: 'Informational',
-    lead: 'When uploading contracts, medical paperwork, or financial reports to a web converter, document privacy is paramount. Here is how modern zero-retention architectures safeguard data.',
+    lead: 'When uploading contracts, medical paperwork, or financial reports to a web converter, document privacy is paramount. Here is how modern temporary-retention architectures safeguard data.',
     keyTakeaways: [
-      'Files should never be stored in persistent database rows or shared storage volumes.',
-      'Cryptographic 120-minute shredding ensures complete compliance with GDPR Article 17.',
-      'Isolated sandbox worker containers prevent cross-tenant data contamination.',
+      'Files should never be stored in persistent long-term storage or exposed publicly.',
+      'Automated 120-minute temporary retention ensures prompt removal of expired files.',
+      'Automated server-side processing tasks prevent data contamination.',
       'A strict Zero AI Training policy guarantees proprietary data is never harvested.'
     ],
     contentSections: [
@@ -338,10 +338,10 @@ export const BLOG_POSTS_DATA: Record<string, BlogPost> = {
         ]
       },
       {
-        heading: 'How Convertly’s 120-Minute Shredder Operates',
+        heading: 'How Convertly’s 120-Minute Retention Policy Operates',
         paragraphs: [
-          'At Convertly, every file is written to an ephemeral tmpfs memory-backed filesystem with restricted permissions. A dedicated background cron daemon monitors file creation timestamps.',
-          'At exactly 120 minutes post-processing, the file is unlinked, overwritten with zero-blocks, and permanently purged from server memory.'
+          'At Convertly, uploaded and converted files are stored in temporary server storage with restricted access permissions. A dedicated background cleanup service runs approximately every 10 minutes.',
+          'Files become inaccessible immediately after their 120-minute expiration threshold. The periodic cleanup service unlinks expired physical files from active server storage, ensuring documents are not permanently retained.'
         ]
       }
     ],
@@ -352,10 +352,10 @@ export const BLOG_POSTS_DATA: Record<string, BlogPost> = {
 
   'security-defense-in-depth-document-pipeline': {
     slug: 'security-defense-in-depth-document-pipeline',
-    title: 'Security Defense-in-Depth: Sandboxing Untrusted Document Pipelines',
-    metaDescription: 'A technical analysis of document processing vulnerabilities (Buffer Overflows, Ghostscript CVEs) and how defense-in-depth sandboxing mitigates them.',
+    title: 'Security Defense-in-Depth: Protecting Document Processing Pipelines',
+    metaDescription: 'A technical analysis of document processing vulnerabilities (Buffer Overflows, Ghostscript CVEs) and how defense-in-depth architecture mitigates them.',
     keywords: 'document conversion security, pdf parser vulnerabilities, sandboxing ghostscript, magic byte validation',
-    h1: 'Defense-in-Depth: Sandboxing Untrusted Document Pipelines',
+    h1: 'Defense-in-Depth: Protecting Document Processing Pipelines',
     category: 'Security',
     publishDate: 'September 2026',
     readTime: '8 min read',
@@ -380,9 +380,9 @@ export const BLOG_POSTS_DATA: Record<string, BlogPost> = {
         ]
       },
       {
-        heading: 'Container Sandboxing and Subprocess Hardening',
+        heading: 'Server-Side Processing and Input Validation',
         paragraphs: [
-          'All conversion workers run under unprivileged system users with dropped root capabilities, read-only root filesystems, and strict memory ceilings (RLIMIT_AS). Even if a malicious PDF attempts an exploit, it is trapped inside a disposable sandbox.'
+          'All conversion tasks run automated background processing with strict input validation and resource monitoring. Even if a malformed or corrupted document attempts processing, it is rejected during header inspection.'
         ]
       }
     ],
@@ -450,7 +450,7 @@ export const BLOG_POSTS_DATA: Record<string, BlogPost> = {
     keyTakeaways: [
       'Convertly eliminates $240/year recurring subscriptions for standard PDF tasks.',
       'No mandatory Adobe ID account creation or marketing spam.',
-      'Zero-retention auto-shredder protects documents from permanent cloud storage.',
+      'Temporary 120-minute retention protects documents from permanent cloud storage.',
       'Native compiled PyMuPDF backend delivers sub-2-second conversions.'
     ],
     contentSections: [

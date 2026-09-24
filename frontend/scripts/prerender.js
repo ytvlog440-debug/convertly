@@ -58,7 +58,7 @@ const TOOLS = [
     name: 'Word to PDF',
     category: 'Office',
     title: 'Word to PDF Converter — Convert DOCX & DOC to PDF Online Free',
-    description: 'Convert Microsoft Word (DOCX, DOC) to PDF online for free. Preserves exact fonts, margins, vector tables, and headers with zero data retention.',
+    description: 'Convert Microsoft Word (DOCX, DOC) to PDF online for free. Preserves exact fonts, margins, vector tables, and headers with 120-minute temporary file retention.',
     keywords: 'word to pdf, convert word to pdf, docx to pdf, doc to pdf, free word to pdf converter, convertly',
     badge: 'Pixel-Perfect Vector PDF',
     summary: 'Convert Word documents (DOCX, DOC) into universal, standardized PDF files with 100% layout and font preservation.',
@@ -77,7 +77,7 @@ const TOOLS = [
     name: 'Merge PDF',
     category: 'PDF',
     title: 'Merge PDF Online — Combine Multiple PDF Files Free | Convertly',
-    description: 'Combine and merge multiple PDF documents into a single organized file in seconds. Drag to reorder pages with zero data retention and no file size limits.',
+    description: 'Combine and merge multiple PDF documents into a single organized file in seconds. Drag to reorder pages with 120-minute temporary file retention and no file size limits.',
     keywords: 'merge pdf, combine pdf, join pdf files, merge pdf online free, pdf joiner, convertly',
     badge: 'Multi-File Drag & Drop',
     summary: 'Merge multiple PDF documents into a single cohesive, high-speed vector PDF with intuitive drag-and-drop ordering.',
@@ -116,7 +116,7 @@ const TOOLS = [
     name: 'Split PDF',
     category: 'PDF',
     title: 'Split PDF Online — Extract Pages from PDF Free | Convertly',
-    description: 'Split PDF files into individual pages or extract custom page ranges online for free. Fast, secure, and private with zero data retention.',
+    description: 'Split PDF files into individual pages or extract custom page ranges online for free. Fast, secure, and private with 120-minute temporary file retention.',
     keywords: 'split pdf, extract pdf pages, separate pdf, cut pdf pages, split pdf online free, convertly',
     badge: 'Precision Page Splitter',
     summary: 'Extract specific pages or page ranges from any PDF document into individual files or a consolidated custom document.',
@@ -272,7 +272,7 @@ const TOOLS = [
     name: 'Delete PDF Pages',
     category: 'PDF',
     title: 'Delete PDF Pages Online — Remove Unwanted Pages from PDF Free',
-    description: 'Remove unwanted or blank pages from any PDF document online for free. Specify page numbers or ranges with instant output and zero data retention.',
+    description: 'Remove unwanted or blank pages from any PDF document online for free. Specify page numbers or ranges with instant output and 120-minute temporary file retention.',
     keywords: 'delete pdf pages, remove pages from pdf, cut pages pdf, delete pages from pdf free, convertly',
     badge: 'Instant Page Removal',
     summary: 'Quickly remove sensitive, blank, or unwanted pages from your PDF documents.',
@@ -326,7 +326,7 @@ const TOOLS = [
     name: 'JPG to PNG',
     category: 'Images',
     title: 'JPG to PNG Converter — Convert JPEG to PNG Online Free | Convertly',
-    description: 'Convert JPG images to lossless PNG format online for free. Support high bit-depth and transparency preparation with zero data retention.',
+    description: 'Convert JPG images to lossless PNG format online for free. Support high bit-depth and transparency preparation with 120-minute temporary file retention.',
     keywords: 'jpg to png, convert jpeg to png, image converter, picture converter, free jpg to png, convertly',
     badge: 'Lossless PNG Conversion',
     summary: 'Convert compressed JPEG photos into high-fidelity PNG graphic files without quality degradation.',
@@ -488,9 +488,9 @@ const TOOLS = [
     name: 'Protect PDF',
     category: 'PDF',
     title: 'Protect PDF Online — Encrypt PDF with AES-256 Password Free',
-    description: 'Password-protect PDF files online with military-grade AES-256 encryption. Prevent unauthorized viewing, printing, and copying with zero retention.',
+    description: 'Password-protect PDF files online with standard AES-256 document encryption. Prevent unauthorized viewing, printing, and copying with 120-minute temporary file retention.',
     keywords: 'protect pdf, encrypt pdf, password protect pdf, lock pdf, secure pdf online free, convertly',
-    badge: 'AES-256 Military Encryption',
+    badge: 'Standard AES-256 Encryption',
     summary: 'Add robust user passwords and permission restrictions to sensitive documents with standard AES-256 encryption.',
     steps: [
       { number: 1, title: 'Upload PDF', desc: 'Select the document you want to secure.' },
@@ -1004,7 +1004,7 @@ const homeFallbackBody = `
               <span class="gradient-text">for PDF, Word, Excel, Images and More</span>
             </h1>
             <p class="mx-auto mt-6 max-w-2xl text-base sm:text-lg text-muted-foreground leading-relaxed">
-              Convert, compress, and edit PDF, Word, Excel, PowerPoint, and images with pixel-perfect output fidelity. Powered by native document engines with guaranteed zero data retention.
+              Convert, compress, and edit PDF, Word, Excel, PowerPoint, and images with pixel-perfect output fidelity. Powered by native document engines with 120-minute temporary file retention.
             </p>
           </div>
         </section>
@@ -1210,7 +1210,7 @@ function renderBlogPostHtml(post) {
         <div>
           <span class="text-xs font-bold text-indigo-400 uppercase">Try It In Action:</span>
           <h3 class="text-base font-bold text-foreground">${post.recommendedToolName}</h3>
-          <p class="text-xs text-muted-foreground">Execute your workflow in seconds with zero data retention.</p>
+          <p class="text-xs text-muted-foreground">Execute your workflow in seconds with 120-minute temporary file retention.</p>
         </div>
         <a href="/tools/${post.recommendedToolId}" class="inline-flex items-center gap-1.5 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-semibold text-white hover:bg-indigo-500">Launch Tool Now</a>
       </div>
@@ -1606,27 +1606,27 @@ function renderUseCaseHtml(uc) {
 function renderPrivacyHtml() {
   const canonicalUrl = `${BASE_DOMAIN}/privacy`
   const title = 'Privacy Policy — 120-Minute Auto-Shredder Guarantee | Convertly'
-  const desc = 'Convertly Privacy Policy. Strict zero-retention guarantee, 120-minute automated file shredding, TLS 1.3 encryption, and GDPR compliance.'
+  const desc = 'Convertly Privacy Policy. 120-minute temporary file retention, automated file cleanup, TLS transport security, and privacy-focused document processing.'
 
   const bodyContent = `
     <div class="py-12 md:py-16 text-foreground">
       <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-2xl mx-auto mb-12">
           <div class="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-semibold text-emerald-400 mb-4">
-            <span>Zero Permanent Retention</span>
+            <span>120-Minute Temporary File Retention</span>
           </div>
           <h1 class="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
             Privacy Policy & Data Protection
           </h1>
           <p class="mt-3 text-sm text-muted-foreground leading-relaxed">
-            At Convertly V2, your documents belong strictly to you. We engineered our platform from day one with a zero-knowledge, zero-retention architecture.
+            At Convertly V2, your documents belong strictly to you. We engineered our platform with privacy-focused, 120-minute temporary file retention.
           </p>
           <p class="mt-1 text-xs text-muted-foreground">Effective Date: September 10, 2026 • Version 2.0</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
           <div class="rounded-2xl p-6 border border-emerald-500/20 bg-card/60">
-            <h2 class="font-heading text-sm font-bold text-foreground">120-Minute TTL Shredder</h2>
-            <p class="mt-2 text-xs text-muted-foreground leading-relaxed">Every uploaded and converted file is assigned a strict 120-minute Time-To-Live. Our automated cleaner overwrites bytes and deletes all storage records.</p>
+            <h2 class="font-heading text-sm font-bold text-foreground">120-Minute Retention Policy</h2>
+            <p class="mt-2 text-xs text-muted-foreground leading-relaxed">Files expire after 120 minutes. Download access is blocked at expiry, and periodic cleanup removes expired file content from active server storage.</p>
           </div>
           <div class="rounded-2xl p-6 border border-indigo-500/20 bg-card/60">
             <h2 class="font-heading text-sm font-bold text-foreground">No File Inspection</h2>
@@ -1643,8 +1643,8 @@ function renderPrivacyHtml() {
             <p>When using Convertly V2, you provide files solely for the purpose of executing the file transformation you have requested. We do not require account registration, email addresses, credit card details, or personal profile data.</p>
           </section>
           <section>
-            <h2 class="font-heading text-base font-bold text-foreground mb-3">2. Automated Document Shredding & Retention Policy</h2>
-            <p>All documents are stored in temporary, isolated directory structures with a maximum retention lifespan of exactly 120 minutes (2 hours). Our automated background cleaner removes all files and database records permanently.</p>
+            <h2 class="font-heading text-base font-bold text-foreground mb-3">2. Automated Document Deletion & Retention Policy</h2>
+            <p>Files are stored temporarily on server infrastructure during processing. Files expire after 120 minutes. Download access is blocked at expiry, and periodic cleanup unlinks expired files from the filesystem approximately every 10 minutes. Operational database records are soft-deleted.</p>
           </section>
           <section>
             <h2 class="font-heading text-base font-bold text-foreground mb-3">3. Encryption & In-Transit Security Standards</h2>
@@ -1655,8 +1655,8 @@ function renderPrivacyHtml() {
             <p>We do not sell user data, utilize behavioral tracking cookies, or use customer documents to train artificial intelligence or machine learning models.</p>
           </section>
           <section>
-            <h2 class="font-heading text-base font-bold text-foreground mb-3">5. GDPR & Cross-Border Compliance</h2>
-            <p>Convertly V2 adheres to core GDPR privacy-by-design principles: data minimization, purpose limitation, and immediate storage limitation.</p>
+            <h2 class="font-heading text-base font-bold text-foreground mb-3">5. Data Privacy Principles</h2>
+            <p>Our privacy approach emphasizes data minimization, purpose-limited file processing, and limited file retention.</p>
           </section>
         </div>
       </div>
@@ -1680,14 +1680,14 @@ function renderPrivacyHtml() {
 function renderSecurityHtml() {
   const canonicalUrl = `${BASE_DOMAIN}/security`
   const title = 'Security Architecture & Defense-in-Depth | Convertly'
-  const desc = 'Learn how Convertly protects your confidential documents with TLS 1.3, sandboxed subprocesses, magic-byte inspection, and automated shredding.'
+  const desc = 'Learn how Convertly protects your confidential documents with TLS transport security, server-side processing, file validation, and automated deletion.'
 
   const bodyContent = `
     <div class="py-12 md:py-16 text-foreground">
       <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-2xl mx-auto mb-10">
           <div class="inline-flex items-center gap-2 rounded-full border border-cyan-500/30 bg-cyan-500/10 px-3.5 py-1 text-xs font-semibold text-cyan-400 mb-4">
-            <span>Bank-Grade Architecture</span>
+            <span>Security-Focused Architecture</span>
           </div>
           <h1 class="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
             Security Architecture & Defense
@@ -1702,12 +1702,12 @@ function renderSecurityHtml() {
             <p class="mt-2 text-xs text-muted-foreground leading-relaxed">All browser-to-server traffic is mandated over TLS 1.3 with Perfect Forward Secrecy (PFS) and strict HSTS headers.</p>
           </div>
           <div class="rounded-2xl p-6 border border-border/80 bg-card/60">
-            <h2 class="font-heading text-sm font-bold text-foreground">Ephemeral Subprocess Sandboxing</h2>
-            <p class="mt-2 text-xs text-muted-foreground leading-relaxed">Document transformation drivers execute in strictly isolated ephemeral worker processes with capped CPU and memory limits.</p>
+            <h2 class="font-heading text-sm font-bold text-foreground">Automated Server-Side Processing</h2>
+            <p class="mt-2 text-xs text-muted-foreground leading-relaxed">Document transformation engines execute in server environments with automated file validation and resource monitoring.</p>
           </div>
           <div class="rounded-2xl p-6 border border-border/80 bg-card/60">
-            <h2 class="font-heading text-sm font-bold text-foreground">Automated Multi-Pass Shredding</h2>
-            <p class="mt-2 text-xs text-muted-foreground leading-relaxed">Worker cron jobs run every 10 minutes to wipe expired documents, unlinking files from disk and pruning database records.</p>
+            <h2 class="font-heading text-sm font-bold text-foreground">Automated File Deletion</h2>
+            <p class="mt-2 text-xs text-muted-foreground leading-relaxed">Periodic cleanup tasks run approximately every 10 minutes to unlink expired files from disk storage once their 120-minute retention expires.</p>
           </div>
           <div class="rounded-2xl p-6 border border-border/80 bg-card/60">
             <h2 class="font-heading text-sm font-bold text-foreground">Strict Magic-Byte Inspection</h2>
@@ -1840,7 +1840,7 @@ function renderDevelopersHtml() {
               <code class="text-sm font-semibold text-foreground">/api/v1/files/upload</code>
             </div>
             <h2 class="text-base font-bold text-foreground">1. Ingest & Validate File</h2>
-            <p class="text-xs text-muted-foreground leading-relaxed">Upload a document or image with magic-byte validation and antivirus pre-scanning. Returns a unique file ID with 120-minute expiry.</p>
+            <p class="text-xs text-muted-foreground leading-relaxed">Upload a document or image with magic-byte validation and executable payload checks. Returns a unique file ID with 120-minute expiry.</p>
           </div>
           <div class="rounded-2xl border border-border/80 bg-card/60 p-6 space-y-3">
             <div class="flex items-center gap-2">
@@ -2287,7 +2287,7 @@ const CORE_PAGE_RENDERERS = {
 }
 
 const CORE_PAGES = [
-  { slug: 'privacy', title: 'Privacy Policy — 120-Minute Auto-Shredder Guarantee | Convertly', desc: 'Convertly Privacy Policy. Strict zero-retention guarantee, 120-minute automated file shredding, TLS 1.3 encryption, and GDPR compliance.' },
+  { slug: 'privacy', title: 'Privacy Policy — 120-Minute File Retention Policy | Convertly', desc: 'Convertly Privacy Policy. 120-minute temporary file retention, automated file cleanup, TLS transport security, and privacy-focused document processing.' },
   { slug: 'security', title: 'Security Architecture & Defense-in-Depth | Convertly', desc: 'Learn how Convertly protects your confidential documents with TLS 1.3, sandboxed subprocesses, magic-byte inspection, and automated shredding.' },
   { slug: 'terms', title: 'Terms of Service — Convertly V2 File Conversion', desc: 'Terms and conditions for utilizing Convertly online document and image conversion services.' },
   { slug: 'developers', title: 'Developers API & Architecture — Convertly V2', desc: 'Explore the Convertly V2 REST API documentation, webhook integration guides, and document pipeline specs.' },

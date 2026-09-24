@@ -31,7 +31,7 @@ export function UseCasesIndexPage() {
     <div className="relative min-h-screen py-10 sm:py-16">
       <SeoHead
         title="Document Solutions by Industry & Profession — Convertly Use Cases"
-        description="Tailored PDF and document workflows for Students, Teachers, Businesses, Lawyers, HR, Freelancers, and Designers. Compliant with FERPA, HIPAA, and GDPR."
+        description="Tailored PDF and document workflows for Students, Teachers, Businesses, Lawyers, HR, Freelancers, and Designers. Designed with privacy-conscious document handling."
         keywords="pdf converter by industry, pdf solutions for lawyers, student pdf tools, business document converter, designer image tools"
         canonicalUrl="https://convertlytools.xyz/use-cases"
         pageType="CollectionPage"

@@ -106,7 +106,7 @@ export const PDF_LIFECYCLE_CLUSTER = [
   { id: 'pdf-split', name: 'Split PDF', step: 2, action: 'Extract target chapters, invoices, or distinct sections' },
   { id: 'pdf-compress', name: 'Compress PDF', step: 3, action: 'Reduce megabytes for email attachment or web portal limits' },
   { id: 'pdf-rotate', name: 'Rotate PDF', step: 4, action: 'Correct upside down or sideways scanned pages permanently' },
-  { id: 'pdf-protect', name: 'Protect PDF', step: 5, action: 'Apply AES-256 military-grade password encryption' },
+  { id: 'pdf-protect', name: 'Protect PDF', step: 5, action: 'Apply AES-256 standard password encryption' },
   { id: 'pdf-unlock', name: 'Unlock PDF', step: 6, action: 'Decrypt secured documents with authorized credentials' },
   { id: 'pdf-delete-pages', name: 'Delete Pages', step: 7, action: 'Strip blank or unwanted pages from the final master' },
   { id: 'pdf-extract-pages', name: 'Extract Pages', step: 8, action: 'Isolate key pages into a standalone lightweight document' },

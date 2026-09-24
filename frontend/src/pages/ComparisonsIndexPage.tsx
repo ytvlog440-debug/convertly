@@ -134,10 +134,10 @@ export function ComparisonsIndexPage() {
             <div className="space-y-1">
               <h3 className="text-sm font-semibold text-foreground flex items-center gap-1.5">
                 <ShieldCheck className="h-4 w-4 text-emerald-400" />
-                <span>120-Minute Automated Shredder</span>
+                <span>120-Minute Temporary Retention</span>
               </h3>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Your private documents are held in temporary sandboxed memory and permanently destroyed after 120 minutes with zero data harvesting.
+                Your private documents are stored temporarily on active server storage and automatically removed after 120 minutes with zero data harvesting.
               </p>
             </div>
             <div className="space-y-1">

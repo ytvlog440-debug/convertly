@@ -46,8 +46,8 @@ export function BlogIndexPage() {
     <div className="relative min-h-screen py-10 sm:py-16">
       <SeoHead
         title="Convertly Engineering Blog — Deep Dives in PDF, Office & Image Optimization"
-        description="Explore technical tutorials, format breakdowns, zero-retention security research, and productivity guides from the Convertly document engineering team."
-        keywords="pdf blog, document engineering blog, lossless compression guide, webp vs png, zero retention security"
+        description="Explore technical tutorials, format breakdowns, document privacy research, and productivity guides from the Convertly document engineering team."
+        keywords="pdf blog, document engineering blog, lossless compression guide, webp vs png, file retention security"
         canonicalUrl="https://convertlytools.xyz/blog"
         pageType="CollectionPage"
         breadcrumbs={[

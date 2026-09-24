@@ -262,7 +262,7 @@ const TOOLS_CATALOG: ToolItem[] = [
   {
     id: 'pdf-protect',
     name: 'Protect PDF',
-    desc: 'Encrypt your PDF with bank-grade AES-256 password protection and fine-grained permissions.',
+    desc: 'Encrypt your PDF with standard AES-256 password protection and fine-grained permissions.',
     category: 'PDF',
     icon: Lock,
     color: 'text-rose-500 bg-rose-500/10',
@@ -320,7 +320,7 @@ const TOOLS_CATALOG: ToolItem[] = [
     category: 'PDF',
     icon: ShieldCheck,
     color: 'text-emerald-500 bg-emerald-500/10',
-    badge: 'GDPR / HIPAA'
+    badge: 'Privacy Sanitized'
   },
   {
     id: 'pdf-to-txt',
@@ -362,7 +362,7 @@ const HOME_FAQS = [
   },
   {
     question: "Are my uploaded documents private and secure?",
-    answer: "User privacy is fundamental to our architecture. Files are processed in isolated, transient containerized environments with TLS 1.3 encryption in transit and AES-256 encryption at rest. All uploaded and converted files are automatically shredded and permanently erased after 120 minutes."
+    answer: "User privacy is fundamental to our architecture. Files are processed with TLS transport encryption in transit and stored temporarily on active server storage. All uploaded and converted files are automatically deleted after 120 minutes."
   },
   {
     question: "Does Convertly preserve formatting when converting Word, Excel, and PowerPoint to PDF?",
@@ -395,7 +395,7 @@ const HOMEPAGE_SCHEMAS = [
     name: 'Convertly',
     url: 'https://convertlytools.xyz',
     logo: 'https://convertlytools.xyz/icon.svg',
-    description: 'Enterprise-grade online document and media conversion platform powered by native engines with guaranteed zero data retention.',
+    description: 'Enterprise-grade online document and media conversion platform powered by native engines with 120-minute temporary file retention.',
     sameAs: ['https://github.com/convertly'],
     contactPoint: {
       '@type': 'ContactPoint',
@@ -447,7 +447,7 @@ const HOMEPAGE_SCHEMAS = [
     '@type': 'WebPage',
     name: 'Free Online File Converter — PDF, Office & Images | Convertly',
     url: 'https://convertlytools.xyz',
-    description: 'Convert PDF, Word, Excel, PowerPoint, and images online for free. Fast, secure, and private conversion with zero data retention.'
+    description: 'Convert PDF, Word, Excel, PowerPoint, and images online for free. Fast, secure, and private conversion with 120-minute temporary file retention.'
   }
 ]
 
@@ -547,7 +547,7 @@ export function HomePage() {
     <div className="relative overflow-hidden">
       <SeoHead
         title="Convertly | Free Online PDF, Word, Excel, PowerPoint & Image Converter"
-        description="Free online PDF converter to convert PDF to Word, Word to PDF, Excel to PDF, PowerPoint to PDF, merge, compress, and optimize images with zero data retention."
+        description="Free online PDF converter to convert PDF to Word, Word to PDF, Excel to PDF, PowerPoint to PDF, merge, compress, and optimize images with 120-minute temporary file retention."
         keywords="PDF Converter, Word to PDF, PDF to Word, Merge PDF, Compress PDF, Image Converter, Excel to PDF, PowerPoint to PDF, Free Online Converter, Online PDF Tools, convertly"
         canonicalUrl="https://convertlytools.xyz"
         faqs={HOME_FAQS}
@@ -578,7 +578,7 @@ export function HomePage() {
           {/* Short SEO Description */}
           <p className="mx-auto mt-6 max-w-2xl text-base sm:text-lg text-muted-foreground leading-relaxed">
             Convert, compress, and edit PDF, Word, Excel, PowerPoint, and images with pixel-perfect output fidelity. 
-            Powered by native document engines with guaranteed zero data retention.
+            Powered by native document engines with 120-minute temporary file retention.
           </p>
 
           {/* Live Search Bar in Hero */}
@@ -632,7 +632,7 @@ export function HomePage() {
           <div className="mt-12 flex flex-wrap items-center justify-center gap-6 sm:gap-12 text-xs font-medium text-muted-foreground">
             <div className="flex items-center gap-2">
               <Shield className="h-4 w-4 shrink-0 text-indigo-400" />
-              <span>120-Min Auto Shredder</span>
+              <span>120-Min Temporary Retention</span>
             </div>
             <div className="flex items-center gap-2">
               <Gauge className="h-4 w-4 shrink-0 text-cyan-400" />
@@ -640,7 +640,7 @@ export function HomePage() {
             </div>
             <div className="flex items-center gap-2">
               <Lock className="h-4 w-4 shrink-0 text-emerald-400" />
-              <span>Zero Document Retention</span>
+              <span>No Permanent File Storage</span>
             </div>
             <div className="flex items-center gap-2">
               <Check className="h-4 w-4 shrink-0 text-emerald-400" />

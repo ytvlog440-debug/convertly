@@ -244,7 +244,7 @@ const ALL_TOOLS = [
   {
     id: 'pdf-protect',
     name: 'Protect PDF',
-    desc: 'Encrypt your PDF with bank-grade AES-256 password protection and permissions.',
+    desc: 'Encrypt your PDF with standard AES-256 password protection and permissions.',
     category: 'pdf',
     icon: Lock,
     color: 'text-rose-500 bg-rose-500/10',
@@ -302,7 +302,7 @@ const ALL_TOOLS = [
     category: 'pdf',
     icon: ShieldCheck,
     color: 'text-emerald-500 bg-emerald-500/10',
-    badge: 'GDPR Clean'
+    badge: 'Privacy Clean'
   },
   {
     id: 'pdf-to-txt',
@@ -369,7 +369,7 @@ export function ToolsDirectoryPage() {
       '@type': 'CollectionPage',
       name: 'Directory of Conversion Tools — Convertly',
       url: 'https://convertlytools.xyz/tools',
-      description: 'Comprehensive directory of 30 enterprise-grade document, PDF, and image conversion tools with zero retention privacy.',
+      description: 'Comprehensive directory of 30 enterprise-grade document, PDF, and image conversion tools with 120-minute temporary file retention.',
       mainEntity: {
         '@type': 'ItemList',
         itemListElement: ALL_TOOLS.map((t, idx) => ({
@@ -387,7 +387,7 @@ export function ToolsDirectoryPage() {
     <div className="py-12 md:py-16">
       <SeoHead
         title="Directory of Conversion Tools — PDF, Office & Images | Convertly"
-        description="Browse all 30 free online file conversion tools. Convert PDF to Word, Word to PDF, compress, merge, split, and optimize images with zero data retention."
+        description="Browse all 30 free online file conversion tools. Convert PDF to Word, Word to PDF, compress, merge, split, and optimize images with 120-minute temporary file retention."
         keywords="conversion tools directory, free pdf converter, word to pdf, pdf to word, image to pdf, compress pdf, merge pdf"
         canonicalUrl="https://convertlytools.xyz/tools"
         breadcrumbs={[

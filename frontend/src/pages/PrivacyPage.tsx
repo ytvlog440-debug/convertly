@@ -6,8 +6,8 @@ export function PrivacyPage() {
   return (
     <div className="py-12 md:py-16">
       <SeoHead
-        title="Privacy Policy & Zero-Retention Guarantee | Convertly"
-        description="Learn how Convertly protects your privacy with zero permanent document storage, automated 120-minute privacy shredding, and full GDPR compliance."
+        title="Privacy Policy & Data Protection | Convertly"
+        description="Learn how Convertly protects your documents with HTTPS/TLS transport encryption, 120-minute temporary file retention, and automated deletion."
         canonicalUrl="https://convertlytools.xyz/privacy"
         breadcrumbs={[
           { name: 'Home', item: 'https://convertlytools.xyz' },
@@ -20,13 +20,13 @@ export function PrivacyPage() {
         <div className="text-center max-w-2xl mx-auto mb-12">
           <div className="inline-flex items-center gap-2 rounded-full border border-emerald-500/30 bg-emerald-500/10 px-3.5 py-1 text-xs font-semibold text-emerald-400 mb-4">
             <ShieldCheck className="h-3.5 w-3.5" />
-            <span>Zero Permanent Retention</span>
+            <span>120-Minute Temporary Retention</span>
           </div>
           <h1 className="font-heading text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
             Privacy Policy & Data Protection
           </h1>
           <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-            At Convertly V2, your documents belong strictly to you. We engineered our platform from day one with a zero-knowledge, zero-retention architecture.
+            At Convertly V2, your documents belong strictly to you. We engineered our platform with a privacy-conscious architecture and automated 120-minute temporary file retention.
           </p>
           <p className="mt-1 text-xs text-muted-foreground">
             Effective Date: September 10, 2026 • Version 2.0
@@ -40,9 +40,9 @@ export function PrivacyPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 text-emerald-400 mb-4">
               <Clock className="h-5 w-5" />
             </div>
-            <h3 className="font-heading text-sm font-bold text-foreground">120-Minute TTL Shredder</h3>
+            <h3 className="font-heading text-sm font-bold text-foreground">120-Minute Temporary Retention</h3>
             <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-              Every uploaded and converted file is assigned a strict 120-minute Time-To-Live. Our automated cleaner overwrites bytes and deletes all storage records.
+              Uploaded and converted files are retained temporarily on active server storage for up to 120 minutes before automated deletion.
             </p>
           </Card>
 
@@ -50,9 +50,9 @@ export function PrivacyPage() {
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-400 mb-4">
               <EyeOff className="h-5 w-5" />
             </div>
-            <h3 className="font-heading text-sm font-bold text-foreground">No File Inspection</h3>
+            <h3 className="font-heading text-sm font-bold text-foreground">No Content Harvesting</h3>
             <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-              No humans, AI training crawlers, or third-party advertising brokers ever read or parse your document contents.
+              No humans, AI training crawlers, or third-party advertising brokers ever read, harvest, or monetize your document contents.
             </p>
           </Card>
 
@@ -62,7 +62,7 @@ export function PrivacyPage() {
             </div>
             <h3 className="font-heading text-sm font-bold text-foreground">Encrypted in Transit</h3>
             <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-              All communications between your web browser and our document engine are encrypted using industry-standard TLS 1.3.
+              All communications between your web browser and our document engine are encrypted using industry-standard HTTPS/TLS.
             </p>
           </Card>
         </div>
@@ -85,33 +85,33 @@ export function PrivacyPage() {
           <section>
             <h2 className="font-heading text-base font-bold text-foreground mb-3 flex items-center gap-2">
               <Trash2 className="h-4 w-4 text-rose-400" />
-              2. Automated Document Shredding & Retention Policy
+              2. Temporary Storage & Automated File Deletion Policy
             </h2>
             <p>
-              Unlike traditional cloud storage services, Convertly V2 is not a file hosting repository. All documents are stored in temporary, isolated directory structures with a maximum retention lifespan of exactly 120 minutes (2 hours).
+              Convertly V2 is an online conversion utility, not a permanent file hosting repository. Uploaded source files and generated outputs are stored temporarily on active server storage with a maximum retention lifespan of 120 minutes.
             </p>
             <p className="mt-2">
-              Our automated background cleaner runs every 10 minutes. It identifies any file whose retention threshold has elapsed, performs zero-byte wiping, and removes all associated database records. Once shredded, documents cannot be recovered by any party, including Convertly V2 engineers.
+              When a file reaches its 120-minute expiration threshold, download access is immediately blocked. An automated background cleanup service runs approximately every 10 minutes to remove expired files from active server storage via standard filesystem unlinking. Associated database records are soft-deleted and retained only as operational metadata. Once removed by the cleanup process, expired file content cannot be retrieved or downloaded.
             </p>
           </section>
 
           <section>
             <h2 className="font-heading text-base font-bold text-foreground mb-3 flex items-center gap-2">
               <Server className="h-4 w-4 text-cyan-400" />
-              3. Processing Infrastructure & Third-Party Isolation
+              3. Processing Infrastructure & Data Isolation
             </h2>
             <p>
-              All file conversions are processed on dedicated, isolated compute nodes. We do not transmit your documents to external third-party AI APIs, advertising networks, or analytics trackers. Your conversion executes entirely within our secure sandbox containers.
+              All file conversions are processed via automated server-side pipelines with strict file-type validation. We do not transmit your documents to external third-party AI APIs, advertising networks, or analytics trackers. Processing is strictly limited to completing your requested conversion task.
             </p>
           </section>
 
           <section>
             <h2 className="font-heading text-base font-bold text-foreground mb-3 flex items-center gap-2">
               <ShieldCheck className="h-4 w-4 text-emerald-400" />
-              4. GDPR & CCPA Compliance
+              4. Data Privacy Principles
             </h2>
             <p>
-              Under the European Union General Data Protection Regulation (GDPR) and the California Consumer Privacy Act (CCPA), you retain full rights over your personal data. Because we do not store personal profiles and automatically shred all files within 120 minutes, your data is inherently protected by design (Data Protection by Design and by Default).
+              Our privacy approach emphasizes data minimization, purpose-limited file processing, and limited file retention. Because we do not require user accounts, do not store personal profile data, and automatically remove expired file content after 120 minutes, document processing is restricted to executing the requested transformation.
             </p>
           </section>
 

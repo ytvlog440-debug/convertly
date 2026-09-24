@@ -13,9 +13,9 @@ export function Footer() {
               <ShieldCheck className="h-5 w-5" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-foreground">Zero Retention Guarantee</p>
+              <p className="text-sm font-semibold text-foreground">120-Minute Temporary File Retention</p>
               <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
-                All uploaded and converted files are automatically destroyed from our memory and storage within 120 minutes.
+                Uploaded and converted files are automatically removed from active server storage after 120 minutes.
               </p>
             </div>
           </div>
@@ -37,9 +37,9 @@ export function Footer() {
               <Lock className="h-5 w-5" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-foreground">End-to-End Encryption</p>
+              <p className="text-sm font-semibold text-foreground">TLS-Protected Transfers</p>
               <p className="mt-1 text-xs text-muted-foreground leading-relaxed">
-                Transport layer security (TLS 1.3) with strictly isolated sandbox processes for every conversion request.
+                All communications and file uploads are encrypted in transit over HTTPS/TLS to safeguard your data.
               </p>
             </div>
           </div>

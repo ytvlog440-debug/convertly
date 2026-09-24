@@ -85,7 +85,7 @@ export function normalizeCanonicalUrl(inputUrl?: string): string {
 
 export function SeoHead({
   title = 'Convertly | Free Online PDF, Word, Excel, PowerPoint & Image Converter',
-  description = 'High-performance, secure and free file conversion SaaS. Convert PDF, Word, Excel, PowerPoint, and images with zero data retention.',
+  description = 'High-performance, secure and free file conversion SaaS. Convert PDF, Word, Excel, PowerPoint, and images with 120-minute temporary file retention.',
   keywords = 'pdf to word, word to pdf, merge pdf, compress pdf, excel to pdf, ppt to pdf, image to pdf, pdf converter online, free pdf tools, convertly',
   canonicalUrl,
   pageType,
@@ -220,7 +220,7 @@ export function SeoHead({
       '@id': `${BASE_DOMAIN}/#website`,
       url: BASE_DOMAIN,
       name: 'Convertly',
-      description: 'Free online PDF, Office, and image conversion suite with zero data retention.',
+      description: 'Free online PDF, Office, and image conversion suite with 120-minute temporary file retention.',
       publisher: {
         '@id': `${BASE_DOMAIN}/#organization`,
       },

@@ -102,7 +102,7 @@ export function TermsPage() {
             </p>
             <ul className="mt-2 list-disc list-inside space-y-1.5 pl-2">
               <li>Upload or distribute computer viruses, worms, trojans, or malicious scripts.</li>
-              <li>Attempt to bypass sliding-window rate limiters, storage boundaries, or security sandboxes.</li>
+              <li>Attempt to bypass sliding-window rate limiters, storage boundaries, or security controls.</li>
               <li>Engage in abusive automated denial-of-service or volumetric bandwidth exhaustion attacks.</li>
               <li>Upload materials that infringe upon copyright, trademarks, or trade secrets of third parties.</li>
             </ul>
@@ -114,7 +114,7 @@ export function TermsPage() {
               4. Disclaimer of Warranties & Limitation of Liability
             </h2>
             <p>
-              Convertly V2 is provided on an "AS IS" and "AS AVAILABLE" basis without warranties of any kind, whether express or implied. While we employ military-grade validation and zero-loss conversion algorithms, we do not guarantee that the service will be uninterrupted, error-free, or that conversions will meet specific formatting requirements for obscure document types.
+              Convertly V2 is provided on an "AS IS" and "AS AVAILABLE" basis without warranties of any kind, whether express or implied. While we employ strict file validation and high-fidelity conversion algorithms, we do not guarantee that the service will be uninterrupted, error-free, or that conversions will meet specific formatting requirements for obscure document types.
             </p>
             <p className="mt-2">
               In no event shall Convertly V2 or its contributors be liable for any direct, indirect, incidental, or consequential damages arising from the use or inability to use the platform.

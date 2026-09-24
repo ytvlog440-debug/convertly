@@ -32,7 +32,7 @@ const ENDPOINTS: EndpointDoc[] = [
     title: '1. Ingest & Validate File',
     method: 'POST',
     path: '/api/v1/files/upload',
-    desc: 'Upload a document or image with magic-byte validation and antivirus pre-scanning. Returns a unique file ID with 120-minute expiry.',
+    desc: 'Upload a document or image with magic-byte validation and executable payload checks. Returns a unique file ID with 120-minute expiry.',
     snippets: {
       curl: `curl -X POST "https://convertlytools.xyz/api/v1/files/upload" \\
   -H "Accept: application/json" \\
@@ -334,10 +334,10 @@ export function DevelopersPage() {
           <Card className="p-4 border-border/80 bg-card/60">
             <div className="flex items-center gap-2 text-cyan-400 mb-2">
               <Clock className="h-4 w-4" />
-              <span className="text-xs font-bold uppercase tracking-wider">Zero Retention</span>
+              <span className="text-xs font-bold uppercase tracking-wider">File Retention</span>
             </div>
             <p className="text-base font-bold font-heading text-foreground">120 Minutes</p>
-            <p className="text-[11px] text-muted-foreground mt-1">Automatic zero-byte shredder runs on all processed payloads.</p>
+            <p className="text-[11px] text-muted-foreground mt-1">Automated cleanup task removes expired files after 120 minutes.</p>
           </Card>
 
           <Card className="p-4 border-border/80 bg-card/60">

@@ -55,7 +55,7 @@ export const COMPARISONS_DATA: Record<string, CompetitorComparison> = {
       competitor: 'Freemium with strict limits (Free tier: 2 tasks/day; Pro tier: $9–$12/user/month)'
     },
     retentionPolicy: {
-      convertly: 'Automated 120-minute cryptographic shredder; zero AI training',
+      convertly: 'Automated 120-minute temporary file retention; zero AI training',
       competitor: 'Files deleted after 1 hour (free) or stored in account cloud workspace (Pro)'
     },
     strengths: {
@@ -88,8 +88,8 @@ export const COMPARISONS_DATA: Record<string, CompetitorComparison> = {
       { feature: 'Account Registration Required', convertly: 'None (Instant anonymous access)', competitor: 'Required for advanced tools & cloud storage', verdict: 'win' },
       { feature: 'Scanned Document OCR', convertly: 'Integrated Tesseract OCR engine', competitor: 'Restricted to Pro subscription tier', verdict: 'win' },
       { feature: 'Electronic Signatures (E-Sign)', convertly: 'Basic PDF form workflows', competitor: 'Advanced multi-signer e-sign platform', verdict: 'info' },
-      { feature: 'Cloud File Workspace', convertly: 'None (Stateless zero retention)', competitor: 'Built-in cloud storage for paid teams', verdict: 'info' },
-      { feature: 'File Retention Guarantee', convertly: 'Automated 120-min shredder', competitor: '1 hour for free files, persistent for Pro', verdict: 'tie' }
+      { feature: 'Cloud File Workspace', convertly: 'None (Stateless temporary retention)', competitor: 'Built-in cloud storage for paid teams', verdict: 'info' },
+      { feature: 'File Retention Policy', convertly: 'Automated 120-min deletion', competitor: '1 hour for free files, persistent for Pro', verdict: 'tie' }
     ],
     verdictNarrative: [
       'Smallpdf is a mature, polished tool ideal for corporate teams needing managed multi-user cloud workspaces and legally binding e-signature collection. However, their 2-task-per-day restriction makes the free tier impractical for regular document work.',
@@ -102,7 +102,7 @@ export const COMPARISONS_DATA: Record<string, CompetitorComparison> = {
     ],
     faqs: [
       { question: 'Why does Smallpdf restrict free users to 2 files a day?', answer: 'Smallpdf utilizes a freemium business model designed to convert casual visitors into paid monthly subscribers ($9–$12/month).' },
-      { question: 'Does Convertly store my files permanently?', answer: 'No. To ensure maximum data confidentiality, all uploaded and converted files are permanently shredded after 120 minutes.' }
+      { question: 'Does Convertly store my files permanently?', answer: 'No. To ensure data privacy, all uploaded and converted files are automatically deleted after 120 minutes.' }
     ]
   },
 
@@ -113,13 +113,13 @@ export const COMPARISONS_DATA: Record<string, CompetitorComparison> = {
     title: 'Convertly vs iLovePDF Comparison (2026) — Limits, Ads & Security',
     metaDescription: 'Detailed technical comparison between Convertly and iLovePDF. Compare advertising density, file size limits, API availability, and processing speeds.',
     h1: 'Convertly vs iLovePDF: Head-to-Head Analysis',
-    summary: 'iLovePDF is a high-traffic PDF utility supported heavily by programmatic display advertising. Convertly delivers an enterprise, ad-free environment with native binary performance and zero data retention.',
+    summary: 'iLovePDF is a high-traffic PDF utility supported heavily by programmatic display advertising. Convertly delivers an enterprise, ad-free environment with native binary performance and no permanent file storage.',
     pricingModel: {
       convertly: '100% Free Forever (Ad-free experience)',
       competitor: 'Freemium with display advertising (Premium: $4–$7/month)'
     },
     retentionPolicy: {
-      convertly: '120-minute strict cryptographic auto-shredding',
+      convertly: '120-minute temporary file retention policy',
       competitor: 'Files stored for up to 2 hours before automated deletion'
     },
     strengths: {
@@ -182,7 +182,7 @@ export const COMPARISONS_DATA: Record<string, CompetitorComparison> = {
       competitor: '100% Free (Supported by donations and web ads)'
     },
     retentionPolicy: {
-      convertly: 'Automated 120-minute cryptographic shredding guarantee',
+      convertly: 'Automated 120-minute temporary file retention',
       competitor: 'Files removed from servers after 1 hour'
     },
     strengths: {
@@ -244,14 +244,14 @@ export const COMPARISONS_DATA: Record<string, CompetitorComparison> = {
       competitor: 'Acrobat Pro subscription ($19.99–$29.99/month); 1 free action per week with login'
     },
     retentionPolicy: {
-      convertly: 'Strict 120-minute automated server shredding',
+      convertly: '120-minute temporary file retention',
       competitor: 'Files saved to Adobe Document Cloud account storage indefinitely unless deleted'
     },
     strengths: {
       convertly: [
         'Zero cost with no recurring $240+/year software subscriptions',
         'No Adobe ID login or account creation required',
-        'Strict zero-retention policy protects sensitive documents from persistent cloud storage',
+        'Temporary retention policy protects sensitive documents from persistent cloud storage',
         'Lightweight, sub-second web execution without bloated plugins'
       ],
       competitor: [
@@ -277,7 +277,7 @@ export const COMPARISONS_DATA: Record<string, CompetitorComparison> = {
       { feature: 'Account Login Required', convertly: 'No account needed (Instant access)', competitor: 'Mandatory Adobe ID account login', verdict: 'win' },
       { feature: 'Rendering Fidelity', convertly: 'Native PyMuPDF & Ghostscript vector fidelity', competitor: 'Official Adobe proprietary renderer', verdict: 'tie' },
       { feature: 'Legal Digital Signatures', convertly: 'Standard visual e-signatures', competitor: 'Cryptographic X.509 certificate signing', verdict: 'info' },
-      { feature: 'Confidentiality SLA', convertly: '120-minute auto-shredder guarantee', competitor: 'Stored in Document Cloud cloud account', verdict: 'win' }
+      { feature: 'Confidentiality SLA', convertly: '120-minute temporary file retention', competitor: 'Stored in Document Cloud cloud account', verdict: 'win' }
     ],
     verdictNarrative: [
       'Adobe Acrobat Pro remains the gold standard for corporate legal teams requiring certified digital signature validation, Bates numbering, and enterprise Creative Cloud workflows. However, for everyday document conversions, its $240/year price tag and aggressive login walls are excessive.',
@@ -308,7 +308,7 @@ export const COMPARISONS_DATA: Record<string, CompetitorComparison> = {
       competitor: 'Freemium with credit cap (Free: 25 conversion minutes/day; Pro: $9.99–$25.99/mo)'
     },
     retentionPolicy: {
-      convertly: 'Strict 120-minute automated shredder',
+      convertly: '120-minute temporary file retention',
       competitor: 'Files deleted after 6 hours'
     },
     strengths: {
@@ -316,7 +316,7 @@ export const COMPARISONS_DATA: Record<string, CompetitorComparison> = {
         'Zero queue wait times with dedicated server workers',
         'No daily conversion minute caps or point exhaustion',
         'Clean, modern interface free from intrusive advertising',
-        'Zero-retention privacy guarantee with automated 120-minute shredder'
+        'Privacy-focused file processing with automated 120-minute temporary retention'
       ],
       competitor: [
         'Huge catalog supporting obscure audio, video, and archive formats',

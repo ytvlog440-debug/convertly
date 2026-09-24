@@ -109,7 +109,7 @@ export function QrTransferModal({ isOpen, onClose, downloadUrl, filename }: QrTr
           </div>
           <div className="flex items-center gap-1.5">
             <ShieldCheck className="h-3.5 w-3.5 text-emerald-400" />
-            <span>Zero-retention shredding</span>
+            <span>120-minute temporary retention</span>
           </div>
         </div>
 

@@ -346,7 +346,7 @@ export function ToolSeoContentSection({ content }: ToolSeoContentSectionProps) {
         </section>
       )}
 
-      {/* Section 10: Security, Confidentiality & 120m Shredding */}
+      {/* Section 10: Security, Confidentiality & 120m Retention */}
       <section aria-labelledby="section-security" className="space-y-6 rounded-2xl border border-indigo-500/20 bg-indigo-500/5 p-6 sm:p-8">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-500/10 text-indigo-400">
