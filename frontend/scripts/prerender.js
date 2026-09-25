@@ -724,6 +724,76 @@ function getFullToolFaqs(tool) {
   return combined
 }
 
+function renderStaticFooter() {
+  return `
+    <footer class="w-full border-t border-border/80 bg-card/30 backdrop-blur-md pt-12 pb-10 transition-colors">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-5 gap-8 py-8 text-xs">
+          <div>
+            <p class="font-bold uppercase tracking-wider text-muted-foreground mb-3">PDF Toolkit</p>
+            <ul class="space-y-2">
+              <li><a href="/tools/pdf-merge" class="hover:text-primary transition-colors">Merge PDF</a></li>
+              <li><a href="/tools/pdf-split" class="hover:text-primary transition-colors">Split PDF</a></li>
+              <li><a href="/tools/pdf-compress" class="hover:text-primary transition-colors">Compress PDF</a></li>
+              <li><a href="/tools/pdf-rotate" class="hover:text-primary transition-colors">Rotate PDF</a></li>
+              <li><a href="/tools/pdf-protect" class="hover:text-primary transition-colors">Protect PDF</a></li>
+              <li><a href="/tools/pdf-redact" class="hover:text-primary transition-colors">Redact PDF</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="font-bold uppercase tracking-wider text-muted-foreground mb-3">Office ⇄ PDF</p>
+            <ul class="space-y-2">
+              <li><a href="/tools/pdf-to-word" class="hover:text-primary transition-colors">PDF to Word</a></li>
+              <li><a href="/tools/word-to-pdf" class="hover:text-primary transition-colors">Word to PDF</a></li>
+              <li><a href="/tools/excel-to-pdf" class="hover:text-primary transition-colors">Excel to PDF</a></li>
+              <li><a href="/tools/pdf-to-excel" class="hover:text-primary transition-colors">PDF to Excel</a></li>
+              <li><a href="/tools/ppt-to-pdf" class="hover:text-primary transition-colors">PowerPoint to PDF</a></li>
+              <li><a href="/tools/pdf-to-txt" class="hover:text-primary transition-colors">PDF to Text</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="font-bold uppercase tracking-wider text-muted-foreground mb-3">Image Suite</p>
+            <ul class="space-y-2">
+              <li><a href="/tools/images-to-pdf" class="hover:text-primary transition-colors">Images to PDF</a></li>
+              <li><a href="/tools/pdf-to-images" class="hover:text-primary transition-colors">PDF to Images</a></li>
+              <li><a href="/tools/jpg-to-png" class="hover:text-primary transition-colors">JPG to PNG</a></li>
+              <li><a href="/tools/png-to-jpg" class="hover:text-primary transition-colors">PNG to JPG</a></li>
+              <li><a href="/tools/image-to-webp" class="hover:text-primary transition-colors">Image to WebP</a></li>
+              <li><a href="/tools/image-compress" class="hover:text-primary transition-colors">Compress Image</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="font-bold uppercase tracking-wider text-muted-foreground mb-3">Resources & Hubs</p>
+            <ul class="space-y-2">
+              <li><a href="/" class="hover:text-primary transition-colors">Home</a></li>
+              <li><a href="/tools" class="hover:text-primary transition-colors">All Conversion Tools</a></li>
+              <li><a href="/guides" class="hover:text-primary transition-colors">Problem Solving Guides</a></li>
+              <li><a href="/compare" class="hover:text-primary transition-colors">Tool Comparisons</a></li>
+              <li><a href="/use-cases" class="hover:text-primary transition-colors">Industry Solutions</a></li>
+              <li><a href="/blog" class="hover:text-primary transition-colors">Engineering Blog</a></li>
+              <li><a href="/sitemap" class="hover:text-primary transition-colors">HTML Sitemap Index</a></li>
+            </ul>
+          </div>
+          <div>
+            <p class="font-bold uppercase tracking-wider text-muted-foreground mb-3">Platform & Legal</p>
+            <ul class="space-y-2">
+              <li><a href="/developers" class="hover:text-primary transition-colors">Developer REST API</a></li>
+              <li><a href="/formats" class="hover:text-primary transition-colors">Format Standards & Specs</a></li>
+              <li><a href="/privacy" class="hover:text-primary transition-colors">Privacy Policy</a></li>
+              <li><a href="/terms" class="hover:text-primary transition-colors">Terms of Service</a></li>
+              <li><a href="/security" class="hover:text-primary transition-colors">Security Architecture</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="pt-6 border-t border-border/60 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
+          <p>&copy; ${new Date().getFullYear()} Convertly. Fast, private, and secure file conversion.</p>
+          <p>120-minute temporary file retention policy.</p>
+        </div>
+      </div>
+    </footer>
+  `
+}
+
 function renderToolHtml(tool) {
   const canonicalUrl = `${BASE_DOMAIN}/tools/${tool.id}`
   const fullFaqs = getFullToolFaqs(tool)
@@ -941,6 +1011,7 @@ function renderToolHtml(tool) {
             </div>
           </div>
         </main>
+        ${renderStaticFooter()}
       </div>
     </div>
   `
@@ -1009,6 +1080,7 @@ const homeFallbackBody = `
           </div>
         </section>
       </main>
+      ${renderStaticFooter()}
     </div>
 `
 let homeHtml = template
@@ -1062,6 +1134,7 @@ function renderPageTemplate({
         <main class="flex-1">
           ${bodyContent}
         </main>
+        ${renderStaticFooter()}
       </div>
     </div>
   `
@@ -2202,7 +2275,7 @@ function renderSitemapHubHtml() {
           <div class="rounded-2xl p-6 border border-border/80 bg-card/80 space-y-3">
             <h2 class="text-lg font-bold text-foreground border-b border-border/60 pb-2">Document Tools</h2>
             <ul class="space-y-1.5 text-xs text-muted-foreground">
-              ${TOOLS.map(t => `<li><a href="${t.canonicalPath}" class="hover:text-primary transition-colors">${escapeHtml(t.name)}</a></li>`).join('')}
+              ${TOOLS.map(t => `<li><a href="/tools/${t.id}" class="hover:text-primary transition-colors">${escapeHtml(t.name)}</a></li>`).join('')}
             </ul>
           </div>
 

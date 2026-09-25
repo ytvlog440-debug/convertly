@@ -43,7 +43,7 @@ assert(fs.existsSync(sitemapPath), 'sitemap.xml exists in dist')
 if (fs.existsSync(sitemapPath)) {
   const sitemap = fs.readFileSync(sitemapPath, 'utf-8')
   const urlCount = (sitemap.match(/<loc>/g) || []).length
-  assert(urlCount >= 70, `sitemap contains at least 70 URLs (found ${urlCount})`)
+  assert(urlCount === 74, `sitemap contains exactly 74 URLs (found ${urlCount})`)
   assert(!/<loc>https:\/\/convertlytools\.xyz\/.+\/<\/loc>/.test(sitemap), 'sitemap subpath URLs do not end with trailing slash')
   assert(sitemap.includes('<priority>1.0</priority>'), 'sitemap contains root priority 1.0')
 
@@ -163,6 +163,7 @@ const BLOG_SLUGS = [
   'the-definitive-guide-to-lossless-pdf-compression',
   'how-to-fix-broken-formatting-in-pdf-to-word',
   'excel-to-pdf-best-practices-for-executive-reporting',
+  'how-to-extract-financial-tables-from-pdf-to-excel',
   'powerpoint-to-pdf-handout-optimization',
   'next-gen-image-formats-webp-vs-png-vs-jpg',
   'zero-retention-architecture-in-modern-file-converters',
@@ -215,6 +216,8 @@ let ratingCountFound = 0
 let reviewCountFound = 0
 let ratingValueFound = 0
 let internalConvertHrefsFound = 0
+let invalidHrefsFound = 0
+let footerApiLinksFound = 0
 
 const hrefRegex = /href=["'](https:\/\/convertlytools\.xyz)?\/convert\/[^"']*["']/g
 
@@ -244,6 +247,21 @@ for (const file of allHtmlFiles) {
     internalConvertHrefsFound += hrefMatches.length
     console.error(`  ❌ Internal href link to /convert/ found in ${relPath}: ${hrefMatches.join(', ')}`)
   }
+
+  if (content.includes('href="undefined"') || content.includes("href='undefined'")) {
+    invalidHrefsFound++
+    console.error(`  ❌ Invalid href="undefined" found in ${relPath}`)
+  }
+  if (content.includes('href="null"') || content.includes("href='null'")) {
+    invalidHrefsFound++
+    console.error(`  ❌ Invalid href="null" found in ${relPath}`)
+  }
+
+  const footerMatch = content.match(/<footer[\s\S]*?<\/footer>/i)
+  if (footerMatch && (footerMatch[0].includes('href="/api/') || footerMatch[0].includes('href="https://convertlytools.xyz/api/'))) {
+    footerApiLinksFound++
+    console.error(`  ❌ Footer links to disallowed /api/ in ${relPath}`)
+  }
 }
 
 assert(aggregateRatingFound === 0, `Zero AggregateRating schema occurrences across dist (found ${aggregateRatingFound})`)
@@ -251,6 +269,8 @@ assert(ratingCountFound === 0, `Zero ratingCount occurrences across dist (found 
 assert(reviewCountFound === 0, `Zero reviewCount occurrences across dist (found ${reviewCountFound})`)
 assert(ratingValueFound === 0, `Zero ratingValue occurrences across dist (found ${ratingValueFound})`)
 assert(internalConvertHrefsFound === 0, `Zero internal href references to /convert/ across dist HTML (found ${internalConvertHrefsFound})`)
+assert(invalidHrefsFound === 0, `Zero invalid href="undefined" or href="null" across dist HTML (found ${invalidHrefsFound})`)
+assert(footerApiLinksFound === 0, `Zero /api/ links inside <footer> across dist HTML (found ${footerApiLinksFound})`)
 
 // 12. Destination Pages Canonical Retained & Indexable
 const uniqueDestinations = [...new Set(Object.values(CONVERT_REDIRECTS))]
@@ -351,6 +371,51 @@ const pdfProtectHtmlPath = path.join(DIST_DIR, 'tools', 'pdf-protect', 'index.ht
 if (fs.existsSync(pdfProtectHtmlPath)) {
   const protectHtml = fs.readFileSync(pdfProtectHtmlPath, 'utf-8')
   assert(protectHtml.includes('AES-256'), 'PDF Protect page legitimately preserves AES-256 document encryption capability')
+}
+
+// 15. Verify HTML Sitemap Tool Links
+const sitemapHtmlPath = path.join(DIST_DIR, 'sitemap', 'index.html')
+assert(fs.existsSync(sitemapHtmlPath), 'HTML sitemap exists in dist')
+if (fs.existsSync(sitemapHtmlPath)) {
+  const sitemapHtml = fs.readFileSync(sitemapHtmlPath, 'utf-8')
+  assert(!sitemapHtml.includes('href="undefined"'), 'HTML sitemap contains 0 href="undefined" links')
+  for (const tool of TOOLS) {
+    assert(sitemapHtml.includes(`/tools/${tool}`), `HTML sitemap contains valid link to /tools/${tool}`)
+  }
+}
+
+// 16. Verify Global Static Footer Across Representative Routes
+const REPRESENTATIVE_FOOTER_PAGES = [
+  '',
+  'tools/pdf-merge',
+  'guides/how-to-merge-pdf-files',
+  'blog/the-definitive-guide-to-lossless-pdf-compression',
+  'compare/convertly-vs-smallpdf',
+  'use-cases/students',
+  'privacy',
+  'developers',
+  'sitemap'
+]
+
+for (const relRoute of REPRESENTATIVE_FOOTER_PAGES) {
+  const pageFile = relRoute === '' ? path.join(DIST_DIR, 'index.html') : path.join(DIST_DIR, relRoute, 'index.html')
+  assert(fs.existsSync(pageFile), `Page exists for footer check: /${relRoute}`)
+  if (fs.existsSync(pageFile)) {
+    const html = fs.readFileSync(pageFile, 'utf-8')
+    assert(html.includes('<footer') && html.includes('</footer>'), `Prerendered HTML contains semantic <footer> on /${relRoute}`)
+    assert(html.includes('href="/tools"'), `Static footer on /${relRoute} links to /tools`)
+    assert(html.includes('href="/privacy"'), `Static footer on /${relRoute} links to /privacy`)
+    assert(html.includes('href="/sitemap"'), `Static footer on /${relRoute} links to /sitemap`)
+    assert(html.includes('href="/developers"'), `Static footer on /${relRoute} links to /developers`)
+  }
+}
+
+// 17. Verify Global Navigation Policy: No /api/v1/docs in Sitewide Navigation
+const footerSrcPath = path.resolve(__dirname, '../src/components/layout/Footer.tsx')
+if (fs.existsSync(footerSrcPath)) {
+  const footerSrc = fs.readFileSync(footerSrcPath, 'utf-8')
+  assert(!footerSrc.includes('/api/v1/docs'), 'React Footer.tsx does NOT link directly to /api/v1/docs')
+  assert(footerSrc.includes('/developers'), 'React Footer.tsx links to public /developers')
 }
 
 console.log(`\nTechnical SEO Audit Results:`)

@@ -110,7 +110,7 @@ export function Footer() {
             <ul className="space-y-2.5 text-xs">
               <li><Link to="/developers" className="text-foreground/80 hover:text-indigo-400 transition-colors">Developer REST API</Link></li>
               <li><Link to="/formats" className="text-foreground/80 hover:text-indigo-400 transition-colors">Format Standards & Specs</Link></li>
-              <li><a href="/api/v1/docs" target="_blank" rel="noreferrer" className="text-foreground/80 hover:text-indigo-400 transition-colors">OpenAPI Documentation</a></li>
+              <li><Link to="/developers" className="text-foreground/80 hover:text-indigo-400 transition-colors">Developer Documentation</Link></li>
               <li><button onClick={() => window.dispatchEvent(new KeyboardEvent('keydown', { key: '?' }))} className="text-foreground/80 hover:text-indigo-400 transition-colors cursor-pointer text-left">Keyboard Shortcuts (?)</button></li>
               <li><Link to="/privacy" className="text-foreground/80 hover:text-indigo-400 transition-colors">Privacy Policy</Link></li>
               <li><Link to="/terms" className="text-foreground/80 hover:text-indigo-400 transition-colors">Terms of Service</Link></li>
