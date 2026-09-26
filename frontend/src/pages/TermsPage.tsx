@@ -52,7 +52,7 @@ export function TermsPage() {
             </div>
             <h3 className="font-heading text-sm font-bold text-foreground">Free & Open Utility</h3>
             <p className="mt-2 text-xs text-muted-foreground leading-relaxed">
-              All 30 tools are provided free of charge for personal, academic, and commercial business workflows without watermarks.
+              All 31 conversion tools are provided free of charge for personal, academic, and commercial business workflows without watermarks.
             </p>
           </Card>
 

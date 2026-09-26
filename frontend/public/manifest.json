@@ -1,7 +1,7 @@
 {
   "name": "Convertly V2 — Enterprise File Converter",
   "short_name": "Convertly",
-  "description": "Enterprise-grade free file conversion platform with 30 real binary tools and zero-retention privacy.",
+  "description": "Enterprise-grade free file conversion platform with 31 real binary tools and 120-minute temporary file retention.",
   "start_url": "/",
   "display": "standalone",
   "categories": ["utilities", "productivity"],

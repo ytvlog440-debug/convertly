@@ -50,7 +50,7 @@ const TOOLS = [
     faqs: [
       { question: 'Is Convertly’s PDF to Word converter completely free?', answer: 'Yes, 100% free with no subscription, daily file limits, or hidden fees.' },
       { question: 'Can I convert scanned PDF documents with images of text?', answer: 'Yes. Convertly features integrated Tesseract OCR to recognize text from scanned pages.' },
-      { question: 'How long are my files kept on your servers?', answer: 'Files are automatically deleted after 120 minutes with zero permanent retention.' },
+      { question: 'How long are my files kept on your servers?', answer: 'Files are automatically deleted after 120 minutes with 120-minute temporary file retention.' },
     ],
   },
   {
@@ -89,7 +89,7 @@ const TOOLS = [
     ],
     faqs: [
       { question: 'How many PDF files can I merge at once?', answer: 'You can merge up to 20 PDF files simultaneously up to 100MB total size.' },
-      { question: 'Are merged files secure?', answer: 'Yes, files are processed over TLS 1.3 encryption and automatically shredded after 120 minutes.' },
+      { question: 'Are merged files secure?', answer: 'Yes, files are processed over TLS 1.3 transport encryption and automatically deleted after 120 minutes.' },
     ],
   },
   {
@@ -134,7 +134,7 @@ const TOOLS = [
     name: 'Rotate PDF',
     category: 'PDF',
     title: 'Rotate PDF Online — Permanently Rotate PDF Pages 90° 180° Free',
-    description: 'Rotate PDF pages permanently online. Rotate clockwise, counter-clockwise, or upside down for all pages or selected pages with zero retention.',
+    description: 'Rotate PDF pages permanently online. Rotate clockwise, counter-clockwise, or upside down for all pages or selected pages with 120-minute temporary file retention.',
     keywords: 'rotate pdf, turn pdf, rotate pdf 90 degrees, permanent pdf rotation, rotate pdf online, convertly',
     badge: 'Permanent Vector Rotation',
     summary: 'Fix orientation for upside down or sideways scanned PDF pages with permanent 90-degree increments.',
@@ -152,7 +152,7 @@ const TOOLS = [
     name: 'Images to PDF',
     category: 'PDF',
     title: 'Images to PDF Converter — Convert JPG & PNG to PDF Online Free',
-    description: 'Convert JPG, PNG, and WebP images into a single standardized PDF document online. Customize page margins and orientation with zero retention.',
+    description: 'Convert JPG, PNG, and WebP images into a single standardized PDF document online. Customize page margins and orientation with 120-minute temporary file retention.',
     keywords: 'images to pdf, jpg to pdf, png to pdf, photo to pdf, pictures to pdf, free image to pdf converter, convertly',
     badge: 'Multi-Image PDF Album',
     summary: 'Convert multiple photos, scans, and graphic images into a consolidated, presentation-quality PDF portfolio.',
@@ -290,7 +290,7 @@ const TOOLS = [
     name: 'Extract PDF Pages',
     category: 'PDF',
     title: 'Extract PDF Pages Online — Save Specific Pages from PDF Free',
-    description: 'Extract specific pages from your PDF and create a brand-new focused document. Free, lightning fast, and encrypted with zero retention.',
+    description: 'Extract specific pages from your PDF and create a brand-new focused document. Free, lightning fast, and encrypted with 120-minute temporary file retention.',
     keywords: 'extract pdf pages, select pages from pdf, isolate pdf pages, extract pages from pdf online, convertly',
     badge: 'Focused Document Generator',
     summary: 'Pull out essential pages from extensive manuals, contracts, or books into a concise standalone PDF.',
@@ -398,7 +398,7 @@ const TOOLS = [
     name: 'PDF to Images',
     category: 'PDF',
     title: 'PDF to Images Converter — Convert PDF Pages to JPG & PNG Free',
-    description: 'Convert PDF pages into high-resolution JPG or PNG images online for free. Download individual images or a bundled ZIP archive with zero retention.',
+    description: 'Convert PDF pages into high-resolution JPG or PNG images online for free. Download individual images or a bundled ZIP archive with 120-minute temporary file retention.',
     keywords: 'pdf to images, pdf to jpg, pdf to png, export pdf pages to image, pdf to photos, convertly',
     badge: 'High-DPI Rasterizer',
     summary: 'Extract and render every page of your PDF document into crisp 300 DPI JPG or PNG image files.',
@@ -632,7 +632,7 @@ const TOOLS = [
     name: 'Convert PDF to Grayscale',
     category: 'PDF',
     title: 'Convert PDF to Grayscale — Black & White PDF Converter Online Free',
-    description: 'Convert full-color PDF documents to black and white grayscale online for free. Saves printer ink and reduces file size with zero retention.',
+    description: 'Convert full-color PDF documents to black and white grayscale online for free. Saves printer ink and reduces file size with 120-minute temporary file retention.',
     keywords: 'pdf to grayscale, black and white pdf, convert pdf to bw, monochrome pdf, save printer ink pdf, convertly',
     badge: 'Ink-Saving Monochrome',
     summary: 'Convert color PDF documents to clean monochrome grayscale to reduce file size and conserve expensive printer ink.',
@@ -861,11 +861,6 @@ function renderToolHtml(tool) {
         '@id': `${BASE_DOMAIN}/#organization`,
         name: 'Convertly',
         url: BASE_DOMAIN,
-        sameAs: [
-          'https://github.com/convertly',
-          'https://twitter.com/convertlytools',
-          'https://www.linkedin.com/company/convertlytools',
-        ],
         knowsAbout: [
           'https://en.wikipedia.org/wiki/PDF',
           'https://en.wikipedia.org/wiki/Microsoft_Word',
@@ -956,7 +951,7 @@ function renderToolHtml(tool) {
                 </a>
                 <span class="inline-flex items-center gap-1 rounded-full border border-indigo-500/20 bg-indigo-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-indigo-400">
                   <svg class="h-3 w-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="m9 12 2 2 4-4"/></svg>
-                  Zero Retention (120m)
+                  120-Minute Temporary Retention
                 </span>
               </div>
 
@@ -1048,29 +1043,93 @@ function renderToolHtml(tool) {
 
 console.log('🚀 Starting Convertly V2 Static Pre-rendering Engine...')
 
-// 0. Pre-render Root Homepage (dist/index.html) with critical LCP Header and Hero
-const homeFallbackBody = `
+// 0. Pre-render Root Homepage (dist/index.html) with Comprehensive Semantic SEO
+function renderHomepageHtml() {
+  const POPULAR_TOOLS = [
+    { id: 'pdf-to-word', name: 'PDF to Word', desc: 'Convert PDF to editable Word DOCX' },
+    { id: 'word-to-pdf', name: 'Word to PDF', desc: 'Convert DOCX and DOC files to PDF' },
+    { id: 'images-to-pdf', name: 'Images to PDF', desc: 'Merge JPG, PNG, and WebP into PDF' },
+    { id: 'excel-to-pdf', name: 'Excel to PDF', desc: 'Transform spreadsheets into clean PDF tables' },
+    { id: 'pdf-to-excel', name: 'PDF to Excel', desc: 'Extract PDF tables into editable Excel sheets' },
+    { id: 'ppt-to-pdf', name: 'PowerPoint to PDF', desc: 'Turn PPTX decks into high-res PDF handouts' },
+    { id: 'pdf-compress', name: 'Compress PDF', desc: 'Reduce PDF file size up to 85% losslessly' },
+    { id: 'pdf-merge', name: 'Merge PDF', desc: 'Combine multiple PDF documents into one' }
+  ]
+
+  const securityToolIds = new Set([
+    'pdf-protect', 'pdf-unlock', 'pdf-watermark', 'pdf-page-numbers',
+    'pdf-redact', 'pdf-flatten', 'pdf-scrub-metadata'
+  ])
+
+  const pdfTools = TOOLS.filter(t => t.category === 'PDF' && !securityToolIds.has(t.id))
+  const officeTools = TOOLS.filter(t => t.category === 'Office')
+  const imageTools = TOOLS.filter(t => t.category === 'Images')
+  const securityTools = TOOLS.filter(t => securityToolIds.has(t.id))
+
+  const toolCategories = [
+    { name: 'PDF Management Suite', desc: 'Merge, split, compress, extract, and organize PDF documents.', tools: pdfTools },
+    { name: 'Office & Document Conversion', desc: 'High-fidelity conversions between Word, Excel, PowerPoint, and PDF.', tools: officeTools },
+    { name: 'Image Suite & Optimization', desc: 'Convert, scale, crop, rotate, and compress web and raster graphics.', tools: imageTools },
+    { name: 'PDF Security & Privacy Tools', desc: 'Protect, redact, sanitize metadata, watermark, and flatten documents.', tools: securityTools }
+  ]
+
+  const HOME_FAQS = [
+    {
+      question: 'Is Convertly completely free with no limits?',
+      answer: 'Yes, 100% free with zero subscription requirements, watermarks, or artificial daily upload limits. All conversion and editing tools are enterprise-grade and unrestricted for single documents up to 100MB and batch processing up to 30 files.'
+    },
+    {
+      question: 'Are my uploaded documents private and secure?',
+      answer: 'User privacy is fundamental to our architecture. Files are processed with TLS transport encryption in transit and stored temporarily on active server storage. All uploaded and converted files are automatically deleted after 120 minutes.'
+    },
+    {
+      question: 'Does Convertly preserve formatting when converting Word, Excel, and PowerPoint to PDF?',
+      answer: 'Yes. We use a containerized LibreOffice headless engine coupled with native Python document parsers (PyMuPDF, pdfplumber). This guarantees exact typography, table structures, formulas, margins, and embedded vector graphics without formatting degradation.'
+    },
+    {
+      question: 'How does Convertly compare to Adobe Acrobat Online, Smallpdf, and iLovePDF?',
+      answer: 'Convertly delivers comparable or superior document processing fidelity without paywalls, forced account signups, intrusive advertising, or file retention traps. We do not use your documents to train AI models or monetize your data.'
+    },
+    {
+      question: 'Can I convert and download files directly to my smartphone?',
+      answer: 'Yes. Every completed conversion includes an encrypted, instantaneous QR Transfer feature. Scan the QR code with your iOS or Android camera to immediately download the converted document directly to your phone.'
+    },
+    {
+      question: 'What is the maximum file size supported?',
+      answer: 'You can convert single documents up to 100MB each. For multi-file operations such as Merge PDF and Images to PDF, you can stage up to 30 files simultaneously.'
+    }
+  ]
+
+  const homeFallbackBody = `
     <div id="root">
       <header class="sticky top-0 z-50 h-16 w-full border-b border-border/60 bg-background/80 backdrop-blur-xl">
         <div class="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div class="flex items-center gap-2.5">
-            <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-600 to-cyan-500 text-white shadow-md">
-              <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
-            </div>
-            <div class="flex items-center gap-1.5">
-              <span class="font-heading text-lg font-bold tracking-tight text-foreground">Convertly</span>
-              <span class="rounded-md bg-indigo-500/10 px-1.5 py-0.2 text-[10px] font-bold text-indigo-400 border border-indigo-500/20">v2.0</span>
-            </div>
+            <a href="/" class="flex items-center gap-2.5">
+              <div class="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-tr from-indigo-600 to-cyan-500 text-white shadow-md">
+                <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m12.83 2.18a2 2 0 0 0-1.66 0L2.6 6.08a1 1 0 0 0 0 1.83l8.58 3.91a2 2 0 0 0 1.66 0l8.58-3.9a1 1 0 0 0 0-1.83Z"/><path d="m22 17.65-9.17 4.16a2 2 0 0 1-1.66 0L2 17.65"/><path d="m22 12.65-9.17 4.16a2 2 0 0 1-1.66 0L2 12.65"/></svg>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <span class="font-heading text-lg font-bold tracking-tight text-foreground">Convertly</span>
+                <span class="rounded-md bg-indigo-500/10 px-1.5 py-0.2 text-[10px] font-bold text-indigo-400 border border-indigo-500/20">v2.0</span>
+              </div>
+            </a>
+          </div>
+          <div class="flex items-center gap-3">
+            <a href="/tools" class="rounded-xl border border-border/80 px-3.5 py-1.5 text-xs font-semibold text-muted-foreground hover:border-border hover:bg-card">All Tools</a>
+            <a href="/sitemap" class="rounded-xl border border-border/80 px-3.5 py-1.5 text-xs font-semibold text-muted-foreground hover:border-border hover:bg-card">Sitemap</a>
           </div>
         </div>
       </header>
+
       <main class="flex-1">
-        <section class="relative pt-20 pb-12 md:pt-28 md:pb-20">
-          <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8 text-center">
-            <div class="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5 text-xs font-semibold text-indigo-400 mb-8 backdrop-blur-md">
+        <!-- Hero Section -->
+        <section class="relative pt-16 pb-12 md:pt-24 md:pb-16 text-center">
+          <div class="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
+            <div class="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-4 py-1.5 text-xs font-semibold text-indigo-400 mb-6 backdrop-blur-md">
               <span>Fast, Free & Private File Conversion Engine</span>
             </div>
-            <h1 class="font-heading text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-foreground leading-[1.1]">
+            <h1 class="font-heading text-4xl sm:text-6xl font-extrabold tracking-tight text-foreground leading-[1.1]">
               Free Online File Converter <br class="hidden sm:inline" />
               <span class="gradient-text">for PDF, Word, Excel, Images and More</span>
             </h1>
@@ -1079,16 +1138,246 @@ const homeFallbackBody = `
             </p>
           </div>
         </section>
+
+        <!-- Popular Tools Section -->
+        <section class="py-10 border-t border-b border-border/40 bg-secondary/10">
+          <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <h2 class="font-heading text-xl sm:text-2xl font-bold tracking-tight text-foreground text-center mb-6">
+              Popular Conversion Tools
+            </h2>
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+              ${POPULAR_TOOLS.map(pt => `
+                <a href="/tools/${pt.id}" class="group rounded-2xl border border-border/80 bg-card/60 p-4 hover:border-indigo-500/40 hover:bg-card/90 transition-all flex flex-col justify-between">
+                  <div>
+                    <h3 class="font-heading text-sm font-bold text-foreground group-hover:text-indigo-400 transition-colors">${pt.name}</h3>
+                    <p class="text-xs text-muted-foreground mt-1 leading-snug">${pt.desc}</p>
+                  </div>
+                  <div class="mt-3 text-[11px] font-semibold text-indigo-400 inline-flex items-center gap-1">
+                    Open Tool →
+                  </div>
+                </a>
+              `).join('')}
+            </div>
+          </div>
+        </section>
+
+        <!-- Complete Categorized Directory of All 31 Active Tools -->
+        <section class="py-16 border-b border-border/40">
+          <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+              <h2 class="font-heading text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+                Complete Conversion Suite (${TOOLS.length} Active Tools)
+              </h2>
+              <p class="mt-3 text-sm text-muted-foreground leading-relaxed">
+                Explore our full suite of 31 dedicated online conversion tools, built on native document engines with 120-minute temporary file retention.
+              </p>
+            </div>
+
+            <div class="space-y-12">
+              ${toolCategories.map(cat => `
+                <div class="space-y-4">
+                  <div class="border-b border-border/40 pb-2">
+                    <h3 class="font-heading text-lg font-bold text-foreground">${cat.name}</h3>
+                    <p class="text-xs text-muted-foreground">${cat.desc}</p>
+                  </div>
+                  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                    ${cat.tools.map(t => `
+                      <div class="rounded-xl border border-border/80 bg-card/60 p-4 flex flex-col justify-between hover:border-indigo-500/40 transition-all">
+                        <div>
+                          <div class="flex items-center justify-between mb-2">
+                            <span class="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">${t.category}</span>
+                            ${t.badge ? `<span class="rounded bg-secondary/80 px-2 py-0.5 text-[10px] font-semibold text-foreground">${t.badge}</span>` : ''}
+                          </div>
+                          <h4 class="text-sm font-bold text-foreground mb-1">
+                            <a href="/tools/${t.id}" class="hover:text-indigo-400 transition-colors">${t.name}</a>
+                          </h4>
+                          <p class="text-xs text-muted-foreground leading-relaxed">${t.summary || t.description}</p>
+                        </div>
+                        <div class="mt-4 pt-2 border-t border-border/30">
+                          <a href="/tools/${t.id}" class="text-xs font-semibold text-indigo-400 hover:text-indigo-300 inline-flex items-center gap-1">
+                            Open Tool →
+                          </a>
+                        </div>
+                      </div>
+                    `).join('')}
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        </section>
+
+        <!-- How Convertly Works Section -->
+        <section class="py-16 border-b border-border/40 bg-secondary/10">
+          <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+              <h2 class="font-heading text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+                How Convertly Works
+              </h2>
+              <p class="mt-3 text-sm text-muted-foreground leading-relaxed">
+                No complex installations, software licenses, or account registrations. Convert documents in under 5 seconds.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div class="rounded-2xl border border-border/80 bg-card/60 p-6 text-left">
+                <span class="font-heading text-2xl font-black text-indigo-500/40 mb-3 block">01</span>
+                <h3 class="text-base font-bold text-foreground mb-2">Select Your Conversion Tool</h3>
+                <p class="text-xs text-muted-foreground leading-relaxed">
+                  Choose from our categorized directory of ${TOOLS.length} specialized tools to find the exact format transformer you need.
+                </p>
+              </div>
+
+              <div class="rounded-2xl border border-border/80 bg-card/60 p-6 text-left">
+                <span class="font-heading text-2xl font-black text-indigo-500/40 mb-3 block">02</span>
+                <h3 class="text-base font-bold text-foreground mb-2">Upload & Configure Options</h3>
+                <p class="text-xs text-muted-foreground leading-relaxed">
+                  Drag and drop your file directly into the tool dropzone. Tailor compression ratios, page ranges, rotation angles, or encryption keys.
+                </p>
+              </div>
+
+              <div class="rounded-2xl border border-border/80 bg-card/60 p-6 text-left">
+                <span class="font-heading text-2xl font-black text-indigo-500/40 mb-3 block">03</span>
+                <h3 class="text-base font-bold text-foreground mb-2">Instant Download & QR Transfer</h3>
+                <p class="text-xs text-muted-foreground leading-relaxed">
+                  Download your publication-ready document instantly or scan the secure QR code to transfer directly to mobile.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Truthful Feature & Security Architecture Section -->
+        <section class="py-16 border-b border-border/40">
+          <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+              <h2 class="font-heading text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+                Enterprise Privacy & Automated Data Sanitation
+              </h2>
+              <p class="mt-3 text-sm text-muted-foreground leading-relaxed">
+                When converting legal contracts, medical reports, and internal corporate budgets, privacy is non-negotiable.
+              </p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              <div class="rounded-2xl border border-border/80 bg-card/60 p-6">
+                <h3 class="text-sm font-bold text-foreground mb-2">120-Minute Temporary Retention</h3>
+                <p class="text-xs text-muted-foreground leading-relaxed">
+                  All uploaded files and converted outputs are automatically purged from active server storage after 120 minutes.
+                </p>
+              </div>
+
+              <div class="rounded-2xl border border-border/80 bg-card/60 p-6">
+                <h3 class="text-sm font-bold text-foreground mb-2">HTTPS/TLS Transport Security</h3>
+                <p class="text-xs text-muted-foreground leading-relaxed">
+                  Modern transport encryption standards protect every byte against unauthorized interception in transit.
+                </p>
+              </div>
+
+              <div class="rounded-2xl border border-border/80 bg-card/60 p-6">
+                <h3 class="text-sm font-bold text-foreground mb-2">Deterministic Processing (No AI Models)</h3>
+                <p class="text-xs text-muted-foreground leading-relaxed">
+                  Convertly processes documents using deterministic conversion engines. Uploaded files are not sent to external LLM or generative-AI APIs, and our conversion pipeline does not use uploaded files for AI model training.
+                </p>
+              </div>
+
+              <div class="rounded-2xl border border-border/80 bg-card/60 p-6">
+                <h3 class="text-sm font-bold text-foreground mb-2">Native Document Engines</h3>
+                <p class="text-xs text-muted-foreground leading-relaxed">
+                  Headless LibreOffice, PyMuPDF, and pdfplumber ensure pixel-perfect typography, vector tables, and margins.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- FAQ Section -->
+        <section class="py-16">
+          <div class="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-10">
+              <h2 class="font-heading text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
+                Frequently Asked Questions
+              </h2>
+              <p class="mt-3 text-sm text-muted-foreground leading-relaxed">
+                Everything you need to know about Convertly conversion capabilities and file security.
+              </p>
+            </div>
+
+            <div class="space-y-4">
+              ${HOME_FAQS.map(faq => `
+                <details class="rounded-xl border border-border/80 bg-card/60 p-4">
+                  <summary class="cursor-pointer text-sm font-bold text-foreground">${escapeHtml(faq.question)}</summary>
+                  <p class="mt-2 text-xs text-muted-foreground leading-relaxed">${escapeHtml(faq.answer)}</p>
+                </details>
+              `).join('')}
+            </div>
+          </div>
+        </section>
       </main>
+
       ${renderStaticFooter()}
     </div>
-`
-let homeHtml = template
-homeHtml = homeHtml.replace(/<div id="root">[\s\S]*?<\/body>/, `${homeFallbackBody.trim()}\n  </body>`)
-fs.writeFileSync(INDEX_PATH, homeHtml, 'utf-8')
-console.log('  ✓ Pre-rendered: / (Homepage Critical Hero LCP)')
+  `
 
-// 1. Generate Pre-rendered pages for all 30 tools
+  const homeSchemas = [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Organization',
+      '@id': 'https://convertlytools.xyz/#organization',
+      name: 'Convertly',
+      url: 'https://convertlytools.xyz',
+      logo: 'https://convertlytools.xyz/icon.svg',
+      description: 'Enterprise-grade online document and media conversion platform powered by native engines with 120-minute temporary file retention.'
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebSite',
+      '@id': 'https://convertlytools.xyz/#website',
+      name: 'Convertly',
+      url: 'https://convertlytools.xyz',
+      description: 'Free online document and image converter with 120-minute temporary file retention.'
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'WebApplication',
+      name: 'Convertly Online File Converter',
+      url: 'https://convertlytools.xyz',
+      applicationCategory: 'UtilitiesApplication',
+      operatingSystem: 'All',
+      offers: {
+        '@type': 'Offer',
+        price: '0.00',
+        priceCurrency: 'USD'
+      }
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: HOME_FAQS.map(faq => ({
+        '@type': 'Question',
+        name: faq.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: faq.answer
+        }
+      }))
+    }
+  ]
+
+  let html = template
+  html = html.replace(/<div id="root">[\s\S]*?<\/body>/, `${homeFallbackBody.trim()}\n  </body>`)
+
+  const schemaScript = `\n    <script id="convertly-schema-jsonld" type="application/ld+json">\n${JSON.stringify(homeSchemas, null, 2)}\n    </script>\n  </head>`
+  html = html.replace('</head>', schemaScript)
+
+  return html
+}
+
+const homeHtml = renderHomepageHtml()
+fs.writeFileSync(INDEX_PATH, homeHtml, 'utf-8')
+console.log('  ✓ Pre-rendered: / (Homepage Comprehensive Semantic SEO & Schema)')
+
+// 1. Generate Pre-rendered pages for all 31 tools
 for (const tool of TOOLS) {
   const toolDir = path.join(DIST_DIR, 'tools', tool.id)
   if (!fs.existsSync(toolDir)) {
@@ -1169,8 +1458,8 @@ function renderPageTemplate({
 }
 
 function renderToolsDirectoryHtml() {
-  const title = 'All 30 Document & Image Conversion Tools — Convertly'
-  const desc = 'Browse all 30 enterprise-grade document, PDF, Office, and image conversion tools on Convertly. Fast, free, and secure with zero retention.'
+  const title = `All ${TOOLS.length} Document & Image Conversion Tools — Convertly`
+  const desc = 'Browse all 30 enterprise-grade document, PDF, Office, and image conversion tools on Convertly. Fast, free, and secure with 120-minute temporary file retention.'
   const canonicalUrl = `${BASE_DOMAIN}/tools`
 
   const bodyContent = `
@@ -1178,7 +1467,7 @@ function renderToolsDirectoryHtml() {
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-2xl mx-auto mb-10">
           <div class="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3.5 py-1 text-xs font-semibold text-indigo-400 mb-4">
-            <span>30 Enterprise Tools Available</span>
+            <span>${TOOLS.length} Enterprise Tools Available</span>
           </div>
           <h1 class="font-heading text-3xl sm:text-5xl font-extrabold text-foreground">
             All Conversion Tools
@@ -1678,7 +1967,7 @@ function renderUseCaseHtml(uc) {
 
 function renderPrivacyHtml() {
   const canonicalUrl = `${BASE_DOMAIN}/privacy`
-  const title = 'Privacy Policy — 120-Minute Auto-Shredder Guarantee | Convertly'
+  const title = 'Privacy Policy & Data Protection | Convertly'
   const desc = 'Convertly Privacy Policy. 120-minute temporary file retention, automated file cleanup, TLS transport security, and privacy-focused document processing.'
 
   const bodyContent = `
@@ -1703,7 +1992,7 @@ function renderPrivacyHtml() {
           </div>
           <div class="rounded-2xl p-6 border border-indigo-500/20 bg-card/60">
             <h2 class="font-heading text-sm font-bold text-foreground">No File Inspection</h2>
-            <p class="mt-2 text-xs text-muted-foreground leading-relaxed">No humans, AI training crawlers, or third-party advertising brokers ever read or parse your document contents.</p>
+            <p class="mt-2 text-xs text-muted-foreground leading-relaxed">No humans, automated crawlers, or third-party advertising brokers ever read or parse your document contents.</p>
           </div>
           <div class="rounded-2xl p-6 border border-cyan-500/20 bg-card/60">
             <h2 class="font-heading text-sm font-bold text-foreground">Encrypted in Transit</h2>
@@ -1724,8 +2013,8 @@ function renderPrivacyHtml() {
             <p>All data transmitted between your device and Convertly V2 is encrypted via TLS 1.3 with Perfect Forward Secrecy. Eavesdropping and data alteration are cryptographically prevented.</p>
           </section>
           <section>
-            <h2 class="font-heading text-base font-bold text-foreground mb-3">4. No Third-Party Commercial Tracking or AI Training</h2>
-            <p>We do not sell user data, utilize behavioral tracking cookies, or use customer documents to train artificial intelligence or machine learning models.</p>
+            <h2 class="font-heading text-base font-bold text-foreground mb-3">4. Deterministic Processing & No AI Training Use</h2>
+            <p>We do not sell user data, utilize behavioral tracking cookies, or use customer documents to train artificial intelligence or machine learning models. Uploaded files are processed using deterministic engines and are not transmitted to external LLM APIs.</p>
           </section>
           <section>
             <h2 class="font-heading text-base font-bold text-foreground mb-3">5. Data Privacy Principles</h2>
@@ -1840,7 +2129,7 @@ function renderTermsHtml() {
           </div>
           <div class="rounded-2xl p-6 border border-border/80 bg-card/60">
             <h2 class="font-heading text-sm font-bold text-foreground">Free & Open Utility</h2>
-            <p class="mt-2 text-xs text-muted-foreground leading-relaxed">All 30 tools are provided free of charge for personal, academic, and commercial business workflows without watermarks.</p>
+            <p class="mt-2 text-xs text-muted-foreground leading-relaxed">All ${TOOLS.length} conversion tools are provided free of charge for personal, academic, and commercial business workflows without watermarks.</p>
           </div>
           <div class="rounded-2xl p-6 border border-border/80 bg-card/60">
             <h2 class="font-heading text-sm font-bold text-foreground">Responsible Fair Use</h2>
@@ -2123,7 +2412,7 @@ function renderUseCasesHubHtml() {
             Tailored Document Workflows for Every Role & Industry
           </h1>
           <p class="mt-3 text-sm text-muted-foreground leading-relaxed">
-            Discover how different professions leverage zero-retention document processing to maintain privacy, automate file conversions, and streamline high-volume paperwork.
+            Discover how different professions leverage privacy-focused document processing to maintain privacy, automate file conversions, and streamline high-volume paperwork.
           </p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -2207,7 +2496,7 @@ function renderGuidesHubHtml() {
 function renderBlogHubHtml() {
   const canonicalUrl = `${BASE_DOMAIN}/blog`
   const title = 'Convertly Engineering Blog — Deep Dives in PDF, Office & Image Optimization'
-  const desc = 'Explore technical tutorials, format breakdowns, zero-retention security research, and productivity guides.'
+  const desc = 'Explore technical tutorials, format breakdowns, document security research, and productivity guides.'
 
   const bodyContent = `
     <div class="py-12 md:py-16 text-foreground">
@@ -2220,7 +2509,7 @@ function renderBlogHubHtml() {
             Engineering Insights, File Formats & Productivity Deep Dives
           </h1>
           <p class="mt-3 text-sm text-muted-foreground leading-relaxed">
-            In-depth technical articles covering rasterization algorithms, headless rendering pipelines, zero-retention privacy standards, and document optimization best practices.
+            In-depth technical articles covering rasterization algorithms, headless rendering pipelines, privacy standards, and document optimization best practices.
           </p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -2361,14 +2650,14 @@ const CORE_PAGE_RENDERERS = {
 
 const CORE_PAGES = [
   { slug: 'privacy', title: 'Privacy Policy — 120-Minute File Retention Policy | Convertly', desc: 'Convertly Privacy Policy. 120-minute temporary file retention, automated file cleanup, TLS transport security, and privacy-focused document processing.' },
-  { slug: 'security', title: 'Security Architecture & Defense-in-Depth | Convertly', desc: 'Learn how Convertly protects your confidential documents with TLS 1.3, sandboxed subprocesses, magic-byte inspection, and automated shredding.' },
+  { slug: 'security', title: 'Security Architecture & Defense-in-Depth | Convertly', desc: 'Learn how Convertly protects your confidential documents with TLS 1.3, sandboxed subprocesses, magic-byte inspection, and automated file cleanup.' },
   { slug: 'terms', title: 'Terms of Service — Convertly V2 File Conversion', desc: 'Terms and conditions for utilizing Convertly online document and image conversion services.' },
   { slug: 'developers', title: 'Developers API & Architecture — Convertly V2', desc: 'Explore the Convertly V2 REST API documentation, webhook integration guides, and document pipeline specs.' },
   { slug: 'formats', title: 'Supported File Formats & MIME Type Specifications — Convertly', desc: 'Comprehensive technical specification guide covering all supported PDF, Microsoft Office, and raster image formats.' },
   { slug: 'compare', title: 'Convertly vs Competitors (2026) — Comprehensive PDF & Tool Comparisons', desc: 'Factual side-by-side comparisons of Convertly against Smallpdf, iLovePDF, PDF24, Adobe Acrobat, and FreeConvert.' },
   { slug: 'use-cases', title: 'Document Solutions by Industry & Profession — Convertly Use Cases', desc: 'Tailored PDF and document workflows for Students, Teachers, Businesses, Lawyers, HR, Freelancers, and Designers.' },
   { slug: 'guides', title: 'Problem Solving Guides & PDF Tutorials (2026) — Convertly', desc: 'Comprehensive technical guides on solving PDF formatting, compression, page splitting, merging, and conversion issues.' },
-  { slug: 'blog', title: 'Convertly Engineering Blog — Deep Dives in PDF, Office & Image Optimization', desc: 'Explore technical tutorials, format breakdowns, zero-retention security research, and productivity guides.' },
+  { slug: 'blog', title: 'Convertly Engineering Blog — Deep Dives in PDF, Office & Image Optimization', desc: 'Explore technical tutorials, format breakdowns, document security research, and productivity guides.' },
   { slug: 'sitemap', title: 'HTML Sitemap & Complete Entity Index — Convertly', desc: 'Comprehensive index of all Convertly conversion tools, landing pages, competitor comparisons, and guides.' },
 ]
 

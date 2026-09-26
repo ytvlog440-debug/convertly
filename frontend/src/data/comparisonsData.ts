@@ -49,13 +49,13 @@ export const COMPARISONS_DATA: Record<string, CompetitorComparison> = {
     title: 'Convertly vs Smallpdf Comparison (2026) — Features, Limits & Pricing',
     metaDescription: 'Unbiased factual comparison between Convertly and Smallpdf. Compare free tier file limits, OCR accuracy, privacy retention SLAs, and pricing models.',
     h1: 'Convertly vs Smallpdf: In-Depth 2026 Comparison',
-    summary: 'Smallpdf is one of the most recognized consumer PDF web services, while Convertly offers an open, high-volume alternative with zero subscription paywalls and strict 120-minute automated shredding.',
+    summary: 'Smallpdf is one of the most recognized consumer PDF web services, while Convertly offers an open, high-volume alternative with zero subscription paywalls and 120-minute temporary file retention.',
     pricingModel: {
       convertly: '100% Free Forever (No credit card or recurring subscription)',
       competitor: 'Freemium with strict limits (Free tier: 2 tasks/day; Pro tier: $9–$12/user/month)'
     },
     retentionPolicy: {
-      convertly: 'Automated 120-minute temporary file retention; zero AI training',
+      convertly: 'Automated 120-minute temporary file retention; deterministic processing with no AI model training',
       competitor: 'Files deleted after 1 hour (free) or stored in account cloud workspace (Pro)'
     },
     strengths: {
@@ -340,7 +340,7 @@ export const COMPARISONS_DATA: Record<string, CompetitorComparison> = {
       { feature: 'Server Queue Priority', convertly: 'Instant parallel execution', competitor: 'Slow queue wait times on free tier', verdict: 'win' },
       { feature: 'Ad Experience', convertly: '100% Ad-free', competitor: 'Multiple banner & popup advertisements', verdict: 'win' },
       { feature: 'Audio / Video Support', convertly: 'Focus on PDF, Office & Images', competitor: 'Broad audio and video codec transcode', verdict: 'info' },
-      { feature: 'File Retention Period', convertly: '120 minutes (Auto-shred)', competitor: '6 hours on server disks', verdict: 'win' }
+      { feature: 'File Retention Period', convertly: '120-minute temporary retention', competitor: '6 hours on server disks', verdict: 'win' }
     ],
     verdictNarrative: [
       'FreeConvert is useful when you need to transcode obscure video or audio containers. However, for everyday PDF, Word, and image tasks, free users frequently face conversion credit exhaustion, slow queue times, and heavy ads.',

@@ -26,7 +26,7 @@ export function HtmlSitemapPage() {
 
   const corePages = [
     { name: 'Home Page', url: '/' },
-    { name: 'All 30 Tools Directory', url: '/tools' },
+    { name: `All ${tools.length} Tools Directory`, url: '/tools' },
     { name: 'Comparison Hub', url: '/compare' },
     { name: 'Industry Use Cases Hub', url: '/use-cases' },
     { name: 'Problem Solving Guides Hub', url: '/guides' },
@@ -34,7 +34,7 @@ export function HtmlSitemapPage() {
     { name: 'Developer REST API Specs', url: '/developers' },
     { name: 'Supported File Formats & MIME Specifications', url: '/formats' },
     { name: 'Security Architecture & Defense-in-Depth', url: '/security' },
-    { name: 'Privacy Policy & Zero-Retention SLA', url: '/privacy' },
+    { name: 'Privacy Policy & Data Protection', url: '/privacy' },
     { name: 'Terms of Service', url: '/terms' },
   ]
 
@@ -72,7 +72,7 @@ export function HtmlSitemapPage() {
           </h1>
 
           <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-            Direct navigational access to all 30 conversion tools, competitor teardowns, industry use cases, problem-solving guides, and blog articles.
+            Direct navigational access to all {tools.length} conversion tools, competitor teardowns, industry use cases, problem-solving guides, and blog articles.
           </p>
         </header>
 

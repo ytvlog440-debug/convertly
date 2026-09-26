@@ -369,7 +369,7 @@ export function ToolsDirectoryPage() {
       '@type': 'CollectionPage',
       name: 'Directory of Conversion Tools — Convertly',
       url: 'https://convertlytools.xyz/tools',
-      description: 'Comprehensive directory of 30 enterprise-grade document, PDF, and image conversion tools with 120-minute temporary file retention.',
+      description: `Comprehensive directory of ${ALL_TOOLS.length} enterprise-grade document, PDF, and image conversion tools with 120-minute temporary file retention.`,
       mainEntity: {
         '@type': 'ItemList',
         itemListElement: ALL_TOOLS.map((t, idx) => ({
@@ -387,7 +387,7 @@ export function ToolsDirectoryPage() {
     <div className="py-12 md:py-16">
       <SeoHead
         title="Directory of Conversion Tools — PDF, Office & Images | Convertly"
-        description="Browse all 30 free online file conversion tools. Convert PDF to Word, Word to PDF, compress, merge, split, and optimize images with 120-minute temporary file retention."
+        description={`Browse all ${ALL_TOOLS.length} free online file conversion tools. Convert PDF to Word, Word to PDF, compress, merge, split, and optimize images with 120-minute temporary file retention.`}
         keywords="conversion tools directory, free pdf converter, word to pdf, pdf to word, image to pdf, compress pdf, merge pdf"
         canonicalUrl="https://convertlytools.xyz/tools"
         breadcrumbs={[
@@ -402,7 +402,7 @@ export function ToolsDirectoryPage() {
         {/* Header */}
         <div className="text-center max-w-2xl mx-auto mb-10">
           <div className="inline-flex items-center gap-2 rounded-full border border-indigo-500/30 bg-indigo-500/10 px-3.5 py-1 text-xs font-semibold text-indigo-400 mb-4 backdrop-blur-md">
-            <span>30 Enterprise Tools Available</span>
+            <span>{ALL_TOOLS.length} Enterprise Tools Available</span>
           </div>
           <h1 className="font-heading text-3xl sm:text-5xl font-extrabold text-foreground">
             All Conversion Tools

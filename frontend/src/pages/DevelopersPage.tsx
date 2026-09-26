@@ -78,7 +78,7 @@ console.log("File ID:", data.id);`,
     title: '2. Dispatch Conversion Job',
     method: 'POST',
     path: '/api/v1/jobs',
-    desc: 'Submit one or more file IDs to any of Convertly 30 binary conversion engines with customized transformation parameters.',
+    desc: "Submit one or more file IDs to any of Convertly's 31 binary conversion engines with customized transformation parameters.",
     snippets: {
       curl: `curl -X POST "https://convertlytools.xyz/api/v1/jobs" \\
   -H "Content-Type: application/json" \\

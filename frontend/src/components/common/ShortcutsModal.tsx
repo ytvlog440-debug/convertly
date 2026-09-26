@@ -7,7 +7,7 @@ interface ShortcutsModalProps {
 }
 
 const SHORTCUTS = [
-  { key: 'Ctrl K / ⌘ K', desc: 'Open Global Command Palette (search all 30 tools)' },
+  { key: 'Ctrl K / ⌘ K', desc: 'Open Global Command Palette (search all 31 tools)' },
   { key: 'Esc', desc: 'Close any active modal, preview, or drawer' },
   { key: '?', desc: 'Toggle this keyboard shortcuts cheatsheet' },
   { key: 'Tab', desc: 'Navigate between interactive controls and buttons' },

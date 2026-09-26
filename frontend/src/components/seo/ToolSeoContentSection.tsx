@@ -356,7 +356,7 @@ export function ToolSeoContentSection({ content }: ToolSeoContentSectionProps) {
             <h2 id="section-security" className="font-heading text-lg sm:text-xl font-bold text-foreground">
               {content.securityHeading}
             </h2>
-            <span className="text-xs text-indigo-400">Zero-Retention Policy & In-Memory Encryption</span>
+            <span className="text-xs text-indigo-400">120-Minute Temporary Retention & TLS Transport Security</span>
           </div>
         </div>
 
@@ -516,7 +516,7 @@ export function ToolSeoContentSection({ content }: ToolSeoContentSectionProps) {
               to="/tools"
               className="text-xs font-semibold text-indigo-400 hover:text-indigo-300 transition-colors inline-flex items-center gap-1 shrink-0"
             >
-              <span>View all 30 tools</span>
+              <span>View all 31 tools</span>
               <ArrowRight className="h-3.5 w-3.5" />
             </Link>
           </div>

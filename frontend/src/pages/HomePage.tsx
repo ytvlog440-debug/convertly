@@ -395,13 +395,7 @@ const HOMEPAGE_SCHEMAS = [
     name: 'Convertly',
     url: 'https://convertlytools.xyz',
     logo: 'https://convertlytools.xyz/icon.svg',
-    description: 'Enterprise-grade online document and media conversion platform powered by native engines with 120-minute temporary file retention.',
-    sameAs: ['https://github.com/convertly'],
-    contactPoint: {
-      '@type': 'ContactPoint',
-      contactType: 'customer support',
-      url: 'https://convertlytools.xyz/security'
-    }
+    description: 'Enterprise-grade online document and media conversion platform powered by native engines with 120-minute temporary file retention.'
   },
   {
     '@context': 'https://schema.org',
@@ -413,14 +407,6 @@ const HOMEPAGE_SCHEMAS = [
       '@type': 'Organization',
       '@id': 'https://convertlytools.xyz/#organization',
       name: 'Convertly'
-    },
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: 'https://convertlytools.xyz/tools?q={search_term_string}'
-      },
-      'query-input': 'required name=search_term_string'
     }
   },
   {

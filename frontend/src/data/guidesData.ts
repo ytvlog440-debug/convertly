@@ -314,7 +314,7 @@ export const PROBLEM_GUIDES_DATA: Record<string, ProblemGuide> = {
       {
         step: 3,
         title: 'Download Structured XLSX Spreadsheet',
-        instruction: 'Open the generated XLSX file in Microsoft Excel, Google Sheets, or Apple Numbers. All numbers and dates are ready for SUM formulas.',
+        instruction: 'Open the generated XLSX file in Microsoft Excel, Google Sheets, or Apple Numbers. All numbers and dates are ready for SUM formulas. For accounting, tax, or financial reporting workflows, users should verify extracted figures against the source document before relying on them.',
         proTip: 'Each page of your PDF is placed on a dedicated worksheet tab to preserve multi-page document organization.'
       }
     ],

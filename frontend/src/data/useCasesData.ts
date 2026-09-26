@@ -107,7 +107,7 @@ export const USE_CASES_DATA: Record<string, AudienceUseCase> = {
     ],
     complianceAndSecurity: [
       { title: 'Privacy-Focused File Processing', desc: 'Automated 120-minute temporary file retention ensures prompt removal from active server storage.' },
-      { title: 'Zero AI Training SLA', desc: 'Your proprietary business figures, customer lists, and strategic documents are never used for AI model training.' }
+      { title: 'Deterministic Processing (No AI Models)', desc: 'Convertly processes documents using deterministic conversion engines. Uploaded business files are not sent to external LLM APIs and our pipeline does not use uploaded files for AI model training.' }
     ],
     expertTips: [
       'Run corporate proposals through the Scrub Metadata tool before emailing competitors or clients to remove internal author names and revision histories.',
@@ -144,7 +144,8 @@ export const USE_CASES_DATA: Record<string, AudienceUseCase> = {
     ],
     expertTips: [
       'Always use Flatten PDF on signed affidavits and settlement documents so form fields and signatures become an immutable part of the background layer.',
-      'Scrub metadata from draft contracts prior to sending redlines to opposing counsel to ensure negotiations remain private.'
+      'Scrub metadata from draft contracts prior to sending redlines to opposing counsel to ensure negotiations remain private.',
+      'When handling sensitive or court-mandated redactions, counsel and paralegals should verify the exported PDF before distribution to ensure all confidential identifiers have been removed.'
     ],
     faqs: [
       { question: 'Does Convertly inspect or index documents processed by law firms?', answer: 'Never. Convertly has zero access to your file contents. All processing is automated via native binaries and deleted from active storage after 120 minutes.' },

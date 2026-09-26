@@ -1,7 +1,7 @@
 /**
  * Convertly V2 Enterprise Programmatic SEO & Content Strategy Registry
  * Provides 100% unique, human-readable, Google Helpful Content compliant
- * documentation, guides, technical specifications, and FAQs for all 30 tools.
+ * documentation, guides, technical specifications, and FAQs for all 31 tools.
  */
 
 export interface ToolFormatItem {
@@ -647,8 +647,8 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Converted files are delivered without watermarks, promotional stamps, or forced branding inserted into your Word pages.'
       },
       {
-        title: 'Explicit Zero AI Training Policy',
-        desc: 'Convertly does not analyze, sell, or use your uploaded documents to train machine learning or artificial intelligence models.'
+        title: 'Deterministic Processing (No AI Models)',
+        desc: 'Convertly processes documents using deterministic conversion engines. Uploaded files are not sent to external LLM or generative-AI APIs, and our conversion pipeline does not use uploaded files for AI model training.'
       },
       {
         title: 'Direct QR Code Mobile Transfer',
@@ -872,7 +872,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Combines page streams directly without rasterization, preserving 100% of the original text sharpness, images, and formatting.'
       },
       {
-        title: '120-Minute Automatic File Shredding',
+        title: '120-Minute Automatic File Cleanup',
         desc: 'All merged files are automatically and permanently deleted from our servers after 120 minutes for confidential security.'
       },
       {
@@ -899,8 +899,8 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Merge documents without watermarks, hourly throttling, or forced registration paywalls.'
       },
       {
-        title: 'Enterprise Cryptographic Privacy',
-        desc: 'TLS 1.3 transport encryption and automated 120-minute server shredding protect your confidential transactions.'
+        title: 'Enterprise Document Privacy',
+        desc: 'TLS 1.3 transport encryption and automated 120-minute server cleanup protect your confidential transactions.'
       }
     ],
     supportedFormatsHeading: 'Supported Specifications & Format Matrix',
@@ -920,7 +920,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     certifications: [
       'Automated 120-Minute File Deletion',
       'TLS 1.3 Transport Encryption Protocol',
-      'Zero AI Model Training Guarantee',
+      'No AI Models in Conversion',
       'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Engine Benchmarks & Specifications',
@@ -1027,7 +1027,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my confidential files stored on your servers?',
-        answer: 'No. All documents are protected by TLS 1.3 encryption and automatically shredded from our servers 120 minutes after processing.'
+        answer: 'No. All documents are protected by TLS 1.3 encryption and automatically deleted from our servers 120 minutes after processing.'
       },
       {
         question: 'Do I need to install Adobe Acrobat or any software?',
@@ -1158,7 +1158,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Provides Recommended, Maximum, and Lossless Clean modes tailored to different submission and distribution requirements.'
       },
       {
-        title: '120-Minute Automatic File Shredding',
+        title: '120-Minute Automatic File Cleanup',
         desc: 'All source files and optimized outputs are permanently deleted from our servers after 120 minutes for total confidentiality.'
       },
       {
@@ -1182,7 +1182,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Temporary File Retention & Privacy',
-        desc: 'TLS 1.3 transport encryption and automated server shredding ensure financial and legal paperwork stays strictly confidential.'
+        desc: 'TLS 1.3 transport encryption and automated server cleanup ensure financial and legal paperwork stays strictly confidential.'
       }
     ],
     supportedFormatsHeading: 'Supported Specifications & Format Matrix',
@@ -1202,7 +1202,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     certifications: [
       'Automated 120-Minute File Deletion',
       'TLS 1.3 Transport Encryption Protocol',
-      'Zero AI Model Training Guarantee',
+      'No AI Models in Conversion',
       'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Engine Benchmarks & Technical Specifications',
@@ -1305,7 +1305,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my files stored on your servers?',
-        answer: 'No. All documents are automatically shredded and permanently deleted from our servers 120 minutes after upload.'
+        answer: 'No. All documents are automatically deleted from our servers 120 minutes after upload.'
       },
       {
         question: 'Is there a limit on the number of PDFs I can compress?',
@@ -1436,7 +1436,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Retains all embedded web hyperlinks, email links, and internal document bookmarks in the resulting PDF.'
       },
       {
-        title: '120-Minute Automatic File Shredding',
+        title: '120-Minute Automatic File Cleanup',
         desc: 'All source Word files and generated PDFs are permanently destroyed from our servers after 120 minutes.'
       },
       {
@@ -1463,8 +1463,8 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Convert as many files as you need without daily file limits or subscription prompts.'
       },
       {
-        title: 'Enterprise Cryptographic Security',
-        desc: 'TLS 1.3 transport encryption and automated file shredding protect confidential business memos and contracts.'
+        title: 'Enterprise Document Security',
+        desc: 'TLS 1.3 transport encryption and automated file cleanup protect confidential business memos and contracts.'
       }
     ],
     supportedFormatsHeading: 'Supported Specifications & Format Matrix',
@@ -1485,7 +1485,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     certifications: [
       'Automated 120-Minute File Deletion',
       'TLS 1.3 Transport Encryption Protocol',
-      'Zero AI Model Training Guarantee',
+      'No AI Models in Conversion',
       'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Engine Benchmarks & Specifications',
@@ -1723,7 +1723,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Reorder pages dynamically using smooth visual handles before finalizing document structure.'
       },
       {
-        title: '120-Minute Automatic File Shredding',
+        title: '120-Minute Automatic File Cleanup',
         desc: 'All uploaded photos and generated PDF documents are permanently erased from memory and disk after 120 minutes.'
       },
       {
@@ -1760,7 +1760,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       { ext: '.pdf', name: 'Standard Portable Document Format', mime: 'application/pdf' }
     ],
     formatNotes: 'Supports mixed-format uploads in a single session. Up to 20 files and 100MB total capacity per conversion.',
-    securityHeading: 'Security, Confidentiality & Automated Shredding',
+    securityHeading: 'Security, Confidentiality & Automated File Cleanup',
     securityParagraphs: [
       'Personal snapshots, medical receipts, and property inspection photos require the highest standard of data privacy. Convertly executes all image-to-PDF transformations over encrypted TLS 1.3 channels.',
       'Under our temporary retention policy, your source images and compiled PDF files are stored on server disk and are automatically deleted after 120 minutes. We never view, index, share, or train AI models on your images.'
@@ -1768,7 +1768,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     certifications: [
       'Automated 120-Minute File Deletion',
       'TLS 1.3 Transport Encryption Protocol',
-      'Zero AI Model Training Guarantee',
+      'No AI Models in Conversion',
       'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Engine Benchmarks & Technical Specifications',
@@ -2008,7 +2008,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Applies smooth typographic antialiasing to prevent jagged edges on fine fonts and thin line illustrations.'
       },
       {
-        title: '120-Minute Automatic File Shredding',
+        title: '120-Minute Automatic File Cleanup',
         desc: 'All source PDFs and generated image packages are permanently deleted from our servers after 120 minutes for total confidentiality.'
       },
       {
@@ -2053,7 +2053,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     certifications: [
       'Automated 120-Minute File Deletion',
       'TLS 1.3 Transport Encryption Protocol',
-      'Zero AI Model Training Guarantee',
+      'No AI Models in Conversion',
       'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Performance & Rasterization Benchmarks',
@@ -2170,7 +2170,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my uploaded PDF documents stored on your servers?',
-        answer: 'No. Under our strict Zero-Retention Policy, all files and generated image packages are permanently shredded from our servers exactly 120 minutes after processing.'
+        answer: 'No. Under our 120-minute temporary file retention policy, all files and generated image packages are automatically deleted from active server storage 120 minutes after processing.'
       },
       {
         question: 'What is the maximum PDF file size I can upload?',
@@ -2186,7 +2186,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my files used to train artificial intelligence models?',
-        answer: 'Never. Convertly has a strict Zero AI Model Training policy. Your documents and images are never read, analyzed, shared, or used for AI training.'
+        answer: 'No. Convertly processes files using deterministic local engines. Uploaded files are not sent to external AI APIs and are not used for machine learning or AI model training.'
       }
     ],
     conclusionHeading: 'Render Your PDF into High-Resolution Images Now',
@@ -2293,7 +2293,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Retains embedded ICC color profiles to guarantee consistent color reproduction across screens and mobile devices.'
       },
       {
-        title: '120-Minute Automatic File Shredding',
+        title: '120-Minute Automatic File Cleanup',
         desc: 'All uploaded files and converted PNGs are permanently destroyed from our servers after 120 minutes for total confidentiality.'
       },
       {
@@ -2328,7 +2328,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       { ext: '.png', name: 'Portable Network Graphics (24-bit Truecolor)', mime: 'image/png' }
     ],
     formatNotes: 'Accepts standard JPEG and progressive JPG files up to 100MB per image. Outputs lossless 24-bit PNG.',
-    securityHeading: 'Security, Privacy & Automated File Shredding',
+    securityHeading: 'Security, Privacy & Automated File Cleanup',
     securityParagraphs: [
       'Your photos and brand graphics remain confidential. All file uploads and downloads are encrypted using TLS 1.3 cryptographic transport.',
       'Files are stored temporarily on server infrastructure. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage. Convertly never shares, inspects, or uses your images to train AI models.'
@@ -2336,7 +2336,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     certifications: [
       'Automated 120-Minute File Deletion',
       'TLS 1.3 Transport Encryption Protocol',
-      'Zero AI Model Training Guarantee',
+      'No AI Models in Conversion',
       'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Engine Benchmarks & Conversion Speed',
@@ -2453,7 +2453,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my uploaded pictures stored on your servers?',
-        answer: 'No. All uploaded and converted files are automatically and permanently shredded from our servers after 120 minutes under our Zero-Retention Policy.'
+        answer: 'No. All uploaded and converted files are automatically deleted from our servers after 120 minutes under our temporary retention policy.'
       },
       {
         question: 'What is the maximum file size limit for JPG uploads?',
@@ -2469,7 +2469,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my images used to train artificial intelligence models?',
-        answer: 'Never. Convertly has a strict Zero AI Model Training guarantee. Your files are never inspected, shared, or used for AI training.'
+        answer: 'No. Convertly processes files using deterministic local engines. Uploaded files are not sent to external AI APIs and are not used for machine learning or AI model training.'
       }
     ],
     conclusionHeading: 'Convert Your JPG to Lossless PNG Now',
@@ -2576,7 +2576,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Maintains consistent color balance across screens, monitors, and smartphones without washouts.'
       },
       {
-        title: '120-Minute Automatic File Shredding',
+        title: '120-Minute Automatic File Cleanup',
         desc: 'All uploaded files and converted outputs are permanently deleted from our servers after 120 minutes.'
       },
       {
@@ -2596,7 +2596,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Absolute Document Confidentiality',
-        desc: 'Protected by TLS 1.3 encryption and automated shredding policies that guarantee your privacy.'
+        desc: 'Protected by TLS 1.3 encryption and automated 120-minute cleanup policies that protect your privacy.'
       },
       {
         title: 'Instant In-Browser Processing',
@@ -2614,12 +2614,12 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     securityHeading: 'Security, Privacy & Automated File Deletion',
     securityParagraphs: [
       'Document and image security are foundational principles at Convertly. All transfers run over TLS 1.3 encrypted connections.',
-      'Your source PNG and the converted JPG are stored temporarily on server infrastructure. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage. We never view, index, or use your pictures for AI training.'
+      'Your source PNG and the converted JPG are stored temporarily on server infrastructure. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage. Uploaded images are not sent to external AI APIs or used for model training.'
     ],
     certifications: [
       'Automated 120-Minute File Deletion',
       'TLS 1.3 Transport Encryption Protocol',
-      'Zero AI Model Training Guarantee',
+      'No AI Models in Conversion',
       'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Engine Benchmarks & Technical Specifications',
@@ -2752,7 +2752,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my uploaded photos used to train AI models?',
-        answer: 'Never. Convertly has a strict Zero AI Model Training guarantee. Your files are never read, analyzed, shared, or used for AI training.'
+        answer: 'No. Convertly processes images using deterministic local engines. Uploaded files are not sent to external AI APIs and are not used for AI model training.'
       }
     ],
     conclusionHeading: 'Convert Your PNG to Lightweight JPG Now',
@@ -2859,7 +2859,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Automatically chooses optimal compression routines based on image characteristics for the best possible quality.'
       },
       {
-        title: '120-Minute Automatic File Shredding',
+        title: '120-Minute Automatic File Cleanup',
         desc: 'All source files and generated WebP images are automatically deleted after 120 minutes under our temporary retention policy.'
       },
       {
@@ -2883,7 +2883,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Ironclad Data Security',
-        desc: 'Protected by TLS 1.3 encryption and automated shredding policies that guarantee total confidentiality.'
+        desc: 'Protected by TLS 1.3 encryption and automated 120-minute cleanup policies that maintain confidentiality.'
       }
     ],
     supportedFormatsHeading: 'Supported File Specifications',
@@ -2903,7 +2903,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     certifications: [
       'Automated 120-Minute File Deletion',
       'TLS 1.3 Transport Encryption Protocol',
-      'Zero AI Model Training Guarantee',
+      'No AI Models in Conversion',
       'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Engine Benchmarks & Technical Specifications',
@@ -3036,7 +3036,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my files used to train artificial intelligence models?',
-        answer: 'Never. Convertly has a strict Zero AI Model Training policy. Your images are never read, analyzed, shared, or used for AI training.'
+        answer: 'No. Convertly processes images using deterministic local engines. Uploaded files are not sent to external AI APIs and are not used for AI model training.'
       }
     ],
     conclusionHeading: 'Convert Your Images to Next-Gen WebP Now',
@@ -3143,7 +3143,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Renders embedded Excel charts, bar graphs, and scatter plots at crisp vector print resolution without blur.'
       },
       {
-        title: '120-Minute Automatic File Shredding',
+        title: '120-Minute Automatic File Cleanup',
         desc: 'Confidential corporate ledgers and payroll records are permanently deleted from our servers after 120 minutes.'
       },
       {
@@ -3163,7 +3163,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Enterprise Data Confidentiality',
-        desc: 'Protected by TLS 1.3 transport encryption and automated file shredding policies that meet strict enterprise standards.'
+        desc: 'Protected by TLS 1.3 transport encryption and automated file cleanup policies that meet enterprise standards.'
       },
       {
         title: 'No Microsoft Office License Needed',
@@ -3179,7 +3179,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       { ext: '.pdf', name: 'Standard Portable Document Format', mime: 'application/pdf' }
     ],
     formatNotes: 'Supports multi-sheet workbooks, complex data tables, and embedded charts up to 100MB in file size.',
-    securityHeading: 'Security, Privacy & Automated File Shredding',
+    securityHeading: 'Security, Privacy & Automated File Cleanup',
     securityParagraphs: [
       'Financial spreadsheets, payroll registers, and business tax calculations require uncompromising privacy. Convertly handles all Excel to PDF conversions inside isolated worker sandboxes protected by TLS 1.3 encryption.',
       'Under our temporary retention policy, your source spreadsheet and the converted PDF are automatically deleted after 120 minutes. We never inspect, index, share, or train AI models on your private financial data.'
@@ -3187,7 +3187,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     certifications: [
       'Automated 120-Minute File Deletion',
       'TLS 1.3 Transport Encryption Protocol',
-      'Zero AI Model Training Guarantee',
+      'No AI Models in Conversion',
       'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Engine Benchmarks & Conversion Speed',
@@ -3304,7 +3304,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my financial spreadsheets stored or saved on your servers?',
-        answer: 'No. All uploaded spreadsheets and converted PDF files are automatically and permanently shredded from our servers after 120 minutes under our Zero-Retention Policy.'
+        answer: 'No. All uploaded spreadsheets and converted PDF files are automatically deleted from our servers after 120 minutes under our temporary retention policy.'
       },
       {
         question: 'What is the maximum Excel file size I can upload?',
@@ -3320,7 +3320,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my uploaded files used to train artificial intelligence models?',
-        answer: 'Never. Convertly has a strict Zero AI Model Training guarantee. Your spreadsheets and financial data are never read, analyzed, or used for AI training.'
+        answer: 'No. Convertly processes spreadsheets using deterministic local engines. Uploaded files are not sent to external AI APIs and are not used for AI model training.'
       }
     ],
     conclusionHeading: 'Convert Your Excel Spreadsheet to PDF Now',
@@ -3340,7 +3340,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     keywords: 'split pdf, pdf splitter, split pdf online, split pdf free, pdf page splitter, extract pages from pdf, separate pdf pages, pdf split tool, split pdf into pages, pdf divider online, convertly',
     badge: 'Custom Page Ranges & Per-Page Split',
     introHeading: 'Split PDF into Pages or Custom Ranges — Free, Instant, Private',
-    introText: 'You have a 200-page legal brief and need only the exhibits on pages 140–180. Or you have a combined invoice PDF and need each invoice as its own separate file. Convertly\'s PDF Splitter extracts exactly the pages you need — by custom range, by individual page, or by splitting every single page into its own document — without touching or degrading the original content. No sign-up. No watermarks. Files permanently shredded in 120 minutes.',
+    introText: 'You have a 200-page legal brief and need only the exhibits on pages 140–180. Or you have a combined invoice PDF and need each invoice as its own separate file. Convertly\'s PDF Splitter extracts exactly the pages you need — by custom range, by individual page, or by splitting every single page into its own document — without touching or degrading the original content. No sign-up. No watermarks. Files automatically deleted in 120 minutes.',
     whatIsHeading: 'What Is a PDF Splitter?',
     whatIsParagraphs: [
       'A PDF splitter reads the internal page tree of a Portable Document Format document and writes a subset of its pages into one or more new, standalone PDF files. The original document is not altered — the splitter reads page object references and clones them into fresh output documents.',
@@ -3448,7 +3448,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: '120-Minute File Retention',
-        desc: 'Your source PDF and all split output files are permanently, cryptographically destroyed from our servers exactly 120 minutes after processing — with no manual deletion required.'
+        desc: 'Your source PDF and all split output files are automatically removed from our servers after 120 minutes — with no manual deletion required.'
       },
       {
         title: 'QR Code Mobile Transfer',
@@ -3617,7 +3617,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Many free PDF splitters rasterize pages into images during splitting, destroying vector text sharpness and inflating file sizes. Convertly clones page streams directly at the binary level — zero quality loss.'
       },
       {
-        title: 'Explicit 120-Minute Cryptographic Destruction',
+        title: 'Explicit 120-Minute File Deletion',
         desc: 'Competitors use vague "we delete your files after processing" language. Convertly is specific: your source and output files are automatically deleted after 120 minutes. No exceptions.'
       },
       {
@@ -3653,7 +3653,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my uploaded PDF files stored on your servers?',
-        answer: 'All uploaded documents and split output files are processed in isolated temporary containers and are permanently, cryptographically destroyed exactly 120 minutes after your job completes — not soft-deleted, permanently overwritten.'
+        answer: 'All uploaded documents and split output files are processed in isolated temporary containers and are processed in automated temporary routines and expire exactly 120 minutes after your job completes, with periodic cleanup removing expired file content from active server storage.'
       },
       {
         question: 'Can I split a password-protected PDF?',
@@ -3745,7 +3745,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     relatedToolIds: ['pdf-merge', 'pdf-extract-pages', 'pdf-delete-pages', 'pdf-compress', 'pdf-reorder-pages', 'pdf-unlock', 'pdf-to-word', 'pdf-protect', 'pdf-page-numbers'],
     conclusionHeading: 'Split Your PDF Files with Surgical Precision — Free',
     conclusionParagraphs: [
-      'Stop paying for Adobe Acrobat Pro or working around artificial daily limits. Convertly gives you enterprise-grade PDF splitting with custom range notation, automatic per-page ZIP export, lossless binary page cloning, and iron-clad 120-minute data shredding.',
+      'Stop paying for Adobe Acrobat Pro or working around artificial daily limits. Convertly gives you enterprise-grade PDF splitting with custom range notation, automatic per-page ZIP export, lossless binary page cloning, and automated 120-minute data cleanup.',
       'No account. No watermarks. No daily caps. No surprises. Scroll up, drop your PDF, define your ranges, and your split files will be ready in seconds.'
     ]
   },
@@ -3867,8 +3867,8 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Choose to include presenter notes as an additional page after each slide for handout-style distributions, or output slides-only for clean presentation sharing.'
       },
       {
-        title: '120-Minute Cryptographic File Shredding',
-        desc: 'Your PPTX file and the generated PDF are permanently, cryptographically destroyed from all server storage exactly 120 minutes after conversion — no exceptions.'
+        title: 'Automated 120-Minute File Cleanup',
+        desc: 'Your PPTX file and the generated PDF are automatically deleted from server storage 120 minutes after conversion.'
       },
       {
         title: 'QR Code Mobile Transfer',
@@ -4037,8 +4037,8 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Free tiers of competitors like Smallpdf and IlovePDF stamp branding watermarks on every page. Convertly guarantees 100% clean, professional output — zero promotional content added.'
       },
       {
-        title: 'Explicit 120-Minute Data Shredding',
-        desc: 'Competitors use vague retention language. Convertly specifies: your PPTX and PDF are cryptographically destroyed exactly 120 minutes post-conversion. Irreversible. No exceptions.'
+        title: 'Explicit 120-Minute File Deletion',
+        desc: 'Competitors use vague retention language. Convertly specifies: your PPTX and PDF are expire exactly 120 minutes post-conversion, after which downloads are blocked and expired files are purged.'
       },
       {
         title: 'QR Mobile Transfer — Unique Workflow Feature',
@@ -4049,8 +4049,8 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Many free online converters only support modern .pptx format. Convertly\'s LibreOffice backend processes both modern OpenXML .pptx files and legacy binary .ppt files from PowerPoint 97–2003.'
       },
       {
-        title: 'Zero AI Training Policy — Explicitly Stated',
-        desc: 'Most competitors are silent on whether presentations influence their AI products. Convertly explicitly guarantees: your slides are never read, analyzed, or used to train any machine learning model.'
+        title: 'Deterministic Processing (No AI Models)',
+        desc: 'Convertly processes presentations using deterministic conversion engines. Uploaded slides are not sent to external LLM APIs and our conversion pipeline does not use uploaded files for AI model training.'
       }
     ],
     faqsHeading: 'Frequently Asked Questions',
@@ -4267,8 +4267,8 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Choose to retain or strip EXIF metadata (camera model, GPS coordinates, capture settings) from the output file depending on your privacy or workflow requirements.'
       },
       {
-        title: '120-Minute Automatic File Shredding',
-        desc: 'Your WebP source and converted output files are permanently, cryptographically destroyed from all server storage exactly 120 minutes after conversion.'
+        title: '120-Minute Automatic File Cleanup',
+        desc: 'Your WebP source and converted output files are automatically removed from active server storage 120 minutes after conversion.'
       },
       {
         title: 'QR Code Mobile Transfer',
@@ -4396,7 +4396,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Convert as many WebP files as needed without hitting a daily cap or being redirected to a subscription page. Always free, always unrestricted.'
       },
       {
-        title: 'Explicit 120-Minute Data Shredding',
+        title: 'Explicit 120-Minute File Deletion',
         desc: 'Unlike competitors with vague privacy policies, Convertly specifies an exact 120-minute temporary file retention policy for all uploaded and converted files.'
       }
     ],
@@ -4511,7 +4511,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     keywords: 'compress image, image compressor, compress photo, reduce image size, image size reducer, compress jpg, compress png, compress webp, online image compressor free, reduce photo size, convertly',
     badge: 'Smart Perceptual Quantization',
     introHeading: 'Compress Images — Reduce File Size Without Visible Quality Loss',
-    introText: 'Your product photos are 4MB each. Your website loads slowly. Your email bounces because the attachment is too large. Convertly\'s Image Compressor reduces JPG, PNG, and WebP file sizes by up to 80% using smart perceptual compression algorithms that target visual redundancy — not visual quality. The result looks identical to the original, but transfers in a fraction of the time. No sign-up. No watermarks. Files shredded in 120 minutes.',
+    introText: 'Your product photos are 4MB each. Your website loads slowly. Your email bounces because the attachment is too large. Convertly\'s Image Compressor reduces JPG, PNG, and WebP file sizes by up to 80% using smart perceptual compression algorithms that target visual redundancy — not visual quality. The result looks identical to the original, but transfers in a fraction of the time. No sign-up. No watermarks. Files automatically deleted in 120 minutes.',
     whatIsHeading: 'What Is Image Compression?',
     whatIsParagraphs: [
       'Image compression is the process of encoding a raster image with fewer bits of data while preserving the perceptual quality that the human visual system perceives as identical to the original. There are two categories: lossless compression (every pixel is perfectly reconstructed on decode — used for PNG) and lossy compression (perceptually irrelevant data is discarded permanently — used for JPEG and WebP).',
@@ -4615,7 +4615,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: '120-Minute File Retention',
-        desc: 'Your original and compressed image files are permanently, cryptographically destroyed from server storage exactly 120 minutes after processing — with zero retention.'
+        desc: 'Your original and compressed image files are automatically removed from active server storage 120 minutes after processing under our temporary retention policy.'
       },
       {
         title: 'QR Code Mobile Transfer',
@@ -4786,7 +4786,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Shows exact original size, compressed size, and percentage reduction — so you always know exactly what you\'re saving before downloading the result.'
       },
       {
-        title: 'Explicit 120-Minute Data Shredding',
+        title: 'Explicit 120-Minute File Deletion',
         desc: 'Unlike competitors with vague "we delete files automatically" language, Convertly specifies an exact 120-minute temporary file retention policy for all uploaded and compressed images.'
       }
     ],
@@ -4909,7 +4909,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     keywords: 'resize image, image resizer, resize photo, resize image online free, change image size, resize jpg, resize png, resize picture, image dimension changer, scale image online, convertly',
     badge: 'Lanczos Anti-Aliasing Resampling',
     introHeading: 'Resize Images to Exact Pixel Dimensions — Free, Sharp, Instant',
-    introText: 'You need a product image at exactly 800×800 pixels for Amazon. Your profile photo must be 400×400 for LinkedIn. Your blog thumbnail must be 1200×628 for Open Graph. Convertly\'s Image Resizer scales JPG, PNG, and WebP images to any exact dimension you specify — using Lanczos resampling for razor-sharp edges at every scale level. No sign-up. No watermarks. Files shredded in 120 minutes.',
+    introText: 'You need a product image at exactly 800×800 pixels for Amazon. Your profile photo must be 400×400 for LinkedIn. Your blog thumbnail must be 1200×628 for Open Graph. Convertly\'s Image Resizer scales JPG, PNG, and WebP images to any exact dimension you specify — using Lanczos resampling for razor-sharp edges at every scale level. No sign-up. No watermarks. Files automatically deleted in 120 minutes.',
     whatIsHeading: 'What Is Image Resizing?',
     whatIsParagraphs: [
       'Image resizing changes the pixel dimensions of a raster image — the width and height expressed in pixels. This operation involves resampling: interpolating the color values of existing pixels to generate the color values of new pixels at the target dimensions. The quality of resampling determines how sharp, smooth, or aliased the resized image appears.',
@@ -5009,7 +5009,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: '120-Minute File Retention',
-        desc: 'Source and resized images are permanently, cryptographically destroyed from all server storage exactly 120 minutes after processing — with zero retention.'
+        desc: 'Source and resized images are automatically removed from active server storage 120 minutes after processing under our temporary retention policy.'
       }
     ],
     benefitsHeading: 'Why Resize Images with Convertly?',
@@ -5168,7 +5168,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my images stored after resizing?',
-        answer: 'No. Source and resized images are permanently, cryptographically destroyed from all server storage exactly 120 minutes after processing — permanently overwritten, not soft-deleted.'
+        answer: 'No. Source and resized images are expire 120 minutes after processing, after which download access is blocked and files are purged from active server storage.'
       },
       {
         question: 'Can I resize images on my phone?',
@@ -5255,7 +5255,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     keywords: 'crop image, image cropper, crop photo online, crop image free, crop jpg, crop png, crop picture online, image crop tool, photo cropper online, trim image, convertly',
     badge: 'Pixel-Accurate Bounding Box',
     introHeading: 'Crop Images to Exact Dimensions — Free, Pixel-Accurate, Instant',
-    introText: 'You have a landscape photo and need a square crop for Instagram. Or a product photo with empty white space that needs trimming. Or a banner that needs exact pixel coordinates cut. Convertly\'s Image Cropper lets you define a precise pixel bounding box or choose a standard aspect ratio — delivering clean, pixel-accurate crops in under a second. No sign-up. No watermarks. Files shredded in 120 minutes.',
+    introText: 'You have a landscape photo and need a square crop for Instagram. Or a product photo with empty white space that needs trimming. Or a banner that needs exact pixel coordinates cut. Convertly\'s Image Cropper lets you define a precise pixel bounding box or choose a standard aspect ratio — delivering clean, pixel-accurate crops in under a second. No sign-up. No watermarks. Files automatically deleted in 120 minutes.',
     whatIsHeading: 'What Is Image Cropping?',
     whatIsParagraphs: [
       'Image cropping is the operation of selecting a rectangular region of a raster image and discarding all pixels outside that region — producing a smaller image that contains only the selected content. Unlike resizing, cropping does not interpolate or resample pixels — it is a pure selection operation that preserves 100% of the pixel quality within the cropped region.',
@@ -5347,7 +5347,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: '120-Minute File Retention',
-        desc: 'Source and cropped images are permanently, cryptographically destroyed from all server storage exactly 120 minutes after processing.'
+        desc: 'Source and cropped images are automatically removed from active server storage 120 minutes after processing.'
       },
       {
         title: 'QR Code Mobile Transfer',
@@ -5504,7 +5504,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my images stored after cropping?',
-        answer: 'No. All uploaded and cropped images are permanently, cryptographically destroyed from server storage exactly 120 minutes after processing — not soft-deleted, permanently overwritten.'
+        answer: 'No. All uploaded and cropped images are expire 120 minutes after processing, with automated cleanup removing expired files from server storage.'
       },
       {
         question: 'Does Convertly use my images to train AI?',
@@ -5587,7 +5587,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     keywords: 'rotate image, image rotator, rotate photo online, flip image, mirror image, rotate jpg, rotate png, flip photo horizontally, rotate picture online free, image flip tool, convertly',
     badge: 'Lossless EXIF & Pixel Rotation',
     introHeading: 'Rotate and Flip Images — Free, Lossless, Instant',
-    introText: 'Your phone photo is sideways. A scanned document is upside down. A logo needs to be mirrored horizontally. Convertly\'s Image Rotator fixes orientation in seconds — rotating 90°, 180°, or 270°, flipping horizontally or vertically — with lossless EXIF-aware rotation that does not re-encode or degrade the image. No sign-up. No watermarks. Files shredded in 120 minutes.',
+    introText: 'Your phone photo is sideways. A scanned document is upside down. A logo needs to be mirrored horizontally. Convertly\'s Image Rotator fixes orientation in seconds — rotating 90°, 180°, or 270°, flipping horizontally or vertically — with lossless EXIF-aware rotation that does not re-encode or degrade the image. No sign-up. No watermarks. Files automatically deleted in 120 minutes.',
     whatIsHeading: 'What Is Image Rotation?',
     whatIsParagraphs: [
       'Image rotation is the operation of reorienting a raster image\'s pixel grid by a specified angle. For 90°, 180°, and 270° rotations, this is a lossless transposition operation — rows and columns of pixels are swapped and inverted mathematically without any interpolation or quality degradation. For arbitrary angle rotations (e.g., 15°), interpolation is required to fill diagonal sub-pixel boundaries, which may introduce minor quality changes.',
@@ -5679,7 +5679,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: '120-Minute File Retention',
-        desc: 'Source and rotated images are permanently, cryptographically destroyed from server storage exactly 120 minutes after processing.'
+        desc: 'Source and rotated images are automatically removed from active server storage 120 minutes after processing.'
       },
       {
         title: '100% Free — No Watermarks, No Limits',
@@ -5836,7 +5836,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my images stored after rotating?',
-        answer: 'No. All uploaded and rotated images are permanently, cryptographically destroyed from server storage exactly 120 minutes after processing — not soft-deleted, permanently overwritten.'
+        answer: 'No. All uploaded and rotated images are expire 120 minutes after processing, with automated cleanup removing expired files from server storage.'
       },
       {
         question: 'Can I rotate images on my smartphone?',
@@ -6064,14 +6064,14 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     securityHeading: 'Document Privacy & Encryption Standards',
     securityParagraphs: [
       'Every document uploaded to Convertly is transferred over end-to-end TLS 1.3 encryption with 256-bit AES cryptographic ciphers. Your files are processed via automated server-side routines throughout transformation.',
-      'Convertly implements an automated cryptographic file shredder. Exactly 120 minutes following transformation completion, all source and rotated files are permanently overwritten and purged from all storage volumes. Convertly never indexes, views, or uses your files for AI model training.'
+      'Convertly implements automated 120-minute file cleanup routines. Exactly 120 minutes following transformation completion, download access expires and all source and rotated files are purged from active server storage. Convertly never indexes, views, or uses your files for AI model training.'
     ],
     certifications: [
       'ISO 32000-1 PDF Compliant',
       'TLS 1.3 256-Bit SSL Encryption',
       'Privacy-Focused File Processing',
-      'Zero AI Model Training Guarantee',
-      'Automatic 120-Minute Cryptographic File Purge'
+      'No AI Models in Conversion',
+      'Automatic 120-Minute File Purge'
     ],
     performanceHeading: 'Engine Benchmarks & Technical Specifications',
     specs: [
@@ -6195,7 +6195,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my uploaded PDF files safe and private?',
-        answer: 'Absolutely. All uploads and downloads are secured with 256-bit TLS 1.3 encryption. Files are processed via automated server-side routines. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage. Convertly never views, shares, or uses your documents for AI training.'
+        answer: 'Absolutely. All uploads and downloads are secured with 256-bit TLS 1.3 encryption. Files are processed via automated server-side routines. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage. Uploaded documents are not sent to external AI APIs or used for model training.'
       },
       {
         question: 'Can I rotate password-protected PDFs?',
@@ -6432,7 +6432,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     certifications: [
       'Level-3 Deep Object Garbage Collection',
       'TLS 1.3 256-Bit SSL Transport Security',
-      'Automated 120-Minute Cryptographic File Purge',
+      'Automated 120-Minute File Cleanup',
       'Privacy-Focused File Processing',
       'Strict Zero AI Model Training Guarantee'
     ],
@@ -6561,7 +6561,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         question: 'Are my uploaded files kept private?',
-        answer: 'Yes. All file transfers are secured with TLS 1.3 256-bit AES encryption. Documents are processed via automated server-side routines. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage. We never view, share, or use your files for AI training.'
+        answer: 'Yes. All file transfers are secured with TLS 1.3 256-bit AES encryption. Documents are processed via automated server-side routines. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage. Uploaded files are not sent to external AI APIs or used for model training.'
       },
       {
         question: 'What is the maximum PDF size supported?',
@@ -6789,12 +6789,12 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     securityHeading: 'Confidentiality & Data Protection Standards',
     securityParagraphs: [
       'Extracting sensitive pages from proprietary binders requires absolute privacy. Convertly operates under strict temporary retention principles to ensure your documents are automatically deleted after 120 minutes.',
-      'All communications utilize TLS 1.3 encryption with 256-bit AES ciphers. Your source file and extracted outputs reside in isolated, ephemeral memory and are permanently obliterated by automated cryptographic routines 120 minutes after conversion. Convertly never reads, logs, or uses your data for AI training.'
+      'All communications utilize TLS 1.3 transport encryption. Your source file and extracted outputs are stored temporarily and automatically purged from active server storage 120 minutes after conversion. Uploaded data is not sent to external AI APIs or used for model training.'
     ],
     certifications: [
       'TLS 1.3 Transport Layer Encryption (AES-256)',
-      'Automated 120-Minute Cryptographic Data Destruction',
-      'Zero AI Model Training Guarantee',
+      'Automated 120-Minute File Deletion',
+      'No AI Models in Conversion',
       'Privacy-Focused File Processing',
       'Privacy-Focused File Processing'
     ],
@@ -6887,7 +6887,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Assemble extracted pages in any order you choose by simply specifying your sequence in the input box — no manual reordering required afterward.'
       },
       {
-        title: 'Automatic Cryptographic File Purging',
+        title: 'Automated 120-Minute File Cleanup',
         desc: 'Your documents are permanently erased from our processing servers after 120 minutes, backed by an explicit zero AI model training policy.'
       }
     ],
@@ -7151,12 +7151,12 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     securityHeading: 'Data Privacy & Encryption Safeguards',
     securityParagraphs: [
       'Organizing legal discovery, medical records, or confidential business proposals requires complete confidentiality. Convertly employs robust security protocols to protect your data throughout processing.',
-      'All file transfers are secured with TLS 1.3 encryption and 256-bit AES ciphers. Your files are processed via automated server-side routines. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage. Convertly never views, logs, or uses your files for AI training.'
+      'All file transfers are secured with TLS 1.3 encryption and 256-bit AES ciphers. Your files are processed via automated server-side routines. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage. Uploaded files are not sent to external AI APIs or used for model training.'
     ],
     certifications: [
       'TLS 1.3 256-Bit SSL Transport Encryption',
-      'Automated 120-Minute Cryptographic File Shredding',
-      'Zero AI Model Training Guarantee',
+      'Automated 120-Minute File Deletion',
+      'No AI Models in Conversion',
       'Privacy-Focused File Processing',
       'Privacy-Focused File Processing'
     ],
@@ -7490,7 +7490,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Adobe Acrobat Pro charges $19.99/month for PDF encryption. Convertly delivers the identical standard AES-256 encryption 100% free.'
       },
       {
-        title: 'True Cryptographic Privacy',
+        title: 'Strong Password Encryption',
         desc: 'We never store your passwords, view your documents, or use your files for machine learning or AI model training. Complete data confidentiality.'
       },
       {
@@ -7521,7 +7521,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       'Automated Post-Encryption Key Verification',
       'Zero Password Logging Guarantee',
       'Automated 120-Minute File Deletion',
-      'Zero AI Model Training Guarantee'
+      'No AI Models in Conversion'
     ],
     performanceHeading: 'Engine Benchmarks & Technical Metrics',
     specs: [
@@ -7876,14 +7876,14 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     securityHeading: 'Data Privacy & Password Security Standards',
     securityParagraphs: [
       'Decrypting sensitive financial statements, legal contracts, or medical records demands the highest standards of data confidentiality. Convertly enforces a strict 120-minute temporary file retention policy.',
-      'Your files and passwords are transmitted via TLS 1.3 encryption with 256-bit AES ciphers. Decryption occurs via automated server-side processing. Passwords are used strictly during cipher key derivation and are never stored. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage. Convertly never views, logs, or uses your data for AI training.'
+      'Your files and passwords are transmitted via TLS 1.3 encryption with 256-bit AES ciphers. Decryption occurs via automated server-side processing. Passwords are used strictly during cipher key derivation and are never stored. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage. Uploaded data is not sent to external AI APIs or used for model training.'
     ],
     certifications: [
       'TLS 1.3 Transport Security with AES-256 Cipher',
       'Zero Password Logging & Temporary Storage',
       'Automated 120-Minute File Deletion',
       'ISO 32000-1 Compliant Stream Decryption',
-      'Zero AI Model Training Guarantee'
+      'No AI Models in Conversion'
     ],
     performanceHeading: 'Engine Benchmarks & Technical Metrics',
     specs: [
@@ -8244,7 +8244,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       'TLS 1.3 256-Bit SSL Transport Security',
       'Automated 120-Minute File Deletion',
       'ISO 32000-1 Compliant Vector Overlays',
-      'Zero AI Model Training Guarantee',
+      'No AI Models in Conversion',
       'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Engine Benchmarks & Technical Metrics',
@@ -8600,13 +8600,13 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     securityHeading: 'Document Privacy & Encryption Standards',
     securityParagraphs: [
       'Whether numbering confidential legal discovery, medical charts, or corporate financial binders, data security is paramount. Convertly enforces rigorous 120-minute temporary retention protocols.',
-      'All uploads and downloads are encrypted via TLS 1.3 with 256-bit AES ciphers. Documents are paginated via automated server-side processing. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage. Convertly never views, logs, or uses your files for AI training.'
+      'All uploads and downloads are encrypted via TLS 1.3 with 256-bit AES ciphers. Documents are paginated via automated server-side processing. Files expire after 120 minutes, and periodic cleanup removes expired files from server storage. Uploaded files are not sent to external AI APIs or used for model training.'
     ],
     certifications: [
       'TLS 1.3 256-Bit SSL Transport Security',
       'Automated 120-Minute File Deletion',
       'ISO 32000-1 Compliant Vector Typography',
-      'Zero AI Model Training Guarantee',
+      'No AI Models in Conversion',
       'Privacy-Focused File Processing'
     ],
     performanceHeading: 'Engine Benchmarks & Technical Metrics',
@@ -8821,7 +8821,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     keywords: 'redact pdf, black out text in pdf, redact pdf online free, how to redact a pdf, pdf redaction tool, permanent pdf redaction, sanitize pdf, redact sensitive information pdf, black out text in pdf without adobe, free pdf redactor, convertly',
     badge: 'Permanent Byte-Level Content Excision',
     introHeading: 'Redact Sensitive Information in PDF — Free, Instant, Permanent Blackout',
-    introText: 'You are submitting legal exhibits, responding to public records requests, or sharing financial statements that contain sensitive social security numbers, banking details, personal phone numbers, or proprietary client names. Convertly\'s Redact PDF tool permanently removes sensitive text and burns opaque blackout boxes into the document stream. This is true cryptographic content excision — underlying characters, vector glyphs, and raster pixels are physically destroyed from the file binary, not merely hidden beneath a black shape. 100% free, no sign-up, and files automatically deleted after 120 minutes.',
+    introText: 'You are submitting legal exhibits, responding to public records requests, or sharing financial statements that contain sensitive social security numbers, banking details, personal phone numbers, or proprietary client names. Convertly\'s Redact PDF tool permanently removes sensitive text and burns opaque blackout boxes into the document stream. This is byte-level content excision — underlying characters, vector glyphs, and raster pixels are physically removed from the file binary, not merely hidden beneath a black shape. 100% free, no sign-up, and files automatically deleted after 120 minutes.',
     whatIsHeading: 'What Is True PDF Redaction vs. Visual Blacking Out?',
     whatIsParagraphs: [
       'In high-profile legal disasters, lawyers have inadvertently leaked classified information by drawing black rectangles over sensitive text in Word or Preview, or changing text highlight colors to black. In these "fake redactions," the underlying text glyphs remain intact inside the PDF content stream — allowing anyone to highlight, copy-paste, or inspect the raw file binary to read the confidential text.',
@@ -8929,14 +8929,14 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Strict Zero-Trace Privacy Architecture',
-        desc: 'Documents are processed on server infrastructure and expire after 120 minutes with zero human access and zero AI training.'
+        desc: 'Documents are processed on server infrastructure using deterministic engines and expire after 120 minutes without external AI API transmission.'
       }
     ],
     benefitsHeading: 'Why Choose Convertly to Redact PDF Documents?',
     benefits: [
       {
         title: 'No Adobe Acrobat Pro Subscription',
-        desc: 'Adobe Acrobat Pro charges $239/year for redaction capabilities. Convertly provides the exact same permanent cryptographic excision 100% free.'
+        desc: 'Adobe Acrobat Pro charges $239/year for redaction capabilities. Convertly provides permanent byte-level content excision 100% free.'
       },
       {
         title: 'Zero Risk of Redaction Leaks',
@@ -8970,7 +8970,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       'Permanent Document Text Redaction',
       'TLS 1.3 256-Bit SSL Transport Security',
       'Automated 120-Minute File Deletion',
-      'Zero AI Model Training Guarantee'
+      'No AI Models in Conversion'
     ],
     performanceHeading: 'Engine Benchmarks & Technical Metrics',
     specs: [
@@ -9332,7 +9332,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       'TLS 1.3 256-Bit SSL Transport Security',
       'Automated 120-Minute File Deletion',
       'Anti-Tampering Document Integrity',
-      'Zero AI Model Training Guarantee'
+      'No AI Models in Conversion'
     ],
     performanceHeading: 'Engine Benchmarks & Technical Metrics',
     specs: [
@@ -9642,7 +9642,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Automated File Deletion',
-        desc: 'Uploaded and processed documents are automatically shredded and permanently wiped from our servers after 120 minutes.'
+        desc: 'Uploaded and processed documents are automatically deleted and removed from active server storage after 120 minutes.'
       }
     ],
     benefitsHeading: 'Enterprise Benefits of Using Convertly PDF Metadata Scrubber',
@@ -9684,9 +9684,9 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     securityParagraphs: [
       'Metadata scrubbing is an operational security function, and Convertly treats your data with maximum rigor. All uploads and downloads occur over end-to-end TLS 1.3 cryptographic channels with modern forward secrecy cipher suites.',
       'Our processing engine operates via automated server-side processing. Documents are read, sanitized at the binary object stream level, deflated, and temporarily stored on server disk without telemetry inspection or logging.',
-      'We operate under a strict Zero AI Model Training guarantee: your files are never indexed, analyzed, shared, or used for machine learning. All documents are automatically deleted after 120 minutes.'
+      'Convertly processes files using deterministic engines. Uploaded documents are not sent to external AI APIs and our pipeline does not use uploaded files for AI model training. All documents expire after 120 minutes and are removed by automated cleanup.'
     ],
-    certifications: ['120-Minute Temporary File Retention', 'Privacy-Focused File Processing', 'TLS-Protected File Transfers', 'Zero AI Training Guarantee'],
+    certifications: ['120-Minute Temporary File Retention', 'Privacy-Focused File Processing', 'TLS-Protected File Transfers', 'No AI Models in Conversion'],
     performanceHeading: 'Technical Specifications & Performance Metrics',
     specs: [
       { label: 'Sanitization Engine', value: 'PyMuPDF C-Compiled Core', detail: 'Native set_metadata and deep scrub API execution' },
@@ -9983,13 +9983,13 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       { ext: '.txt', name: 'Plain Text UTF-8 Document', mime: 'text/plain; charset=utf-8' }
     ],
     formatNotes: 'Input PDFs must contain a digital text layer. Scanned image-only PDFs without embedded OCR should first be processed with Convertly PDF to Word using Smart OCR.',
-    securityHeading: 'Enterprise Privacy & Zero AI Training Commitment',
+    securityHeading: 'Enterprise Privacy & Deterministic Processing',
     securityParagraphs: [
       'Document privacy is foundational to Convertly. All file transfers are secured with TLS 1.3 encryption with Perfect Forward Secrecy. We do not require accounts, user profiles, or personal data to extract text.',
       'Extracted text streams are processed entirely within automated server-side runtimes. Your text is never written to public databases, inspected by human reviewers, or shared with third-party aggregators.',
-      'Convertly strictly adheres to a Zero AI Model Training guarantee: your proprietary documentation, code, and text are never used to train machine learning models. Files are permanently wiped after 120 minutes.'
+      'Convertly processes documents using deterministic conversion engines. Uploaded files are not sent to external LLM APIs, and our conversion pipeline does not use uploaded files for AI model training. Files expire after 120 minutes and are removed by automated cleanup.'
     ],
-    certifications: ['120-Minute Temporary File Retention', 'Privacy-Focused File Processing', 'TLS-Protected File Transfers', 'Zero AI Training Guarantee'],
+    certifications: ['120-Minute Temporary File Retention', 'Privacy-Focused File Processing', 'TLS-Protected File Transfers', 'No AI Models in Conversion'],
     performanceHeading: 'Technical Specifications & Performance Metrics',
     specs: [
       { label: 'Extraction Core', value: 'PyMuPDF C-Compiled Engine', detail: 'Low-level page.get_text stream traversal' },
@@ -10079,8 +10079,8 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
         desc: 'Extract text from as many documents as you need without page caps, subscription paywalls, or email requirements.'
       },
       {
-        title: 'Strict Zero AI Training Guarantee',
-        desc: 'Your intellectual property and proprietary text remain completely private and are permanently wiped after 120 minutes.'
+        title: 'No AI Models in Conversion',
+        desc: 'Convertly processes documents using deterministic engines without sending data to external AI models or retaining files past 120 minutes.'
       }
     ],
     faqsHeading: 'Frequently Asked Questions About PDF to Text Conversion',
@@ -10248,7 +10248,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
       },
       {
         title: 'Automated 120-Minute Secure Deletion',
-        desc: 'Uploaded and processed documents are automatically shredded and permanently wiped from our servers after 120 minutes.'
+        desc: 'Uploaded and processed documents are automatically deleted and removed from active server storage after 120 minutes.'
       }
     ],
     benefitsHeading: 'Enterprise Benefits of Using Convertly PDF to Grayscale',
@@ -10290,9 +10290,9 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     securityParagraphs: [
       'Document security is paramount. Convertly encrypts all uploads and downloads using TLS 1.3 with Perfect Forward Secrecy. We do not require accounts, logins, or personal details to convert documents.',
       'Our processing engine operates via automated server-side runtimes. Documents are rendered into monochrome raster streams, compressed, and written to secure temporary storage without logging or metadata harvesting.',
-      'Convertly strictly enforces a Zero AI Model Training policy: your documents are never analyzed, shared, or used to train machine learning systems. All files are automatically deleted after 120 minutes.'
+      'Convertly processes documents using deterministic conversion engines. Uploaded documents are not sent to external AI APIs and are not used for machine learning model training. All files expire after 120 minutes and are removed by automated cleanup.'
     ],
-    certifications: ['120-Minute Temporary File Retention', 'Privacy-Focused File Processing', 'TLS-Protected File Transfers', 'Zero AI Training Guarantee'],
+    certifications: ['120-Minute Temporary File Retention', 'Privacy-Focused File Processing', 'TLS-Protected File Transfers', 'No AI Models in Conversion'],
     performanceHeading: 'Technical Specifications & Performance Metrics',
     specs: [
       { label: 'Color Conversion Engine', value: 'PyMuPDF C-Compiled Core', detail: 'Native DeviceGray (fitz.csGRAY) raster transformation' },
@@ -10585,7 +10585,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
     certifications: [
       'Automated 120-Minute Temporary File Deletion',
       'TLS Transport Encryption',
-      'No AI Model Training on User Files',
+      'No AI Models in Conversion',
       'Automatic Retention-Based File Purging'
     ],
     performanceHeading: 'Technical Extraction Specifications',
@@ -10741,7 +10741,7 @@ const MASTER_SEO_RECORDS: Record<string, Partial<ToolSeoContent>> = {
 
 
 /**
- * Universal Intelligent Content Generator for All 30 Tools.
+ * Universal Intelligent Content Generator for All 31 Tools.
  * Synthesizes unique, high-value, semantic SEO content, How-To steps,
  * specifications, troubleshooting guides, use cases, and 10+ comprehensive FAQs.
  */
@@ -10791,7 +10791,7 @@ export function getToolSeoContent(toolId: string, toolName?: string, toolCategor
   const certifications = existing?.certifications || [
     'Automated 120-Minute File Deletion',
     'TLS 1.3 Transport Encryption Protocol',
-    'Zero AI Model Training Guarantee',
+    'No AI Models in Conversion',
     'Privacy-Focused File Processing'
   ]
 
@@ -11100,7 +11100,7 @@ function generateFeatures(_id: string, _name: string, _category: 'PDF' | 'Office
       desc: `Executes tasks using compiled C/Python libraries rather than generic browser emulators, ensuring 100% accuracy.`
     },
     {
-      title: `120-Minute Automatic File Shredding`,
+      title: `120-Minute Automatic File Cleanup`,
       desc: `All uploaded and generated documents are permanently erased from memory and disk storage after 120 minutes for total privacy.`
     },
     {

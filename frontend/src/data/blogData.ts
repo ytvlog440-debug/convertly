@@ -201,7 +201,8 @@ export const BLOG_POSTS_DATA: Record<string, BlogPost> = {
       'PDFs lack semantic table models; words are positioned with absolute (x, y) coordinates.',
       'Hybrid spatial clustering detects column boundaries even in borderless financial statements.',
       'Built-in OCR handles scanned vendor invoices and physical receipts with coordinate bounding.',
-      'Numbers, currencies ($ € £), and accounting parentheses are parsed into active Excel formulas.'
+      'Numbers, currencies ($ € £), and accounting parentheses are parsed into active Excel formulas.',
+      'For financial audits and tax preparation, users should verify extracted figures against original statements.'
     ],
     contentSections: [
       {
@@ -327,7 +328,7 @@ export const BLOG_POSTS_DATA: Record<string, BlogPost> = {
       'Files should never be stored in persistent long-term storage or exposed publicly.',
       'Automated 120-minute temporary retention ensures prompt removal of expired files.',
       'Automated server-side processing tasks prevent data contamination.',
-      'A strict Zero AI Training policy guarantees proprietary data is never harvested.'
+      'Deterministic conversion engines ensure uploaded files are not used for AI model training.'
     ],
     contentSections: [
       {
@@ -492,7 +493,8 @@ export const BLOG_POSTS_DATA: Record<string, BlogPost> = {
     keyTakeaways: [
       'Drawing black annotation boxes leaves underlying text selectable and copyable.',
       'True redaction deletes character glyphs and vectors from the PDF content stream.',
-      'Always scrub hidden author metadata and revision layers alongside redaction.'
+      'Always scrub hidden author metadata and revision layers alongside redaction.',
+      'Users handling sensitive documents should always verify the exported file before distribution to confirm that intended information has been removed.'
     ],
     contentSections: [
       {

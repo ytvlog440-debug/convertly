@@ -76,7 +76,7 @@ export function BlogIndexPage() {
           </h1>
 
           <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-            In-depth technical guides, cryptographic privacy whitepapers, and step-by-step document conversion strategies published by our core engineering team.
+            In-depth technical guides, document privacy whitepapers, and step-by-step conversion strategies published by our core engineering team.
           </p>
         </header>
 

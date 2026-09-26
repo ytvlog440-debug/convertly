@@ -194,11 +194,6 @@ export function SeoHead({
         url: LOGO_IMAGE,
         caption: 'Convertly Logo',
       },
-      sameAs: [
-        'https://github.com/convertly',
-        'https://twitter.com/convertlytools',
-        'https://www.linkedin.com/company/convertlytools',
-      ],
       knowsAbout: [
         'https://en.wikipedia.org/wiki/PDF',
         'https://en.wikipedia.org/wiki/Microsoft_Word',
@@ -207,11 +202,6 @@ export function SeoHead({
         'https://en.wikipedia.org/wiki/Computer_security',
         'https://en.wikipedia.org/wiki/Information_privacy',
       ],
-      contactPoint: {
-        '@type': 'ContactPoint',
-        contactType: 'customer support',
-        url: `${BASE_DOMAIN}/security`,
-      },
     })
 
     // B. Base WebSite Schema with SearchAction

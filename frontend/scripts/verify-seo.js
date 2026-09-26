@@ -272,6 +272,92 @@ assert(internalConvertHrefsFound === 0, `Zero internal href references to /conve
 assert(invalidHrefsFound === 0, `Zero invalid href="undefined" or href="null" across dist HTML (found ${invalidHrefsFound})`)
 assert(footerApiLinksFound === 0, `Zero /api/ links inside <footer> across dist HTML (found ${footerApiLinksFound})`)
 
+// 11b. Verify Exact 1 H1 and Valid Canonical Across Every Generated HTML File
+let h1Violations = 0
+let canonicalViolations = 0
+let jsonLdParseErrors = 0
+
+for (const file of allHtmlFiles) {
+  const content = fs.readFileSync(file, 'utf-8')
+  const relPath = path.relative(DIST_DIR, file)
+
+  // H1 Check
+  const h1Matches = content.match(/<h1[\s>]/gi) || []
+  if (h1Matches.length !== 1) {
+    h1Violations++
+    console.error(`  ❌ Expected exactly 1 <h1> in ${relPath}, found ${h1Matches.length}`)
+  }
+
+  // Canonical Check
+  const canonicalMatch = content.match(/<link\s+rel=["']canonical["']\s+href=["']([^"']+)["']/i)
+  if (!canonicalMatch || !canonicalMatch[1].startsWith('https://convertlytools.xyz')) {
+    canonicalViolations++
+    console.error(`  ❌ Missing or invalid canonical in ${relPath}`)
+  }
+
+  // JSON-LD Validation
+  const jsonLdMatches = [...content.matchAll(/<script[^>]*type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)]
+  for (const match of jsonLdMatches) {
+    try {
+      JSON.parse(match[1])
+    } catch (e) {
+      jsonLdParseErrors++
+      console.error(`  ❌ Malformed JSON-LD in ${relPath}: ${e.message}`)
+    }
+  }
+}
+
+assert(h1Violations === 0, `All ${allHtmlFiles.length} generated HTML files have exactly one <h1> (found ${h1Violations} violations)`)
+assert(canonicalViolations === 0, `All ${allHtmlFiles.length} generated HTML files have valid canonical URLs (found ${canonicalViolations} violations)`)
+assert(jsonLdParseErrors === 0, `All JSON-LD blocks across ${allHtmlFiles.length} HTML files parse cleanly without syntax error (found ${jsonLdParseErrors} errors)`)
+
+// 11c. Verify Homepage Static Prerender SEO & Structured Data
+const homepagePath = path.join(DIST_DIR, 'index.html')
+assert(fs.existsSync(homepagePath), 'Homepage index.html exists in dist')
+if (fs.existsSync(homepagePath)) {
+  const homeContent = fs.readFileSync(homepagePath, 'utf-8')
+  
+  // Crawlable tool links to all 31 tools
+  let missingHomeToolLinks = 0
+  for (const tool of TOOLS) {
+    if (!homeContent.includes(`href="/tools/${tool}"`)) {
+      missingHomeToolLinks++
+      console.error(`  ❌ Homepage missing crawlable link to /tools/${tool}`)
+    }
+  }
+  assert(missingHomeToolLinks === 0, `Homepage contains crawlable links to all ${TOOLS.length} active tools (missing ${missingHomeToolLinks})`)
+
+  // Sections
+  assert(homeContent.includes('How Convertly Works'), 'Homepage contains "How Convertly Works" static section')
+  assert(homeContent.includes('Frequently Asked Questions'), 'Homepage contains FAQ static section')
+  assert(homeContent.includes('Enterprise Privacy &amp; Automated Data Sanitation') || homeContent.includes('Enterprise Privacy & Automated Data Sanitation'), 'Homepage contains Privacy & Architecture static section')
+
+  // Homepage Schema Assertions
+  const homeSchemaMatch = homeContent.match(/<script id="convertly-schema-jsonld" type="application\/ld\+json">([\s\S]*?)<\/script>/)
+  assert(!!homeSchemaMatch, 'Homepage contains convertly-schema-jsonld script')
+  if (homeSchemaMatch) {
+    try {
+      const homeSchemas = JSON.parse(homeSchemaMatch[1])
+      assert(Array.isArray(homeSchemas), 'Homepage schema is an array of structured objects')
+      const types = homeSchemas.map(s => s['@type'])
+      assert(types.includes('WebSite'), 'Homepage schema includes WebSite')
+      assert(types.includes('WebApplication'), 'Homepage schema includes WebApplication')
+      assert(types.includes('FAQPage'), 'Homepage schema includes FAQPage')
+      assert(types.includes('Organization'), 'Homepage schema includes Organization')
+
+      // Assert intentionally omitted SearchAction (client-side search only)
+      const schemaString = JSON.stringify(homeSchemas)
+      assert(!schemaString.includes('SearchAction'), 'Homepage schema intentionally omits SearchAction because search is client-side only')
+      assert(!schemaString.includes('AggregateRating'), 'Homepage schema does not contain AggregateRating')
+      assert(!schemaString.includes('Review'), 'Homepage schema does not contain Review')
+      assert(!schemaString.includes('contactPoint'), 'Homepage Organization schema omits unverified contactPoint')
+      assert(!schemaString.includes('github.com/convertly'), 'Homepage Organization schema omits unverified sameAs GitHub profile')
+    } catch (err) {
+      assert(false, `Homepage schema parses cleanly: ${err.message}`)
+    }
+  }
+}
+
 // 12. Destination Pages Canonical Retained & Indexable
 const uniqueDestinations = [...new Set(Object.values(CONVERT_REDIRECTS))]
 for (const dest of uniqueDestinations) {
@@ -345,7 +431,10 @@ const forbiddenTerms = [
   { name: 'AES-256 at rest / platform encryption', pattern: /AES-256\s+(encryption\s+)?at\s+rest|encrypted\s+at\s+rest/i },
   { name: 'End-to-End Encryption / E2EE / zero-knowledge', pattern: /End-to-End\s+Encryption|\bE2EE\b|zero-knowledge/i },
   { name: 'Cryptographic / multi-pass shredding / zero-byte wiping', pattern: /cryptographic(ally)?\s+shred|multi-pass\s+shred|multi-pass\s+deletion|zero-byte\s+wip/i },
-  { name: 'Zero Data Retention / Zero Retention Guarantee', pattern: /Zero\s+Data\s+Retention|Zero\s+Retention\s+Guarantee/i },
+  { name: 'Auto-Shred / auto shred / shredded / shredder', pattern: /auto-shred|auto\s+shred|shredded|shredder/i },
+  { name: 'Zero Data Retention / Zero Retention Guarantee / permanent retention', pattern: /Zero\s+Data\s+Retention|Zero\s+Retention\s+Guarantee|permanent\s+retention/i },
+  { name: 'Broad AI Training Guarantee / Commitment / SLA', pattern: /No\s+AI\s+Training\s+Commitment|Zero\s+AI\s+Training\s+Commitment|Zero\s+AI\s+Training\s+Guarantee|AI\s+Training\s+Guarantee|AI\s+Training\s+SLA/i },
+  { name: 'Unverified GitHub profile in schema', pattern: /github\.com\/convertly/i },
   { name: 'Memory-only / files never touch disk / never persisted to disk / zero disk', pattern: /memory-only|never\s+touch\s+disk|never\s+persisted\s+to\s+disk|never\s+written\s+to\s+disk|zero\s+disk|RAM-only/i },
   { name: 'Unverified isolation (isolated server environments / sandboxed processing / containerized processing)', pattern: /isolated\s+server\s+environments|isolated\s+processing|sandboxed\s+processing|containerized\s+processing|dedicated\s+isolated\s+workers/i },
   { name: 'Antivirus pre-scanning', pattern: /antivirus\s+pre-scanning/i },
@@ -418,6 +507,9 @@ if (fs.existsSync(footerSrcPath)) {
   assert(footerSrc.includes('/developers'), 'React Footer.tsx links to public /developers')
 }
 
+// 18. Verify Active Tool Count Consistency
+assert(TOOLS.length === 31, `Active tools array in verify-seo.js contains exactly 31 tools (found ${TOOLS.length})`)
+
 console.log(`\nTechnical SEO Audit Results:`)
 console.log(`  Passed assertions: ${passed}`)
 console.log(`  Failed assertions: ${failed}`)
@@ -426,6 +518,6 @@ if (failed > 0) {
   console.error(`\n❌ Technical SEO Audit FAILED with ${failed} issues.`)
   process.exit(1)
 } else {
-  console.log(`\n🎉 Technical SEO Audit PASSED 100%! All 12 301 redirects, search routes, clean sitemap, and schemas verified.`)
+  console.log(`\n🎉 Technical SEO Audit PASSED 100%! All 12 301 redirects, search routes, clean sitemap, single H1s, and schemas verified.`)
   process.exitCode = 0
 }

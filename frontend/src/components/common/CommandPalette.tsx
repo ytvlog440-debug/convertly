@@ -33,7 +33,7 @@ interface ToolSearchItem {
   badge?: string
 }
 
-const ALL_30_TOOLS: ToolSearchItem[] = [
+const ALL_TOOLS: ToolSearchItem[] = [
   // PDF Core
   { id: 'pdf-merge', name: 'Merge PDF', desc: 'Combine multiple PDF files into one clean document.', category: 'PDF', icon: Layers, badge: 'Multi-File' },
   { id: 'pdf-split', name: 'Split PDF', desc: 'Separate pages or extract specific page ranges.', category: 'PDF', icon: FileText, badge: 'Ranges' },
@@ -111,7 +111,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
     return () => window.removeEventListener('keydown', handleKeyDown)
   }, [isOpen, onClose])
 
-  const filteredTools = ALL_30_TOOLS.filter((tool) => {
+  const filteredTools = ALL_TOOLS.filter((tool) => {
     const matchesCategory = activeCategory === 'All' || tool.category === activeCategory
     const q = query.toLowerCase().trim()
     const matchesQuery = !q || tool.name.toLowerCase().includes(q) || tool.desc.toLowerCase().includes(q) || tool.id.includes(q)
@@ -134,7 +134,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
   }, [query, filteredTools.length])
 
   const handleSelect = (toolId: string) => {
-    const selected = ALL_30_TOOLS.find((t) => t.id === toolId)
+    const selected = ALL_TOOLS.find((t) => t.id === toolId)
     if (selected) {
       trackToolSelected(selected.name, selected.category, 'command_palette')
     }
@@ -185,7 +185,7 @@ export function CommandPalette({ isOpen, onClose }: CommandPaletteProps) {
               setQuery(e.target.value)
               setSelectedIndex(0)
             }}
-            placeholder="Search 30 tools (e.g. merge, compress, redact, watermark, docx)..."
+            placeholder={`Search ${ALL_TOOLS.length} tools (e.g. merge, compress, redact, watermark, docx)...`}
             className="w-full bg-transparent text-sm text-foreground placeholder:text-muted-foreground focus:outline-none"
           />
           <button

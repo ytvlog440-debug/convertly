@@ -343,7 +343,7 @@ export function HomeSecondaryContent({ tools }: HomeSecondaryContentProps) {
               </div>
               <h3 className="text-lg font-bold text-foreground">Select Your Conversion Tool</h3>
               <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
-                Choose from our categorized directory of 25+ specialized tools or use the instant search bar to find the exact format transformer you need.
+                Choose from our categorized directory of 31 specialized tools or use the instant search bar to find the exact format transformer you need.
               </p>
             </div>
 
@@ -386,7 +386,7 @@ export function HomeSecondaryContent({ tools }: HomeSecondaryContentProps) {
                 <span>Zero-Trust Document Security</span>
               </div>
               <h2 className="font-heading text-3xl sm:text-4xl font-bold tracking-tight text-foreground leading-tight">
-                Enterprise Privacy & Cryptographic Data Sanitation
+                Enterprise Privacy & Automated Data Sanitation
               </h2>
               <p className="mt-4 text-sm text-muted-foreground leading-relaxed">
                 When converting legal contracts, medical reports, and internal corporate budgets, privacy is non-negotiable. 
@@ -408,7 +408,7 @@ export function HomeSecondaryContent({ tools }: HomeSecondaryContentProps) {
                     <Check className="h-3 w-3" />
                   </div>
                   <div>
-                    <strong className="text-foreground">HTTPS/TLS Transport Security:</strong> Modern cryptographic standards protect every byte against interception in transit.
+                    <strong className="text-foreground">HTTPS/TLS Transport Security:</strong> Modern transport encryption standards protect every byte against interception in transit.
                   </div>
                 </div>
 
@@ -417,7 +417,7 @@ export function HomeSecondaryContent({ tools }: HomeSecondaryContentProps) {
                     <Check className="h-3 w-3" />
                   </div>
                   <div>
-                    <strong className="text-foreground">Strict Zero AI Training Pledge:</strong> Your content is never exposed to LLM training pipelines, third-party brokers, or tracking cookies.
+                    <strong className="text-foreground">Deterministic Processing (No AI Models):</strong> Convertly processes documents using deterministic conversion engines. Uploaded files are not sent to external LLM or generative-AI APIs, and our conversion pipeline does not use uploaded files for AI model training.
                   </div>
                 </div>
               </div>
